@@ -4,14 +4,15 @@ import mdpsimEngine.*;
 import java.lang.String;
 import java.util.ArrayList;
 
+import javax.swing.JFrame;
+
 public class main {
 	public static void main(String[] args) {
-		GraphicsEngine g = new GraphicsEngine();
 		String s = parseFormatToMap(0);
 		System.out.println(s);
 		ArrayList<Object2D> objects = generateMap(s);
 		Engine2D phyeng = new Engine2D(objects, 0.1);
-		g.newFrame();
+		JFrameGraphics.GUI(args);
 	}
 
 	private static String parseFormatToMap(int b) {
@@ -34,5 +35,4 @@ public class main {
 		objectmap.add(bottomborder);
 		return objectmap;
 	}
-
 }

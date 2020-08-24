@@ -53,6 +53,21 @@ public class BoundingBox2D {
 		return this.p2;
 	}
 	
+	public double min_x() {
+		return p1.x();
+	}
+	
+	public double min_y() {
+		return p1.y();
+	}
+	
+	public double max_x() {
+		return p2.x();
+	}
+	
+	public double max_y() {
+		return p2.y();
+	}
 	public ArrayList<BoundingBoxPointer> bbpointersx(){
 		ArrayList<BoundingBoxPointer> bbpointers = new ArrayList<BoundingBoxPointer>();
 		bbpointers.add(new BoundingBoxPointer(p1.x(),this));

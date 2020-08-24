@@ -1,5 +1,6 @@
 package mdpsimEngine;
 import java.util.ArrayList;
+import java.util.HashMap;
 /* 	MDP-specific 2D physics engine.
 *	Broad-phase collision detection using AABB.
 */
@@ -22,7 +23,7 @@ public class Engine2D {
 		}
 	}
 	
-	private void parseBoundingBoxes(ArrayList<Object2D> objects) {
+	public void parseBoundingBoxes(ArrayList<Object2D> objects) {
 		for (int a = 0; a < objects.size(); a++) {
 			Object2D obj = objects.get(a);
 			if (obj.type() == Line2D.class) {
@@ -30,8 +31,15 @@ public class Engine2D {
 				BoundingBox2D bb = new BoundingBox2D(line.start(), line.end(), obj);
 				ArrayList<BoundingBoxPointer> bbpointersx = bb.bbpointersx();
 				ArrayList<BoundingBoxPointer> bbpointersy = bb.bbpointersy();
-				for(int a = 0; a < bbpointersx.size(); a++) {
-					bbx.insert(bbpointersx.get(a));
+				for(int b = 0; b < bbpointersx.size(); b++) {
+					if (obj.isstatic()) {
+						bbx_static.insert(bbpointersx.get(b));
+					}
+				}
+				for(int b = 0; b < bbpointersy.size(); b++) {
+					if (obj.isstatic()) {
+						bby_static.insert(bbpointersy.get(b));
+					}
 				}
 			} else {
 				Circle2D circle = ((Circle2D) obj.object());
@@ -41,10 +49,27 @@ public class Engine2D {
 				BoundingBox2D bb = new BoundingBox2D(obj.position().add(npos),obj.position().add(ppos),obj);
 				ArrayList<BoundingBoxPointer> bbpointersx = bb.bbpointersx();
 				ArrayList<BoundingBoxPointer> bbpointersy = bb.bbpointersy();
+				for(int b = 0; b < bbpointersx.size(); b++) {
+					if (obj.isstatic()) {
+						bbx_static.insert(bbpointersx.get(b));
+					}
+				}
+				for(int b = 0; b < bbpointersy.size(); b++) {
+					if (obj.isstatic()) {
+						bby_static.insert(bbpointersy.get(b));
+					}
+				}
 			}
 		}
 	}
 
+	public ArrayList<Object2D> isBroadCollide(Object2D object) {
+		ArrayList<Object2D> collisionobjects = new ArrayList<Object2D>();
+		HashMap<Object2D, Object2D> hm = new HashMap<Object2D, Object2D>(32);
+		
+		return collisionobjects;
+	}
+	
 	//Public methods
 	public Engine2D(ArrayList<Object2D> objects, double timestep) {
 		this.time = 0;

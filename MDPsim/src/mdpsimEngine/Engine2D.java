@@ -5,14 +5,16 @@ import java.util.HashMap;
 *	Broad-phase collision detection using AABB.
 */
 public class Engine2D {
-	private double time;
-	private double timestep;
+	private double time;		//current time since start
+	private double timestep;	//discrete time step for simulation (please set as small as feasible)
 	private ArrayList<Object2D> staticobjects;
 	private ArrayList<Object2D> movingobjects;
 	private BoundingBoxList bbx_static;
 	private BoundingBoxList bby_static;
 	
 	//Private methods
+	
+	// adds objects to static or moving list depending on indicator in Object2D class.
 	private void parseStaticity(ArrayList<Object2D> objects) {
 		for (int a = 0; a < objects.size(); a++) {
 			if (objects.get(a).isstatic() == true) {
@@ -23,6 +25,7 @@ public class Engine2D {
 		}
 	}
 	
+	// generate bounding boxes automatically for an array of different objects.
 	public void parseBoundingBoxes(ArrayList<Object2D> objects) {
 		for (int a = 0; a < objects.size(); a++) {
 			Object2D obj = objects.get(a);
@@ -62,13 +65,23 @@ public class Engine2D {
 			}
 		}
 	}
-
+	
+	// returns an ArrayList of possible colliding static objects given an object.
 	public ArrayList<Object2D> isBroadCollide(Object2D object) {
 		ArrayList<Object2D> collisionobjects = new ArrayList<Object2D>();
 		HashMap<Object2D, Object2D> hm = new HashMap<Object2D, Object2D>(32);
 		
 		return collisionobjects;
 	}
+	
+	//simulates next time step and updates positions of objects, and does collision resolution.
+	public void next() {
+		
+	}
+	
+	
+	
+	
 	
 	//Public methods
 	public Engine2D(ArrayList<Object2D> objects, double timestep) {

@@ -1,5 +1,4 @@
 package mdpsimEngine;
-import java.util.ArrayList;
 
 public class Object2D {
 	private Object object;
@@ -10,13 +9,6 @@ public class Object2D {
 	public Object2D (Circle2D circle, Vector2D position, Vector2D velocity, boolean isstatic) {
 		this.object = circle;
 		this.position = position;	
-		this.velocity = velocity;
-		this.isstatic = isstatic;
-	}
-	
-	public Object2D (Rect2D rect, Vector2D position, Vector2D velocity, boolean isstatic) {
-		this.object = rect;
-		this.position = position;
 		this.velocity = velocity;
 		this.isstatic = isstatic;
 	}

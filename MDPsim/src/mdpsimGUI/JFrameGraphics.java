@@ -3,6 +3,10 @@ package mdpsimGUI;
 import java.util.*;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.geom.Ellipse2D;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -11,6 +15,9 @@ public class JFrameGraphics extends JFrame{
 	int spacing = 5;
 	int gap = 3;
 	double thickness = 2;
+	double x_cor, y_cor;
+	
+	
 	
 	public JFrameGraphics() {
 		this.setTitle("Map Descriptor");
@@ -22,12 +29,14 @@ public class JFrameGraphics extends JFrame{
 		Map map = new Map();
 		this.setContentPane(map);
 		
+		
 	}
 	
 	public class Map extends JPanel {
 		
 		//BASIC MAP LAYOUT 
 		public void paintComponent(Graphics g) {
+
 			g.setColor(Color.black);
 			g.drawRect(4, 4, 450, 600);
 			g.setColor(Color.white);
@@ -102,7 +111,26 @@ public class JFrameGraphics extends JFrame{
 					}
 				}
 			}
+			
+			//CIRCLE
+			Graphics2D gg = (Graphics2D) g;
+			gg.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			gg.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+			g.setColor(Color.green);
+			Ellipse2D.Double circle = new Ellipse2D.Double(x_cor, y_cor, 200, 200);
+			//g.drawOval(x_cor, y_cor, 100, 100);
 		}
+		
+		public void Circle() {
+			
+			Scanner input_x = new Scanner(System.in);
+			x_cor = input_x.nextDouble();
+			Scanner input_y = new Scanner(System.in);
+			y_cor = input_y.nextDouble();
+			
+		}
+		
 	}
+	
 
 }

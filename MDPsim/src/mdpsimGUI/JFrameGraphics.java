@@ -1,42 +1,3 @@
-/*package mdpsimGUI;
-import java.awt.Graphics;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
-public class JFrameGraphics extends JPanel{
-	public void paint(Graphics g){
-		g.drawLine(10, 10, 200, 300);
-		return;
-	}
-	
-	public static void GUI(String[] args){
-		JFrame frame= new JFrame("MDPsim");	
-		frame.getContentPane().add(new JFrameGraphics());
-		frame.setSize(1024, 768);
-		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(false);	
-		return;
-	}
-	
-	public static void update(String[] args){
-		JFrame frame= new JFrame("MDPsim");	
-		frame.getContentPane().add(new JFrameGraphics());
-		frame.setSize(1024, 768);
-		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(false);	
-		return;
-	}
-	
-	public static int resizeX(double x) {
-		return (int)((x/200*998)+15);
-	}
-	
-	public static int resizeY(double y) {
-		return (int)((y/200*738)+15);
-	}
-}*/
 package mdpsimGUI;
 
 import java.util.*;
@@ -90,6 +51,55 @@ public class JFrameGraphics extends JFrame{
 			for(int x=0; x<3; x++) {
 				for(int y=17; y<20;y++) {
 					g.fillRect(spacing+x*30,spacing+y*30, 30-gap, 30-gap);
+				}
+			}
+			
+			//STATIC OBSTACLES
+			g.setColor(Color.black);
+			for(int x=5; x<6; x++) {
+				for(int y=5; y<10;y++) {
+					g.fillRect(spacing+x*30,spacing+y*30, 30-gap, 30-gap);
+				}
+			}
+			
+			g.setColor(Color.black);
+			for(int x=6; x<9; x++) {
+				for(int y=2; y<3;y++) {
+					g.fillRect(spacing+x*30,spacing+y*30, 30-gap, 30-gap);
+				}
+			}
+			
+			g.setColor(Color.black);
+			for(int x=10; x<13; x++) {
+				for(int y=8; y<9;y++) {
+					g.fillRect(spacing+x*30,spacing+y*30, 30-gap, 30-gap);
+				}
+			}
+			g.setColor(Color.black);
+			for(int x=9; x<12; x++) {
+				for(int y=9; y<10;y++) {
+					g.fillRect(spacing+x*30,spacing+y*30, 30-gap, 30-gap);
+				}
+			}
+			
+			//MAYBE THIS?
+			
+			int[][] arr = new int[15][20];
+			arr[0][0] = 1;
+			arr[0][1] = 1;
+			arr[1][0] = 2;
+			arr[1][1] = 2;
+			for(int x=0; x<15; x++) {
+				for(int y=0; y<20;y++) {
+					if(arr[x][y]==1)
+					{
+						g.setColor(Color.black);
+						g.fillRect(spacing+x*30,spacing+y*30, 30-gap, 30-gap);
+					}else if(arr[x][y]==2)
+					{
+						g.setColor(Color.red);
+						g.fillRect(spacing+x*30,spacing+y*30, 30-gap, 30-gap);
+					}
 				}
 			}
 		}

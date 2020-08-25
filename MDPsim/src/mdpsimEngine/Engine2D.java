@@ -2,7 +2,7 @@ package mdpsimEngine;
 import java.util.ArrayList;
 import java.util.HashMap;
 /* 	MDP-specific 2D physics engine.
-*	Broad-phase collision detection using AABB.
+*	Broad-phase collision detection using sort and sweep AABB.
 */
 public class Engine2D {
 	private double time;		//current time since start
@@ -63,7 +63,7 @@ public class Engine2D {
 	
 	// assume moving object is only Circle2D else damn mafan, only consider Circle2D -> Line2D collision
 	@SuppressWarnings("null")
-	public narrowCollideTime(Object2D moving, Object2D stationary) {
+	public void narrowCollide(Object2D moving, Object2D stationary) {
 		if (moving.type() == Circle2D.class) {
 			if (stationary.type() == Line2D.class) {
 				return narrowCollideCircleLine(moving, stationary);
@@ -74,26 +74,27 @@ public class Engine2D {
 	}
 	
 	// handles collisions between circle and line
-	public double narrowCollideCircleLine (Object2D moving, Object2D stationary) {
+	public void narrowCollideCircleLine (Object2D moving, Object2D stationary) {
 		Vector2D movingposition = moving.position();
 		Vector2D movingvelocity = moving.velocity();
 		Vector2D stationarystart = ((Line2D)stationary.object()).start();
 		Vector2D stationaryend = ((Line2D)stationary.object()).end();
 		if (moving.inside(stationarystart) || moving.inside(stationaryend)) {
-			
-		}
+			//some vector reflection to handle vertex collision
+		} else if (//closest point on line exists inside circle)
+			// position vector reflection about line and velocity vector update
 
 	}
 	
 	
 	public Object2D closestCollide(Object2D object, ArrayList<Object2D> staticobjectarray) {
-		
+		//find object that is closest to being colliding (timewise) and handles collisions using that
 	}
 	
 	//simulates next time step and updates positions of objects, and does collision resolution.
 	public void next() {
 		for (int a  = 0 ; a < movingobjects.size(); a++) {
-			ArrayList<Object2D> collisionobjects = 
+			//calls broad collide, narrow collide and impulse resolution, and returns to engine after all positions updated correctly
 		}
 	}
 	

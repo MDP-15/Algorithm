@@ -26,6 +26,19 @@ public class BoundingBox2D {
 		this.object = object;
 	}
 	
+	public BoundingBox2D(Object2D obj) {
+		if (obj.type() == Line2D.class) {
+			Line2D line = ((Line2D) obj.object());
+			BoundingBox2D bb = new BoundingBox2D(line.start(), line.end(), obj);
+			}
+		else {
+			Circle2D circle = ((Circle2D) obj.object());
+			double radius = circle.radius();
+			Vector2D npos = new Vector2D(-radius,-radius);
+			Vector2D ppos = new Vector2D(radius, radius);
+			BoundingBox2D bb = new BoundingBox2D(obj.position().add(npos),obj.position().add(ppos),obj);
+		}
+	}
 	public boolean collide(BoundingBox2D bb2) {
 		double x1 = bb2.p1().x();
 		double x2 = bb2.p2().x();
@@ -51,6 +64,14 @@ public class BoundingBox2D {
 	
 	public Vector2D p2() {
 		return this.p2;
+	}
+	
+	public void p1 (Vector2D p1) {
+		this.p1 = p1;
+	}
+	
+	public void p2 (Vector2D p2) {
+		this.p2 = p2;
 	}
 	
 	public double min_x() {

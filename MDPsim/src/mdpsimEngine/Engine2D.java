@@ -29,54 +29,50 @@ public class Engine2D {
 	public void parseBoundingBoxes(ArrayList<Object2D> objects) {
 		for (int a = 0; a < objects.size(); a++) {
 			Object2D obj = objects.get(a);
-			if (obj.type() == Line2D.class) {
-				Line2D line = ((Line2D) obj.object());
-				BoundingBox2D bb = new BoundingBox2D(line.start(), line.end(), obj);
-				ArrayList<BoundingBoxPointer> bbpointersx = bb.bbpointersx();
-				ArrayList<BoundingBoxPointer> bbpointersy = bb.bbpointersy();
-				for(int b = 0; b < bbpointersx.size(); b++) {
-					if (obj.isstatic()) {
-						bbx_static.insert(bbpointersx.get(b));
+			BoundingBox2D bb = new BoundingBox2D(obj);
+			ArrayList<BoundingBoxPointer> bbpointersx = bb.bbpointersx();
+			ArrayList<BoundingBoxPointer> bbpointersy = bb.bbpointersy();
+			for(int b = 0; b < bbpointersx.size(); b++) {
+				if (obj.isstatic()) {
+					bbx_static.insert(bbpointersx.get(b));
 					}
 				}
-				for(int b = 0; b < bbpointersy.size(); b++) {
-					if (obj.isstatic()) {
-						bby_static.insert(bbpointersy.get(b));
+			for(int b = 0; b < bbpointersy.size(); b++) {
+				if (obj.isstatic()) {
+					bby_static.insert(bbpointersy.get(b));
 					}
 				}
-			} else {
-				Circle2D circle = ((Circle2D) obj.object());
-				double radius = circle.radius();
-				Vector2D npos = new Vector2D(-radius,-radius);
-				Vector2D ppos = new Vector2D(radius, radius);
-				BoundingBox2D bb = new BoundingBox2D(obj.position().add(npos),obj.position().add(ppos),obj);
-				ArrayList<BoundingBoxPointer> bbpointersx = bb.bbpointersx();
-				ArrayList<BoundingBoxPointer> bbpointersy = bb.bbpointersy();
-				for(int b = 0; b < bbpointersx.size(); b++) {
-					if (obj.isstatic()) {
-						bbx_static.insert(bbpointersx.get(b));
-					}
-				}
-				for(int b = 0; b < bbpointersy.size(); b++) {
-					if (obj.isstatic()) {
-						bby_static.insert(bbpointersy.get(b));
-					}
-				}
-			}
 		}
 	}
 	
 	// returns an ArrayList of possible colliding static objects given an object.
 	public ArrayList<Object2D> isBroadCollide(Object2D object) {
+		BoundingBox2D objbb = new BoundingBox2D(object);
+		ArrayList<BoundingBoxPointer> objxbbp = objbb.bbpointersx();
+		ArrayList<BoundingBoxPointer> objybbp = objbb.bbpointersy();
 		ArrayList<Object2D> collisionobjects = new ArrayList<Object2D>();
-		HashMap<Object2D, Object2D> hm = new HashMap<Object2D, Object2D>(32);
-		
+		HashMap<Object2D, Object2D> hm = bbx_static.betweenHash(objxbbp.get(0), objxbbp.get(1));
+		ArrayList<Object2D> ycollide = bby_static.between(objybbp.get(0), objybbp.get(0));
+		for (int a = 0 ; a < ycollide.size(); a++) {
+			if (hm.containsKey(ycollide.get(a))) {
+				collisionobjects.add(ycollide.get(a));
+			}
+		}
 		return collisionobjects;
 	}
 	
+	// assume moving object is only Circle2D else damn mafan, only consider Circle2D -> Line2D collision
+	public double narrowCollide(Object2D moving, Object2D stationary) {
+		Object2D
+	}
+	public Object2D closestCollide(Object2D object, ArrayList<Object2D> staticobjectarray) {
+		
+	}
 	//simulates next time step and updates positions of objects, and does collision resolution.
 	public void next() {
-		
+		for (int a  = 0 ; a < movingobjects.size(); a++) {
+			ArrayList<Object2D> collisionobjects = 
+		}
 	}
 	
 	

@@ -1,5 +1,6 @@
 package mdpsimEngine;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class BoundingBoxList {
 	private ArrayList<BoundingBoxPointer> bblist;
@@ -46,5 +47,17 @@ public class BoundingBoxList {
 			}
 		}
 		return objects;
+	}
+	
+	public HashMap<Object2D, Object2D> betweenHash (BoundingBoxPointer bbbottom, BoundingBoxPointer bbtop) {
+		HashMap<Object2D, Object2D> hm = new HashMap<Object2D, Object2D>();
+		int bottom = binSearchBBPointer(bbbottom);
+		int top = binSearchBBPointer(bbtop);
+		if (bottom < top) {
+			for (int a = bottom; a < top; a++) {
+				hm.put(bblist.get(a).bb().object(),bblist.get(a).bb().object());
+			}
+		}
+		return hm;
 	}
 }

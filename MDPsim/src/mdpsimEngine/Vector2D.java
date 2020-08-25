@@ -45,4 +45,8 @@ public class Vector2D {
 	public Vector2D unit() {
 		return this.multiply(1/Math.sqrt(Math.pow(this.x, 2) +Math.pow(this.y, 2)));
 	}
+	
+	public double length(Vector2D vec) {
+		return Math.sqrt(Math.pow(vec.x()-x, 2) + Math.pow(vec.y()-y,2));
+	}
 }

@@ -51,4 +51,19 @@ public class Object2D {
 	public Object object() {
 		return this.object;
 	}
+	
+	public boolean inside(Vector2D vec) {
+		if (this.type() == Circle2D.class) {
+			Vector2D pos = this.position();
+			double radius = ((Circle2D) this.object()).radius();
+			double length = Math.sqrt(Math.pow(pos.x() - vec.x(), 2) + Math.pow(pos.y() - vec.y(), 2));
+			if (length <= radius) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
 }

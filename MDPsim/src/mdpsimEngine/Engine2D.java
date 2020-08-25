@@ -62,12 +62,34 @@ public class Engine2D {
 	}
 	
 	// assume moving object is only Circle2D else damn mafan, only consider Circle2D -> Line2D collision
-	public double narrowCollide(Object2D moving, Object2D stationary) {
-		Object2D
+	@SuppressWarnings("null")
+	public narrowCollideTime(Object2D moving, Object2D stationary) {
+		if (moving.type() == Circle2D.class) {
+			if (stationary.type() == Line2D.class) {
+				return narrowCollideCircleLine(moving, stationary);
+			}
+		} else {
+			return (Double) null;
+		}
 	}
+	
+	// handles collisions between circle and line
+	public double narrowCollideCircleLine (Object2D moving, Object2D stationary) {
+		Vector2D movingposition = moving.position();
+		Vector2D movingvelocity = moving.velocity();
+		Vector2D stationarystart = ((Line2D)stationary.object()).start();
+		Vector2D stationaryend = ((Line2D)stationary.object()).end();
+		if (moving.inside(stationarystart) || moving.inside(stationaryend)) {
+			
+		}
+
+	}
+	
+	
 	public Object2D closestCollide(Object2D object, ArrayList<Object2D> staticobjectarray) {
 		
 	}
+	
 	//simulates next time step and updates positions of objects, and does collision resolution.
 	public void next() {
 		for (int a  = 0 ; a < movingobjects.size(); a++) {

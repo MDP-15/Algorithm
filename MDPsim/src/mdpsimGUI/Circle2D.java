@@ -10,13 +10,12 @@ import javax.swing.*;
 import javax.swing.JPanel;
 
 public class Circle2D extends JPanel implements ActionListener{
-
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	Timer t = new Timer(5, this);
-	double x, y, new_x, new_y;
+	Timer t = new Timer(16, this);
+	double x=0, y=0;
 	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -26,17 +25,15 @@ public class Circle2D extends JPanel implements ActionListener{
 		t.start();
 	}
 	
+	//Can only check if this works after engine is finished
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		while(x>0 && x<400) {
-			x = new_x;
-			y = new_y;
+		if((x>=0 && x<400) && (y>=0 && y<550))
+		{
+			//need to recall the paint method cause the value changes 
+			repaint();
 		}
-		
-		//need to recall the paint method cause the value changes 
-		repaint();
 		
 	}
 
-	
 }

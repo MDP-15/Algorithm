@@ -11,6 +11,10 @@ import javax.swing.JPanel;
 
 public class Circle2D extends JPanel implements ActionListener{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	Timer t = new Timer(5, this);
 	double x, y, new_x, new_y;
 	

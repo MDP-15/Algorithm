@@ -66,10 +66,10 @@ public class Engine2D {
 	public void narrowCollide(Object2D moving, Object2D stationary) {
 		if (moving.type() == Circle2D.class) {
 			if (stationary.type() == Line2D.class) {
-				return narrowCollideCircleLine(moving, stationary);
+				narrowCollideCircleLine(moving, stationary);
 			}
 		} else {
-			return (Double) null;
+			return;
 		}
 	}
 	
@@ -81,9 +81,9 @@ public class Engine2D {
 		Vector2D stationaryend = ((Line2D)stationary.object()).end();
 		if (moving.inside(stationarystart) || moving.inside(stationaryend)) {
 			//some vector reflection to handle vertex collision
-		} else if (//closest point on line exists inside circle)
-			// position vector reflection about line and velocity vector update
-
+		} else if (true) {
+			
+		}
 	}
 	
 	

@@ -30,6 +30,9 @@ public class Vector2D {
 		return new Vector2D(this.x + component.x, this.y + component.y);
 	}
 	
+	public Vector2D subtract(Vector2D component) {
+		return new Vector2D(this.x - component.x, this.y - component.x);
+	}
 	public Vector2D add(double x, double y) {
 		return new Vector2D(this.x + x, this.y + y);
 	}

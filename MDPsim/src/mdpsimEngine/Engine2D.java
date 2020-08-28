@@ -81,14 +81,33 @@ public class Engine2D {
 		Vector2D stationaryend = ((Line2D)stationary.object()).end();
 		if (moving.inside(stationarystart) || moving.inside(stationaryend)) {
 			//some vector reflection to handle vertex collision
-		} else if (true) {
-			
 		}
+		return;
 	}
 	
+	public Vector2D lineIntersect(Vector2D line1_start, Vector2D line1_end, Vector2D line2_start, Vector2D line2_end) {
+		double s1_x = line1_end.x() - line1_start.x();
+		double s1_y = line1_end.y() - line1_start.y();
+		double s2_x = line2_end.x() - line2_start.x();
+		double s2_y = line2_end.y() - line2_start.y();
+		
+		double s = (((-s1_y * (line1_start.x() - line2_start.x())) + (s1_x * (line1_start.y() - line2_start.y()))))/((-s2_x * s1_y) + (s1_x * s2_y));
+		double t = ((( s2_x * (line1_start.y() - line2_start.y())) - (s2_y * (line1_start.x() - line2_start.x()))))/((-s2_x * s1_y) + (s1_x * s2_y));
+		
+		double i_x = -1;
+		double i_y = -1;
+		if ( s>= 0 && s <= 1 && t >= 0 && t <= 1) {
+			i_x = line1_start.x() + (t * s1_x);
+			i_y = line1_start.y() + (t * s1_y);
+			return new Vector2D (i_x, i_y);
+		}
+		
+		return (Vector2D) null;
+	}
 	
 	public Object2D closestCollide(Object2D object, ArrayList<Object2D> staticobjectarray) {
-		//find object that is closest to being colliding (timewise) and handles collisions using that
+		Vector2D movementvector = object.position().subtract(object.prevpos());
+		
 	}
 	
 	//simulates next time step and updates positions of objects, and does collision resolution.

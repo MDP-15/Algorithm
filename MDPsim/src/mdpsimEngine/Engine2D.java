@@ -105,15 +105,48 @@ public class Engine2D {
 		return (Vector2D) null;
 	}
 	
-	public Object2D closestCollide(Object2D object, ArrayList<Object2D> staticobjectarray) {
-		Vector2D movementvector = object.position().subtract(object.prevpos());
+	public double lineIntersectDistance(Vector2D line1_start, Vector2D line1_end, Vector2D line2_start, Vector2D line2_end) {
+		double s1_x = line1_end.x() - line1_start.x();
+		double s1_y = line1_end.y() - line1_start.y();
+		double s2_x = line2_end.x() - line2_start.x();
+		double s2_y = line2_end.y() - line2_start.y();
 		
+		double s = (((-s1_y * (line1_start.x() - line2_start.x())) + (s1_x * (line1_start.y() - line2_start.y()))))/((-s2_x * s1_y) + (s1_x * s2_y));
+		double t = ((( s2_x * (line1_start.y() - line2_start.y())) - (s2_y * (line1_start.x() - line2_start.x()))))/((-s2_x * s1_y) + (s1_x * s2_y));
+		
+		double i_x = -1;
+		double i_y = -1;
+		if ( s>= 0 && s <= 1 && t >= 0 && t <= 1) {
+			return t; 
+		}
+		
+		return -1;
+	}
+	
+	
+	public Object2D closestCollide(Object2D object, ArrayList<Object2D> staticobjectarray) {
+		double distance = -1;
+		double newdistance = -1;
+		Object2D objectreturn = (Object2D) null;
+		for (int a  = 0; a < staticobjectarray.size(); a++) {
+			Line2D line = (Line2D) (staticobjectarray.get(a).object());
+			newdistance = lineIntersectDistance(object.prevpos(), object.position(), line.start(), line.end);
+			if (newdistance > distance) {
+				distance = newdistance;
+				objectreturn = staticobjectarray.get(a);
+			}
+		}
+		if (distance < 0) {
+			return null;
+		} else {
+			return objectreturn;
+		}
 	}
 	
 	//simulates next time step and updates positions of objects, and does collision resolution.
 	public void next() {
 		for (int a  = 0 ; a < movingobjects.size(); a++) {
-			//calls broad collide, narrow collide and impulse resolution, and returns to engine after all positions updated correctly
+			movingobjects
 		}
 	}
 	

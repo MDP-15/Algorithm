@@ -1,0 +1,78 @@
+package mdpsimGUI;
+
+import java.awt.Color;
+import java.awt.Graphics;
+
+import javax.swing.JPanel;
+
+public class Map extends JPanel{
+	
+	//Circle2D circle = new Circle2D();
+	//Line2D line = new Line2D();
+
+	int spacing = 5;
+	int gap = 3;
+	double thickness = 2;
+	
+	
+	        //BASIC MAP LAYOUT 
+			public void paintComponent(Graphics g) {
+
+				g.setColor(Color.black);
+				g.drawRect(4, 4, 450, 600);
+				g.setColor(Color.white);
+				for(int i = 0; i<15; i++) {
+					for(int j =0; j<20; j++) {
+						g.fillRect(spacing+i*30,spacing+j*30, 30-gap, 30-gap);
+						
+					}
+				}
+				
+				//END ZONE 
+				g.setColor(Color.gray);
+				for(int x=12; x<15; x++) {
+					for(int y=0; y<3;y++) {
+						g.fillRect(spacing+x*30,spacing+y*30, 30-gap, 30-gap);
+					}
+				}
+				
+				//START ZONE
+				g.setColor(Color.gray);
+				for(int x=0; x<3; x++) {
+					for(int y=17; y<20;y++) {
+						g.fillRect(spacing+x*30,spacing+y*30, 30-gap, 30-gap);
+					}
+				}
+				
+				//STATIC OBSTACLES
+				g.setColor(Color.black);
+				for(int x=5; x<6; x++) {
+					for(int y=5; y<10;y++) {
+						g.fillRect(spacing+x*30,spacing+y*30, 30-gap, 30-gap);
+					}
+				}
+				
+				g.setColor(Color.black);
+				for(int x=6; x<9; x++) {
+					for(int y=2; y<3;y++) {
+						g.fillRect(spacing+x*30,spacing+y*30, 30-gap, 30-gap);
+					}
+				}
+				
+				g.setColor(Color.black);
+				for(int x=10; x<13; x++) {
+					for(int y=8; y<9;y++) {
+						g.fillRect(spacing+x*30,spacing+y*30, 30-gap, 30-gap);
+					}
+				}
+				g.setColor(Color.black);
+				for(int x=9; x<12; x++) {
+					for(int y=9; y<10;y++) {
+						g.fillRect(spacing+x*30,spacing+y*30, 30-gap, 30-gap);
+					}
+				}
+				
+			
+				
+			}
+}

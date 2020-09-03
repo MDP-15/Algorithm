@@ -1,4 +1,5 @@
 package mdpsim;
+import mdpsimEngine.Line2D;
 import mdpsimGUI.*;
 import mdpsimEngine.*;
 import java.lang.String;

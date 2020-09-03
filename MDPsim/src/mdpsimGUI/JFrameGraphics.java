@@ -58,12 +58,12 @@ public class JFrameGraphics extends JFrame {
 	      mapPanel.add(map);
 	      mapPanel.setBackground(Color.white);
 	      mapPanel.setBorder(BorderFactory.createLineBorder(Color.black, 1));
-	      circlePanel = new JPanel(); 
-	      circlePanel.add(circle);   
-	      linePanel = new JPanel(); 
+//	      circlePanel = new JPanel();
+//	      circlePanel.add(circle);
+	      linePanel = new JPanel();
 	      linePanel.add(line);
-	      mapPanel.add(circlePanel);
-	      //mapPanel.add(linePanel);
+	      mapPanel.add(circle);
+//	      mapPanel.add(linePanel);
 	      add(mapPanel);
 	      this.setSize(470, 640);
 		
@@ -71,5 +71,4 @@ public class JFrameGraphics extends JFrame {
 	      setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	      setLocationRelativeTo(null);
 	      setVisible(true);
-		
 	}}

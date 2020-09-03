@@ -146,7 +146,7 @@ public class Engine2D {
 	//simulates next time step and updates positions of objects, and does collision resolution.
 	public void next() {
 		for (int a  = 0 ; a < movingobjects.size(); a++) {
-			movingobjects
+//			movingobjects
 		}
 	}
 	

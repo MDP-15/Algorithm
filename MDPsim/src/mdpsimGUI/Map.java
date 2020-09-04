@@ -10,20 +10,17 @@ public class Map extends JPanel{
 	//Circle2D circle = new Circle2D();
 	//Line2D line = new Line2D();
 
-	private final static int SPACING = 5;
-	private final static int GAP = 3;
-	private final static int THICKNESS = 2;
+	final static int SPACING = 5;
+	final static int GAP = 0;
+	final static int THICKNESS = 2;
 	
 	public static void paintMap(Graphics g) {
-		g.setColor(Color.black);
-		g.drawRect(4, 4, 450, 600);
-		g.setColor(Color.white);
-		for(int i = 0; i<15; i++) {
-			for(int j =0; j<20; j++) {
-				g.fillRect(SPACING+i*30,SPACING+j*30, 30-GAP, 30-GAP);
-
-			}
-		}
+//		g.setColor(Color.white);
+//		for(int i = 0; i<15; i++) {
+//			for(int j =0; j<20; j++) {
+//				g.fillRect(SPACING+i*30,SPACING+j*30, 30-GAP, 30-GAP);
+//			}
+//		}
 
 		//END ZONE
 		g.setColor(Color.gray);
@@ -67,6 +64,20 @@ public class Map extends JPanel{
 			for(int y=9; y<10;y++) {
 				g.fillRect(SPACING+x*30,SPACING+y*30, 30-GAP, 30-GAP);
 			}
+		}
+
+
+		g.setColor(Color.black);
+		g.drawRect(4, 4, 450, 600);
+
+		// draw lines
+		g.setColor(Color.black);
+		for (int i = 1; i < 15; i++) {
+			g.drawLine(SPACING + i * 30, SPACING, SPACING + i * 30,  3 + 600);
+		}
+		g.setColor(Color.black);
+		for (int i = 1; i < 20; i++) {
+			g.drawLine(SPACING, SPACING + i * 30, 3 + 450,  SPACING + i * 30);
 		}
 	}
 

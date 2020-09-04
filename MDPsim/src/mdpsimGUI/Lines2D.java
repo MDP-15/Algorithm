@@ -29,7 +29,6 @@ public class Lines2D extends JPanel implements ActionListener{
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		g2.drawLine(x1, y1, x2, y2);
-		System.out.println("w???");
 //		t.start();
 	}
 	

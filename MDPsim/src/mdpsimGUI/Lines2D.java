@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 import java.awt.Graphics;
 
-public class Line2D extends JPanel implements ActionListener{
+public class Lines2D extends JPanel implements ActionListener{
 
 	Timer t = new Timer(16, this);
 	int x1=0, y1=0, x2=0, y2=0;

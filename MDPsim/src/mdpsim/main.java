@@ -15,13 +15,6 @@ public class main {
 		Engine2D phyeng = new Engine2D(objects, 0.1);
 		JFrameGraphics frame = new JFrameGraphics();
 	}
-	/*public static void main(String[] args) {
-		String s = parseFormatToMap(0);
-		System.out.println(s);
-		ArrayList<Object2D> objects = generateMap(s);
-		Engine2D phyeng = new Engine2D(objects, 0.1);
-		JFrameGraphics frame = new JFrameGraphics();
-	} */
 
 	private static String parseFormatToMap(int b) {
 		return String.format("%300s", Integer.toBinaryString(b)).replace(" ", "0");

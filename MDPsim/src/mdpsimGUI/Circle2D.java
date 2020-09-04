@@ -1,7 +1,6 @@
 package mdpsimGUI;
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Ellipse2D;
@@ -16,9 +15,13 @@ public class Circle2D extends JPanel implements ActionListener{
 	private static final long serialVersionUID = 1L;
 	Timer t = new Timer(16, this);
 	double x=0, y=0;
+
+	int spacing = 5;
+	int gap = 3;
 	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		Map.paintMap(g);
 		Graphics2D g2 = (Graphics2D) g;
 		Ellipse2D circle = new Ellipse2D.Double(x,y,30,30);
 		g2.fill(circle);

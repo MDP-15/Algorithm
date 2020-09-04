@@ -148,7 +148,6 @@ public class Engine2D {
 		for (int a  = 0 ; a < movingobjects.size(); a++) {
 			Object2D obj = movingobjects.get(a);
 			obj.prevpos(obj.position());
-			
 		}
 	}
 	

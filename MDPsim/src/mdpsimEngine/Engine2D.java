@@ -75,14 +75,15 @@ public class Engine2D {
 	
 	// handles collisions between circle and line
 	public void narrowCollideCircleLine (Object2D moving, Object2D stationary) {
-		Vector2D movingposition = moving.position();
-		Vector2D movingvelocity = moving.velocity();
-		Vector2D stationarystart = ((Line2D)stationary.object()).start();
-		Vector2D stationaryend = ((Line2D)stationary.object()).end();
-		if (moving.inside(stationarystart) || moving.inside(stationaryend)) {
-			//some vector reflection to handle vertex collision
+		Vector2D line1start = moving.prevpos();
+		Vector2D line1end = moving.position();
+		Vector2D line2start = ((Line2D)stationary.object()).start();
+		Vector2D line2end = ((Line2D)stationary.object()).end();
+		Vector2D vec = lineIntersect(line1start, line1end, line2start, line2end);
+		if (vec != null) {
+			moving.position(vec);
+			moving.velocity(moving.velocity().multiply(-1));
 		}
-		return;
 	}
 	
 	public Vector2D lineIntersect(Vector2D line1_start, Vector2D line1_end, Vector2D line2_start, Vector2D line2_end) {
@@ -149,6 +150,12 @@ public class Engine2D {
 			Object2D obj = movingobjects.get(a);
 			obj.prevpos(obj.position());
 			obj.position(obj.prevpos().add(obj.velocity().multiply(this.timestep)));
+		}
+		for(int b = 0 ; b < movingobjects.size(); b++) {
+			ArrayList<Object2D> broadcollide = isBroadCollide(movingobjects.get(b));
+			for(int a  = 0; a < broadcollide.size(); a++) {
+				narrowCollide(movingobjects.get(b),broadcollide.get(a));
+			}
 		}
 		this.time += this.timestep;
 	}

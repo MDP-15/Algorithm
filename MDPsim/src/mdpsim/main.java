@@ -20,6 +20,27 @@ public class main {
 		return String.format("%300s", Integer.toBinaryString(b)).replace(" ", "0");
 	}
 	
+	private static ArrayList<Object2D> generateLinesAsSquare(double x, double y) {
+		Vector2D topleft = new Vector2D(x - 5, y - 5);
+		Vector2D topright = new Vector2D(x - 5, y + 5);
+		Vector2D bottomleft = new Vector2D(x + 5, y - 5);
+		Vector2D bottomright = new Vector2D(x +5, y + 5);
+		Line2D top = new Line2D(topleft, topright);
+		Line2D left = new Line2D(topleft, bottomleft);
+		Line2D right = new Line2D(topright, bottomright);
+		Line2D bottom = new Line2D(bottomleft, bottomright);
+		Object2D topobj = new Object2D(top, top.midpoint(), new Vector2D(0,0), true);
+		Object2D leftobj = new Object2D(left, left.midpoint(), new Vector2D(0,0), true);
+		Object2D rightobj = new Object2D(right, right.midpoint(), new Vector2D(0,0), true);
+		Object2D bottomobj = new Object2D(bottom, bottom.midpoint(), new Vector2D(0,0), true);
+		ArrayList<Object2D> list= new ArrayList<Object2D>();
+		list.add(topobj);
+		list.add(leftobj);
+		list.add(rightobj);
+		list.add(bottomobj);
+		return list;
+	}
+	
 	private static ArrayList<Object2D> generateMap(String map) {
 		ArrayList<Object2D> objectmap = new ArrayList<Object2D>();
 		Line2D top = new Line2D(new Vector2D(0,0), new Vector2D(200,0));

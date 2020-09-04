@@ -148,12 +148,10 @@ public class Engine2D {
 		for (int a  = 0 ; a < movingobjects.size(); a++) {
 			Object2D obj = movingobjects.get(a);
 			obj.prevpos(obj.position());
+			obj.position(obj.prevpos().add(obj.velocity().multiply(this.timestep)));
 		}
+		this.time += this.timestep;
 	}
-	
-	
-	
-	
 	
 	//Public methods
 	public Engine2D(ArrayList<Object2D> objects, double timestep) {

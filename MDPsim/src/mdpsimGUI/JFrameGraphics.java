@@ -15,7 +15,7 @@ import javax.swing.SwingConstants;
 public class JFrameGraphics extends JFrame {
 	
 	Map map = new Map();
-	Circle2D circle = new Circle2D();
+	Circles2D circle = new Circles2D();
 	Lines2D line = new Lines2D();
 	
 	

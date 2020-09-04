@@ -29,14 +29,18 @@ public class BoundingBox2D {
 	public BoundingBox2D(Object2D obj) {
 		if (obj.type() == Line2D.class) {
 			Line2D line = ((Line2D) obj.object());
-			BoundingBox2D bb = new BoundingBox2D(line.start(), line.end(), obj);
+			this.p1 = line.start();
+			this.p2 = line.end();
+			this.object = obj;
 			}
 		else {
 			Circle2D circle = ((Circle2D) obj.object());
 			double radius = circle.radius();
 			Vector2D npos = new Vector2D(-radius,-radius);
 			Vector2D ppos = new Vector2D(radius, radius);
-			BoundingBox2D bb = new BoundingBox2D(obj.position().add(npos),obj.position().add(ppos),obj);
+			this.p1 = obj.position().add(npos);
+			this.p2 = obj.position().add(ppos);
+			this.object = obj;
 		}
 	}
 	public boolean collide(BoundingBox2D bb2) {
@@ -90,16 +94,16 @@ public class BoundingBox2D {
 		return p2.y();
 	}
 	public ArrayList<BoundingBoxPointer> bbpointersx(){
-		ArrayList<BoundingBoxPointer> bbpointers = new ArrayList<BoundingBoxPointer>();
-		bbpointers.add(new BoundingBoxPointer(p1.x(),this));
-		bbpointers.add(new BoundingBoxPointer(p2.x(),this));
+		ArrayList<BoundingBoxPointer> bbpointers = new ArrayList<BoundingBoxPointer>(0);
+		bbpointers.add(new BoundingBoxPointer(this.p1.x(),this));
+		bbpointers.add(new BoundingBoxPointer(this.p2.x(),this));
 		return bbpointers;
 	}
 	
 	public ArrayList<BoundingBoxPointer> bbpointersy(){
-		ArrayList<BoundingBoxPointer> bbpointers = new ArrayList<BoundingBoxPointer>();
-		bbpointers.add(new BoundingBoxPointer(p1.y(),this));
-		bbpointers.add(new BoundingBoxPointer(p2.y(),this));
+		ArrayList<BoundingBoxPointer> bbpointers = new ArrayList<BoundingBoxPointer>(0);
+		bbpointers.add(new BoundingBoxPointer(this.p1.y(),this));
+		bbpointers.add(new BoundingBoxPointer(this.p2.y(),this));
 		return bbpointers;
 	}
 	

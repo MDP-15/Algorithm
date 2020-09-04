@@ -29,19 +29,17 @@ public class Engine2D {
 	public void parseBoundingBoxes(ArrayList<Object2D> objects) {
 		for (int a = 0; a < objects.size(); a++) {
 			Object2D obj = objects.get(a);
-			BoundingBox2D bb = new BoundingBox2D(obj);
-			ArrayList<BoundingBoxPointer> bbpointersx = bb.bbpointersx();
-			ArrayList<BoundingBoxPointer> bbpointersy = bb.bbpointersy();
-			for(int b = 0; b < bbpointersx.size(); b++) {
-				if (obj.isstatic()) {
-					bbx_static.insert(bbpointersx.get(b));
+			if (obj.isstatic()) {
+				BoundingBox2D bb = new BoundingBox2D(obj);
+				ArrayList<BoundingBoxPointer> bbpointersx = bb.bbpointersx();
+				ArrayList<BoundingBoxPointer> bbpointersy = bb.bbpointersy();
+				for(int b = 0; b < bbpointersx.size(); b++) {
+					this.bbx_static.insert(bbpointersx.get(b));
 					}
-				}
-			for(int b = 0; b < bbpointersy.size(); b++) {
-				if (obj.isstatic()) {
-					bby_static.insert(bbpointersy.get(b));
+				for(int b = 0; b < bbpointersy.size(); b++) {
+					this.bby_static.insert(bbpointersy.get(b));
 					}
-				}
+			}
 		}
 	}
 	
@@ -50,12 +48,14 @@ public class Engine2D {
 		BoundingBox2D objbb = new BoundingBox2D(object);
 		ArrayList<BoundingBoxPointer> objxbbp = objbb.bbpointersx();
 		ArrayList<BoundingBoxPointer> objybbp = objbb.bbpointersy();
-		ArrayList<Object2D> collisionobjects = new ArrayList<Object2D>();
-		HashMap<Object2D, Object2D> hm = bbx_static.betweenHash(objxbbp.get(0), objxbbp.get(1));
-		ArrayList<Object2D> ycollide = bby_static.between(objybbp.get(0), objybbp.get(0));
-		for (int a = 0 ; a < ycollide.size(); a++) {
-			if (hm.containsKey(ycollide.get(a))) {
-				collisionobjects.add(ycollide.get(a));
+		ArrayList<Object2D> collisionobjects = new ArrayList<Object2D>(0);
+		if(this.bbx_static.between(objxbbp.get(0), objxbbp.get(1)) != null && this.bby_static.between(objybbp.get(0), objybbp.get(1)) != null) {
+			ArrayList<Object2D> xcollide = this.bbx_static.between(objxbbp.get(0), objxbbp.get(1));
+			ArrayList<Object2D> ycollide = this.bby_static.between(objybbp.get(0), objybbp.get(1));
+			for (int a = 0 ; a < ycollide.size(); a++) {
+				if (xcollide.contains(ycollide.get(a))) {
+					collisionobjects.add(ycollide.get(a));
+				}
 			}
 		}
 		return collisionobjects;
@@ -167,6 +167,7 @@ public class Engine2D {
 		this.staticobjects = new ArrayList<Object2D>();
 		this.movingobjects = new ArrayList<Object2D>();
 		this.parseStaticity(objects);
+		this.parseBoundingBoxes(objects);
 	}
 	
 	public ArrayList<Object2D >staticObjects(){
@@ -175,5 +176,9 @@ public class Engine2D {
 	
 	public ArrayList<Object2D >movingObjects(){
 		return movingobjects;
+	}
+	
+	public double time() {
+		return this.time;
 	}
 }

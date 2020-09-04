@@ -10,16 +10,28 @@ import javax.swing.JFrame;
 public class main {
 	public static void main(String[] args) {
 		String s = parseFormatToMap(0);
-		System.out.println(s);
 		ArrayList<Object2D> objects = generateMap(s);
-		Engine2D phyeng = new Engine2D(objects, 0.1);
-		JFrameGraphics frame = new JFrameGraphics();
+		Engine2D phyeng = new Engine2D(objects, 0.016);
+		//JFrameGraphics frame = new JFrameGraphics();
+		while(true) {
+			phyeng.next();
+		}
 	}
 
 	private static String parseFormatToMap(int b) {
 		return String.format("%300s", Integer.toBinaryString(b)).replace(" ", "0");
 	}
-	
+	private static ArrayList<Object2D> generateXYFromBits(String s) {
+		ArrayList<Object2D> objects = new ArrayList<Object2D>();
+		for (int x = 0; x < 15; x++) {
+			for (int y = 0; y < 20; y++) {
+				if (s.charAt((x*15)+y) == '1'){
+					objects.addAll(generateLinesAsSquare((x*10)+5,(y*10)+5));
+				}
+			}
+		}
+		return objects;
+	}
 	private static ArrayList<Object2D> generateLinesAsSquare(double x, double y) {
 		Vector2D topleft = new Vector2D(x - 5, y - 5);
 		Vector2D topright = new Vector2D(x - 5, y + 5);
@@ -55,6 +67,10 @@ public class main {
 		objectmap.add(leftborder);
 		objectmap.add(rightborder);
 		objectmap.add(bottomborder);
+		Circle2D robot = new Circle2D(12.5);
+		Object2D robotobject = new Object2D(robot, new Vector2D(15, 15), new Vector2D(10, 10), false);
+		objectmap.addAll(generateXYFromBits(map));
+		objectmap.add(robotobject);
 		return objectmap;
 	}
 }

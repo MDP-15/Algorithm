@@ -184,6 +184,7 @@ public class Engine2D {
 	}
 	
 	public void printMoving() {
+		System.out.println("Time :" + time);
 		for (int a = 0; a < movingobjects.size(); a++) {
 			System.out.println("Moving Object :" + movingobjects.get(a).type() + " X :" + movingobjects.get(a).position().x() + " Y :" + movingobjects.get(a).position().y());
 		}

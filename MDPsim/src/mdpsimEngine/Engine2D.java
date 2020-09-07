@@ -160,6 +160,7 @@ public class Engine2D {
 			}
 		}
 		this.time += this.timestep;
+		printMoving();
 	}
 	
 	//Public methods
@@ -182,6 +183,11 @@ public class Engine2D {
 		return movingobjects;
 	}
 	
+	public void printMoving() {
+		for (int a = 0; a < movingobjects.size(); a++) {
+			System.out.println("Moving Object :" + movingobjects.get(a).type() + " X :" + movingobjects.get(a).position().x() + " Y :" + movingobjects.get(a).position().y());
+		}
+	}
 	public double time() {
 		return this.time;
 	}

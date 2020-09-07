@@ -4,16 +4,17 @@ import mdpsimGUI.*;
 import mdpsimEngine.*;
 import java.lang.String;
 import java.util.ArrayList;
+import java.util.Timer;
 
 import javax.swing.JFrame;
 
 public class main {
 	public static void main(String[] args) {
-		String s = parseFormatToMap(0);
+		String s = parseFormatToMap(24);
 		ArrayList<Object2D> objects = generateMap(s);
 		Engine2D phyeng = new Engine2D(objects, 0.016);
 		//JFrameGraphics frame = new JFrameGraphics();
-		while(true) {
+		while (true) {
 			phyeng.next();
 		}
 	}
@@ -25,7 +26,7 @@ public class main {
 		ArrayList<Object2D> objects = new ArrayList<Object2D>();
 		for (int x = 0; x < 15; x++) {
 			for (int y = 0; y < 20; y++) {
-				if (s.charAt((x*15)+y) == '1'){
+				if (s.charAt((x*20)+y) == '1'){
 					objects.addAll(generateLinesAsSquare((x*10)+5,(y*10)+5));
 				}
 			}

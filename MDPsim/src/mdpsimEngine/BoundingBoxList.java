@@ -1,6 +1,6 @@
 package mdpsimEngine;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.lang.Double;
 
 public class BoundingBoxList {
 	private ArrayList<BoundingBoxPointer> bblist;
@@ -10,26 +10,28 @@ public class BoundingBoxList {
 	}
 	
 	public void insert(BoundingBoxPointer bbpointer) {
-		int value = binSearchBBPointer(bbpointer);
-		this.bblist.add(value,bbpointer);
+		this.bblist.add(binSearchBBPointer(bbpointer),bbpointer);
+		//System.out.println(bbpointer.value());
+		//this.printall();
 		return;
 	}
 	
 	public int binSearchBBPointer(BoundingBoxPointer bbpointer) {
-		int front = 0;
-		int end = bblist.size();
-		int mid = (front + end)/2;
-		while(end - front > 0) {
-			mid = (front + end)/2;
-			if (bblist.get(mid).value() == bbpointer.value()) {
-				return mid;
-			}else if (bblist.get(mid).value() < bbpointer.value()) {
-				end = mid;
+		int left = 0;
+		int right = bblist.size() - 1;
+		int middle = 0;
+		while (left <= right) {
+			middle = (left + right) / 2;
+			int cmp = Double.compare(bbpointer.value(), bblist.get(middle).value());
+			if (cmp < 0) {
+				left = middle + 1;
+			} else if (cmp > 0) {
+				right = middle - 1;
 			} else {
-				front = mid;
+				return middle;
 			}
-		} 
-		return mid;
+		}
+		return middle;
 	}
 	
 	public ArrayList<Object2D> between(BoundingBoxPointer bbbottom, BoundingBoxPointer bbtop) {
@@ -45,6 +47,10 @@ public class BoundingBoxList {
 	}
 	
 	public void printall() {
-		
+		for (int a = 0; a < bblist.size(); a++) {
+			System.out.print(bblist.get(a).value());
+			System.out.print(" ");
+		}
+		System.out.println();
 	}
 }

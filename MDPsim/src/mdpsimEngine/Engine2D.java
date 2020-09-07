@@ -41,6 +41,7 @@ public class Engine2D {
 					}
 			}
 		}
+		return;
 	}
 	
 	// returns an ArrayList of possible colliding static objects given an object.
@@ -84,6 +85,7 @@ public class Engine2D {
 			moving.position(vec);
 			moving.velocity(moving.velocity().multiply(-1));
 		}
+		return;
 	}
 	
 	public Vector2D lineIntersect(Vector2D line1_start, Vector2D line1_end, Vector2D line2_start, Vector2D line2_end) {
@@ -166,6 +168,8 @@ public class Engine2D {
 		this.timestep = timestep;
 		this.staticobjects = new ArrayList<Object2D>();
 		this.movingobjects = new ArrayList<Object2D>();
+		this.bbx_static = new BoundingBoxList();
+		this.bby_static = new BoundingBoxList();
 		this.parseStaticity(objects);
 		this.parseBoundingBoxes(objects);
 	}

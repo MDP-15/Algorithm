@@ -10,43 +10,23 @@ public class BoundingBoxList {
 	}
 	
 	public void insert(BoundingBoxPointer bbpointer) {
-		int value = binSearchBBPointerPos(bbpointer);
-		if (value == -1) {
-			return;
-		} else {
-			this.bblist.add(value,bbpointer);
-		}
+		int value = binSearchBBPointer(bbpointer);
+		this.bblist.add(value,bbpointer);
+		return;
 	}
 	
 	public int binSearchBBPointer(BoundingBoxPointer bbpointer) {
 		int front = 0;
 		int end = bblist.size();
 		int mid = (front + end)/2;
-		boolean found = false;	
-		while(bblist.get(mid) != null && bblist.get(mid).value() > bbpointer.value() && end-front > 1 && found == false) {
-			front = mid;
-			mid = (front+end)/2;
-			if (bblist.get(mid).value() == bbpointer.value() && bblist.get(mid).bb() == bbpointer.bb()) {
-				found = true;
-			}
-		} 		
-		if (found == true) {
-			return mid;
-		} else {
-			return -1;
-		}
-	}
-	
-	public int binSearchBBPointerPos(BoundingBoxPointer bbpointer) {
-		int front = 0;
-		int end = bblist.size();
-		int mid = (front + end)/2;
-		boolean found = false;
-		while(bblist.get(mid) != null && bblist.get(mid).value() > bbpointer.value() && end-front > 1 && found == false) {
-			front = mid;
-			mid = (front+end)/2;
-			if (bblist.get(mid).value() == bbpointer.value() && bblist.get(mid).bb() == bbpointer.bb()) {
-				found = true;
+		while(end - front > 0) {
+			mid = (front + end)/2;
+			if (bblist.get(mid).value() == bbpointer.value()) {
+				return mid;
+			}else if (bblist.get(mid).value() < bbpointer.value()) {
+				end = mid;
+			} else {
+				front = mid;
 			}
 		} 
 		return mid;
@@ -54,13 +34,17 @@ public class BoundingBoxList {
 	
 	public ArrayList<Object2D> between(BoundingBoxPointer bbbottom, BoundingBoxPointer bbtop) {
 		ArrayList<Object2D> objects = new ArrayList<Object2D>(0);
-		int bottom = binSearchBBPointerPos(bbbottom);
-		int top = binSearchBBPointerPos(bbtop);
+		int bottom = binSearchBBPointer(bbbottom);
+		int top = binSearchBBPointer(bbtop);
 		if (bottom < top) {
 			for (int a = bottom; a < top; a++) {
 				objects.add(this.bblist.get(a).bb().object());
 			}
 		}
 		return objects;
+	}
+	
+	public void printall() {
+		
 	}
 }

@@ -95,15 +95,19 @@ public class BoundingBox2D {
 	}
 	public ArrayList<BoundingBoxPointer> bbpointersx(){
 		ArrayList<BoundingBoxPointer> bbpointers = new ArrayList<BoundingBoxPointer>(0);
-		bbpointers.add(new BoundingBoxPointer(this.p1.x(),this));
-		bbpointers.add(new BoundingBoxPointer(this.p2.x(),this));
+		BoundingBoxPointer bb1 = new BoundingBoxPointer(this.p1.x(),this);
+		BoundingBoxPointer bb2 = new BoundingBoxPointer(this.p2.x(),this);
+		bbpointers.add(bb1);
+		bbpointers.add(bb2);
 		return bbpointers;
 	}
 	
 	public ArrayList<BoundingBoxPointer> bbpointersy(){
 		ArrayList<BoundingBoxPointer> bbpointers = new ArrayList<BoundingBoxPointer>(0);
-		bbpointers.add(new BoundingBoxPointer(this.p1.y(),this));
-		bbpointers.add(new BoundingBoxPointer(this.p2.y(),this));
+		BoundingBoxPointer bb1 = new BoundingBoxPointer(this.p1.y(),this);
+		BoundingBoxPointer bb2 = new BoundingBoxPointer(this.p2.y(),this);
+		bbpointers.add(bb1);
+		bbpointers.add(bb2);
 		return bbpointers;
 	}
 	

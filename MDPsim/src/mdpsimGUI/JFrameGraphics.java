@@ -1,7 +1,5 @@
 package mdpsimGUI;
 
-import sun.tools.jps.Jps;
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.*;

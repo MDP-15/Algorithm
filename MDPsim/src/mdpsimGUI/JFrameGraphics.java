@@ -1,9 +1,14 @@
 package mdpsimGUI;
 
+import sun.tools.jps.Jps;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
+import javax.sound.sampled.Line;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -51,24 +56,38 @@ public class JFrameGraphics extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
 		this.setResizable(false);*/
-		
-		  setTitle("Map Descriptor");
-	      mapPanel = new JPanel(); // main panel
-	      mapPanel.setLayout(new OverlayLayout(mapPanel));
-	      mapPanel.add(map);
-	      mapPanel.setBackground(Color.white);
-	      mapPanel.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+
+
+
+		setTitle("Map Descriptor");
+		mapPanel = new JPanel(); // main panel
+		mapPanel.setLayout(new OverlayLayout(mapPanel));
+		mapPanel.setBackground(Color.white);
+		mapPanel.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+		mapPanel.add(map);
+
 //	      circlePanel = new JPanel();
 //	      circlePanel.add(circle);
-	      linePanel = new JPanel();
-	      linePanel.add(line);
-	      mapPanel.add(circle);
-//	      mapPanel.add(linePanel);
-	      add(mapPanel);
-	      this.setSize(470, 640);
-		
-	      
-	      setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	      setLocationRelativeTo(null);
-	      setVisible(true);
+//	      linePanel = new JPanel();
+//	      linePanel.add(line);
+
+		for (int i = 1; i < 15; i++) {
+			Lines2D line = new Lines2D(Map.SPACING + i * 30, Map.SPACING, Map.SPACING + i * 30,  3 + 600);
+			mapPanel.add(line);
+		}
+		for (int i = 1; i < 20; i++) {
+			Lines2D line = new Lines2D(Map.SPACING, Map.SPACING + i * 30, 3 + 450,  Map.SPACING + i * 30);
+			mapPanel.add(line);
+		}
+
+
+		mapPanel.add(circle);
+
+		add(mapPanel);
+		setContentPane(mapPanel);
+		this.setSize(470, 640);
+
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);
+		setVisible(true);
 	}}

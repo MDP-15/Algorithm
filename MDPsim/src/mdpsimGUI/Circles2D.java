@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 
 public class Circles2D extends JPanel implements ActionListener{
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	Timer t = new Timer(16, this);
@@ -18,7 +18,7 @@ public class Circles2D extends JPanel implements ActionListener{
 
 	int spacing = 5;
 	int gap = 3;
-	
+
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Map.paintMap(g);
@@ -27,16 +27,16 @@ public class Circles2D extends JPanel implements ActionListener{
 		g2.fill(circle);
 		t.start();
 	}
-	
+
 	//Can only check if this works after engine is finished
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if((x>=0 && x<400) && (y>=0 && y<550))
 		{
-			//need to recall the paint method cause the value changes 
+			//need to recall the paint method cause the value changes
 			repaint();
 		}
-		
+
 	}
 
 }

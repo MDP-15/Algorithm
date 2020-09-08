@@ -17,4 +17,11 @@ public class Line extends JComponent{
 		this.end = end;
 		this.color = color;
 	}
+	
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.setColor(color);
+		g.drawLine(start.x(), start.y(), end.x(), end.y());
+	}
 }

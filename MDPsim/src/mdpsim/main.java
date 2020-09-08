@@ -88,7 +88,9 @@ public class main {
 			Line2D ln = (Line2D) obj.object();
 			VecInt start = new VecInt(ln.start().multiply(mult),true);
 			VecInt end = new VecInt(ln.end().multiply(mult),true);
-			lines.add(new Line(start,end,Color.black));
+			Line drawedline = new Line(start,end,Color.green);
+			lines.add(drawedline);
+			panel.add(drawedline);
 		}
 		for (Object2D obj : phyeng.movingObjects()) {
 			Circle2D circle = (Circle2D) obj.object();

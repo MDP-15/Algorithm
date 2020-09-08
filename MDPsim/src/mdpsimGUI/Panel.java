@@ -1,5 +1,6 @@
 package mdpsimGUI;
 import java.awt.Graphics;
+import java.awt.LayoutManager;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 
@@ -11,6 +12,12 @@ public class Panel extends JPanel{
 
 	public Panel() {
 		super();
+		lines = new ArrayList<Line>();
+		circles = new ArrayList<Circle>();
+	}
+	
+	public Panel(LayoutManager lm) {
+		super(lm);
 		lines = new ArrayList<Line>();
 		circles = new ArrayList<Circle>();
 	}

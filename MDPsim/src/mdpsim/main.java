@@ -81,16 +81,13 @@ public class main {
 		ArrayList<Circle> circles = new ArrayList<Circle>();
 		for (Object2D obj : phyeng.staticObjects()) {
 			Line2D ln = (Line2D) obj.object();
-			VecInt start = new VecInt(ln.start(),true);
-			VecInt end = new VecInt(ln.end(),true);
-			start.multiply(mult);
-			end.multiply(mult);
+			VecInt start = new VecInt(ln.start().multiply(mult),true);
+			VecInt end = new VecInt(ln.end().multiply(mult),true);
 			lines.add(new Line(start,end,Color.black));
 		}
 		for (Object2D obj : phyeng.movingObjects()) {
 			Circle2D circle = (Circle2D) obj.object();
-			VecInt pos = new VecInt(obj.position(),true);
-			pos.multiply(mult);
+			VecInt pos = new VecInt(obj.position().add(new Vector2D(-circle.radius(),-circle.radius())).multiply(mult),true);
 			int diameter = (int)Math.round(2*circle.radius()*mult);
 			circles.add(new Circle(pos,diameter, Color.black));
 		}
@@ -104,8 +101,7 @@ public class main {
 		double mult = 339/150;
 		for (Object2D obj : phyeng.movingObjects()) {
 			Circle2D circle = (Circle2D) obj.object();
-			VecInt pos = new VecInt(obj.position(),true);
-			pos.multiply(mult);
+			VecInt pos = new VecInt(obj.position().add(new Vector2D(-circle.radius(),-circle.radius())).multiply(mult),true);
 			int diameter = (int)Math.round(2*circle.radius()*mult);
 			circles.add(new Circle(pos,diameter, Color.black));
 		}

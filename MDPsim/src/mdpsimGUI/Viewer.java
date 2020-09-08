@@ -52,7 +52,7 @@ public class Viewer extends JFrame{
 		c.ipady = 452;
 		c.gridwidth = 1;
 		c.gridheight = 1;
-		this.add(virtualmap, c);
+		this.add(virtualmap, c);	
 		return virtualmap;
 	}
 	

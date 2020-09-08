@@ -36,12 +36,10 @@ public class BoundingBoxList {
 	
 	public ArrayList<Object2D> between(BoundingBoxPointer bbbottom, BoundingBoxPointer bbtop) {
 		ArrayList<Object2D> objects = new ArrayList<Object2D>(0);
-		int bottom = binSearchBBPointer(bbbottom);
-		int top = binSearchBBPointer(bbtop);
-		if (bottom < top) {
-			for (int a = bottom; a < top; a++) {
-				objects.add(this.bblist.get(a).bb().object());
-			}
+		int bottom = binSearchBBPointer(bbtop);
+		int top = binSearchBBPointer(bbbottom);
+		for (int a = bottom; a < top; a++) {
+			objects.add(this.bblist.get(a).bb().object());	
 		}
 		return objects;
 	}

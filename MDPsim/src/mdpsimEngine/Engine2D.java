@@ -159,7 +159,6 @@ public class Engine2D implements Runnable{
 			}
 		}
 		this.time += this.timestep;
-		printMoving();
 	}
 	
 	//Public methods

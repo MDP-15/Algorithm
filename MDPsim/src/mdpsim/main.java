@@ -15,10 +15,6 @@ public class main {
 		Viewer vw = new Viewer("MDP Simulator", 1024, 768);
 		vw.setVisible(true);
 		updateAll(phyeng, vw.map1);
-		while(true) {
-			phyeng.next();
-			update(phyeng, vw.map1);
-		}
 	}
 
 	private static String parseFormatToMap(int b) {
@@ -26,15 +22,16 @@ public class main {
 	}
 	private static ArrayList<Object2D> generateXYFromBits(String s) {
 		ArrayList<Object2D> objects = new ArrayList<Object2D>();
-		for (int x = 0; x < 15; x++) {
-			for (int y = 0; y < 20; y++) {
-				if (s.charAt((x*20)+y) == '1'){
+		for (int x = 0; x < 20; x++) {
+			for (int y = 0; y < 15; y++) {
+				if (s.charAt((x*15)+y) == '1'){
 					objects.addAll(generateLinesAsSquare((x*10)+5,(y*10)+5));
 				}
 			}
 		}
 		return objects;
 	}
+	
 	private static ArrayList<Object2D> generateLinesAsSquare(double x, double y) {
 		Vector2D topleft = new Vector2D(x - 5, y - 5);
 		Vector2D topright = new Vector2D(x - 5, y + 5);
@@ -65,7 +62,7 @@ public class main {
 		Line2D right = new Line2D(new Vector2D(200,0), new Vector2D(200,150));
 		Object2D rightborder = new Object2D(right, right.midpoint(), new Vector2D(0,0), true);
 		Line2D bottom = new Line2D(new Vector2D(0,150), new Vector2D(200,150));
-		Object2D bottomborder = new Object2D(left, bottom.midpoint(), new Vector2D(0,0), true);
+		Object2D bottomborder = new Object2D(bottom, bottom.midpoint(), new Vector2D(0,0), true);
 		objectmap.add(topborder);
 		objectmap.add(leftborder);
 		objectmap.add(rightborder);
@@ -79,18 +76,23 @@ public class main {
 	
 	private static void updateAll(Engine2D phyeng, Panel panel) {
 		ArrayList<Line> lines = new ArrayList<Line>();
+		double mult = 339/150;
+		System.out.println(panel.getHeight());
 		ArrayList<Circle> circles = new ArrayList<Circle>();
 		for (Object2D obj : phyeng.staticObjects()) {
 			Line2D ln = (Line2D) obj.object();
-			VecInt start = new VecInt(ln.start());
-			VecInt end = new VecInt(ln.end());
+			VecInt start = new VecInt(ln.start(),true);
+			VecInt end = new VecInt(ln.end(),true);
+			start.multiply(mult);
+			end.multiply(mult);
 			lines.add(new Line(start,end,Color.black));
 		}
 		for (Object2D obj : phyeng.movingObjects()) {
 			Circle2D circle = (Circle2D) obj.object();
-			VecInt pos = new VecInt(obj.position());
-			int radius = (int)Math.round(circle.radius());
-			circles.add(new Circle(pos,radius, Color.black));
+			VecInt pos = new VecInt(obj.position(),true);
+			pos.multiply(mult);
+			int diameter = (int)Math.round(2*circle.radius()*mult);
+			circles.add(new Circle(pos,diameter, Color.black));
 		}
 		panel.lines = lines;
 		panel.circles = circles;
@@ -99,11 +101,13 @@ public class main {
 	
 	private static void update(Engine2D phyeng, Panel panel) {
 		ArrayList<Circle> circles = new ArrayList<Circle>();
+		double mult = 339/150;
 		for (Object2D obj : phyeng.movingObjects()) {
 			Circle2D circle = (Circle2D) obj.object();
-			VecInt pos = new VecInt(obj.position());
-			int radius = (int)Math.round(circle.radius());
-			circles.add(new Circle(pos,radius, Color.black));
+			VecInt pos = new VecInt(obj.position(),true);
+			pos.multiply(mult);
+			int diameter = (int)Math.round(2*circle.radius()*mult);
+			circles.add(new Circle(pos,diameter, Color.black));
 		}
 		panel.circles = circles;
 		panel.repaint();

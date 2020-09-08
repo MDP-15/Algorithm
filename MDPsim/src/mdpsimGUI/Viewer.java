@@ -28,7 +28,7 @@ public class Viewer extends JFrame{
 	
 	private Panel constructVirtualMap(GridBagConstraints c) {
 		Panel virtualmap = new Panel();
-		virtualmap.setSize(150,200);
+		virtualmap.setSize(339,452);
 		virtualmap.setBackground(Color.lightGray);
 		c.insets = new Insets(2,2,2,2);
 		c.gridx = 0;
@@ -43,7 +43,7 @@ public class Viewer extends JFrame{
 	
 	private Panel constructRobotMap(GridBagConstraints c) {
 		Panel virtualmap = new Panel();
-		virtualmap.setSize(150,200);
+		virtualmap.setSize(339,452);
 		virtualmap.setBackground(Color.lightGray);
 		c.insets = new Insets(2,2,2,2);
 		c.gridx = 1;
@@ -58,7 +58,7 @@ public class Viewer extends JFrame{
 	
 	private Panel constructSensorScreen(GridBagConstraints c) {
 		Panel virtualmap = new Panel();
-		virtualmap.setSize(150,200);
+		virtualmap.setSize(339,452);
 		virtualmap.setBackground(Color.darkGray);
 		c.insets = new Insets(2,2,2,2);
 		c.gridx = 2;

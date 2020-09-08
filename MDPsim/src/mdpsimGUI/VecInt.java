@@ -11,9 +11,15 @@ public class VecInt {
 		this.y = y;
 	}
 	
-	public VecInt(Vector2D vec) {
-		this.x = (int) Math.round(vec.x());
-		this.y = (int) Math.round(vec.y());
+	public VecInt(Vector2D vec, boolean flip) {
+		if (flip) {
+			this.x = (int) Math.round(vec.y());
+			this.y = (int) Math.round(vec.x());
+			
+		} else {
+			this.x = (int) Math.round(vec.x());
+			this.y = (int) Math.round(vec.y());
+		}
 	}
 	public int x() {
 		return this.x;
@@ -29,5 +35,10 @@ public class VecInt {
 	
 	public void y(int y) {
 		this.y = y;
+	}
+	
+	public void multiply(double mult) {
+		this.x = (int)Math.round(x*mult);
+		this.y = (int)Math.round(y*mult);
 	}
 }

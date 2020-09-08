@@ -7,16 +7,14 @@ import java.util.ArrayList;
 import java.util.Timer;
 
 import javax.swing.JFrame;
+import javax.swing.UnsupportedLookAndFeelException;
 
 public class main {
-	public static void main(String[] args) {
+	public static void main(String[] args){
 		String s = parseFormatToMap(24);
 		ArrayList<Object2D> objects = generateMap(s);
 		Engine2D phyeng = new Engine2D(objects, 0.016);
-		//JFrameGraphics frame = new JFrameGraphics();
-		while (true) {
-			phyeng.next();
-		}
+		Viewer vw = new Viewer("MDP Simulator", 1024, 768);
 	}
 
 	private static String parseFormatToMap(int b) {

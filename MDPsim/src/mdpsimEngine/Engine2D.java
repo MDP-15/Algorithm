@@ -81,7 +81,8 @@ public class Engine2D implements Runnable{
 		Vector2D line2end = ((Line2D)stationary.object()).end();
 		Vector2D vec = lineIntersect(line1start, line1end, line2start, line2end);
 		if (vec != null) {
-			moving.position(vec);
+			moving.position(moving.prevpos());
+			System.out.println(moving.velocity().x() + " " + moving.velocity().y());
 			moving.velocity(moving.velocity().multiply(-1));
 		}
 		return;
@@ -147,6 +148,7 @@ public class Engine2D implements Runnable{
 	
 	//simulates next time step and updates positions of objects, and does collision resolution.
 	public void next() {
+		
 		for (int a  = 0 ; a < movingobjects.size(); a++) {
 			Object2D obj = movingobjects.get(a);
 			obj.prevpos(obj.position());
@@ -154,8 +156,9 @@ public class Engine2D implements Runnable{
 		}
 		for(int b = 0 ; b < movingobjects.size(); b++) {
 			ArrayList<Object2D> broadcollide = isBroadCollide(movingobjects.get(b));
-			for(int a  = 0; a < broadcollide.size(); a++) {
-				narrowCollide(movingobjects.get(b),broadcollide.get(a));
+			Object2D collided = closestCollide(movingobjects.get(b),broadcollide);
+			if (collided != null) {
+				narrowCollide(movingobjects.get(b),collided);
 			}
 		}
 		this.time += this.timestep;

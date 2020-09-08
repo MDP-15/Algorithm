@@ -14,8 +14,10 @@ public class main {
 		Engine2D phyeng = new Engine2D(objects, 0.016);
 		Viewer vw = new Viewer("MDP Simulator", 1024, 768);
 		vw.setVisible(true);
+		updateAll(phyeng, vw.map1);
 		while(true) {
-			updateAll(phyeng, vw.map1);
+			phyeng.next();
+			update(phyeng, vw.map1);
 		}
 	}
 
@@ -76,7 +78,6 @@ public class main {
 	}
 	
 	private static void updateAll(Engine2D phyeng, Panel panel) {
-		phyeng.next();
 		ArrayList<Line> lines = new ArrayList<Line>();
 		ArrayList<Circle> circles = new ArrayList<Circle>();
 		for (Object2D obj : phyeng.staticObjects()) {
@@ -92,6 +93,18 @@ public class main {
 			circles.add(new Circle(pos,radius, Color.black));
 		}
 		panel.lines = lines;
+		panel.circles = circles;
+		panel.repaint();
+	}
+	
+	private static void update(Engine2D phyeng, Panel panel) {
+		ArrayList<Circle> circles = new ArrayList<Circle>();
+		for (Object2D obj : phyeng.movingObjects()) {
+			Circle2D circle = (Circle2D) obj.object();
+			VecInt pos = new VecInt(obj.position());
+			int radius = (int)Math.round(circle.radius());
+			circles.add(new Circle(pos,radius, Color.black));
+		}
 		panel.circles = circles;
 		panel.repaint();
 	}

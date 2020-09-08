@@ -2,6 +2,8 @@ package mdpsim;
 import mdpsimEngine.Line2D;
 import mdpsimGUI.*;
 import mdpsimEngine.*;
+
+import java.awt.Color;
 import java.lang.String;
 import java.util.ArrayList;
 
@@ -12,6 +14,9 @@ public class main {
 		Engine2D phyeng = new Engine2D(objects, 0.016);
 		Viewer vw = new Viewer("MDP Simulator", 1024, 768);
 		vw.setVisible(true);
+		while(true) {
+			updateAll(phyeng, vw.map1);
+		}
 	}
 
 	private static String parseFormatToMap(int b) {
@@ -68,5 +73,26 @@ public class main {
 		objectmap.addAll(generateXYFromBits(map));
 		objectmap.add(robotobject);
 		return objectmap;
+	}
+	
+	private static void updateAll(Engine2D phyeng, Panel panel) {
+		phyeng.next();
+		ArrayList<Line> lines = new ArrayList<Line>();
+		ArrayList<Circle> circles = new ArrayList<Circle>();
+		for (Object2D obj : phyeng.staticObjects()) {
+			Line2D ln = (Line2D) obj.object();
+			VecInt start = new VecInt(ln.start());
+			VecInt end = new VecInt(ln.end());
+			lines.add(new Line(start,end,Color.black));
+		}
+		for (Object2D obj : phyeng.movingObjects()) {
+			Circle2D circle = (Circle2D) obj.object();
+			VecInt pos = new VecInt(obj.position());
+			int radius = (int)Math.round(circle.radius());
+			circles.add(new Circle(pos,radius, Color.black));
+		}
+		panel.lines = lines;
+		panel.circles = circles;
+		panel.repaint();
 	}
 }

@@ -16,8 +16,8 @@ public class Panel extends JPanel{
 	}
 	
 	@Override
-	public void paint(Graphics g) {
-		super.paint(g);
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
 		for (Circle circle: circles) {
 			g.drawOval(circle.position.x(),circle.position.y(), circle.diameter, circle.diameter);
 		}

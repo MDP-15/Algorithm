@@ -15,7 +15,11 @@ public class main {
 		Viewer vw = new Viewer("MDP Simulator", 1024, 768);
 		vw.setVisible(true);
 		updateAll(phyeng, vw.map1);
-	}s
+		while(true) {
+			phyeng.next();
+			update(phyeng, vw.map1);
+		}
+	}
 
 	private static String parseFormatToMap(String b) {
 		int length = 300 - b.length();

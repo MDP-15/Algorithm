@@ -24,7 +24,6 @@ public class Engine2D {
 			}
 		}
 	}
-	
 	// generate bounding boxes automatically for an array of different objects.
 	public void parseBoundingBoxes(ArrayList<Object2D> objects) {
 		for (int a = 0; a < objects.size(); a++) {

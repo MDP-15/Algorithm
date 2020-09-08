@@ -90,7 +90,6 @@ public class main {
 			VecInt end = new VecInt(ln.end().multiply(mult),true);
 			Line drawedline = new Line(start,end,Color.green);
 			lines.add(drawedline);
-			panel.add(drawedline);
 		}
 		for (Object2D obj : phyeng.movingObjects()) {
 			Circle2D circle = (Circle2D) obj.object();

@@ -1,7 +1,6 @@
 package mdpsimGUI;
-import java.awt.Color;
 import java.awt.*;
-import java.awt.Graphics;
+
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -27,49 +26,53 @@ public class Viewer extends JFrame{
 	}
 	
 	private Panel constructVirtualMap(GridBagConstraints c) {
-		Panel virtualmap = new Panel();
-		virtualmap.setSize(339,452);
+		Panel virtualmap = new Panel(null);
+		virtualmap.setSize(330,440);
 		virtualmap.setBackground(Color.lightGray);
 		c.insets = new Insets(2,2,2,2);
 		c.gridx = 0;
 		c.gridy = 0;
-		c.ipadx = 339;
-		c.ipady = 452;
+		c.ipadx = 330;
+		c.ipady = 440;
 		c.gridwidth = 1;
 		c.gridheight = 1;
+		c.weightx = 0;
+		c.weighty = 0;
 		this.add(virtualmap, c);
 		return virtualmap;
 	}
 	
 	private Panel constructRobotMap(GridBagConstraints c) {
-		Panel virtualmap = new Panel();
-		virtualmap.setSize(339,452);
+		Panel virtualmap = new Panel(null);
+		virtualmap.setSize(330,440);
 		virtualmap.setBackground(Color.lightGray);
 		c.insets = new Insets(2,2,2,2);
 		c.gridx = 1;
 		c.gridy = 0;
-		c.ipadx = 339;
-		c.ipady = 452;
+		c.ipadx = 330;
+		c.ipady = 440;
 		c.gridwidth = 1;
 		c.gridheight = 1;
+		c.weightx = 0;
+		c.weighty = 0;
 		this.add(virtualmap, c);	
 		return virtualmap;
 	}
 	
 	private Panel constructSensorScreen(GridBagConstraints c) {
-		Panel virtualmap = new Panel();
-		virtualmap.setSize(339,452);
+		Panel virtualmap = new Panel(null);
+		virtualmap.setSize(330,440);
 		virtualmap.setBackground(Color.darkGray);
 		c.insets = new Insets(2,2,2,2);
 		c.gridx = 2;
 		c.gridy = 0;
-		c.ipadx = 339;
-		c.ipady = 452;
+		c.ipadx = 330;
+		c.ipady = 440;
 		c.gridwidth = 1;
 		c.gridheight = 1;
+		c.weightx = 0;
+		c.weighty = 0;
 		this.add(virtualmap, c);
-		int x = virtualmap.getWidth();
-		System.out.println(x);
 		return virtualmap;
 	}
 	

@@ -9,13 +9,13 @@ import java.util.ArrayList;
 
 public class main {
 	public static void main(String[] args){
-		String s = parseFormatToMap("011");
+		String s = parseFormatToMap("0000001000000010000000101010101010000001");
 		ArrayList<Object2D> objects = generateMap(s);
 		Engine2D phyeng = new Engine2D(objects, 0.016);
 		Viewer vw = new Viewer("MDP Simulator", 1024, 768);
 		vw.setVisible(true);
 		updateAll(phyeng, vw.map1);
-	}
+	}s
 
 	private static String parseFormatToMap(String b) {
 		int length = 300 - b.length();
@@ -81,14 +81,15 @@ public class main {
 	
 	private static void updateAll(Engine2D phyeng, Panel panel) {
 		ArrayList<Line> lines = new ArrayList<Line>();
-		double mult = 339/150;
+		double mult = (float) panel.getWidth()/ (float) 150;
 		System.out.println(panel.getHeight());
+		System.out.println(panel.getWidth());
 		ArrayList<Circle> circles = new ArrayList<Circle>();
 		for (Object2D obj : phyeng.staticObjects()) {
 			Line2D ln = (Line2D) obj.object();
 			VecInt start = new VecInt(ln.start().multiply(mult),true);
 			VecInt end = new VecInt(ln.end().multiply(mult),true);
-			Line drawedline = new Line(start,end,Color.green);
+			Line drawedline = new Line(start,end,Color.black);
 			lines.add(drawedline);
 		}
 		for (Object2D obj : phyeng.movingObjects()) {
@@ -104,7 +105,7 @@ public class main {
 	
 	private static void update(Engine2D phyeng, Panel panel) {
 		ArrayList<Circle> circles = new ArrayList<Circle>();
-		double mult = 339/150;
+		double mult = (float) panel.getWidth()/ (float) 150;
 		for (Object2D obj : phyeng.movingObjects()) {
 			Circle2D circle = (Circle2D) obj.object();
 			VecInt pos = new VecInt(obj.position().add(new Vector2D(-circle.radius(),-circle.radius())).multiply(mult),true);

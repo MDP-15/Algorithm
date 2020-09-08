@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class main {
 	public static void main(String[] args){
-		String s = parseFormatToMap(24);
+		String s = parseFormatToMap("011");
 		ArrayList<Object2D> objects = generateMap(s);
 		Engine2D phyeng = new Engine2D(objects, 0.016);
 		Viewer vw = new Viewer("MDP Simulator", 1024, 768);
@@ -17,8 +17,13 @@ public class main {
 		updateAll(phyeng, vw.map1);
 	}
 
-	private static String parseFormatToMap(int b) {
-		return String.format("%300s", Integer.toBinaryString(b)).replace(" ", "0");
+	private static String parseFormatToMap(String b) {
+		int length = 300 - b.length();
+		String s = "";
+		for (int a = 0; a < length; a++) {
+			s = s.concat("0");
+		}
+		return s.concat(b);
 	}
 	private static ArrayList<Object2D> generateXYFromBits(String s) {
 		ArrayList<Object2D> objects = new ArrayList<Object2D>();

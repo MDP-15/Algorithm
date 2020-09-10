@@ -2,6 +2,7 @@ package mdpsimGUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileReader;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -9,8 +10,10 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import mdpMapReader.MapReader;
 import mdpsim.main;
 
 import java.util.ArrayList;
@@ -20,7 +23,7 @@ public class Viewer extends JFrame{
 	public Panel sensors;
 	public Graphics g;
 	public JMenuBar menu;
-	main runMain = new main();
+	MapReader newMap = new MapReader();
 	
 	
 	public Viewer (String title, int w, int h){
@@ -102,6 +105,7 @@ public class Viewer extends JFrame{
 		menu.add(file);
 		JMenuItem openMDF = new JMenuItem("Open MDF...");
 		file.add(openMDF);
+		
 		JMenuItem exit = new JMenuItem("Exit");
 		file.add(exit);
 		
@@ -110,6 +114,12 @@ public class Viewer extends JFrame{
 		JMenuItem view = new JMenuItem("View");
 		settings.add(view);
 		
+		JMenu loadMap = new JMenu("Load Maps");
+		menu.add(loadMap);
+		JMenuItem SampleArena1 = new JMenuItem("Sample Arena 1");
+		loadMap.add(SampleArena1);
+		
+		//Initialise MDF 
 		class menuBarAction implements ActionListener{
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -121,7 +131,46 @@ public class Viewer extends JFrame{
 			}
 		}
 		openMDF.addActionListener(new menuBarAction());
-	}
+		
+		
+		//LOAD MAPS
+		class loadMapAction implements ActionListener{
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				String mapInput = JOptionPane.showInputDialog("Load map?","SampleArena1");
+				
+				MapReader newMap = new MapReader();
+				newMap.loadSampleArena(mapInput);
+				
+				/*JFrame frame = new JFrame();
+				frame.setSize(300,300);
+				frame.setVisible(true);
+				//frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				
+				JPanel samplePanel = new JPanel();
+				frame.add(samplePanel);
+				
+				JButton sample1 = new JButton("Sample Arena 1");
+				samplePanel.add(sample1);
+				
+				JButton sample2 = new JButton("Sample Arena 2");
+				samplePanel.add(sample2);
+				
+				sample1.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						
+						String mapInput = JOptionPane.showInputDialog("Load map?","SampleArena1");
+						
+						MapReader newMap = new MapReader();
+						newMap.loadSampleArena(mapInput);
+					}
+				});*/
+				
+			}
+		}
+		SampleArena1.addActionListener(new loadMapAction());
+    }
 	
 	
 	@Override

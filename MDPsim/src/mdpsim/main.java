@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class main {
 	public static void main(String[] args) throws InterruptedException{
-		String s = parseFormatToMap("0001000100100100000010010101000000000000010001010000000000010101000001000100000001000000000001000000010000000101010101010000001");
+		String s = parseFormatToMap("0001000100100");
 		ArrayList<Object2D> objects = generateMap(s);
 		Engine2D phyeng = new Engine2D(objects, 0.016);
 		Viewer vw = new Viewer("MDP Simulator", 1024, 768);

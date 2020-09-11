@@ -23,7 +23,20 @@ public class main {
 			phyeng.next();
 			update(phyeng, vw.map1);
 		}
-		
+	}
+	
+	public static void inputMDF(String string) throws InterruptedException{
+		String s = parseFormatToMap(string);
+		ArrayList<Object2D> objects = generateMap(s);
+		Engine2D phyeng = new Engine2D(objects, 0.016);
+		Viewer vw = new Viewer("MDP Simulator", 1024, 768);
+		vw.setVisible(true);
+		updateAll(phyeng, vw.map1);	
+		while(true) {
+			Thread.sleep(16);
+			phyeng.next();
+			update(phyeng, vw.map1);
+		}
 	}
 
 	private static String parseFormatToMap(String b) {
@@ -91,8 +104,6 @@ public class main {
 	private static void updateAll(Engine2D phyeng, Panel panel) {
 		ArrayList<Line> lines = new ArrayList<Line>();
 		double mult = (float) panel.getWidth()/ (float) 150;
-		System.out.println(panel.getHeight());
-		System.out.println(panel.getWidth());
 		ArrayList<Circle> circles = new ArrayList<Circle>();
 		for (Object2D obj : phyeng.staticObjects()) {
 			Line2D ln = (Line2D) obj.object();

@@ -23,6 +23,7 @@ public class Viewer extends JFrame{
 	public Panel sensors;
 	public Graphics g;
 	public JMenuBar menu;
+	public String mapBits;
 	MapReader newMap = new MapReader();
 	
 	
@@ -103,8 +104,8 @@ public class Viewer extends JFrame{
 		
 		JMenu file = new JMenu("File");
 		menu.add(file);
-		JMenuItem openMDF = new JMenuItem("Open MDF...");
-		file.add(openMDF);
+		JMenuItem SampleArena = new JMenuItem("Sample Arenas");
+		file.add(SampleArena);
 		
 		JMenuItem exit = new JMenuItem("Exit");
 		file.add(exit);
@@ -114,36 +115,12 @@ public class Viewer extends JFrame{
 		JMenuItem view = new JMenuItem("View");
 		settings.add(view);
 		
-		JMenu loadMap = new JMenu("Load Maps");
-		menu.add(loadMap);
-		JMenuItem SampleArena1 = new JMenuItem("Sample Arena 1");
-		loadMap.add(SampleArena1);
 		
-		//Initialise MDF 
-		class menuBarAction implements ActionListener{
-			public void actionPerformed(ActionEvent e) {
-				try {
-					runMain.main(null);
-				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-		}
-		openMDF.addActionListener(new menuBarAction());
-		
-		
-		//LOAD MAPS
+		//FILE -> Sample Arenas
 		class loadMapAction implements ActionListener{
 			public void actionPerformed(ActionEvent e) {
-				
-				
-				String mapInput = JOptionPane.showInputDialog("Load map?","SampleArena1");
-				
-				MapReader newMap = new MapReader();
-				newMap.loadSampleArena(mapInput);
-				
-				/*JFrame frame = new JFrame();
+			
+				JFrame frame = new JFrame();
 				frame.setSize(300,300);
 				frame.setVisible(true);
 				//frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -151,25 +128,66 @@ public class Viewer extends JFrame{
 				JPanel samplePanel = new JPanel();
 				frame.add(samplePanel);
 				
-				JButton sample1 = new JButton("Sample Arena 1");
+				JButton sample1 = new JButton("Arena 1");
 				samplePanel.add(sample1);
 				
-				JButton sample2 = new JButton("Sample Arena 2");
+				JButton sample2 = new JButton("Arena 2");
 				samplePanel.add(sample2);
 				
+				JButton sample3 = new JButton("Arena 3");
+				samplePanel.add(sample3);
+				
+				JButton sample4 = new JButton("Arena 4");
+				samplePanel.add(sample4);
+				
+				
+				//ARENA 1
 				sample1.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						
-						String mapInput = JOptionPane.showInputDialog("Load map?","SampleArena1");
+						String mapInput = JOptionPane.showInputDialog("Load map?","Arena_1");
 						
 						MapReader newMap = new MapReader();
 						newMap.loadSampleArena(mapInput);
 					}
-				});*/
+				});
 				
+				//ARENA 2
+				sample2.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						
+						String mapInput = JOptionPane.showInputDialog("Load map?","Arena_2");
+						
+						MapReader newMap = new MapReader();
+						newMap.loadSampleArena(mapInput);
+						
+					}
+				});
+				
+				//ARENA 3
+				sample3.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						
+						String mapInput = JOptionPane.showInputDialog("Load map?","Arena_3");
+						
+						MapReader newMap = new MapReader();
+						newMap.loadSampleArena(mapInput);
+					}
+				});
+				
+				//ARENA 4
+				sample4.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						
+						String mapInput = JOptionPane.showInputDialog("Load map?","Arena_4");
+						
+						MapReader newMap = new MapReader();
+						newMap.loadSampleArena(mapInput);
+					}
+				});
 			}
 		}
-		SampleArena1.addActionListener(new loadMapAction());
+		SampleArena.addActionListener(new loadMapAction());
     }
 	
 	

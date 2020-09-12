@@ -5,8 +5,12 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import mdpsim.main;
+
 public class MapReader {
 
+	public String mapString;
+	
 	public MapReader() {
 		
 	}
@@ -15,7 +19,7 @@ public class MapReader {
 		
 		try {
 			
-			InputStream in = new FileInputStream("src/mdpsimGUI/"+fileName+".txt");
+			InputStream in = new FileInputStream("src/mdpMapReader/"+fileName+".txt");
 			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 			StringBuilder out = new StringBuilder();
 			String textLine;
@@ -26,7 +30,9 @@ public class MapReader {
 			
 			reader.close();
 			
-			String mapString = out.toString().replace("\n","");
+			mapString = out.toString().replace("\n","");
+			main.inputMDF(mapString);
+			
 			
 		}catch(Exception e) {
 			System.out.println(e.getMessage());

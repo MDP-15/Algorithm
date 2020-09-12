@@ -12,7 +12,8 @@ import java.util.ArrayList;
 
 public class main {
 	public static void main(String[] args) throws InterruptedException{
-		String s = parseFormatToMap("0001000100100");
+		
+		String s = parseFormatToMap("0000000000000000000000000");
 		ArrayList<Object2D> objects = generateMap(s);
 		Engine2D phyeng = new Engine2D(objects, 0.016);
 		Viewer vw = new Viewer("MDP Simulator", 1024, 768);
@@ -24,6 +25,8 @@ public class main {
 			update(phyeng, vw.map1);
 		}
 	}
+	
+	
 	
 	public static void inputMDF(String string) throws InterruptedException{
 		String s = parseFormatToMap(string);

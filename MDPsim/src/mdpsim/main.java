@@ -14,19 +14,8 @@ public class main {
 	public static void main(String[] args) throws InterruptedException{
 		
 		String s = parseFormatToMap("0000000000000000000000000");
-		ArrayList<Object2D> objects = generateMap(s);
-		Engine2D phyeng = new Engine2D(objects, 0.016);
-		Viewer vw = new Viewer("MDP Simulator", 1024, 768);
-		vw.setVisible(true);
-		updateAll(phyeng, vw.map1);	
-		while(true) {
-			Thread.sleep(16);
-			phyeng.next();
-			update(phyeng, vw.map1);
-		}
+		inputMDF(s);
 	}
-	
-	
 	
 	public static void inputMDF(String string) throws InterruptedException{
 		String s = parseFormatToMap(string);
@@ -66,7 +55,7 @@ public class main {
 		Vector2D topleft = new Vector2D(x - 5, y - 5);
 		Vector2D topright = new Vector2D(x - 5, y + 5);
 		Vector2D bottomleft = new Vector2D(x + 5, y - 5);
-		Vector2D bottomright = new Vector2D(x +5, y + 5);
+		Vector2D bottomright = new Vector2D(x + 5, y + 5);
 		Line2D top = new Line2D(topleft, topright);
 		Line2D left = new Line2D(topleft, bottomleft);
 		Line2D right = new Line2D(topright, bottomright);
@@ -98,7 +87,7 @@ public class main {
 		objectmap.add(rightborder);
 		objectmap.add(bottomborder);
 		Circle2D robot = new Circle2D(12.5);
-		Object2D robotobject = new Object2D(robot, new Vector2D(15, 15), new Vector2D(10, 10), false);
+		Object2D robotobject = new Object2D(robot, new Vector2D(15, 15), new Vector2D(-10, -10), false);
 		objectmap.addAll(generateXYFromBits(map));
 		objectmap.add(robotobject);
 		return objectmap;

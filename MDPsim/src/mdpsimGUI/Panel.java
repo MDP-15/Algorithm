@@ -24,6 +24,7 @@ public class Panel extends JPanel{
 	
 	@Override
 	public void paintComponent(Graphics g) {
+		boolean verbose = false;
 		super.paintComponent(g);
 		for (Circle circle: circles) {
 			g.setColor(circle.color);
@@ -32,6 +33,10 @@ public class Panel extends JPanel{
 		for (Line line: lines) {
 			g.setColor(line.color);
 			g.drawLine(line.start.x(), line.start.y(), line.end.x(), line.end.y());
+		}
+		if (verbose) {
+			System.out.println(circles.size() +" circles drawn.");
+			System.out.println(lines.size() + " lines drawn.");
 		}
 		return;
 	}

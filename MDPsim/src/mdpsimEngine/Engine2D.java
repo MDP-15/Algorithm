@@ -16,14 +16,25 @@ public class Engine2D implements Runnable{
 	
 	// adds objects to static or moving list depending on indicator in Object2D class.
 	private void parseStaticity(ArrayList<Object2D> objects) {
+		boolean verbose = false;
+		int movingobjectsno = 0;
+		int staticobjectsno = 0;
 		for (int a = 0; a < objects.size(); a++) {
 			if (objects.get(a).isstatic() == true) {
 				this.staticobjects.add(objects.get(a));
+				staticobjectsno += 1;
 			} else {
 				this.movingobjects.add(objects.get(a));
+				movingobjectsno += 1;
 			}
 		}
+		if (verbose) {
+			System.out.println(staticobjectsno +" static (non-moving) object(s) recognized.");
+			System.out.println(movingobjectsno +" moving object(s) recognized.");
+		}
+		return;
 	}
+	
 	// generate bounding boxes automatically for an array of different objects.
 	public void parseBoundingBoxes(ArrayList<Object2D> objects) {
 		for (int a = 0; a < objects.size(); a++) {
@@ -45,6 +56,7 @@ public class Engine2D implements Runnable{
 	
 	// returns an ArrayList of possible colliding static objects given an object.
 	public ArrayList<Object2D> isBroadCollide(Object2D object) {
+		boolean verbose = true;
 		BoundingBox2D objbb = new BoundingBox2D(object);
 		ArrayList<BoundingBoxPointer> objxbbp = objbb.bbpointersx();
 		ArrayList<BoundingBoxPointer> objybbp = objbb.bbpointersy();
@@ -57,6 +69,9 @@ public class Engine2D implements Runnable{
 					collisionobjects.add(ycollide.get(a));
 				}
 			}
+		}
+		if (verbose) {
+			System.out.println(collisionobjects.size() + " objects detected in broad-phase collision detection");
 		}
 		return collisionobjects;
 	}
@@ -82,7 +97,6 @@ public class Engine2D implements Runnable{
 		Vector2D vec = lineIntersect(line1start, line1end, line2start, line2end);
 		if (vec != null) {
 			moving.position(moving.prevpos());
-			System.out.println(moving.velocity().x() + " " + moving.velocity().y());
 			moving.velocity(moving.velocity().multiply(-1));
 		}
 		return;
@@ -148,7 +162,6 @@ public class Engine2D implements Runnable{
 	
 	//simulates next time step and updates positions of objects, and does collision resolution.
 	public void next() {
-		
 		for (int a  = 0 ; a < movingobjects.size(); a++) {
 			Object2D obj = movingobjects.get(a);
 			obj.prevpos(obj.position());

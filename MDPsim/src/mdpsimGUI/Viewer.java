@@ -45,13 +45,13 @@ public class Viewer extends JFrame{
 	//VIRTUAL MAP
 	private Panel constructVirtualMap(GridBagConstraints c) {
 		Panel virtualmap = new Panel(null);
-		virtualmap.setSize(330,440);
+		virtualmap.setSize(331,441);
 		virtualmap.setBackground(Color.lightGray);
 		c.insets = new Insets(1,1,1,1);
 		c.gridx = 1;
 		c.gridy = 3;
-		c.ipadx = 330;
-		c.ipady = 440;
+		c.ipadx = 331;
+		c.ipady = 441;
 		c.gridwidth = 1;
 		c.gridheight = 1;
 		c.weightx = 0;
@@ -63,13 +63,13 @@ public class Viewer extends JFrame{
 	//ROBOT MAP
 	private Panel constructRobotMap(GridBagConstraints c) {
 		Panel virtualmap = new Panel(null);
-		virtualmap.setSize(330,440);
+		virtualmap.setSize(331,441);
 		virtualmap.setBackground(Color.lightGray);
 		c.insets = new Insets(1,1,1,1);
 		c.gridx = 2;
 		c.gridy = 3;
-		c.ipadx = 330;
-		c.ipady = 440;
+		c.ipadx = 331;
+		c.ipady = 441;
 		c.gridwidth = 1;
 		c.gridheight = 1;
 		c.weightx = 0;
@@ -81,13 +81,13 @@ public class Viewer extends JFrame{
 	//SENSOR 
 	private Panel constructSensorScreen(GridBagConstraints c) {
 		Panel virtualmap = new Panel(null);
-		virtualmap.setSize(330,440);
+		virtualmap.setSize(331,441);
 		virtualmap.setBackground(Color.lightGray);
 		c.insets = new Insets(1,1,1,1);
 		c.gridx = 3;
 		c.gridy = 3;
-		c.ipadx = 330;
-		c.ipady = 440;
+		c.ipadx = 331;
+		c.ipady = 441;
 		c.gridwidth = 1;
 		c.gridheight = 1;
 		c.weightx = 0;

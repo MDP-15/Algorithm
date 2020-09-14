@@ -4,7 +4,7 @@ import java.util.HashMap;
 /* 	MDP-specific 2D physics engine.
 *	Broad-phase collision detection using sort and sweep AABB.
 */
-public class Engine2D implements Runnable{
+public class Engine2D{
 	private double time;		//current time since start
 	private double timestep;	//discrete time step for simulation (please set as small as feasible)
 	private ArrayList<Object2D> staticobjects;

@@ -101,7 +101,7 @@ public class Engine2D{
 		Vector2D lineend = ((Line2D)line.object()).end();
 		if (pointLineClosestOrigin(linestart.subtract(circlepos),lineend.subtract(circlepos)).length(new Vector2D(0,0)) <= radius) {
 			circle.position(circle.prevpos());
-			circle.velocity(circle.velocity().multiply(-1));
+			circle.velocity(new Vector2D(0,0));
 		}
 		return;
 	}
@@ -153,13 +153,8 @@ public class Engine2D{
 		double s2_y = line2_end.y() - line2_start.y();
 		
 		double s = (((-s1_y * (line1_start.x() - line2_start.x())) + (s1_x * (line1_start.y() - line2_start.y()))))/((-s2_x * s1_y) + (s1_x * s2_y));
-		double t = ((( s2_x * (line1_start.y() - line2_start.y())) - (s2_y * (line1_start.x() - line2_start.x()))))/((-s2_x * s1_y) + (s1_x * s2_y));
 		
-		if ( s>= 0 && s <= 1 && t >= 0 && t <= 1) {
-			return t; 
-		}
-		
-		return -1;
+		return s;
 	}
 	
 	public Object2D closestCollide(Object2D object, ArrayList<Object2D> staticobjectarray) {

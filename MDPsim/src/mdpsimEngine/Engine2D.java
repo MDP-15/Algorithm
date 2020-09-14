@@ -140,7 +140,6 @@ public class Engine2D implements Runnable{
 		return -1;
 	}
 	
-	
 	public Object2D closestCollide(Object2D object, ArrayList<Object2D> staticobjectarray) {
 		double distance = -1;
 		double newdistance = -1;

@@ -12,16 +12,15 @@ import java.util.ArrayList;
 
 public class main {
 	public static void main(String[] args) throws InterruptedException{
-		
 		String s = parseFormatToMap("000000000000000000000000000000000000000000000000000000000000000000000000000000001000");
-		inputMDF(s);
+		Viewer vw = new Viewer("MDP Simulator", 1024, 768);
+		inputMDF(s, vw);
 	}
 	
-	public static void inputMDF(String string) throws InterruptedException{
+	public static void inputMDF(String string, Viewer vw) throws InterruptedException{
 		String s = parseFormatToMap(string);
 		ArrayList<Object2D> objects = generateMap(s);
 		Engine2D phyeng = new Engine2D(objects, 0.016);
-		Viewer vw = new Viewer("MDP Simulator", 1024, 768);
 		vw.setVisible(true);
 		updateAll(phyeng, vw.map1);	
 		while(true) {
@@ -108,7 +107,7 @@ public class main {
 			Circle2D circle = (Circle2D) obj.object();
 			VecInt pos = new VecInt(obj.position().add(new Vector2D(-circle.radius(),-circle.radius())).multiply(mult),true);
 			int diameter = (int)Math.round(2*circle.radius()*mult);
-			circles.add(new Circle(pos,diameter, Color.black));
+			circles.add(new Circle(pos,diameter, Color.black, true));
 		}
 		panel.lines = lines;
 		panel.circles = circles;
@@ -122,7 +121,7 @@ public class main {
 			Circle2D circle = (Circle2D) obj.object();
 			VecInt pos = new VecInt(obj.position().add(new Vector2D(-circle.radius(),-circle.radius())).multiply(mult),true);
 			int diameter = (int)Math.round(2*circle.radius()*mult);
-			circles.add(new Circle(pos,diameter, Color.black));
+			circles.add(new Circle(pos,diameter, Color.black, true));
 		}
 		panel.circles = circles;
 		panel.repaint();

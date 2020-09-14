@@ -1,7 +1,9 @@
 package mdpsimGUI;
 import java.awt.*;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.io.FileReader;
 
 import javax.swing.BorderFactory;
@@ -98,7 +100,6 @@ public class Viewer extends JFrame{
 	
 	//MENU BAR
 	private void menuBar() {
-		
 		JMenuBar menu = new JMenuBar();
 		this.setJMenuBar(menu);
 		
@@ -114,8 +115,6 @@ public class Viewer extends JFrame{
 		menu.add(settings);
 		JMenuItem view = new JMenuItem("View");
 		settings.add(view);
-		
-		
 		//FILE -> Sample Arenas
 		class loadMapAction implements ActionListener{
 			public void actionPerformed(ActionEvent e) {

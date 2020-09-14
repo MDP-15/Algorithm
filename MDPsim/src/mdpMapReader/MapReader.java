@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import mdpsim.main;
+import mdpsimGUI.Viewer;
 
 public class MapReader {
 
@@ -15,7 +16,7 @@ public class MapReader {
 		
 	}
 	
-	public void loadSampleArena(String fileName) {
+	public void loadSampleArena(String fileName, Viewer vw) {
 		
 		try {
 			
@@ -31,7 +32,7 @@ public class MapReader {
 			reader.close();
 			
 			mapString = out.toString().replace("\n","");
-			main.inputMDF(mapString);
+			main.inputMDF(mapString, vw);
 			
 			
 		}catch(Exception e) {

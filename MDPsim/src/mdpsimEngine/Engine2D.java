@@ -56,7 +56,7 @@ public class Engine2D implements Runnable{
 	
 	// returns an ArrayList of possible colliding static objects given an object.
 	public ArrayList<Object2D> isBroadCollide(Object2D object) {
-		boolean verbose = true;
+		boolean verbose = false;
 		BoundingBox2D objbb = new BoundingBox2D(object);
 		ArrayList<BoundingBoxPointer> objxbbp = objbb.bbpointersx();
 		ArrayList<BoundingBoxPointer> objybbp = objbb.bbpointersy();
@@ -64,14 +64,19 @@ public class Engine2D implements Runnable{
 		if(this.bbx_static.between(objxbbp.get(0), objxbbp.get(1)) != null && this.bby_static.between(objybbp.get(0), objybbp.get(1)) != null) {
 			ArrayList<Object2D> xcollide = this.bbx_static.between(objxbbp.get(0), objxbbp.get(1));
 			ArrayList<Object2D> ycollide = this.bby_static.between(objybbp.get(0), objybbp.get(1));
+			for (int a = 0 ; a < xcollide.size(); a++) {
+				if (!collisionobjects.contains(xcollide.get(a))) {
+					collisionobjects.add(xcollide.get(a));
+				}
+			}
 			for (int a = 0 ; a < ycollide.size(); a++) {
-				if (xcollide.contains(ycollide.get(a))) {
+				if (!collisionobjects.contains(ycollide.get(a))) {
 					collisionobjects.add(ycollide.get(a));
 				}
 			}
 		}
 		if (verbose) {
-			System.out.println(collisionobjects.size() + " objects detected in broad-phase collision detection");
+			System.out.println(collisionobjects.size() + " objects detected in broad-phase collision detection.");
 		}
 		return collisionobjects;
 	}
@@ -89,17 +94,35 @@ public class Engine2D implements Runnable{
 	}
 	
 	// handles collisions between circle and line
-	public void narrowCollideCircleLine (Object2D moving, Object2D stationary) {
-		Vector2D line1start = moving.prevpos();
-		Vector2D line1end = moving.position();
-		Vector2D line2start = ((Line2D)stationary.object()).start();
-		Vector2D line2end = ((Line2D)stationary.object()).end();
-		Vector2D vec = lineIntersect(line1start, line1end, line2start, line2end);
-		if (vec != null) {
-			moving.position(moving.prevpos());
-			moving.velocity(moving.velocity().multiply(-1));
+	public void narrowCollideCircleLine (Object2D circle, Object2D line) {
+		Vector2D circlepos = circle.position();
+		double radius = ((Circle2D)circle.object()).radius();
+		Vector2D linestart = ((Line2D)line.object()).start();
+		Vector2D lineend = ((Line2D)line.object()).end();
+		if (pointLineClosestOrigin(linestart.subtract(circlepos),lineend.subtract(circlepos)).length(new Vector2D(0,0)) <= radius) {
+			circle.position(circle.prevpos());
+			circle.velocity(circle.velocity().multiply(-1));
 		}
 		return;
+	}
+	
+	//uses (x1,y1) = s(x2-x1,y2-y1) = (0,0) to solve for point closest to line
+	public Vector2D pointLineClosestOrigin (Vector2D linestart, Vector2D lineend) {
+		Vector2D svec = lineend.subtract(linestart);
+		double s = -((double)linestart.x()/(double)svec.x());
+		double m = (double)svec.y()/(double)svec.x();
+		if (Math.abs(s) <=1) {
+		if (m == Double.POSITIVE_INFINITY || m == Double.NEGATIVE_INFINITY) {
+			return new Vector2D(linestart.x(),0);
+		} else if (m == 0 ) {
+			return new Vector2D(0, linestart.y());
+		} else {
+			double b = linestart.y() + s*svec.y();
+			return new Vector2D((double)-(m*b)/(Math.pow(m, 2)+1), (double)b/(Math.pow(m, 2)+1));
+		}
+		} else {
+			return new Vector2D(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
+		}
 	}
 	
 	public Vector2D lineIntersect(Vector2D line1_start, Vector2D line1_end, Vector2D line2_start, Vector2D line2_end) {
@@ -113,6 +136,7 @@ public class Engine2D implements Runnable{
 		
 		double i_x = -1;
 		double i_y = -1;
+		
 		if ( s>= 0 && s <= 1 && t >= 0 && t <= 1) {
 			i_x = line1_start.x() + (t * s1_x);
 			i_y = line1_start.y() + (t * s1_y);
@@ -131,8 +155,6 @@ public class Engine2D implements Runnable{
 		double s = (((-s1_y * (line1_start.x() - line2_start.x())) + (s1_x * (line1_start.y() - line2_start.y()))))/((-s2_x * s1_y) + (s1_x * s2_y));
 		double t = ((( s2_x * (line1_start.y() - line2_start.y())) - (s2_y * (line1_start.x() - line2_start.x()))))/((-s2_x * s1_y) + (s1_x * s2_y));
 		
-		double i_x = -1;
-		double i_y = -1;
 		if ( s>= 0 && s <= 1 && t >= 0 && t <= 1) {
 			return t; 
 		}
@@ -141,13 +163,16 @@ public class Engine2D implements Runnable{
 	}
 	
 	public Object2D closestCollide(Object2D object, ArrayList<Object2D> staticobjectarray) {
-		double distance = -1;
-		double newdistance = -1;
+		boolean verbose = true;
+		double distance = Double.POSITIVE_INFINITY;
+		double newdistance = Double.POSITIVE_INFINITY;
 		Object2D objectreturn = (Object2D) null;
 		for (int a  = 0; a < staticobjectarray.size(); a++) {
-			Line2D line = (Line2D) (staticobjectarray.get(a).object());
-			newdistance = lineIntersectDistance(object.prevpos(), object.position(), line.start(), line.end);
-			if (newdistance > distance) {
+			Vector2D pos = object.position();
+			Vector2D linestart = ((Line2D)staticobjectarray.get(a).object()).start().subtract(pos);
+			Vector2D lineend = ((Line2D)staticobjectarray.get(a).object()).end().subtract(pos);
+			newdistance = pointLineClosestOrigin(linestart,lineend).length(new Vector2D(0,0));
+			if (newdistance < distance) {
 				distance = newdistance;
 				objectreturn = staticobjectarray.get(a);
 			}
@@ -155,6 +180,15 @@ public class Engine2D implements Runnable{
 		if (distance < 0) {
 			return null;
 		} else {
+			if (verbose && distance < Double.POSITIVE_INFINITY) {
+				System.out.println("Closest object is at " + distance +" cm. Object is "+objectreturn.type());
+				System.out.println("Number of objects considered: "+ staticobjectarray.size());
+				if (objectreturn.type() == Line2D.class) {
+					System.out.println("Start X: "+((Line2D)objectreturn.object()).start().x() + " Start Y: " +((Line2D)objectreturn.object()).start.y());
+					System.out.println("End X: "+((Line2D)objectreturn.object()).end().x() + " End Y: " +((Line2D)objectreturn.object()).end.y());
+
+				}
+			}
 			return objectreturn;
 		}
 	}
@@ -178,6 +212,7 @@ public class Engine2D implements Runnable{
 	
 	//Public methods
 	public Engine2D(ArrayList<Object2D> objects, double timestep) {
+		boolean verbose = false;
 		this.time = 0;
 		this.timestep = timestep;
 		this.staticobjects = new ArrayList<Object2D>();
@@ -186,6 +221,10 @@ public class Engine2D implements Runnable{
 		this.bby_static = new BoundingBoxList();
 		this.parseStaticity(objects);
 		this.parseBoundingBoxes(objects);
+		if (verbose) {
+			bbx_static.printall();
+			bby_static.printall();
+		}
 	}
 	
 	public void run() {

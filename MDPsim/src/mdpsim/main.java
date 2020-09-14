@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class main {
 	public static void main(String[] args) throws InterruptedException{
 		
-		String s = parseFormatToMap("0000000000000000000000000");
+		String s = parseFormatToMap("000000000000000000000000000000000000000000000000000000000000000000000000000000001000");
 		inputMDF(s);
 	}
 	
@@ -87,7 +87,7 @@ public class main {
 		objectmap.add(rightborder);
 		objectmap.add(bottomborder);
 		Circle2D robot = new Circle2D(12.5);
-		Object2D robotobject = new Object2D(robot, new Vector2D(15, 15), new Vector2D(-10, -10), false);
+		Object2D robotobject = new Object2D(robot, new Vector2D(15, 15), new Vector2D(0, 20), false);
 		objectmap.addAll(generateXYFromBits(map));
 		objectmap.add(robotobject);
 		return objectmap;

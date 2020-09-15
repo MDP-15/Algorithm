@@ -112,14 +112,10 @@ public class Engine2D{
 		double s = -((double)linestart.x()/(double)svec.x());
 		double t = -((double)linestart.y()/(double)svec.y());
 		double m = (double)svec.y()/(double)svec.x();
-		//System.out.println(s);
-		//System.out.println(m);
 		if (Math.abs(s) <=1 || Math.abs(t) <= 1) {
 			if (m == Double.POSITIVE_INFINITY || m == Double.NEGATIVE_INFINITY){
-				System.out.println("X: "+new Vector2D(0, linestart.x()).length());
 				return new Vector2D(linestart.x(),0);
 			} else if (m == 0 ) {
-				//System.out.println("Y: "+new Vector2D(0, linestart.y()).length());
 				return new Vector2D(0, linestart.y());
 			} else {
 				double b = linestart.y() + s*svec.y();

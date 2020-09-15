@@ -31,7 +31,7 @@ public class main {
 		Robot r = initializeRobot();
 		vw.setVisible(true);
 		updateAll(r,phyeng, vw.map1);	
-		actionqueue.add(new Action2D(Action.ACCELERATE, 20));
+		actionqueue.add(new Action2D(Action.TURN, Math.PI/2));
 		while(true) {
 			while(!pause) {
 				Thread.sleep(16);
@@ -42,10 +42,6 @@ public class main {
 				}
 				updateAll(r, phyeng, vw.map1);
 				sensorUpdate(phyeng, vw.sensors);
-				if (phyeng.time() > 5 && !done) {
-					actionqueue.add(new Action2D(Action.DECELERATE, 20));
-					done = true;
-				}
 			}
 		}
 	}

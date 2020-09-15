@@ -41,7 +41,7 @@ public class main {
 	}
 	
 	public static ArrayList<Line> rayTrace(Engine2D phyeng, Panel panel) {
-		double mult = (float) panel.getWidth()/ (float) 150;
+		double mult = (float) panel.getWidth()/(float) 150;
 		ArrayList<Line> lines = new ArrayList<Line>(0);
 		Vector2D origin = phyeng.movingObjects().get(0).position();
 		Vector2D direction = phyeng.movingObjects().get(0).velocity();

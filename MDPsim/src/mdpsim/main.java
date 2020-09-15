@@ -18,6 +18,7 @@ public class main {
 	}
 	
 	public static void inputMDF(String string) throws InterruptedException{
+		System.out.println(string);
 		String s = parseFormatToMap(string);
 		ArrayList<Object2D> objects = generateMap(s);
 		Engine2D phyeng = new Engine2D(objects, 0.016);

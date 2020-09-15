@@ -12,6 +12,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 import mdpMapReader.MapReader;
 import mdpsim.main;
@@ -26,8 +27,12 @@ public class Viewer extends JFrame{
 	public String mapBits;
 	MapReader newMap = new MapReader();
 	
+	private static JPanel virtualMap = null;
+	private static JPanel robotMap = null;
 	
 	public Viewer (String title, int w, int h){
+		
+		//Main Frame 
 		setTitle(title);
 		setSize(w, h);
 		setResizable(false);
@@ -36,13 +41,29 @@ public class Viewer extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GridBagConstraints c = new GridBagConstraints();
 		setLayout(new GridBagLayout());
-		map1 = constructVirtualMap(c);
-		map2 = constructRobotMap(c);
-		sensors = constructSensorScreen(c);
+		
+		//Virtual Panel 
+		virtualMap = new JPanel(new CardLayout());
+		virtualMap.setPreferredSize(new Dimension(331,441));
+		virtualMap.setBackground(Color.lightGray);
+		virtualMap.setBorder(new EmptyBorder(10,10,10,10)); 
+		//map1 = constructVirtualMap(c);
+		virtualMap.add(map1);
+		
+		//Robot Panel 
+		robotMap = new JPanel(new CardLayout());
+		robotMap.setPreferredSize(new Dimension(331,441));
+		robotMap.setBackground(Color.lightGray);
+		robotMap.setBorder(new EmptyBorder(10,10,10,10)); 
+		//map2 = constructRobotMap(c);
+		virtualMap.add(map2);
+		
+		
+		//sensors = constructSensorScreen(c);
 		menuBar();
 	}
 	
-	//VIRTUAL MAP
+	/*//VIRTUAL MAP
 	private Panel constructVirtualMap(GridBagConstraints c) {
 		Panel virtualmap = new Panel(null);
 		virtualmap.setSize(331,441);
@@ -94,7 +115,7 @@ public class Viewer extends JFrame{
 		c.weighty = 0;
 		this.add(virtualmap, c);
 		return virtualmap;
-	}
+	}*/
 	
 	//MENU BAR
 	private void menuBar() {
@@ -149,6 +170,7 @@ public class Viewer extends JFrame{
 						
 						MapReader newMap = new MapReader();
 						newMap.loadSampleArena(mapInput);
+						
 					}
 				});
 				
@@ -189,7 +211,10 @@ public class Viewer extends JFrame{
 		}
 		SampleArena.addActionListener(new loadMapAction());
     }
-	
+
+	public static void loadMap() {
+		
+	}
 	
 	@Override
 	public void paint(Graphics g) {

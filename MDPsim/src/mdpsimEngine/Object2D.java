@@ -16,6 +16,11 @@ public class Object2D {
 		this.velocity = velocity;
 		this.acceleration = acceleration;
 		this.isstatic = isstatic;
+		if (velocity.length(new Vector2D(0,0)) == 0) {
+			this.direction = new Vector2D(0,1);
+		} else {
+			this.direction = velocity;
+		}
 	}
 	
 	public Object2D (Line2D line, Vector2D position, Vector2D velocity, Vector2D acceleration, boolean isstatic) {
@@ -25,6 +30,11 @@ public class Object2D {
 		this.velocity = velocity;
 		this.acceleration = acceleration;
 		this.isstatic = isstatic;
+		if (velocity.length(new Vector2D(0,0)) == 0) {
+			this.direction = new Vector2D(0,1);
+		} else {
+			this.direction = velocity;
+		}
 	}
 	
 	public boolean isstatic() {
@@ -88,5 +98,13 @@ public class Object2D {
 		} else {
 			return false;
 		}
+	}
+
+	public Vector2D direction() {
+		return this.direction;
+	}
+	
+	public void direction(Vector2D direction) {
+		this.direction = direction;
 	}
 }

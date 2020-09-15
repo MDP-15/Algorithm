@@ -14,7 +14,7 @@ public class Robot {
 	}
 	
 	public void addSensor(Vector2D position, Vector2D direction, double minrange, double maxrange) {
-		Vector2D posnormalized = position.multiply((double)radius/position.length(new Vector2D(0,0)));
+		Vector2D posnormalized = position.multiply((double)position.length(new Vector2D(0,0))/radius);
 		Vector2D unitdirection = direction.unit();
 		this.sensors.add(new Sensor(posnormalized,unitdirection, minrange, maxrange));
 	}

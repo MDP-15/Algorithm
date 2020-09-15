@@ -41,7 +41,7 @@ public class Panel extends JPanel{
 		}
 		for (Circle circle: circles) {
 			g2.setColor(circle.color);
-			g2.fillOval(circle.position.x(),circle.position.y(), circle.diameter, circle.diameter);
+			g2.drawOval(circle.position.x(),circle.position.y(), circle.diameter, circle.diameter);
 		}
 		if (verbose) {
 			System.out.println(circles.size() +" circles drawn.");

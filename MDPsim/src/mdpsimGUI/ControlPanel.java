@@ -22,7 +22,7 @@ public class ControlPanel extends JPanel{
 	}
 	
 	public void constructor() {
-		
+	
 	}
 	
 	@Override

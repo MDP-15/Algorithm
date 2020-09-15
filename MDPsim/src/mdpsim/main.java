@@ -36,8 +36,8 @@ public class main {
 	//initialize virtual robot object;
 	public static Robot initializeRobot() {
 		Robot robot = new Robot(new ArrayList<Sensor>(), 12.5);
-		robot.addSensor(new Vector2D(5,-5), new Vector2D(10,-10), 10, 80);
-		robot.addSensor(new Vector2D(-5,-5), new Vector2D(-10,-10), 10, 80);
+		robot.addSensor(new Vector2D(7,-7), new Vector2D(10,-10), 10, 80);
+		robot.addSensor(new Vector2D(-7,-7), new Vector2D(-10,-10), 10, 80);
 		robot.addSensor(new Vector2D(0,-10), new Vector2D(0,-10), 10, 80);
 		return robot;
 	}
@@ -47,7 +47,7 @@ public class main {
 		ArrayList<Line> lines = new ArrayList<Line>(0);
 		for (Sensor s: r.sensors) {
 			Vector2D origin = phyeng.movingObjects().get(0).position();
-			Vector2D direction = phyeng.movingObjects().get(0).velocity();
+			Vector2D direction = phyeng.movingObjects().get(0).direction();
 			double angle = direction.angle(new Vector2D(0,-10));
 			Vector2D sensororigin = origin.add(s.position().rotate(angle));
 			Vector2D sensordirection = s.direction().rotate(angle);

@@ -18,10 +18,4 @@ public class Robot {
 		Vector2D unitdirection = direction.unit();
 		this.sensors.add(new Sensor(posnormalized,unitdirection, minrange, maxrange));
 	}
-	//some action input, and some action output to be done;
-	/*
-	public Action input(// some vector) {
-		return response;
-	}
-	*/
 }

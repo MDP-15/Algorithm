@@ -13,7 +13,7 @@ import mdpsimRobot.*;
 
 public class main {
 	public static void main(String[] args) throws InterruptedException{
-		String s = parseFormatToMap("00000000000001000000000000000010W10101100000000000000000000000000000011100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
+		String s = parseFormatToMap("000000000000010000000000000000101010010000000000000000000000000000001110000000000100000000000000010001000000000000000000000000000000000000000000000000000000000000000000");
 		Viewer vw = new Viewer("MDP Simulator", 1024, 768);
 		inputMDF(s, vw);
 	}
@@ -24,11 +24,11 @@ public class main {
 		Engine2D phyeng = new Engine2D(objects, 0.016);
 		Robot r = initializeRobot();
 		vw.setVisible(true);
-		updateAll(phyeng, vw.map1);	
+		updateAll(r,phyeng, vw.map1);	
 		while(true) {
 			Thread.sleep(16);
 			phyeng.next();
-			updateAll(phyeng, vw.map1);
+			updateAll(r, phyeng, vw.map1);
 			sensorUpdate(phyeng, vw.sensors);
 		}
 	}
@@ -36,18 +36,25 @@ public class main {
 	//initialize virtual robot object;
 	public static Robot initializeRobot() {
 		Robot robot = new Robot(new ArrayList<Sensor>(), 12.5);
-		robot.addSensor(new Vector2D(10,0), new Vector2D(10,0), 10, 80);
+		robot.addSensor(new Vector2D(5,-5), new Vector2D(10,-10), 10, 80);
+		robot.addSensor(new Vector2D(-5,-5), new Vector2D(-10,-10), 10, 80);
+		robot.addSensor(new Vector2D(0,-10), new Vector2D(0,-10), 10, 80);
 		return robot;
 	}
 	
-	public static ArrayList<Line> rayTrace(Engine2D phyeng, Panel panel) {
+	public static ArrayList<Line> rayTrace(Robot r,Engine2D phyeng, Panel panel) {
 		double mult = (float) panel.getWidth()/(float) 150;
 		ArrayList<Line> lines = new ArrayList<Line>(0);
-		Vector2D origin = phyeng.movingObjects().get(0).position();
-		Vector2D direction = phyeng.movingObjects().get(0).velocity();
-		Vector2D vec = phyeng.rayTraceVec(origin, direction);
-		if (vec != null) {
-			lines.add(new Line(new VecInt(origin.multiply(mult), true), new VecInt(vec.multiply(mult),true), Color.red));
+		for (Sensor s: r.sensors) {
+			Vector2D origin = phyeng.movingObjects().get(0).position();
+			Vector2D direction = phyeng.movingObjects().get(0).velocity();
+			double angle = direction.angle(new Vector2D(0,-10));
+			Vector2D sensororigin = origin.add(s.position().rotate(angle));
+			Vector2D sensordirection = s.direction().rotate(angle);
+			Vector2D vec = phyeng.rayTraceVec(sensororigin, sensordirection);
+			if (vec != null) {
+				lines.add(new Line(new VecInt(sensororigin.multiply(mult), true), new VecInt(vec.multiply(mult),true), Color.red));
+			}
 		}
 		return lines;
 	}
@@ -119,7 +126,7 @@ public class main {
 		return objectmap;
 	}
 	
-	private static void updateAll(Engine2D phyeng, Panel panel) {
+	private static void updateAll(Robot r, Engine2D phyeng, Panel panel) {
 		ArrayList<Line> lines = new ArrayList<Line>();
 		double mult = (float) panel.getWidth()/ (float) 150;
 		ArrayList<Circle> circles = new ArrayList<Circle>();
@@ -137,21 +144,7 @@ public class main {
 			circles.add(new Circle(pos,diameter, Color.black, true));
 		}
 		panel.lines = lines;
-		panel.lines.addAll(rayTrace(phyeng,panel));
-		panel.circles = circles;
-		panel.repaint();
-	}
-	
-	private static void update(Engine2D phyeng, Panel panel) {
-		ArrayList<Circle> circles = new ArrayList<Circle>();
-		double mult = (float) panel.getWidth()/ (float) 150;
-		for (Object2D obj : phyeng.movingObjects()) {
-			Circle2D circle = (Circle2D) obj.object();
-			VecInt pos = new VecInt(obj.position().add(new Vector2D(-circle.radius(),-circle.radius())).multiply(mult),true);
-			int diameter = (int)Math.round(2*circle.radius()*mult);
-			circles.add(new Circle(pos,diameter, Color.black, true));
-		}
-		panel.lines.addAll(rayTrace(phyeng,panel));
+		panel.lines.addAll(rayTrace(r, phyeng,panel));
 		panel.circles = circles;
 		panel.repaint();
 	}

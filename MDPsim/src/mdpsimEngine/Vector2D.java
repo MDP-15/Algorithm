@@ -41,18 +41,26 @@ public class Vector2D {
 		return new Vector2D(this.x * multiplier, this.y * multiplier);
 	}
 	
-	public Vector2D rotate(double degrees) {
-		return new Vector2D(this.x*Math.cos(degrees) - this.y*Math.sin(degrees), this.x*Math.sin(degrees) + this.y *Math.cos(degrees));
+	public Vector2D rotate(double radians) {
+		return new Vector2D(this.x*Math.cos(radians) - this.y*Math.sin(radians), this.x*Math.sin(radians) + this.y *Math.cos(radians));
 	}
 	
 	public Vector2D unit() {
 		if (this.x == 0 && this.y == 0) {
 			return new Vector2D(0,0);
 		}
-		return this.multiply((double)1/Math.sqrt(Math.pow(this.x, 2) +Math.pow(this.y, 2)));
+		return this.multiply((double)1/(Math.sqrt(Math.pow(this.x, 2)+Math.pow(this.y, 2))));
 	}
 	
 	public double length(Vector2D vec) {
 		return Math.sqrt(Math.pow(vec.x()-this.x, 2) + Math.pow(vec.y()-this.y,2));
+	}
+	
+	public double dot(Vector2D vec) {
+		return this.x*vec.x() + this.y*vec.y();
+	}
+	
+	public double angle(Vector2D vec) {
+		return Math.acos((double)this.dot(vec)/(this.length(new Vector2D(0,0))*vec.length(new Vector2D(0,0))));
 	}
 }

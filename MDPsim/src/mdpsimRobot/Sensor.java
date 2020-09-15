@@ -13,4 +13,36 @@ public class Sensor {
 		this.position = position;
 		this.direction = direction;
 	}
+	
+	public Vector2D position() {
+		return this.position;
+	}
+	
+	public void position(Vector2D pos) {
+		this.position = pos;
+	}
+	
+	public Vector2D direction() {
+		return this.direction;
+	}
+	
+	public void direction(Vector2D direction) {
+		this.direction = direction;
+	}
+	
+	public double maxrange() {
+		return this.maxrange;
+	}
+	
+	public void maxrange(double maxrange) {
+		this.maxrange = maxrange;
+	}
+	
+	public double minrange() {
+		return this.minrange();
+	}
+	
+	public void minrange(double minrange) {
+		this.minrange = minrange;
+	}
 }

@@ -23,28 +23,25 @@ public class Vehicle2D extends Object2D{
 	
 	@Override
 	public void update(double timestep, Action2D action) {
-
-		if (action == null) {
-			action(timestep);
-		} else if (action.action() == Action.ACCELERATE) {
-			if (velocity().length(new Vector2D(0,0)) == 0) {
-				this.acceleration(this.direction().unit().multiply(action.value()));
-			} else {
-				this.acceleration(this.velocity().unit().multiply(action.value()));
+		if (action != null) {
+			if (action.action() == Action.ACCELERATE) {
+				if (velocity().length(new Vector2D(0,0)) == 0) {
+					this.acceleration(this.direction().unit().multiply(action.value()));
+				} else {
+					this.acceleration(this.velocity().unit().multiply(action.value()));
+				}
+			} else if (action.action() == Action.DECELERATE) {
+				if (velocity().length(new Vector2D(0,0)) == 0) {
+					this.acceleration(this.direction().unit().multiply(action.value()).multiply(-1));
+				} else {
+					this.acceleration(this.velocity().unit().multiply(action.value()).multiply(-1));
+				}
 			}
-			action(timestep);
-		} else if (action.action() == Action.DECELERATE) {
-			if (velocity().length(new Vector2D(0,0)) == 0) {
-				this.acceleration(this.direction().unit().multiply(action.value()).multiply(-1));
-			} else {
-				this.acceleration(this.velocity().unit().multiply(action.value()).multiply(-1));
-			}
-			System.out.println("called");
-			action(timestep);
 		}
+		this.processphysics(timestep);
 	}
 	
-	private void action(double timestep) {
+	private void processphysics(double timestep) {
 		this.prevpos(this.position());
 		this.velocity(this.velocity().add(this.acceleration().multiply(timestep)));
 		this.position(this.prevpos().add(this.velocity().multiply(timestep).add(this.acceleration().multiply(0.5*Math.pow(timestep, 2)))));

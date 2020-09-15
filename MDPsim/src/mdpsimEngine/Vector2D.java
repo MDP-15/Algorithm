@@ -33,6 +33,7 @@ public class Vector2D {
 	public Vector2D subtract(Vector2D component) {
 		return new Vector2D(this.x - component.x(), this.y - component.y());
 	}
+	
 	public Vector2D add(double x, double y) {
 		return new Vector2D(this.x + x, this.y + y);
 	}
@@ -54,6 +55,10 @@ public class Vector2D {
 	
 	public double length(Vector2D vec) {
 		return Math.sqrt(Math.pow(vec.x()-this.x, 2) + Math.pow(vec.y()-this.y,2));
+	}
+	
+	public double length() {
+		return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y,2));
 	}
 	
 	public double dot(Vector2D vec) {

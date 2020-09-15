@@ -62,18 +62,16 @@ public class Engine2D{
 		ArrayList<BoundingBoxPointer> objxbbp = objbb.bbpointersx();
 		ArrayList<BoundingBoxPointer> objybbp = objbb.bbpointersy();
 		ArrayList<Object2D> collisionobjects = new ArrayList<Object2D>(0);
-		if(this.bbx_static.between(objxbbp.get(0), objxbbp.get(1)) != null && this.bby_static.between(objybbp.get(0), objybbp.get(1)) != null) {
-			ArrayList<Object2D> xcollide = this.bbx_static.between(objxbbp.get(0), objxbbp.get(1));
-			ArrayList<Object2D> ycollide = this.bby_static.between(objybbp.get(0), objybbp.get(1));
-			for (int a = 0 ; a < xcollide.size(); a++) {
-				if (!collisionobjects.contains(xcollide.get(a))) {
-					collisionobjects.add(xcollide.get(a));
-				}
+		ArrayList<Object2D> xcollide = this.bbx_static.between(objxbbp.get(0), objxbbp.get(1));
+		ArrayList<Object2D> ycollide = this.bby_static.between(objybbp.get(0), objybbp.get(1));
+		for (int a = 0 ; a < xcollide.size(); a++) {
+			if (!collisionobjects.contains(xcollide.get(a))) {
+				collisionobjects.add(xcollide.get(a));
 			}
-			for (int a = 0 ; a < ycollide.size(); a++) {
-				if (!collisionobjects.contains(ycollide.get(a))) {
-					collisionobjects.add(ycollide.get(a));
-				}
+		}
+		for (int a = 0 ; a < ycollide.size(); a++) {
+			if (!collisionobjects.contains(ycollide.get(a))) {
+				collisionobjects.add(ycollide.get(a));
 			}
 		}
 		if (verbose) {
@@ -100,7 +98,7 @@ public class Engine2D{
 		double radius = ((Circle2D)circle.object()).radius();
 		Vector2D linestart = ((Line2D)line.object()).start();
 		Vector2D lineend = ((Line2D)line.object()).end();
-		if (pointLineClosestOrigin(linestart.subtract(circlepos),lineend.subtract(circlepos)).length(new Vector2D(0,0)) <= radius) {
+		if (pointLineClosestOrigin(linestart.subtract(circlepos),lineend.subtract(circlepos)).length() <= radius) {
 			circle.position(circle.prevpos());
 			circle.velocity(new Vector2D(0,0));
 			circle.acceleration(new Vector2D(0,0));
@@ -108,15 +106,19 @@ public class Engine2D{
 		return;
 	}
 	
-	//uses (x1,y1) = s(x2-x1,y2-y1) = (0,0) to solve for point closest to line
+	//uses (x1,y1) + s(x2-x1,y2-y1) = (0,k) to solve for point closest to line
 	public Vector2D pointLineClosestOrigin (Vector2D linestart, Vector2D lineend) {
 		Vector2D svec = lineend.subtract(linestart);
 		double s = -((double)linestart.x()/(double)svec.x());
 		double m = (double)svec.y()/(double)svec.x();
-		if (Math.abs(s) <=1) {
-			if (m == Double.POSITIVE_INFINITY || m == Double.NEGATIVE_INFINITY) {
+		//System.out.println(s);
+		//System.out.println(m);
+		if ((double)Math.abs(s) <=1) {
+			if (m == Double.POSITIVE_INFINITY || m == Double.NEGATIVE_INFINITY){
+				//System.out.println("X: "+new Vector2D(0, linestart.x()).length());
 				return new Vector2D(linestart.x(),0);
 			} else if (m == 0 ) {
+				//System.out.println("Y: "+new Vector2D(0, linestart.y()).length());
 				return new Vector2D(0, linestart.y());
 			} else {
 				double b = linestart.y() + s*svec.y();
@@ -238,8 +240,7 @@ public class Engine2D{
 	
 	//Public methods
 	public Engine2D(ArrayList<Object2D> objects, double timestep) {
-		boolean verbose = false;
-		this.time = 0;
+		boolean verbose = true;
 		this.timestep = timestep;
 		this.staticobjects = new ArrayList<Object2D>();
 		this.movingobjects = new ArrayList<Object2D>();

@@ -11,8 +11,6 @@ public class BoundingBoxList {
 	
 	public void insert(BoundingBoxPointer bbpointer) {
 		this.bblist.add(binSearchBBPointer(bbpointer),bbpointer);
-		//System.out.println(bbpointer.value());
-		//this.printall();
 		return;
 	}
 	

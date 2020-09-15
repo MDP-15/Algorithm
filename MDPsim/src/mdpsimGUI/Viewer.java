@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class Viewer extends JFrame{
 	public Panel map1;
 	public Panel map2;
-	public Panel sensors;
+	public SensorScreen sensors;
 	public Graphics g;
 	public JMenuBar menu;
 	public String mapBits;
@@ -81,8 +81,8 @@ public class Viewer extends JFrame{
 	}
 	
 	//SENSOR 
-	private Panel constructSensorScreen(GridBagConstraints c) {
-		Panel virtualmap = new Panel(null);
+	private SensorScreen constructSensorScreen(GridBagConstraints c) {
+		SensorScreen virtualmap = new SensorScreen(null);
 		virtualmap.setSize(331,441);
 		virtualmap.setBackground(Color.lightGray);
 		c.insets = new Insets(1,1,1,1);

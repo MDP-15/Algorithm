@@ -47,17 +47,33 @@ public class main {
 		ArrayList<Line> lines = new ArrayList<Line>(0);
 		Vector2D origin = phyeng.movingObjects().get(0).position();
 		Vector2D direction = phyeng.movingObjects().get(0).direction();
-		double angle = direction.angle(new Vector2D(0,-10));
-		for (Sensor s: r.sensors) {
-			Vector2D sensororigin = origin.add(s.position().rotate(angle));
-			Vector2D sensordirection = s.direction().rotate(angle);
-			Vector2D vec = phyeng.rayTraceVec(sensororigin, sensordirection);
-			if (vec != null) {
-				lines.add(new Line(new VecInt(sensororigin.multiply(mult), true), new VecInt(vec.multiply(mult),true), Color.red));
+		double angle = 0;
+		if (phyeng.movingObjects().get(0).getClass() == Vehicle2D.class) {
+			if (((Vehicle2D) phyeng.movingObjects().get(0)).reverse() == true) {
+				angle = direction.angle(new Vector2D(0,10));
+				for (Sensor s: r.sensors) {
+					Vector2D sensororigin = origin.add(s.position().rotate(angle).multiply(-1));
+					Vector2D sensordirection = s.direction().rotate(angle).multiply(-1);
+					Vector2D vec = phyeng.rayTraceVec(sensororigin, sensordirection);
+					if (vec != null) {
+						lines.add(new Line(new VecInt(sensororigin.multiply(mult), true), new VecInt(vec.multiply(mult),true), Color.red));
+					}
+				}
+			} else {
+				angle = direction.angle(new Vector2D(0,-10));
+				for (Sensor s: r.sensors) {
+					Vector2D sensororigin = origin.add(s.position().rotate(angle));
+					Vector2D sensordirection = s.direction().rotate(angle);
+					Vector2D vec = phyeng.rayTraceVec(sensororigin, sensordirection);
+					if (vec != null) {
+						lines.add(new Line(new VecInt(sensororigin.multiply(mult), true), new VecInt(vec.multiply(mult),true), Color.red));
+					}
+				}
 			}
 		}
 		return lines;
 	}
+		
 	private static String parseFormatToMap(String b) {
 		int length = 300 - b.length();
 		String s = "";

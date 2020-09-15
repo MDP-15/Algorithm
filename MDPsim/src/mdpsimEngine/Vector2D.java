@@ -63,4 +63,8 @@ public class Vector2D {
 	public double angle(Vector2D vec) {
 		return Math.acos((double)this.dot(vec)/(this.length(new Vector2D(0,0))*vec.length(new Vector2D(0,0))));
 	}
+	
+	public void print() {
+		System.out.println("X :" +this.x+" Y :"+this.y);
+	}
 }

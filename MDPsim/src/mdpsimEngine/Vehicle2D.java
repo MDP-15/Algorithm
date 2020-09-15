@@ -17,15 +17,24 @@ public class Vehicle2D extends Object2D{
 	public void update(double timestep) {
 		this.prevpos(this.position());
 		this.velocity(this.velocity().add(this.acceleration().multiply(timestep)));
+		this.position(this.prevpos().add(this.velocity().multiply(timestep).add(this.acceleration().multiply(0.5*Math.pow(timestep, 2)))));
 		if (reverse) {
 			if(this.velocity().length(new Vector2D(0,0)) != 0) {
-				this.direction(this.velocity().multiply(-1));
+				this.direction(this.prevpos().subtract(this.position()));
 			}
 		} else {
 			if(this.velocity().length(new Vector2D(0,0)) != 0) {
-				this.direction(this.velocity());
+				this.direction(this.position().subtract(this.prevpos()));
 			}
 		}
-		this.position(this.prevpos().add(this.velocity().multiply(timestep).add(this.acceleration().multiply(0.5*Math.pow(timestep, 2)))));
+	}
+	
+	public boolean reverse() {
+		return this.reverse;
+	}
+	
+	public void reverse(boolean reverse) {
+		this.reverse = reverse;
 	}
 }
+

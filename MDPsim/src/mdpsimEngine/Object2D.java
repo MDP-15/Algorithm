@@ -121,9 +121,9 @@ public class Object2D {
 	public void update(double timestep) {
 		this.prevpos(this.position());
 		this.velocity(this.velocity().add(this.acceleration().multiply(timestep)));
-		if(this.velocity().length(new Vector2D(0,0)) != 0) {
-			this.direction(this.velocity());
-		}
 		this.position(this.prevpos.add(this.velocity.multiply(timestep).add(this.acceleration().multiply(0.5*Math.pow(timestep, 2)))));
+		if(this.velocity().length(new Vector2D(0,0)) != 0) {
+			this.direction(this.position.subtract(this.prevpos));
+		}
 	}
 }

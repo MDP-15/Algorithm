@@ -45,10 +45,10 @@ public class main {
 	public static ArrayList<Line> rayTrace(Robot r,Engine2D phyeng, Panel panel) {
 		double mult = (float) panel.getWidth()/(float) 150;
 		ArrayList<Line> lines = new ArrayList<Line>(0);
+		Vector2D origin = phyeng.movingObjects().get(0).position();
+		Vector2D direction = phyeng.movingObjects().get(0).direction();
+		double angle = direction.angle(new Vector2D(0,-10));
 		for (Sensor s: r.sensors) {
-			Vector2D origin = phyeng.movingObjects().get(0).position();
-			Vector2D direction = phyeng.movingObjects().get(0).direction();
-			double angle = direction.angle(new Vector2D(0,-10));
 			Vector2D sensororigin = origin.add(s.position().rotate(angle));
 			Vector2D sensordirection = s.direction().rotate(angle);
 			Vector2D vec = phyeng.rayTraceVec(sensororigin, sensordirection);
@@ -120,7 +120,7 @@ public class main {
 		objectmap.add(rightborder);
 		objectmap.add(bottomborder);
 		Circle2D robot = new Circle2D(12.5);
-		Object2D robotobject = new Object2D(robot, new Vector2D(15, 15), new Vector2D(10, 0), new Vector2D(0,10),new Vector2D(10,0),false);
+		Vehicle2D robotobject = new Vehicle2D(robot, new Vector2D(15, 15), new Vector2D(10, 0), new Vector2D(0,10),new Vector2D(10,0),false,true);
 		objectmap.addAll(generateXYFromBits(map));
 		objectmap.add(robotobject);
 		return objectmap;

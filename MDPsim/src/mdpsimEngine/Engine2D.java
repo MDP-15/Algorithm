@@ -110,12 +110,13 @@ public class Engine2D{
 	public Vector2D pointLineClosestOrigin (Vector2D linestart, Vector2D lineend) {
 		Vector2D svec = lineend.subtract(linestart);
 		double s = -((double)linestart.x()/(double)svec.x());
+		double t = -((double)linestart.y()/(double)svec.y());
 		double m = (double)svec.y()/(double)svec.x();
 		//System.out.println(s);
 		//System.out.println(m);
-		if ((double)Math.abs(s) <=1) {
+		if (Math.abs(s) <=1 || Math.abs(t) <= 1) {
 			if (m == Double.POSITIVE_INFINITY || m == Double.NEGATIVE_INFINITY){
-				//System.out.println("X: "+new Vector2D(0, linestart.x()).length());
+				System.out.println("X: "+new Vector2D(0, linestart.x()).length());
 				return new Vector2D(linestart.x(),0);
 			} else if (m == 0 ) {
 				//System.out.println("Y: "+new Vector2D(0, linestart.y()).length());
@@ -240,7 +241,7 @@ public class Engine2D{
 	
 	//Public methods
 	public Engine2D(ArrayList<Object2D> objects, double timestep) {
-		boolean verbose = true;
+		boolean verbose = false;
 		this.timestep = timestep;
 		this.staticobjects = new ArrayList<Object2D>();
 		this.movingobjects = new ArrayList<Object2D>();

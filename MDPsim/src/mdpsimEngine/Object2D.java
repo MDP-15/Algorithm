@@ -23,6 +23,16 @@ public class Object2D {
 		}
 	}
 	
+	public Object2D (Circle2D circle, Vector2D position, Vector2D velocity, Vector2D acceleration, Vector2D direction, boolean isstatic) {
+		this.object = circle;
+		this.position = position;
+		this.prevpos = position;
+		this.velocity = velocity;
+		this.acceleration = acceleration;
+		this.isstatic = isstatic;
+		this.direction = direction;
+	}
+	
 	public Object2D (Line2D line, Vector2D position, Vector2D velocity, Vector2D acceleration, boolean isstatic) {
 		this.object = line;
 		this.position = position;

@@ -39,9 +39,9 @@ public class SensorScreen extends Panel{
 		this.add(noelapsedtimestepslabel);
 	}
 
-	public void update (double time, int timesteps) {
+	public void update (double time, long timesteps) {
 		timeelapsed.setText(Double.toString(time));
-		noelapsedtimesteps.setText(Integer.toString(timesteps));
+		noelapsedtimesteps.setText(Long.toString(timesteps));
 		return;
 	}
 	

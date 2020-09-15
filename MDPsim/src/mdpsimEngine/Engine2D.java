@@ -7,7 +7,7 @@ import java.util.HashMap;
 public class Engine2D{
 	private double time;		//current time since start
 	private double timestep;	//discrete time step for simulation (please set as small as feasible)
-	private int timestepselapsed;
+	private long timestepselapsed;
 	private ArrayList<Object2D> staticobjects;
 	private ArrayList<Object2D> movingobjects;
 	private BoundingBoxList bbx_static;
@@ -103,6 +103,7 @@ public class Engine2D{
 		if (pointLineClosestOrigin(linestart.subtract(circlepos),lineend.subtract(circlepos)).length(new Vector2D(0,0)) <= radius) {
 			circle.position(circle.prevpos());
 			circle.velocity(new Vector2D(0,0));
+			circle.acceleration(new Vector2D(0,0));
 		}
 		return;
 	}
@@ -278,7 +279,7 @@ public class Engine2D{
 		return this.time;
 	}
 	
-	public int timestepselapsed() {
+	public long timestepselapsed() {
 		return this.timestepselapsed;
 	}
 }

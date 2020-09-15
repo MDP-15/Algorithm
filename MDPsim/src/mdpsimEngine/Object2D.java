@@ -5,21 +5,24 @@ public class Object2D {
 	private Vector2D position;
 	private Vector2D prevpos;
 	private Vector2D velocity;
+	private Vector2D acceleration;
 	private boolean isstatic;
 	
-	public Object2D (Circle2D circle, Vector2D position, Vector2D velocity, boolean isstatic) {
+	public Object2D (Circle2D circle, Vector2D position, Vector2D velocity, Vector2D acceleration,boolean isstatic) {
 		this.object = circle;
 		this.position = position;
 		this.prevpos = position;
 		this.velocity = velocity;
+		this.acceleration = acceleration;
 		this.isstatic = isstatic;
 	}
 	
-	public Object2D (Line2D line, Vector2D position, Vector2D velocity, boolean isstatic) {
+	public Object2D (Line2D line, Vector2D position, Vector2D velocity, Vector2D acceleration, boolean isstatic) {
 		this.object = line;
 		this.position = position;
 		this.prevpos = position;
 		this.velocity = velocity;
+		this.acceleration = acceleration;
 		this.isstatic = isstatic;
 	}
 	
@@ -61,6 +64,14 @@ public class Object2D {
 	
 	public void prevpos(Vector2D prevpos) {
 		this.prevpos = prevpos;
+	}
+	
+	public void acceleration(Vector2D accel) {
+		this.acceleration = accel;
+	}
+	
+	public Vector2D acceleration() {
+		return this.acceleration;
 	}
 	
 	public boolean inside(Vector2D vec) {

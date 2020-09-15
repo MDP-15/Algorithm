@@ -81,7 +81,7 @@ public class Engine2D{
 		return collisionobjects;
 	}
 	
-	// assume moving object is only Circle2D else damn mafan, only consider Circle2D -> Line2D collision
+	// assume moving object is only Circle2D else damn, only consider Circle2D -> Line2D collision
 	@SuppressWarnings("null")
 	public void narrowCollide(Object2D moving, Object2D stationary) {
 		if (moving.type() == Circle2D.class) {
@@ -193,6 +193,7 @@ public class Engine2D{
 		for (int a  = 0 ; a < movingobjects.size(); a++) {
 			Object2D obj = movingobjects.get(a);
 			obj.prevpos(obj.position());
+			obj.velocity(obj.velocity().add(obj.acceleration().multiply(timestep)));
 			obj.position(obj.prevpos().add(obj.velocity().multiply(this.timestep)));
 		}
 		for(int b = 0 ; b < movingobjects.size(); b++) {

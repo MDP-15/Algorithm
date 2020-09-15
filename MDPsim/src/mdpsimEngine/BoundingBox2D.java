@@ -95,8 +95,16 @@ public class BoundingBox2D {
 	}
 	public ArrayList<BoundingBoxPointer> bbpointersx(){
 		ArrayList<BoundingBoxPointer> bbpointers = new ArrayList<BoundingBoxPointer>(0);
-		BoundingBoxPointer bb1 = new BoundingBoxPointer(this.p1.x(),this);
-		BoundingBoxPointer bb2 = new BoundingBoxPointer(this.p2.x(),this);
+		BoundingBoxPointer bb1 = null;
+		BoundingBoxPointer bb2 = null;
+		if (this.p1.x() > this.p2.x()) {
+			bb1 = new BoundingBoxPointer(this.p2.x(),this);
+			bb2 = new BoundingBoxPointer(this.p1.x(),this);
+
+		} else {
+			bb1 = new BoundingBoxPointer(this.p1.x(),this);
+			bb2 = new BoundingBoxPointer(this.p2.x(),this);
+		}
 		bbpointers.add(bb1);
 		bbpointers.add(bb2);
 		return bbpointers;
@@ -104,8 +112,15 @@ public class BoundingBox2D {
 	
 	public ArrayList<BoundingBoxPointer> bbpointersy(){
 		ArrayList<BoundingBoxPointer> bbpointers = new ArrayList<BoundingBoxPointer>(0);
-		BoundingBoxPointer bb1 = new BoundingBoxPointer(this.p1.y(),this);
-		BoundingBoxPointer bb2 = new BoundingBoxPointer(this.p2.y(),this);
+		BoundingBoxPointer bb1 = null;
+		BoundingBoxPointer bb2 = null;
+		if (this.p1.y() > this.p2.y()) {
+			bb1 = new BoundingBoxPointer(this.p2.y(),this);
+			bb2 = new BoundingBoxPointer(this.p1.y(),this);
+		} else {
+			bb1 = new BoundingBoxPointer(this.p1.y(),this);
+			bb2 = new BoundingBoxPointer(this.p2.y(),this);
+		}
 		bbpointers.add(bb1);
 		bbpointers.add(bb2);
 		return bbpointers;

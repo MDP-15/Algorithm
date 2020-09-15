@@ -6,6 +6,7 @@ public class Object2D {
 	private Vector2D prevpos;
 	private Vector2D velocity;
 	private Vector2D acceleration;
+	private Vector2D direction;
 	private boolean isstatic;
 	
 	public Object2D (Circle2D circle, Vector2D position, Vector2D velocity, Vector2D acceleration,boolean isstatic) {

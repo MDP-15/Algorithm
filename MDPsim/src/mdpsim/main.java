@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.String;
 import java.util.ArrayList;
+import mdpsimRobot.*;
 
 public class main {
 	public static void main(String[] args) throws InterruptedException{
@@ -21,6 +22,7 @@ public class main {
 		String s = parseFormatToMap(string);
 		ArrayList<Object2D> objects = generateMap(s);
 		Engine2D phyeng = new Engine2D(objects, 0.016);
+		Robot r = initializeRobot();
 		vw.setVisible(true);
 		updateAll(phyeng, vw.map1);	
 		while(true) {
@@ -31,6 +33,13 @@ public class main {
 		}
 	}
 
+	//initialize virtual robot object;
+	public static Robot initializeRobot() {
+		Robot robot = new Robot(new ArrayList<Sensor>(), 12.5);
+		robot.addSensor(new Vector2D(10,0), new Vector2D(10,0), 10,80);
+		return robot;
+	}
+	
 	private static String parseFormatToMap(String b) {
 		int length = 300 - b.length();
 		String s = "";

@@ -46,6 +46,9 @@ public class Vector2D {
 	}
 	
 	public Vector2D unit() {
+		if (this.x == 0 && this.y == 0) {
+			return new Vector2D(0,0);
+		}
 		return this.multiply((double)1/Math.sqrt(Math.pow(this.x, 2) +Math.pow(this.y, 2)));
 	}
 	

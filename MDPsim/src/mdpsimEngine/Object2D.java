@@ -1,5 +1,7 @@
 package mdpsimEngine;
 
+import mdpsimEngine.Action2D.Action;
+
 public class Object2D {
 	private Object object;
 	private Vector2D position;
@@ -118,7 +120,7 @@ public class Object2D {
 		this.direction = direction;
 	}
 	
-	public void update(double timestep) {
+	public void update(double timestep, Action2D action) {
 		this.prevpos(this.position());
 		this.velocity(this.velocity().add(this.acceleration().multiply(timestep)));
 		this.position(this.prevpos.add(this.velocity.multiply(timestep).add(this.acceleration().multiply(0.5*Math.pow(timestep, 2)))));

@@ -220,10 +220,10 @@ public class Engine2D{
 	//simulates next time step and updates positions of objects, and does collision resolution.
 	// velocity formula = v = u + at;
 	// displacement formula = s = ut + 0.5*at^2;
-	public void next() {
+	public void next(Action2D action) {
 		for (int a  = 0 ; a < movingobjects.size(); a++) {
 			Object2D obj = movingobjects.get(a);
-			obj.update(timestep);
+			obj.update(timestep, action);
 		}
 		for(int b = 0 ; b < movingobjects.size(); b++) {
 			ArrayList<Object2D> broadcollide = isBroadCollide(movingobjects.get(b));
@@ -253,9 +253,6 @@ public class Engine2D{
 		}
 	}
 	
-	public void run() {
-		next();
-	}
 	public ArrayList<Object2D >staticObjects(){
 		return staticobjects;
 	}

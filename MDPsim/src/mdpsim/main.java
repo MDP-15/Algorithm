@@ -3,6 +3,7 @@ import mdpsimEngine.Line2D;
 
 import mdpsimGUI.*;
 import mdpsimEngine.*;
+import mdpsimEngine.Action2D.Action;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -13,10 +14,13 @@ import mdpsimRobot.*;
 
 public class main {
 	public static boolean pause;
+	public static ArrayList<Action2D> actionqueue;
+	public static boolean done = true;
 	public static void main(String[] args) throws InterruptedException{
-		String s = parseFormatToMap("000000000000010000000000000000101010010000000000000000000000000000001110000000000100000000000000010001000000000000000000000000000000000000000000000000000000000000000000");
+		String s = parseFormatToMap("00000000000000000000000000000000000000000000000000000000000000");
 		Viewer vw = new Viewer("MDP Simulator", 1024, 768);
 		pause = false;
+		actionqueue = new ArrayList<Action2D>(0);
 		inputMDF(s, vw);
 	}
 	
@@ -27,12 +31,21 @@ public class main {
 		Robot r = initializeRobot();
 		vw.setVisible(true);
 		updateAll(r,phyeng, vw.map1);	
+		actionqueue.add(new Action2D(Action.ACCELERATE, 20));
 		while(true) {
 			while(!pause) {
 				Thread.sleep(16);
-				phyeng.next();
+				if (actionqueue.size() == 0) {
+					phyeng.next(null);
+				} else {
+					phyeng.next(actionqueue.remove(0));
+				}
 				updateAll(r, phyeng, vw.map1);
 				sensorUpdate(phyeng, vw.sensors);
+				if(phyeng.time() > 5 && done) {
+					actionqueue.add(new Action2D(Action.DECELERATE,20));
+					done = false;
+				}
 			}
 		}
 	}
@@ -129,7 +142,7 @@ public class main {
 		ArrayList<Object2D> objectmap = new ArrayList<Object2D>();
 		Line2D top = new Line2D(new Vector2D(0,0), new Vector2D(200,0));
 		Object2D topborder = new Object2D(top, top.midpoint(), new Vector2D(0,0), new Vector2D(0,0),true);
-		Line2D left = new Line2D(new Vector2D(0,0), new Vector2D(0,150));
+		Line2D left = new Line2D(new Vector2D(0,0), new Vector2D(0,200));
 		Object2D leftborder = new Object2D(left, left.midpoint(), new Vector2D(0,0), new Vector2D(0,0), true);
 		Line2D right = new Line2D(new Vector2D(200,0), new Vector2D(200,150));
 		Object2D rightborder = new Object2D(right, right.midpoint(), new Vector2D(0,0), new Vector2D(0,0), true);
@@ -140,7 +153,7 @@ public class main {
 		objectmap.add(rightborder);
 		objectmap.add(bottomborder);
 		Circle2D robot = new Circle2D(12.5);
-		Vehicle2D robotobject = new Vehicle2D(robot, new Vector2D(15, 15), new Vector2D(10, 0), new Vector2D(0,10),new Vector2D(10,0),false,true);
+		Vehicle2D robotobject = new Vehicle2D(robot, new Vector2D(15, 15), new Vector2D(0, 0), new Vector2D(0,0),new Vector2D(10,0),false,false,20, Math.PI/2);
 		objectmap.addAll(generateXYFromBits(map));
 		objectmap.add(robotobject);
 		return objectmap;

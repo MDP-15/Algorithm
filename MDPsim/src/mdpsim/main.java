@@ -120,7 +120,7 @@ public class main {
 		objectmap.add(rightborder);
 		objectmap.add(bottomborder);
 		Circle2D robot = new Circle2D(12.5);
-		Object2D robotobject = new Object2D(robot, new Vector2D(15, 15), new Vector2D(0, 0), new Vector2D(0,0),new Vector2D(10,0),false);
+		Object2D robotobject = new Object2D(robot, new Vector2D(15, 15), new Vector2D(10, 0), new Vector2D(0,10),new Vector2D(10,0),false);
 		objectmap.addAll(generateXYFromBits(map));
 		objectmap.add(robotobject);
 		return objectmap;

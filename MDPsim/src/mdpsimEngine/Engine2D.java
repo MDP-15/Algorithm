@@ -223,12 +223,7 @@ public class Engine2D{
 	public void next() {
 		for (int a  = 0 ; a < movingobjects.size(); a++) {
 			Object2D obj = movingobjects.get(a);
-			obj.prevpos(obj.position());
-			obj.velocity(obj.velocity().add(obj.acceleration().multiply(timestep)));
-			if(obj.velocity().length(new Vector2D(0,0)) != 0) {
-				obj.direction(obj.velocity());
-			}
-			obj.position(obj.prevpos().add(obj.velocity().multiply(this.timestep).add(obj.acceleration().multiply(0.5*Math.pow(timestep, 2)))));
+			obj.update(timestep);
 		}
 		for(int b = 0 ; b < movingobjects.size(); b++) {
 			ArrayList<Object2D> broadcollide = isBroadCollide(movingobjects.get(b));

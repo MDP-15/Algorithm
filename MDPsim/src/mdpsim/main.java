@@ -14,6 +14,7 @@ import mdpsimRobot.*;
 
 public class main {
 	public static boolean pause;
+	public static boolean done = false;
 	public static ArrayList<Action2D> actionqueue;
 	public static void main(String[] args) throws InterruptedException{
 		String s = parseFormatToMap("0000000000000000000000000000000000000000000000100010000000000000");
@@ -41,6 +42,10 @@ public class main {
 				}
 				updateAll(r, phyeng, vw.map1);
 				sensorUpdate(phyeng, vw.sensors);
+				if (phyeng.time() > 5 && !done) {
+					actionqueue.add(new Action2D(Action.DECELERATE, 20));
+					done = true;
+				}
 			}
 		}
 	}

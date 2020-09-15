@@ -13,7 +13,7 @@ import mdpsimRobot.*;
 
 public class main {
 	public static void main(String[] args) throws InterruptedException{
-		String s = parseFormatToMap("0000000000000100000000000000001111111100000000000000000000000000000011100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
+		String s = parseFormatToMap("00000000000001000000000000000010W10101100000000000000000000000000000011100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
 		Viewer vw = new Viewer("MDP Simulator", 1024, 768);
 		inputMDF(s, vw);
 	}
@@ -28,7 +28,7 @@ public class main {
 		while(true) {
 			Thread.sleep(16);
 			phyeng.next();
-			update(phyeng, vw.map1);
+			updateAll(phyeng, vw.map1);
 			sensorUpdate(phyeng, vw.sensors);
 		}
 	}
@@ -36,10 +36,21 @@ public class main {
 	//initialize virtual robot object;
 	public static Robot initializeRobot() {
 		Robot robot = new Robot(new ArrayList<Sensor>(), 12.5);
-		robot.addSensor(new Vector2D(10,0), new Vector2D(10,0), 10,80);
+		robot.addSensor(new Vector2D(10,0), new Vector2D(10,0), 10, 80);
 		return robot;
 	}
 	
+	public static ArrayList<Line> rayTrace(Engine2D phyeng, Panel panel) {
+		double mult = (float) panel.getWidth()/ (float) 150;
+		ArrayList<Line> lines = new ArrayList<Line>(0);
+		Vector2D origin = phyeng.movingObjects().get(0).position();
+		Vector2D direction = phyeng.movingObjects().get(0).velocity();
+		Vector2D vec = phyeng.rayTraceVec(origin, direction);
+		if (vec != null) {
+			lines.add(new Line(new VecInt(origin.multiply(mult), true), new VecInt(vec.multiply(mult),true), Color.red));
+		}
+		return lines;
+	}
 	private static String parseFormatToMap(String b) {
 		int length = 300 - b.length();
 		String s = "";
@@ -102,7 +113,7 @@ public class main {
 		objectmap.add(rightborder);
 		objectmap.add(bottomborder);
 		Circle2D robot = new Circle2D(12.5);
-		Object2D robotobject = new Object2D(robot, new Vector2D(15, 15), new Vector2D(0, 0), new Vector2D(0,0),false);
+		Object2D robotobject = new Object2D(robot, new Vector2D(15, 15), new Vector2D(10, 10), new Vector2D(10,0),false);
 		objectmap.addAll(generateXYFromBits(map));
 		objectmap.add(robotobject);
 		return objectmap;
@@ -126,6 +137,7 @@ public class main {
 			circles.add(new Circle(pos,diameter, Color.black, true));
 		}
 		panel.lines = lines;
+		panel.lines.addAll(rayTrace(phyeng,panel));
 		panel.circles = circles;
 		panel.repaint();
 	}
@@ -139,6 +151,7 @@ public class main {
 			int diameter = (int)Math.round(2*circle.radius()*mult);
 			circles.add(new Circle(pos,diameter, Color.black, true));
 		}
+		panel.lines.addAll(rayTrace(phyeng,panel));
 		panel.circles = circles;
 		panel.repaint();
 	}

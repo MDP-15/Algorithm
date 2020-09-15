@@ -189,12 +189,14 @@ public class Engine2D{
 	}
 	
 	//simulates next time step and updates positions of objects, and does collision resolution.
+	// velocity formula = v = u + at;
+	// displacement formula = s = ut + 0.5*at^2;
 	public void next() {
 		for (int a  = 0 ; a < movingobjects.size(); a++) {
 			Object2D obj = movingobjects.get(a);
 			obj.prevpos(obj.position());
 			obj.velocity(obj.velocity().add(obj.acceleration().multiply(timestep)));
-			obj.position(obj.prevpos().add(obj.velocity().multiply(this.timestep)));
+			obj.position(obj.prevpos().add(obj.velocity().multiply(this.timestep).add(obj.acceleration().multiply(0.5*Math.pow(timestep, 2)))));
 		}
 		for(int b = 0 ; b < movingobjects.size(); b++) {
 			ArrayList<Object2D> broadcollide = isBroadCollide(movingobjects.get(b));

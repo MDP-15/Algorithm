@@ -162,7 +162,6 @@ public class Engine2D{
 					s = test_s;
 				}
 			}
-			System.out.println(line.start().x()+" "+line.start().y()+" " + line.end().x() +" " + line.end().y());
 			return s*line.start().length(line.end());
 		}
 	}
@@ -184,7 +183,7 @@ public class Engine2D{
 	}
 	
 	public Object2D closestCollide(Object2D object, ArrayList<Object2D> staticobjectarray) {
-		boolean verbose = true;
+		boolean verbose = false;
 		double distance = Double.POSITIVE_INFINITY;
 		double newdistance = Double.POSITIVE_INFINITY;
 		Object2D objectreturn = (Object2D) null;

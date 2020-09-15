@@ -108,6 +108,9 @@ public class Viewer extends JFrame{
 		JMenuItem SampleArena = new JMenuItem("Sample Arenas");
 		file.add(SampleArena);
 		
+		JMenuItem tcpSocket = new JMenuItem("Socket Connection");
+		file.add(tcpSocket);
+		
 		JMenuItem exit = new JMenuItem("Exit");
 		file.add(exit);
 		
@@ -115,6 +118,7 @@ public class Viewer extends JFrame{
 		menu.add(settings);
 		JMenuItem view = new JMenuItem("View");
 		settings.add(view);
+		
 		//FILE -> Sample Arenas
 		class loadMapAction implements ActionListener{
 			public void actionPerformed(ActionEvent e) {
@@ -187,6 +191,14 @@ public class Viewer extends JFrame{
 			}
 		}
 		SampleArena.addActionListener(new loadMapAction());
+		
+		
+		class socketBtn implements ActionListener{
+			public void actionPerformed(ActionEvent e) {
+				TCPsocket.tcpSocket();
+			}
+		}
+			tcpSocket.addActionListener(new socketBtn());
     }
 	
 	

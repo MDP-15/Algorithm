@@ -12,9 +12,13 @@ public class TCPsocket {
     public static String[] bufferableCommand = new String[] {"Image"};
     
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		
-	    try {
+		tcpSocket();
+
+	}
+	
+	public static void tcpSocket() {
+		try {
 			socket = new Socket("192.168.15.1", 9000);
 			System.out.println("Connected to " + socket.getInetAddress() + ":" + Integer.toString(socket.getPort()));
 			din  = socket.getInputStream(); 

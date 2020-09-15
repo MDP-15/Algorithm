@@ -11,12 +11,13 @@ import mdpsimGUI.Viewer;
 public class MapReader {
 
 	public String mapString;
+	public Viewer vw;
 	
 	public MapReader() {
 		
 	}
 	
-	public void loadSampleArena(String fileName, Viewer vw) {
+	public void loadSampleArena(String fileName) {
 		
 		try {
 			

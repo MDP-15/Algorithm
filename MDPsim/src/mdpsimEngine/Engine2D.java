@@ -7,6 +7,7 @@ import java.util.HashMap;
 public class Engine2D{
 	private double time;		//current time since start
 	private double timestep;	//discrete time step for simulation (please set as small as feasible)
+	private int timestepselapsed;
 	private ArrayList<Object2D> staticobjects;
 	private ArrayList<Object2D> movingobjects;
 	private BoundingBoxList bbx_static;
@@ -206,6 +207,7 @@ public class Engine2D{
 			}
 		}
 		this.time += this.timestep;
+		this.timestepselapsed += 1;
 	}
 	
 	//Public methods
@@ -244,5 +246,9 @@ public class Engine2D{
 	}
 	public double time() {
 		return this.time;
+	}
+	
+	public int timestepselapsed() {
+		return this.timestepselapsed;
 	}
 }

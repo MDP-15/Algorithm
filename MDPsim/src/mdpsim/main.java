@@ -27,6 +27,7 @@ public class main {
 			Thread.sleep(16);
 			phyeng.next();
 			update(phyeng, vw.map1);
+			sensorUpdate(phyeng, vw.sensors);
 		}
 	}
 
@@ -127,6 +128,10 @@ public class main {
 		panel.repaint();
 	}
 	
- 
+	private static void sensorUpdate(Engine2D phyeng, SensorScreen sc) {
+		double time = phyeng.time();
+		int timesteps = phyeng.timestepselapsed();
+		sc.update(time, timesteps);
+	}
 	
 }

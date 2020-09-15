@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class main {
 	public static void main(String[] args) throws InterruptedException{
-		String s = parseFormatToMap("000000000000000000000000000000000000000000000000000000000000000000000000000000001000");
+		String s = parseFormatToMap("0000000000000100000000000000001111111100000000000000000000000000000011100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
 		Viewer vw = new Viewer("MDP Simulator", 1024, 768);
 		inputMDF(s, vw);
 	}
@@ -60,15 +60,21 @@ public class main {
 		Line2D left = new Line2D(topleft, bottomleft);
 		Line2D right = new Line2D(topright, bottomright);
 		Line2D bottom = new Line2D(bottomleft, bottomright);
+		Line2D diagleftright = new Line2D(topleft, bottomright);
+		Line2D diagrightleft = new Line2D(topright, bottomleft);
 		Object2D topobj = new Object2D(top, top.midpoint(), new Vector2D(0,0), new Vector2D(0,0),true);
 		Object2D leftobj = new Object2D(left, left.midpoint(), new Vector2D(0,0), new Vector2D(0,0), true);
 		Object2D rightobj = new Object2D(right, right.midpoint(), new Vector2D(0,0), new Vector2D(0,0), true);
 		Object2D bottomobj = new Object2D(bottom, bottom.midpoint(), new Vector2D(0,0), new Vector2D(0,0), true);
+		Object2D diagleftrightobj = new Object2D(diagleftright, diagleftright.midpoint(), new Vector2D(0,0), new Vector2D(0,0), true);
+		Object2D diagrightleftobj = new Object2D(diagrightleft, diagrightleft.midpoint(), new Vector2D(0,0), new Vector2D(0,0), true);
 		ArrayList<Object2D> list= new ArrayList<Object2D>();
 		list.add(topobj);
 		list.add(leftobj);
 		list.add(rightobj);
 		list.add(bottomobj);
+		list.add(diagleftrightobj);
+		list.add(diagrightleftobj);
 		return list;
 	}
 	

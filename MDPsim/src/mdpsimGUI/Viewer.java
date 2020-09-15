@@ -21,8 +21,8 @@ import mdpsim.main;
 
 import java.util.ArrayList;
 public class Viewer extends JFrame{
-	public Panel map1;
-	public Panel map2;
+	public Engine2DPanel map1;
+	public Robot2DPanel map2;
 	public SensorScreen sensors;
 	public Graphics g;
 	public ControlPanel cp;
@@ -48,10 +48,10 @@ public class Viewer extends JFrame{
 	}
 	
 	//VIRTUAL MAP
-	private Panel constructVirtualMap(GridBagConstraints c) {
-		Panel virtualmap = new Panel(null);
+	private Engine2DPanel constructVirtualMap(GridBagConstraints c) {
+		Engine2DPanel virtualmap = new Engine2DPanel(null);
 		virtualmap.setSize(331,441);
-		virtualmap.setBackground(Color.lightGray);
+		virtualmap.setBackground(Color.darkGray);
 		c.insets = new Insets(1,1,1,1);
 		c.gridx = 0;
 		c.gridy = 0;
@@ -66,10 +66,10 @@ public class Viewer extends JFrame{
 	}
 	
 	//ROBOT MAP
-	private Panel constructRobotMap(GridBagConstraints c) {
-		Panel virtualmap = new Panel(null);
+	private Robot2DPanel constructRobotMap(GridBagConstraints c) {
+		Robot2DPanel virtualmap = new Robot2DPanel(null);
 		virtualmap.setSize(331,441);
-		virtualmap.setBackground(Color.lightGray);
+		virtualmap.setBackground(Color.darkGray);
 		c.insets = new Insets(1,1,1,1);
 		c.gridx = 1;
 		c.gridy = 0;
@@ -87,7 +87,7 @@ public class Viewer extends JFrame{
 	private SensorScreen constructSensorScreen(GridBagConstraints c) {
 		SensorScreen virtualmap = new SensorScreen(null);
 		virtualmap.setSize(331,441);
-		virtualmap.setBackground(Color.lightGray);
+		virtualmap.setBackground(Color.darkGray);
 		c.insets = new Insets(1,1,1,1);
 		c.gridx = 2;
 		c.gridy = 0;
@@ -224,5 +224,7 @@ public class Viewer extends JFrame{
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
+		
 	}
+	
 }

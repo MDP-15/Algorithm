@@ -12,9 +12,11 @@ import java.util.ArrayList;
 import mdpsimRobot.*;
 
 public class main {
+	public static boolean pause;
 	public static void main(String[] args) throws InterruptedException{
 		String s = parseFormatToMap("000000000000010000000000000000101010010000000000000000000000000000001110000000000100000000000000010001000000000000000000000000000000000000000000000000000000000000000000");
 		Viewer vw = new Viewer("MDP Simulator", 1024, 768);
+		pause = false;
 		inputMDF(s, vw);
 	}
 	
@@ -26,10 +28,12 @@ public class main {
 		vw.setVisible(true);
 		updateAll(r,phyeng, vw.map1);	
 		while(true) {
-			Thread.sleep(16);
-			phyeng.next();
-			updateAll(r, phyeng, vw.map1);
-			sensorUpdate(phyeng, vw.sensors);
+			while(!pause) {
+				Thread.sleep(16);
+				phyeng.next();
+				updateAll(r, phyeng, vw.map1);
+				sensorUpdate(phyeng, vw.sensors);
+			}
 		}
 	}
 
@@ -42,7 +46,7 @@ public class main {
 		return robot;
 	}
 	
-	public static ArrayList<Line> rayTrace(Robot r,Engine2D phyeng, Panel panel) {
+	public static ArrayList<Line> rayTrace(Robot r,Engine2D phyeng, Engine2DPanel panel) {
 		double mult = (float) panel.getWidth()/(float) 150;
 		ArrayList<Line> lines = new ArrayList<Line>(0);
 		Vector2D origin = phyeng.movingObjects().get(0).position();
@@ -142,7 +146,7 @@ public class main {
 		return objectmap;
 	}
 	
-	private static void updateAll(Robot r, Engine2D phyeng, Panel panel) {
+	private static void updateAll(Robot r, Engine2D phyeng, Engine2DPanel panel) {
 		ArrayList<Line> lines = new ArrayList<Line>();
 		double mult = (float) panel.getWidth()/ (float) 150;
 		ArrayList<Circle> circles = new ArrayList<Circle>();

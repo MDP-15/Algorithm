@@ -17,7 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import mdpMapReader.MapReader;
-import mdpsim.main;
+import mdpsim.MDPSIM;
 
 import java.util.ArrayList;
 public class Viewer extends JFrame{

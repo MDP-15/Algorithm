@@ -28,22 +28,22 @@ public class Vehicle2D extends Object2D{
 	public void update(double timestep, Action2D action) {
 		if (action != null) {
 			if (action.action() == Action.ACCELERATE) {
-				if (velocity().length(new Vector2D(0,0)) == 0) {
+				if (velocity().length() == 0) {
 					this.acceleration(this.direction().unit().multiply(action.value()).rotate(0));
 				} else {
 					this.acceleration(this.velocity().unit().multiply(action.value()).rotate(0));
 				}
 			} else if (action.action() == Action.DECELERATE) {
-				if (velocity().length(new Vector2D(0,0)) == 0) {
+				if (velocity().length() == 0) {
 					this.acceleration(this.direction().unit().multiply(action.value()).multiply(-1).rotate(0));
 				} else {
 					this.acceleration(this.velocity().unit().multiply(action.value()).multiply(-1).rotate(0));
 				}
 			} else if (action.action() == Action.TURN) {
 				rotationalmomentum = action.value();
-				if (velocity().length(new Vector2D(0,0)) == 0) {
+				if (velocity().length() == 0) {
 				} else {
-					this.acceleration(this.velocity().unit().multiply(action.value()).multiply(-1).rotate(rotationalmomentum*timestep));
+					this.acceleration(this.velocity().unit().multiply(action.value()).rotate(rotationalmomentum*timestep));
 				}
 			}
 		}
@@ -51,21 +51,20 @@ public class Vehicle2D extends Object2D{
 	}
 	
 	private void processphysics(double timestep) {
-		System.out.println(reverse);
 		this.prevpos(this.position());
 		this.velocity(this.velocity().add(this.acceleration().multiply(timestep)));
 		this.position(this.prevpos().add(this.velocity().multiply(timestep).add(this.acceleration().multiply(0.5*Math.pow(timestep, 2)))));
 		if (reverse) {
-			if(this.velocity().length(new Vector2D(0,0)) != 0) {
+			if(this.velocity().length() != 0) {
 				this.direction(this.prevpos().subtract(this.position()).rotate(rotationalmomentum*timestep));
 			} else {
-				this.direction(this.direction().rotate(rotationalmomentum*timestep));
+				this.direction(this.direction().rotate(-rotationalmomentum*timestep));
 			}
 		} else {
-			if(this.velocity().length(new Vector2D(0,0)) != 0) {
+			if(this.velocity().length() != 0) {
 				this.direction(this.position().subtract(this.prevpos()).rotate(rotationalmomentum*timestep));
 			} else {
-				this.direction(this.direction().rotate(-rotationalmomentum*timestep));
+				this.direction(this.direction().rotate(rotationalmomentum*timestep));
 			}
 		}
 	}

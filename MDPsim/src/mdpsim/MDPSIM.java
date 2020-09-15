@@ -12,10 +12,9 @@ import java.lang.String;
 import java.util.ArrayList;
 import mdpsimRobot.*;
 
-public class main {
+public class MDPSIM {
 	public static boolean pause;
-	public static boolean done = false;
-	public static ArrayList<Action2D> actionqueue;
+ static ArrayList<Action2D> actionqueue;
 	public static void main(String[] args) throws InterruptedException{
 		String s = parseFormatToMap("0000000000000000000000000000000000000000000000100010000000000000");
 		Viewer vw = new Viewer("MDP Simulator", 1024, 768);

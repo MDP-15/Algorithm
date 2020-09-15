@@ -114,14 +114,14 @@ public class Engine2D{
 		double s = -((double)linestart.x()/(double)svec.x());
 		double m = (double)svec.y()/(double)svec.x();
 		if (Math.abs(s) <=1) {
-		if (m == Double.POSITIVE_INFINITY || m == Double.NEGATIVE_INFINITY) {
-			return new Vector2D(linestart.x(),0);
-		} else if (m == 0 ) {
-			return new Vector2D(0, linestart.y());
-		} else {
-			double b = linestart.y() + s*svec.y();
-			return new Vector2D((double)-(m*b)/(Math.pow(m, 2)+1), (double)b/(Math.pow(m, 2)+1));
-		}
+			if (m == Double.POSITIVE_INFINITY || m == Double.NEGATIVE_INFINITY) {
+				return new Vector2D(linestart.x(),0);
+			} else if (m == 0 ) {
+				return new Vector2D(0, linestart.y());
+			} else {
+				double b = linestart.y() + s*svec.y();
+				return new Vector2D((double)-(m*b)/(Math.pow(m, 2)+1), (double)b/(Math.pow(m, 2)+1));
+			}
 		} else {
 			return new Vector2D(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
 		}

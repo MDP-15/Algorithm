@@ -60,7 +60,7 @@ public class main {
 					Vector2D sensordirection = s.direction().rotate(angle).multiply(-1);
 					Vector2D vec = phyeng.rayTraceVec(sensororigin, sensordirection);
 					if (vec != null) {
-						lines.add(new Line(new VecInt(sensororigin.multiply(mult), true), new VecInt(vec.multiply(mult),true), Color.red));
+						lines.add(new Line(new VecInt(sensororigin.multiply(mult), true), new VecInt(vec.multiply(mult),true), Color.red,2));
 					}
 				}
 			} else {
@@ -70,7 +70,7 @@ public class main {
 					Vector2D sensordirection = s.direction().rotate(angle);
 					Vector2D vec = phyeng.rayTraceVec(sensororigin, sensordirection);
 					if (vec != null) {
-						lines.add(new Line(new VecInt(sensororigin.multiply(mult), true), new VecInt(vec.multiply(mult),true), Color.red));
+						lines.add(new Line(new VecInt(sensororigin.multiply(mult), true), new VecInt(vec.multiply(mult),true), Color.red,2));
 					}
 				}
 			}
@@ -154,14 +154,15 @@ public class main {
 			Line2D ln = (Line2D) obj.object();
 			VecInt start = new VecInt(ln.start().multiply(mult),true);
 			VecInt end = new VecInt(ln.end().multiply(mult),true);
-			Line drawedline = new Line(start,end,Color.black);
+			Line drawedline = new Line(start,end,Color.white,3);
 			lines.add(drawedline);
 		}
 		for (Object2D obj : phyeng.movingObjects()) {
 			Circle2D circle = (Circle2D) obj.object();
 			VecInt pos = new VecInt(obj.position().add(new Vector2D(-circle.radius(),-circle.radius())).multiply(mult),true);
 			int diameter = (int)Math.round(2*circle.radius()*mult);
-			circles.add(new Circle(pos,diameter, Color.black, true));
+			circles.add(new Circle(pos,diameter, Color.GRAY, true));
+			circles.add(new Circle(pos,diameter, Color.GREEN, false));
 		}
 		panel.lines = lines;
 		panel.lines.addAll(rayTrace(r, phyeng,panel));

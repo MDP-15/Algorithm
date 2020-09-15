@@ -52,7 +52,7 @@ public class Engine2DPanel extends JPanel{
 		}
 		for (Line line: lines) {
 			g2.setColor(line.color);
-			g2.setStroke(new BasicStroke(3));
+			g2.setStroke(new BasicStroke(line.thickness));
 			g2.drawLine(line.start.x(), line.start.y(), line.end.x(), line.end.y());
 		}
 		if (verbose) {

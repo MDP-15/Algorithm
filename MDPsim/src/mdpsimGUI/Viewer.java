@@ -24,6 +24,7 @@ public class Viewer extends JFrame{
 	public Panel map2;
 	public SensorScreen sensors;
 	public Graphics g;
+	public ControlPanel cp;
 	public JMenuBar menu;
 	public String mapBits;
 	MapReader newMap = new MapReader();
@@ -41,6 +42,7 @@ public class Viewer extends JFrame{
 		map1 = constructVirtualMap(c);
 		map2 = constructRobotMap(c);
 		sensors = constructSensorScreen(c);
+		cp = constructControlPanel(c);
 		menuBar();
 	}
 	
@@ -50,8 +52,8 @@ public class Viewer extends JFrame{
 		virtualmap.setSize(331,441);
 		virtualmap.setBackground(Color.lightGray);
 		c.insets = new Insets(1,1,1,1);
-		c.gridx = 1;
-		c.gridy = 3;
+		c.gridx = 0;
+		c.gridy = 0;
 		c.ipadx = 331;
 		c.ipady = 441;
 		c.gridwidth = 1;
@@ -68,8 +70,8 @@ public class Viewer extends JFrame{
 		virtualmap.setSize(331,441);
 		virtualmap.setBackground(Color.lightGray);
 		c.insets = new Insets(1,1,1,1);
-		c.gridx = 2;
-		c.gridy = 3;
+		c.gridx = 1;
+		c.gridy = 0;
 		c.ipadx = 331;
 		c.ipady = 441;
 		c.gridwidth = 1;
@@ -86,8 +88,8 @@ public class Viewer extends JFrame{
 		virtualmap.setSize(331,441);
 		virtualmap.setBackground(Color.lightGray);
 		c.insets = new Insets(1,1,1,1);
-		c.gridx = 3;
-		c.gridy = 3;
+		c.gridx = 2;
+		c.gridy = 0;
 		c.ipadx = 331;
 		c.ipady = 441;
 		c.gridwidth = 1;
@@ -96,6 +98,22 @@ public class Viewer extends JFrame{
 		c.weighty = 0;
 		this.add(virtualmap, c);
 		return virtualmap;
+	}
+	
+	private ControlPanel constructControlPanel(GridBagConstraints c) {
+		ControlPanel controlpanel = new ControlPanel(null);
+		controlpanel.setSize(1000,250);
+		c.insets = new Insets(1,1,1,1);
+		c.gridx = 0;
+		c.gridy = 1;
+		c.ipadx = 996;
+		c.ipady = 250;
+		c.gridwidth = 3;
+		c.gridheight = 1;
+		c.weightx = 0;
+		c.weighty = 0;
+		this.add(controlpanel,c);
+		return controlpanel;
 	}
 	
 	//MENU BAR

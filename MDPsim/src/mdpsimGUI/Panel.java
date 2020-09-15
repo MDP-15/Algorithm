@@ -15,12 +15,15 @@ public class Panel extends JPanel{
 
 	public Panel() {
 		super();
-		lines = new ArrayList<Line>();
-		circles = new ArrayList<Circle>();
+		constructP();
 	}
 	
 	public Panel(LayoutManager lm) {
 		super(lm);
+		constructP();
+	}
+	
+	public void constructP() {
 		lines = new ArrayList<Line>();
 		circles = new ArrayList<Circle>();
 	}

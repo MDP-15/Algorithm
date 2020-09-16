@@ -29,7 +29,6 @@ public class MDPSIM {
 		ArrayList<Object2D> objects = generateMap(s);
 		Engine2D phyeng = new Engine2D(objects, 0.008);
 		Robot r = initializeRobot();
-		actionqueue.add(new Action2D(Action.TURN, Math.PI));
 		vw.setVisible(true);
 		updateAll(r,phyeng, vw.map1);	
 		while(true) {
@@ -43,6 +42,7 @@ public class MDPSIM {
 				updateAll(r, phyeng, vw.map1);
 				sensorUpdate(phyeng, vw.sensors);
 				r.printSensor();
+				actionqueue.addAll(r.policyUpdate());
 			}
 		}
 	}

@@ -1,4 +1,6 @@
 package mdpsimRobot;
+import mdpsimEngine.Action2D;
+import mdpsimEngine.Action2D.Action;
 import mdpsimEngine.Object2D;
 import mdpsimEngine.Vector2D;
 import java.util.ArrayList;
@@ -45,4 +47,17 @@ public class Robot {
 		}
 		System.out.println();
 	}
+	
+	public ArrayList<Action2D> policyUpdate(){
+		ArrayList<Action2D> actions = new ArrayList<Action2D>(0);
+		if (sensorvalues.get(2) == null) {
+			actions.add(new Action2D(Action.ACCELERATE, 10));
+		} else if (sensorvalues.get(2) < 45) {
+			actions.add(new Action2D(Action.ACCELERATE, 100));
+		} else if (sensorvalues.get(2) > 45) {
+			actions.add(new Action2D(Action.ACCELERATE, -100));
+		}
+		return actions;
+	}
+
 }

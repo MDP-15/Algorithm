@@ -37,16 +37,6 @@ public class Vehicle2D extends Object2D{
 				} else {
 					this.acceleration(this.velocity().unit().multiply(action.value()).rotate(0));
 				}
-			} else if (action.action() == Action.DECELERATE) {
-				if (velocity().length() == 0) {
-					if (angleindicator) {
-						this.acceleration(this.direction().unit().multiply(action.value()).rotate(0).multiply(-1));
-					} else {
-						this.acceleration(this.direction().unit().multiply(action.value()).rotate(0));
-					}
-				} else {
-					this.acceleration(this.velocity().unit().multiply(action.value()).multiply(-1).rotate(0));
-				}
 			} else if (action.action() == Action.TURN) {
 				rotationalmomentum = action.value();
 				if (velocity().length() != 0) {
@@ -69,7 +59,6 @@ public class Vehicle2D extends Object2D{
 			angleindicator = false;
 		}
 		this.direction(this.direction().rotate(rotationalmomentum*timestep));
-		this.direction().print();
 	}
 	public boolean angleindicator() {
 		return this.angleindicator;

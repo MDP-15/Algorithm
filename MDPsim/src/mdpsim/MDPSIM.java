@@ -29,8 +29,8 @@ public class MDPSIM {
 		ArrayList<Object2D> objects = generateMap(s);
 		Engine2D phyeng = new Engine2D(objects, 0.008);
 		Robot r = initializeRobot();
+		actionqueue.add(new Action2D(Action.TURN, Math.PI));
 		vw.setVisible(true);
-		actionqueue.add(new Action2D(Action.ACCELERATE, 20));
 		updateAll(r,phyeng, vw.map1);	
 		while(true) {
 			while(!pause) {
@@ -42,10 +42,7 @@ public class MDPSIM {
 				}
 				updateAll(r, phyeng, vw.map1);
 				sensorUpdate(phyeng, vw.sensors);
-				if (phyeng.time() > 2 && !done) {
-					actionqueue.add(new Action2D(Action.DECELERATE, 20));
-					done = true;
-				}
+				r.printSensor();
 			}
 		}
 	}
@@ -62,6 +59,7 @@ public class MDPSIM {
 	public static ArrayList<Line> rayTrace(Robot r,Engine2D phyeng, Engine2DPanel panel) {
 		double mult = (float) panel.getWidth()/(float) 150;
 		ArrayList<Line> lines = new ArrayList<Line>(0);
+		ArrayList<Double> sensoroutput = new ArrayList<Double>();
 		Vector2D origin = phyeng.movingObjects().get(0).position();
 		Vector2D direction = phyeng.movingObjects().get(0).direction();
 		double angle = 0;
@@ -73,7 +71,10 @@ public class MDPSIM {
 					Vector2D sensordirection = s.direction().rotate(angle).multiply(-1);
 					Vector2D vec = phyeng.rayTraceVec(sensororigin, sensordirection);
 					if (vec != null) {
+						sensoroutput.add(sensororigin.length(vec));
 						lines.add(new Line(new VecInt(sensororigin.multiply(mult), true), new VecInt(vec.multiply(mult),true), Color.red,2));
+					} else {
+						sensoroutput.add(Double.POSITIVE_INFINITY);
 					}
 				}
 			} else {
@@ -83,11 +84,15 @@ public class MDPSIM {
 					Vector2D sensordirection = s.direction().rotate(angle);
 					Vector2D vec = phyeng.rayTraceVec(sensororigin, sensordirection);
 					if (vec != null) {
+						sensoroutput.add(sensororigin.length(vec));
 						lines.add(new Line(new VecInt(sensororigin.multiply(mult), true), new VecInt(vec.multiply(mult),true), Color.red,2));
+					} else {
+						sensoroutput.add(Double.POSITIVE_INFINITY);
 					}
 				}
 			}
 		}
+		r.updateSensors(sensoroutput);
 		return lines;
 	}
 		

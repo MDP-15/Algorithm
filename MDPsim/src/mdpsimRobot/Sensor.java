@@ -39,7 +39,7 @@ public class Sensor {
 	}
 	
 	public double minrange() {
-		return this.minrange();
+		return this.minrange;
 	}
 	
 	public void minrange(double minrange) {

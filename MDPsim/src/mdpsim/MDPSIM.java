@@ -18,13 +18,14 @@ public class MDPSIM {
  static ArrayList<Action2D> actionqueue;
 	public static void main(String[] args) throws InterruptedException{
 		String s = parseFormatToMap("0000000000000000000000000000000000000000000000100010000000000000");
-		Viewer vw = new Viewer("MDP Simulator", 1024, 768);
+		Viewer vw = new Viewer();
 		pause = false;
 		actionqueue = new ArrayList<Action2D>(0);
 		inputMDF(s, vw);
 	}
 	
 	public static void inputMDF(String string, Viewer vw) throws InterruptedException{
+		
 		String s = parseFormatToMap(string);
 		ArrayList<Object2D> objects = generateMap(s);
 		Engine2D phyeng = new Engine2D(objects, 0.008);
@@ -97,7 +98,7 @@ public class MDPSIM {
 		return lines;
 	}
 		
-	private static String parseFormatToMap(String b) {
+	public static String parseFormatToMap(String b) {
 		int length = 300 - b.length();
 		String s = "";
 		for (int a = 0; a < length; a++) {

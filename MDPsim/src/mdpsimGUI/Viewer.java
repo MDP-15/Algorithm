@@ -24,14 +24,43 @@ public class Viewer extends JFrame{
 	public Engine2DPanel map1;
 	public Robot2DPanel map2;
 	public SensorScreen sensors;
+	public MapSelector updateMap;
 	public Graphics g;
 	public ControlPanel cp;
 	public JMenuBar menu;
 	public String mapBits;
+	JPanel enginePanel = new JPanel();
+	CardLayout cl = new CardLayout();
 	MapReader newMap = new MapReader();
 	
+	public Viewer (){
+		
+		setTitle("MDP Simulator");
+		setSize(1024, 768);
+		setResizable(false);
+		System.setProperty("background", "#f2f4f7");
+		getContentPane().setBackground(Color.getColor("background"));
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		GridBagConstraints c = new GridBagConstraints();
+		setLayout(new GridBagLayout());
+		
+		enginePanel.setLayout(cl);
+		
+		map1 = constructVirtualMap(c);
+		enginePanel.add(map1, "1");
+		enginePanel.add(updateMap, "2");
+		cl.show(enginePanel, "1");
+		
+		
+		map2 = constructRobotMap(c);
+		sensors = constructSensorScreen(c);
+		cp = constructControlPanel(c);
+		
+		menuBar();
+	}
 	
-	public Viewer (String title, int w, int h){
+	/*public Viewer (String title, int w, int h){
+		CardLayout cl = new CardLayout();
 		setTitle(title);
 		setSize(w, h);
 		setResizable(false);
@@ -44,8 +73,9 @@ public class Viewer extends JFrame{
 		map2 = constructRobotMap(c);
 		sensors = constructSensorScreen(c);
 		cp = constructControlPanel(c);
+		map1.setLayout(cl);
 		menuBar();
-	}
+	}*/
 	
 	//VIRTUAL MAP
 	private Engine2DPanel constructVirtualMap(GridBagConstraints c) {
@@ -171,6 +201,8 @@ public class Viewer extends JFrame{
 						
 						MapReader newMap = new MapReader();
 						newMap.loadSampleArena(mapInput);
+						
+						cl.show(updateMap, "2");
 					}
 				});
 				

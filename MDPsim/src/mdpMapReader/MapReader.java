@@ -6,18 +6,19 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import mdpsim.MDPSIM;
+import mdpsimGUI.MapSelector;
 import mdpsimGUI.Viewer;
 
 public class MapReader {
 
 	public String mapString;
-	public Viewer vw;
+	//public Viewer vw;
 	
 	public MapReader() {
 		
 	}
 	
-	public void loadSampleArena(String fileName) {
+	public void loadSampleArena(String fileName, Viewer vw) {
 		
 		try {
 			
@@ -33,7 +34,8 @@ public class MapReader {
 			reader.close();
 			
 			mapString = out.toString().replace("\n","");
-			MDPSIM.inputMDF(mapString, vw);
+			MapSelector mapSelect = new MapSelector();
+			mapSelect.MapSelector(mapString);
 			
 			
 		}catch(Exception e) {

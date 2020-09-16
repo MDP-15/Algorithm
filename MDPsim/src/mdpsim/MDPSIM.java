@@ -30,6 +30,7 @@ public class MDPSIM {
 		Engine2D phyeng = new Engine2D(objects, 0.008);
 		Robot r = initializeRobot();
 		vw.setVisible(true);
+		actionqueue.add(new Action2D(Action.ACCELERATE, 20));
 		updateAll(r,phyeng, vw.map1);	
 		while(true) {
 			while(!pause) {
@@ -41,8 +42,8 @@ public class MDPSIM {
 				}
 				updateAll(r, phyeng, vw.map1);
 				sensorUpdate(phyeng, vw.sensors);
-				if (phyeng.time() > 5 && !done) {
-					actionqueue.add(new Action2D(Action.TURN, Math.PI/2));
+				if (phyeng.time() > 2 && !done) {
+					actionqueue.add(new Action2D(Action.DECELERATE, 20));
 					done = true;
 				}
 			}
@@ -65,7 +66,7 @@ public class MDPSIM {
 		Vector2D direction = phyeng.movingObjects().get(0).direction();
 		double angle = 0;
 		if (phyeng.movingObjects().get(0).getClass() == Vehicle2D.class) {
-			if (((Vehicle2D) phyeng.movingObjects().get(0)).reverse() == true) {
+			if (((Vehicle2D) phyeng.movingObjects().get(0)).angleindicator() == true) {
 				angle = direction.angle(new Vector2D(0,10));
 				for (Sensor s: r.sensors) {
 					Vector2D sensororigin = origin.add(s.position().rotate(angle).multiply(-1));
@@ -152,7 +153,7 @@ public class MDPSIM {
 		objectmap.add(rightborder);
 		objectmap.add(bottomborder);
 		Circle2D robot = new Circle2D(12.5);
-		Vehicle2D robotobject = new Vehicle2D(robot, new Vector2D(15, 75), new Vector2D(0, 0), new Vector2D(0,0),new Vector2D(10,0),false,false,20, Math.PI/2);
+		Vehicle2D robotobject = new Vehicle2D(robot, new Vector2D(15, 75), new Vector2D(0, 0), new Vector2D(0,0),new Vector2D(-10,0),false,false,20, Math.PI/2);
 		objectmap.addAll(generateXYFromBits(map));
 		objectmap.add(robotobject);
 		return objectmap;

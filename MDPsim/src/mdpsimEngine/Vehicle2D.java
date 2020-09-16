@@ -3,14 +3,14 @@ package mdpsimEngine;
 import mdpsimEngine.Action2D.Action;
 
 public class Vehicle2D extends Object2D{
-	private boolean reverse;
+	private boolean angleindicator;
 	private double maximumspeed;
 	private double traverse;
 	private double rotationalmomentum;
 	
 	public Vehicle2D(Circle2D circle, Vector2D position, Vector2D velocity, Vector2D acceleration, boolean isstatic, boolean reverse, double maximumspeed, double traverse) {
 		super(circle, position, velocity, acceleration, isstatic);
-		this.reverse = reverse;
+		this.angleindicator = reverse;
 		this.maximumspeed = maximumspeed;
 		this.traverse = traverse;
 		this.rotationalmomentum = 0;
@@ -18,7 +18,7 @@ public class Vehicle2D extends Object2D{
 	
 	public Vehicle2D (Circle2D circle, Vector2D position, Vector2D velocity, Vector2D acceleration, Vector2D direction, boolean isstatic, boolean reverse, double maximumspeed, double traverse) {
 		super(circle, position, velocity, acceleration, direction, isstatic);
-		this.reverse = reverse;
+		this.angleindicator = reverse;
 		this.maximumspeed = maximumspeed;
 		this.traverse = traverse;
 		this.rotationalmomentum = 0;
@@ -29,13 +29,21 @@ public class Vehicle2D extends Object2D{
 		if (action != null) {
 			if (action.action() == Action.ACCELERATE) {
 				if (velocity().length() == 0) {
-					this.acceleration(this.direction().unit().multiply(action.value()).rotate(0));
+					if (angleindicator) {
+						this.acceleration(this.direction().unit().multiply(action.value()).rotate(0));
+					} else {
+						this.acceleration(this.direction().unit().multiply(action.value()).rotate(0).multiply(-1));
+					}
 				} else {
 					this.acceleration(this.velocity().unit().multiply(action.value()).rotate(0));
 				}
 			} else if (action.action() == Action.DECELERATE) {
 				if (velocity().length() == 0) {
-					this.acceleration(this.direction().unit().multiply(action.value()).multiply(-1).rotate(0));
+					if (angleindicator) {
+						this.acceleration(this.direction().unit().multiply(action.value()).rotate(0).multiply(-1));
+					} else {
+						this.acceleration(this.direction().unit().multiply(action.value()).rotate(0));
+					}
 				} else {
 					this.acceleration(this.velocity().unit().multiply(action.value()).multiply(-1).rotate(0));
 				}
@@ -56,18 +64,19 @@ public class Vehicle2D extends Object2D{
 		double angle1 = new Vector2D(10,0).angle(this.direction());
 		double angle2 = new Vector2D(-10,0).angle(this.direction());
 		if (angle1 < angle2) {
-			reverse = true;
+			angleindicator = true;
 		} else {
-			reverse = false;
+			angleindicator = false;
 		}
 		this.direction(this.direction().rotate(rotationalmomentum*timestep));
+		this.direction().print();
 	}
-	public boolean reverse() {
-		return this.reverse;
+	public boolean angleindicator() {
+		return this.angleindicator;
 	}
 	
-	public void reverse(boolean reverse) {
-		this.reverse = reverse;
+	public void angleindicator(boolean angleindicator) {
+		this.angleindicator = angleindicator;
 	}
 	
 	public double rotationalmomentum() {

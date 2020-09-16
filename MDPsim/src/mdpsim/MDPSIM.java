@@ -30,6 +30,7 @@ public class MDPSIM {
 		Engine2D phyeng = new Engine2D(objects, 0.008);
 		Robot r = initializeRobot();
 		vw.setVisible(true);
+		actionqueue.add(new Action2D(Action.TURN, Math.PI));
 		updateAll(r,phyeng, vw.map1);	
 		while(true) {
 			while(!pause) {

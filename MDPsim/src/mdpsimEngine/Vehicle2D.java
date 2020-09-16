@@ -28,6 +28,7 @@ public class Vehicle2D extends Object2D{
 	public void update(double timestep, Action2D action) {
 		if (action != null) {
 			if (action.action() == Action.ACCELERATE) {
+				this.rotationalmomentum = 0;
 				if (velocity().length() == 0) {
 					if (angleindicator) {
 						this.acceleration(this.direction().unit().multiply(action.value()).rotate(0));
@@ -40,7 +41,7 @@ public class Vehicle2D extends Object2D{
 			} else if (action.action() == Action.TURN) {
 				rotationalmomentum = action.value();
 				if (velocity().length() != 0) {
-					this.acceleration(this.velocity().unit().multiply(action.value()).rotate(rotationalmomentum*timestep));
+					this.acceleration(this.velocity().unit().multiply(action.value()).rotate(rotationalmomentum));
 				}
 			}
 		}
@@ -48,17 +49,26 @@ public class Vehicle2D extends Object2D{
 	}
 	
 	private void processphysics(double timestep) {
+		System.out.println(rotationalmomentum);
 		this.prevpos(this.position());
 		this.velocity(this.velocity().add(this.acceleration().multiply(timestep)));
 		this.position(this.prevpos().add(this.velocity().multiply(timestep).add(this.acceleration().multiply(0.5*Math.pow(timestep, 2)))));
-		double angle1 = new Vector2D(10,0).angle(this.direction());
-		double angle2 = new Vector2D(-10,0).angle(this.direction());
-		if (angle1 < angle2) {
-			angleindicator = true;
+		if (this.velocity().length() == 0) {
+			double angle1 = new Vector2D(10,0).angle(this.direction());
+			double angle2 = new Vector2D(-10,0).angle(this.direction());
+			if (angle1 < angle2) {
+				angleindicator = true;
+			} else {
+				angleindicator = false;
+			}
+			this.direction(this.direction().rotate(rotationalmomentum*timestep));
 		} else {
-			angleindicator = false;
+			if (angleindicator) {
+				this.direction(this.prevpos().subtract(this.position()));
+			} else {
+				this.direction(this.position().subtract(this.prevpos()));
+			}
 		}
-		this.direction(this.direction().rotate(rotationalmomentum*timestep));
 	}
 	public boolean angleindicator() {
 		return this.angleindicator;

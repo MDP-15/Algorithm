@@ -72,4 +72,8 @@ public class Vector2D {
 	public void print() {
 		System.out.println("X :" +this.x+" Y :"+this.y);
 	}
+	
+	public Vector2D flip() {
+		return new Vector2D(this.y, this.x);
+	}
 }

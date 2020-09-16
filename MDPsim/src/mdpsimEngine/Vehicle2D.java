@@ -41,8 +41,7 @@ public class Vehicle2D extends Object2D{
 				}
 			} else if (action.action() == Action.TURN) {
 				rotationalmomentum = action.value();
-				if (velocity().length() == 0) {
-				} else {
+				if (velocity().length() != 0) {
 					this.acceleration(this.velocity().unit().multiply(action.value()).rotate(rotationalmomentum*timestep));
 				}
 			}
@@ -54,19 +53,14 @@ public class Vehicle2D extends Object2D{
 		this.prevpos(this.position());
 		this.velocity(this.velocity().add(this.acceleration().multiply(timestep)));
 		this.position(this.prevpos().add(this.velocity().multiply(timestep).add(this.acceleration().multiply(0.5*Math.pow(timestep, 2)))));
-		if (reverse) {
-			if(this.velocity().length() != 0) {
-				this.direction(this.prevpos().subtract(this.position()).rotate(rotationalmomentum*timestep));
-			} else {
-				this.direction(this.direction().rotate(-rotationalmomentum*timestep));
-			}
+		double angle1 = new Vector2D(10,0).angle(this.direction());
+		double angle2 = new Vector2D(-10,0).angle(this.direction());
+		if (angle1 < angle2) {
+			reverse = true;
 		} else {
-			if(this.velocity().length() != 0) {
-				this.direction(this.position().subtract(this.prevpos()).rotate(rotationalmomentum*timestep));
-			} else {
-				this.direction(this.direction().rotate(rotationalmomentum*timestep));
-			}
+			reverse = false;
 		}
+		this.direction(this.direction().rotate(rotationalmomentum*timestep));
 	}
 	public boolean reverse() {
 		return this.reverse;
@@ -74,6 +68,14 @@ public class Vehicle2D extends Object2D{
 	
 	public void reverse(boolean reverse) {
 		this.reverse = reverse;
+	}
+	
+	public double rotationalmomentum() {
+		return this.rotationalmomentum;
+	}
+	
+	public void rotationalmomentum(double rotationalmomentum) {
+		this.rotationalmomentum = rotationalmomentum;
 	}
 }
 

@@ -102,6 +102,7 @@ public class Engine2D{
 			circle.position(circle.prevpos());
 			circle.velocity(new Vector2D(0,0));
 			circle.acceleration(new Vector2D(0,0));
+			((Vehicle2D)circle).rotationalmomentum(0);
 		}
 		return;
 	}
@@ -162,7 +163,6 @@ public class Engine2D{
 				if (test_s > 0 && test_s < 1 && test_s < s) {
 					s = test_s;
 					vec = lineIntersect(line.start(), line.end(),((Line2D)collide.object()).start(), (((Line2D) collide.object()).end()));
-
 				}
 			}
 			return vec;

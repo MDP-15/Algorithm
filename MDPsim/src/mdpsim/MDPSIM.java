@@ -14,6 +14,7 @@ import mdpsimRobot.*;
 
 public class MDPSIM {
 	public static boolean pause;
+	public static boolean done = false;
  static ArrayList<Action2D> actionqueue;
 	public static void main(String[] args) throws InterruptedException{
 		String s = parseFormatToMap("0000000000000000000000000000000000000000000000100010000000000000");
@@ -26,14 +27,13 @@ public class MDPSIM {
 	public static void inputMDF(String string, Viewer vw) throws InterruptedException{
 		String s = parseFormatToMap(string);
 		ArrayList<Object2D> objects = generateMap(s);
-		Engine2D phyeng = new Engine2D(objects, 0.016);
+		Engine2D phyeng = new Engine2D(objects, 0.008);
 		Robot r = initializeRobot();
 		vw.setVisible(true);
 		updateAll(r,phyeng, vw.map1);	
-		actionqueue.add(new Action2D(Action.TURN, Math.PI/2));
 		while(true) {
 			while(!pause) {
-				Thread.sleep(16);
+				Thread.sleep(8);
 				if (actionqueue.size() == 0) {
 					phyeng.next(null);
 				} else {
@@ -41,6 +41,10 @@ public class MDPSIM {
 				}
 				updateAll(r, phyeng, vw.map1);
 				sensorUpdate(phyeng, vw.sensors);
+				if (phyeng.time() > 5 && !done) {
+					actionqueue.add(new Action2D(Action.TURN, Math.PI/2));
+					done = true;
+				}
 			}
 		}
 	}
@@ -148,7 +152,7 @@ public class MDPSIM {
 		objectmap.add(rightborder);
 		objectmap.add(bottomborder);
 		Circle2D robot = new Circle2D(12.5);
-		Vehicle2D robotobject = new Vehicle2D(robot, new Vector2D(15, 15), new Vector2D(0, 0), new Vector2D(0,0),new Vector2D(10,0),false,false,20, Math.PI/2);
+		Vehicle2D robotobject = new Vehicle2D(robot, new Vector2D(15, 75), new Vector2D(0, 0), new Vector2D(0,0),new Vector2D(10,0),false,false,20, Math.PI/2);
 		objectmap.addAll(generateXYFromBits(map));
 		objectmap.add(robotobject);
 		return objectmap;

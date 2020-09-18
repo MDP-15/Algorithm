@@ -170,7 +170,9 @@ public class Viewer extends JFrame{
 						String mapInput = JOptionPane.showInputDialog("Load map?","Arena_1");
 						
 						MapReader newMap = new MapReader();
+						remove(map1); //This is correct (maybe) need to re-initialize map1
 						newMap.loadSampleArena(mapInput);
+						
 					}
 				});
 				

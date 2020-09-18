@@ -11,7 +11,7 @@ import mdpsimGUI.Viewer;
 public class MapReader {
 
 	public String mapString;
-	public Viewer vw;
+	public Viewer vw; //Not initialized
 	
 	public MapReader() {
 		
@@ -27,13 +27,17 @@ public class MapReader {
 			String textLine;
 			
 			while((textLine=reader.readLine()) != null){
-				out.append(textLine+"\n");
+				out.append(textLine);
 			}
 			
 			reader.close();
-			
+			System.out.println("Debugging "+out);
 			mapString = out.toString().replace("\n","");
-			MDPSIM.inputMDF(mapString, vw);
+			String newMapString = out.toString();
+			System.out.println("Debugging "+newMapString);
+			//MDPSIM.inputMDF(newMapString,vw); //vw is null cause not initialized
+			vw.add(vw.map1); //Maybe correct
+			MDPSIM.inputMDF(newMapString);
 			
 			
 		}catch(Exception e) {

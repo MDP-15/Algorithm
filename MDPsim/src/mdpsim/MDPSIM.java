@@ -15,17 +15,27 @@ import mdpsimRobot.*;
 public class MDPSIM {
 	public static boolean pause;
 	public static boolean done = false;
+	public static Viewer vw;
  static ArrayList<Action2D> actionqueue;
 	public static void main(String[] args) throws InterruptedException{
-		String s = parseFormatToMap("0000000000000000000000000000000000000000000000100010000000000000");
-		Viewer vw = new Viewer("MDP Simulator", 1024, 768);
+		String s = parseFormatToMap(""); 
+		vw = new Viewer("MDP Simulator", 1024, 768); //First Panel
 		pause = false;
 		actionqueue = new ArrayList<Action2D>(0);
-		inputMDF(s, vw);
+		inputMDF(null);
 	}
+	//Problem: Removing of panel and Updating of panel 
+	//Cannot see the map
 	
-	public static void inputMDF(String string, Viewer vw) throws InterruptedException{
-		String s = parseFormatToMap(string);
+	//Removed vw cause not initialized in MapReader
+	public static void inputMDF(String mdfString) throws InterruptedException{
+		if(mdfString == null) {
+			mdfString = "0000000000000000000000000000000000000000000000100010000000000000";
+			//mdfString = "000000010000000000000000000000000000000000000000100000000000111100000000000000000001100011000000001100000000000001100000000000000000000111100000000000000100000000000000000000000000000000000000000000000000000001000000111100001000000000100001000000000000000000000000000000000000000000000000100000000000";
+		}
+		System.out.println("MDF STRING: "+mdfString);
+		String s = parseFormatToMap(mdfString);   
+		//Adding vw.add here doesnt work
 		ArrayList<Object2D> objects = generateMap(s);
 		Engine2D phyeng = new Engine2D(objects, 0.008);
 		Robot r = initializeRobot();

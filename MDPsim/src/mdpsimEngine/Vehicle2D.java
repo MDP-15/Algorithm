@@ -49,7 +49,7 @@ public class Vehicle2D extends Object2D{
 	}
 	
 	private void processphysics(double timestep) {
-		System.out.println(rotationalmomentum);
+
 		this.prevpos(this.position());
 		this.velocity(this.velocity().add(this.acceleration().multiply(timestep)));
 		this.position(this.prevpos().add(this.velocity().multiply(timestep).add(this.acceleration().multiply(0.5*Math.pow(timestep, 2)))));

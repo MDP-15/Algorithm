@@ -47,7 +47,7 @@ public class MDPSIM {
 					phyeng.next(actionqueue.remove(0));
 				}
 				updateAll(r, phyeng, vw.map1);
-				sensorUpdate(phyeng, vw.sensors);
+				sensorUpdate(phyeng, vw.sensors, r);
 				r.printSensor();
 				actionqueue.addAll(r.policyUpdate(phyeng.time()));
 				if (vw.flag == true) {
@@ -189,10 +189,10 @@ public class MDPSIM {
 		panel.repaint();
 	}
 	
-	private static void sensorUpdate(Engine2D phyeng, SensorScreen sc) {
+	private static void sensorUpdate(Engine2D phyeng, SensorScreen sc, Robot r) {
 		double time = phyeng.time();
 		long timesteps = phyeng.timestepselapsed();
-		sc.update(time, timesteps);
+		sc.update(time, timesteps, r.sensors, r.sensorvalues);
 	}
 	
 }

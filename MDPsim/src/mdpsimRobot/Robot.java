@@ -98,8 +98,8 @@ public class Robot {
 //				mh.addAction(RobotAction.TR);
 //			}
 //		}
+		}
 		actions.add(mh.doNext(time , sensorvalues)); // DO NOT TOUCH
 		return actions;
 	}
-
 }

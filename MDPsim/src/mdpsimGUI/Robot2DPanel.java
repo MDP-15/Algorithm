@@ -17,5 +17,17 @@ public class Robot2DPanel extends JPanel{
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+<<<<<<< Updated upstream
+=======
+		
+		//DRAW GRID LINES
+		for(i=0;i<rows+1;i++) {
+			g.drawLine(originX, originY + i * cellSize, originX+cols*cellSize , originY + i * cellSize);
+		}
+				
+		for(j=0;j<cols+1;j++) {
+			g.drawLine(originX+ j * cellSize, originY, originX+ j * cellSize , originY+rows*cellSize);
+		}
+>>>>>>> Stashed changes
 	}
 }

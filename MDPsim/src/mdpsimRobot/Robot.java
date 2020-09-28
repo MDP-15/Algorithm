@@ -51,13 +51,24 @@ public class Robot {
 	// robot logic
 	public ArrayList<Action2D> policyUpdate(){
 		ArrayList<Action2D> actions = new ArrayList<Action2D>(0);
+<<<<<<< Updated upstream
 		if (sensorvalues.get(1) == null) {
 			actions.add(new Action2D(Action.ACCELERATE, 10));
 		} else if (sensorvalues.get(1) < 10) {
 			actions.add(new Action2D(Action.ACCELERATE, 40));
 		} else if (sensorvalues.get(1) > 10) {
 			actions.add(new Action2D(Action.ACCELERATE, -40));
+=======
+		if (sensorvalues != null) {
+			if(sensorvalues.get(0) <= 15) {
+				mh.addAction(RobotAction.TL);
+			}
+			else if(sensorvalues.get(5) <= 15) {
+				mh.addAction(RobotAction.TR);
+			}
+>>>>>>> Stashed changes
 		}
+		actions.add(mh.doNext(time , sensorvalues));
 		return actions;
 	}
 

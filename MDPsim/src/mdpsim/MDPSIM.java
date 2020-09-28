@@ -33,13 +33,6 @@ public class MDPSIM {
 	
 	//Removed vw cause not initialized in MapReader
 	public static void inputMDF(String mdfString) throws InterruptedException{
-		Vector2D vec = new Vector2D(0,10);
-		Vector2D vec2 = new Vector2D(-10,0);
-		System.out.println(vec.angle(vec2));
-		if(mdfString == null) {
-			mdfString = "0000000000000000000000000000000000000000000000100010000000000000";
-			mdfString = "000000010000000000000000000000000000000000000000100000000000111100000000000000000001100011000000001100000000000001100000000000000000000111100000000000000100000000000000000000000000000000000000000000000000000001000000111100001000000000100001000000000000000000000000000000000000000000000000100000000000";
-		}
 		System.out.println("MDF STRING: "+mdfString);
 		String s = parseFormatToMap(mdfString);   
 		ArrayList<Object2D> objects = generateMap(s);
@@ -47,6 +40,7 @@ public class MDPSIM {
 		Robot r = initializeRobot();
 		vw.setVisible(true);
 		updateAll(r,phyeng, vw.map1);	
+		actionqueue.add(new Action2D(Action.ACCELERATE,20));
 		while(true) {
 			while(!pause) {
 				Thread.sleep(8);

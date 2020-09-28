@@ -66,10 +66,34 @@ public class Robot {
 	// robot logic
 	public ArrayList<Action2D> policyUpdate(double time){
 		ArrayList<Action2D> actions = new ArrayList<Action2D>(0);
-		if (sensorvalues != null) {
-			mh.addAction(RobotAction.TR);
-			actions.add(mh.doNext(time , sensorvalues));
-		}
+//		if (sensorvalues != null) {
+//			mh.addAction(RobotAction.TL);
+//		}
+//		
+//		if(sensorvalues.get(3) != null && sensorvalues.get(3) > 30) {
+//			mh.addAction(RobotAction.TL);
+//		}
+//		
+//		if(sensorvalues.get(3) != null && sensorvalues.get(3) < 15) {
+//			mh.addAction(RobotAction.TR);
+//		}
+//		if(sensorvalues.get(0) != null) {
+//			//System.out.println("INSIDE GET 0");
+//			if(sensorvalues.get(0) <= 15) {
+//				System.out.println("TURN LEFT");
+//				mh.addAction(RobotAction.TL);
+//			}
+//		}
+//		
+//		if(sensorvalues.get(5) != null) {
+//			//System.out.println("INSIDE GET 5");
+//			if(sensorvalues.get(5) <= 15) {
+//				System.out.println("TURN RIGHT");
+//				mh.addAction(RobotAction.TR);
+//			}
+//		}
+		actions.add(mh.doNext(time , sensorvalues));
+		
 		return actions;
 	}
 

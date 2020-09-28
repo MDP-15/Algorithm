@@ -60,12 +60,12 @@ public class MDPSIM {
 	//initialize virtual robot object;
 	public static Robot initializeRobot() {
 		Robot robot = new Robot(new ArrayList<Sensor>(), 10);
-		robot.addSensor("left_front",new Vector2D(0,-9), new Vector2D(-10,0),10,80);
-		robot.addSensor("left_back",new Vector2D(0,9), new Vector2D(-10,0),10,80);
-		robot.addSensor("front_right",new Vector2D(7,-7), new Vector2D(0,-10), 10, 80);
-		robot.addSensor("front_left",new Vector2D(-7,-7), new Vector2D(0,-10), 10, 80);
-		robot.addSensor("middle_front",new Vector2D(0,-9), new Vector2D(0,-10), 10, 80);
-		robot.addSensor("right_front",new Vector2D(0,-9), new Vector2D(10,0), 10, 80);
+		robot.addSensor("RIGHT_FRONT",new Vector2D(0,-9), new Vector2D(-10,0),10,80);
+		robot.addSensor("RIGHT_BACK",new Vector2D(0,9), new Vector2D(-10,0),10,80);
+		robot.addSensor("FRONT_LEFT",new Vector2D(7,-7), new Vector2D(0,-10), 10, 80);
+		robot.addSensor("FRONT_RIGHT",new Vector2D(-7,-7), new Vector2D(0,-10), 10, 80);
+		robot.addSensor("FRONT_MIDDLE",new Vector2D(0,-9), new Vector2D(0,-10), 10, 80);
+		robot.addSensor("LEFT_LONG",new Vector2D(0,-9), new Vector2D(10,0), 10, 80);
 		return robot;
 	}
 	

@@ -38,7 +38,7 @@ public class MDPSIM {
 		Robot r = initializeRobot();
 		vw.setVisible(true);
 		updateAll(r,phyeng, vw.map1);	
-		actionqueue.add(new Action2D(Action.ACCELERATE,20));
+		actionqueue.add(new Action2D(Action.TURN,Math.PI));
 		while(true) {
 				Thread.sleep(8);
 				if (actionqueue.size() == 0) {

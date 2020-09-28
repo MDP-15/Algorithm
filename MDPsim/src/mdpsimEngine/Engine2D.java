@@ -152,7 +152,7 @@ public class Engine2D{
 		if (direction.x() == 0 && direction.y() == 0) {
 			return null;
 		} else {
-			Vector2D svec = direction.multiply((double)200/direction.length(new Vector2D(0,0)));
+			Vector2D svec = direction.multiply((double)600/direction.length(new Vector2D(0,0)));
 			Line2D line = new Line2D(origin, origin.add(svec));
 			Object2D lineobj = new Object2D(line, line.start(), new Vector2D(0,0), new Vector2D(0,0), true);
 			ArrayList<Object2D> broadcollide = isBroadCollide(lineobj);

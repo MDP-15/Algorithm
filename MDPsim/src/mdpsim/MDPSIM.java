@@ -6,8 +6,6 @@ import mdpsimEngine.*;
 import mdpsimEngine.Action2D.Action;
 
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.lang.String;
 import java.util.ArrayList;
 import mdpsimRobot.*;
@@ -52,7 +50,7 @@ public class MDPSIM {
 				sensorUpdate(phyeng, vw.sensors);
 				r.printSensor();
 				actionqueue.addAll(r.policyUpdate());
-				if (vw.flag = true) {
+				if (vw.flag == true) {
 					vw.flag = false;
 					break;
 				}

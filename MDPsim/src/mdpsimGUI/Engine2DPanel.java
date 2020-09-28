@@ -50,10 +50,10 @@ public class Engine2DPanel extends JPanel{
 				g2.drawOval(circles.get(a).position.x(),circles.get(a).position.y(), circles.get(a).diameter, circles.get(a).diameter);
 			}
 		}
-		for (int a = 0; a < lines.size(); a++) {
-			g2.setColor(lines.get(a).color);
-			g2.setStroke(new BasicStroke(lines.get(a).thickness));
-			g2.drawLine(lines.get(a).start.x(), lines.get(a).start.y(), lines.get(a).end.x(), lines.get(a).end.y());
+		for (int b = 0; b < lines.size(); b++) {
+			g2.setColor(lines.get(b).color);
+			g2.setStroke(new BasicStroke(lines.get(b).thickness));
+			g2.drawLine(lines.get(b).start.x(), lines.get(b).start.y(), lines.get(b).end.x(), lines.get(b).end.y());
 		}
 		if (verbose) {
 			System.out.println(circles.size() +" circles drawn.");

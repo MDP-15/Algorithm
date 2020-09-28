@@ -37,7 +37,7 @@ public class Vehicle2D extends Object2D{
 			} else if (action.action() == Action.TURN) {
 				rotationalmomentum = action.value();
 				if (velocity().length() != 0) {
-					this.acceleration(this.velocity().unit().multiply(action.value()).rotate(rotationalmomentum));
+					this.acceleration(this.velocity().unit().multiply(action.value()).rotate(rotationalmomentum*timestep));
 				}
 			}
 		}
@@ -45,7 +45,6 @@ public class Vehicle2D extends Object2D{
 	}
 	
 	private void processphysics(double timestep) {
-
 		this.prevpos(this.position());
 		this.velocity(this.velocity().add(this.acceleration().multiply(timestep)));
 		this.position(this.prevpos().add(this.velocity().multiply(timestep).add(this.acceleration().multiply(0.5*Math.pow(timestep, 2)))));

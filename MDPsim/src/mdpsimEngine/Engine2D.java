@@ -120,7 +120,7 @@ public class Engine2D{
 				return new Vector2D(0, linestart.y());
 			} else {
 				double b = linestart.y() + s*svec.y();
-				return new Vector2D((double)-(m*b)/(Math.pow(m, 2)+1), (double)b/(Math.pow(m, 2)+1));
+				return new Vector2D(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
 			}
 		} else {
 			return new Vector2D(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);

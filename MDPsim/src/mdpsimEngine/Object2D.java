@@ -43,7 +43,7 @@ public class Object2D {
 		this.acceleration = acceleration;
 		this.isstatic = isstatic;
 		if (velocity.length(new Vector2D(0,0)) == 0) {
-			this.direction = new Vector2D(0,1);
+			this.direction = new Vector2D(0,10);
 		} else {
 			this.direction = velocity;
 		}

@@ -3,10 +3,12 @@ package mdpsimEngine;
 public class Line2D {
 	public Vector2D start;
 	public Vector2D end;
+	public boolean flag;
 	
 	public Line2D(Vector2D start, Vector2D end) {
 		this.start = start;
 		this.end = end;
+		this.flag = false;
 	}
 	
 	public Vector2D start() {

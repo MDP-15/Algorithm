@@ -151,7 +151,7 @@ public class MDPSIM {
 		objectmap.add(rightborder);
 		objectmap.add(bottomborder);
 		Circle2D robot = new Circle2D(10);
-		Vehicle2D robotobject = new Vehicle2D(robot, new Vector2D(15, 75), new Vector2D(0, 0), new Vector2D(0,0),new Vector2D(10,0),false,false,20, Math.PI/2);
+		Vehicle2D robotobject = new Vehicle2D(robot, new Vector2D(15, 15), new Vector2D(0, 0), new Vector2D(0,0),new Vector2D(10,0),false,false,20, Math.PI/2);
 		objectmap.addAll(generateXYFromBits(map));
 		objectmap.add(robotobject);
 		return objectmap;
@@ -162,10 +162,15 @@ public class MDPSIM {
 		double mult = (float) panel.getWidth()/ (float) 150;
 		ArrayList<Circle> circles = new ArrayList<Circle>();
 		for (Object2D obj : phyeng.staticObjects()) {
+			Line drawedline;
 			Line2D ln = (Line2D) obj.object();
 			VecInt start = new VecInt(ln.start().multiply(mult),true);
 			VecInt end = new VecInt(ln.end().multiply(mult),true);
-			Line drawedline = new Line(start,end,Color.white,3);
+			if (ln.flag == true) {
+				drawedline = new Line(start,end,Color.green,3);
+			} else {
+				drawedline = new Line(start,end,Color.white,3);
+			}
 			lines.add(drawedline);
 		}
 		for (Object2D obj : phyeng.movingObjects()) {

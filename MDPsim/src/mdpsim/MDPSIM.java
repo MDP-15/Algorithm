@@ -33,7 +33,7 @@ public class MDPSIM {
 	
 	//Removed vw cause not initialized in MapReader
 	public static void inputMDF(String mdfString) throws InterruptedException{
-		System.out.println("MDF STRING: "+mdfString);
+		//System.out.println("MDF STRING: "+mdfString);
 		String s = parseFormatToMap(mdfString);   
 		ArrayList<Object2D> objects = generateMap(s);
 		Engine2D phyeng = new Engine2D(objects, 0.008);
@@ -42,7 +42,6 @@ public class MDPSIM {
 		updateAll(r,phyeng, vw.map1);	
 		actionqueue.add(new Action2D(Action.ACCELERATE,20));
 		while(true) {
-			while(!pause) {
 				Thread.sleep(8);
 				if (actionqueue.size() == 0) {
 					phyeng.next(null);
@@ -57,7 +56,6 @@ public class MDPSIM {
 					vw.flag = false;
 					break;
 				}
-			}
 		}
 	}
 	

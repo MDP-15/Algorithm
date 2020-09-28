@@ -66,7 +66,7 @@ public class Vector2D {
 	}
 	
 	public double angle(Vector2D vec) {
-		return Math.atan2(this.x*vec.y()-this.y-vec.x(), this.x*vec.x()+this.y*vec.y());
+		return Math.atan2(this.x,this.y)-Math.atan2(vec.x(), vec.y());
 	}
 	
 	public void print() {

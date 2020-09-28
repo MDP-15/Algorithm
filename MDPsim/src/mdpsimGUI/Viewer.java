@@ -28,10 +28,12 @@ public class Viewer extends JFrame{
 	public ControlPanel cp;
 	public JMenuBar menu;
 	public String mapBits;
+	public boolean flag;
 	MapReader newMap = new MapReader();
 	
 	
 	public Viewer (String title, int w, int h){
+		this.flag = false;
 		setTitle(title);
 		setSize(w, h);
 		setResizable(false);
@@ -124,8 +126,20 @@ public class Viewer extends JFrame{
 		
 		JMenu file = new JMenu("File");
 		menu.add(file);
-		JMenuItem SampleArena = new JMenuItem("Sample Arenas");
-		file.add(SampleArena);
+		
+		JMenu arenas = new JMenu("SampleArena");
+		menu.add(arenas);
+		JMenuItem sampleA1 = new JMenuItem("Sample Arena 1");
+		JMenuItem sampleA2 = new JMenuItem("Sample Arena 2");
+		JMenuItem sampleA3 = new JMenuItem("Sample Arena 3");
+		JMenuItem sampleA4 = new JMenuItem("Sample Arena 4");
+		JMenuItem sampleA5 = new JMenuItem("Sample Arena 5");
+		
+		arenas.add(sampleA1);
+		arenas.add(sampleA2);
+		arenas.add(sampleA3);
+		arenas.add(sampleA4);
+		arenas.add(sampleA5);
 		
 		JMenuItem tcpSocket = new JMenuItem("Socket Connection");
 		file.add(tcpSocket);
@@ -138,35 +152,21 @@ public class Viewer extends JFrame{
 		JMenuItem view = new JMenuItem("View");
 		settings.add(view);
 		
-		//FILE -> Sample Arenas
-		class loadMapAction implements ActionListener{
+		class socketBtn implements ActionListener{
 			public void actionPerformed(ActionEvent e) {
+				TCPsocket.tcpSocket();
+			}
+		}
+			tcpSocket.addActionListener(new socketBtn());
 			
+			//SampleArenas
+			//Arena 1
+			sampleA1.addActionListener(new ActionListener() {
 				JFrame frame = new JFrame();
 				frame.setSize(300,300);
 				frame.setVisible(true);
 				//frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				
-<<<<<<< Updated upstream
-				JPanel samplePanel = new JPanel();
-				frame.add(samplePanel);
-=======
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					// TODO Auto-generated method stub
-					System.out.println("BUTTON PRESSED");
-					String mapInput = "Arena_1";
-					
-					MapReader newMap = new MapReader();
-					newMap.loadSampleArena(mapInput,Viewer.this);
-					System.out.println("Arena 1 clicked");
-					
-				}
-			});
-			
-			//Arena 2
-			sampleA2.addActionListener(new ActionListener() {
->>>>>>> Stashed changes
 				
 				JButton sample1 = new JButton("Arena 1");
 				samplePanel.add(sample1);
@@ -180,64 +180,79 @@ public class Viewer extends JFrame{
 				JButton sample4 = new JButton("Arena 4");
 				samplePanel.add(sample4);
 				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					System.out.println("BUTTON PRESSED");
+					String mapInput = "Arena_1";
+					
+					MapReader newMap = new MapReader();
+					//remove(map1); //This is correct (maybe) need to re-initialize map1
+					newMap.loadSampleArena(mapInput,Viewer.this);
+					//repaint();
+					System.out.println("Arena 1 clicked");
+					
+				}
+			});
+			
+			//Arena 2
+			sampleA2.addActionListener(new ActionListener() {
 				
-				//ARENA 1
-				sample1.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						
-						String mapInput = JOptionPane.showInputDialog("Load map?","Arena_1");
-						
-						MapReader newMap = new MapReader();
-						remove(map1); //This is correct (maybe) need to re-initialize map1
-						newMap.loadSampleArena(mapInput);
-						
-					}
-				});
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					String mapInput = "Arena_2";
+					
+					MapReader newMap = new MapReader();
+					newMap.loadSampleArena(mapInput, Viewer.this);
+					System.out.println("Arena 2 clicked");
+					
+				}
+			});
+			
+			//Arena 3
+			sampleA3.addActionListener(new ActionListener() {
 				
-				//ARENA 2
-				sample2.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						
-						String mapInput = JOptionPane.showInputDialog("Load map?","Arena_2");
-						
-						MapReader newMap = new MapReader();
-						newMap.loadSampleArena(mapInput);
-						
-					}
-				});
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					String mapInput = "Arena_3";
+					
+					MapReader newMap = new MapReader();
+					newMap.loadSampleArena(mapInput, Viewer.this);
+					System.out.println("Arena 3 clicked");
+					
+				}
+			});
+			
+			//Arena 4
+			sampleA4.addActionListener(new ActionListener() {
 				
-				//ARENA 3
-				sample3.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						
-						String mapInput = JOptionPane.showInputDialog("Load map?","Arena_3");
-						
-						MapReader newMap = new MapReader();
-						newMap.loadSampleArena(mapInput);
-					}
-				});
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					String mapInput = "Arena_4";
+					
+					MapReader newMap = new MapReader();
+					newMap.loadSampleArena(mapInput, Viewer.this);
+					System.out.println("Arena 4 clicked");
+					
+				}
+			});
+			
+			sampleA5.addActionListener(new ActionListener() {
 				
-				//ARENA 4
-				sample4.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						
-						String mapInput = JOptionPane.showInputDialog("Load map?","Arena_4");
-						
-						MapReader newMap = new MapReader();
-						newMap.loadSampleArena(mapInput);
-					}
-				});
-			}
-		}
-		SampleArena.addActionListener(new loadMapAction());
-		
-		
-		class socketBtn implements ActionListener{
-			public void actionPerformed(ActionEvent e) {
-				TCPsocket.tcpSocket();
-			}
-		}
-			tcpSocket.addActionListener(new socketBtn());
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+//					String mapInput = "Arena_5";
+//					
+//					MapReader newMap = new MapReader();
+//					newMap.loadSampleArena(mapInput);
+//					System.out.println("Arena 5 clicked");
+					
+				}
+			});
     }
 	
 	

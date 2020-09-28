@@ -179,7 +179,7 @@ public class Engine2D{
 		double t = ((( s2_x * (line1_start.y() - line2_start.y())) - (s2_y * (line1_start.x() - line2_start.x()))))/((-s2_x * s1_y) + (s1_x * s2_y));
 		
 		if ( s>= 0 && s <= 1 && t >= 0 && t <= 1) {
-			return t;
+			return s;
 		}
 		
 		return -1;

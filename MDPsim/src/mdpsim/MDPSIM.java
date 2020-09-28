@@ -16,43 +16,33 @@ public class MDPSIM {
 	public static boolean pause;
 	public static boolean done = false;
 	public static Viewer vw;
+	public static String mdfString = null;
+	
  static ArrayList<Action2D> actionqueue;
 	public static void main(String[] args) throws InterruptedException{
-		String s = parseFormatToMap(""); 
+		mdfString = parseFormatToMap(""); 
 		vw = new Viewer("MDP Simulator", 1024, 768); //First Panel
 		pause = false;
 		actionqueue = new ArrayList<Action2D>(0);
-<<<<<<< Updated upstream
-		inputMDF(null);
-=======
 		while (true) {
 			//System.out.println("flag");
 			inputMDF(mdfString);
 		}
->>>>>>> Stashed changes
 	}
 	//Problem: Removing of panel and Updating of panel 
 	//Cannot see the map
 	
 	//Removed vw cause not initialized in MapReader
 	public static void inputMDF(String mdfString) throws InterruptedException{
-<<<<<<< Updated upstream
-		if(mdfString == null) {
-			mdfString = "0000000000000000000000000000000000000000000000100010000000000000";
-			//mdfString = "000000010000000000000000000000000000000000000000100000000000111100000000000000000001100011000000001100000000000001100000000000000000000111100000000000000100000000000000000000000000000000000000000000000000000001000000111100001000000000100001000000000000000000000000000000000000000000000000100000000000";
-		}
 		System.out.println("MDF STRING: "+mdfString);
-=======
 		//System.out.println("MDF STRING: "+mdfString);
->>>>>>> Stashed changes
 		String s = parseFormatToMap(mdfString);   
-		//Adding vw.add here doesnt work
 		ArrayList<Object2D> objects = generateMap(s);
 		Engine2D phyeng = new Engine2D(objects, 0.008);
 		Robot r = initializeRobot();
 		vw.setVisible(true);
-		actionqueue.add(new Action2D(Action.TURN, Math.PI));
 		updateAll(r,phyeng, vw.map1);	
+		actionqueue.add(new Action2D(Action.ACCELERATE,20));
 		while(true) {
 				Thread.sleep(8);
 				if (actionqueue.size() == 0) {
@@ -64,17 +54,13 @@ public class MDPSIM {
 				sensorUpdate(phyeng, vw.sensors);
 				r.printSensor();
 				actionqueue.addAll(r.policyUpdate());
-<<<<<<< Updated upstream
-			}
-=======
 				if (vw.flag = true) {
 					vw.flag = false;
 					break;
 				}
->>>>>>> Stashed changes
 		}
 	}
-
+	
 	//initialize virtual robot object;
 	public static Robot initializeRobot() {
 		Robot robot = new Robot(new ArrayList<Sensor>(), 12.5);
@@ -90,23 +76,8 @@ public class MDPSIM {
 		ArrayList<Double> sensoroutput = new ArrayList<Double>();
 		Vector2D origin = phyeng.movingObjects().get(0).position();
 		Vector2D direction = phyeng.movingObjects().get(0).direction();
-		double angle = 0;
+		double angle = phyeng.movingObjects().get(0).direction().angle(new Vector2D(0,10));
 		if (phyeng.movingObjects().get(0).getClass() == Vehicle2D.class) {
-			if (((Vehicle2D) phyeng.movingObjects().get(0)).angleindicator() == true) {
-				angle = direction.angle(new Vector2D(0,10));
-				for (Sensor s: r.sensors) {
-					Vector2D sensororigin = origin.add(s.position().rotate(angle).multiply(-1));
-					Vector2D sensordirection = s.direction().rotate(angle).multiply(-1);
-					Vector2D vec = phyeng.rayTraceVec(sensororigin, sensordirection);
-					if (vec != null) {
-						sensoroutput.add(sensororigin.length(vec));
-						lines.add(new Line(new VecInt(sensororigin.multiply(mult), true), new VecInt(vec.multiply(mult),true), Color.red,2));
-					} else {
-						sensoroutput.add(Double.POSITIVE_INFINITY);
-					}
-				}
-			} else {
-				angle = direction.angle(new Vector2D(0,-10));
 				for (Sensor s: r.sensors) {
 					Vector2D sensororigin = origin.add(s.position().rotate(angle));
 					Vector2D sensordirection = s.direction().rotate(angle);
@@ -118,7 +89,6 @@ public class MDPSIM {
 						sensoroutput.add(Double.POSITIVE_INFINITY);
 					}
 				}
-			}
 		}
 		r.updateSensors(sensoroutput);
 		return lines;
@@ -186,7 +156,7 @@ public class MDPSIM {
 		objectmap.add(rightborder);
 		objectmap.add(bottomborder);
 		Circle2D robot = new Circle2D(12.5);
-		Vehicle2D robotobject = new Vehicle2D(robot, new Vector2D(15, 75), new Vector2D(0, 0), new Vector2D(0,0),new Vector2D(-10,0),false,false,20, Math.PI/2);
+		Vehicle2D robotobject = new Vehicle2D(robot, new Vector2D(15, 75), new Vector2D(0, 0), new Vector2D(0,0),new Vector2D(10,0),false,false,20, Math.PI/2);
 		objectmap.addAll(generateXYFromBits(map));
 		objectmap.add(robotobject);
 		return objectmap;

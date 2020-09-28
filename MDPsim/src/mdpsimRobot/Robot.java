@@ -43,20 +43,24 @@ public class Robot {
 	
 	public void printSensor() {
 		for (int a = 0; a < sensorvalues.size(); a++) {
-			System.out.print(sensorvalues.get(a)+" ");
+			//System.out.print(sensorvalues.get(a)+" ");
 		}
-		System.out.println();
+		//System.out.println();
 	}
 	
 	// robot logic
 	public ArrayList<Action2D> policyUpdate(){
 		ArrayList<Action2D> actions = new ArrayList<Action2D>(0);
-		if (sensorvalues.get(1) == null) {
-			actions.add(new Action2D(Action.ACCELERATE, 10));
-		} else if (sensorvalues.get(1) < 10) {
-			actions.add(new Action2D(Action.ACCELERATE, 40));
-		} else if (sensorvalues.get(1) > 10) {
-			actions.add(new Action2D(Action.ACCELERATE, -40));
+		if (sensorvalues != null) {
+			/*
+			if (sensorvalues.get(1) == null) {
+				actions.add(new Action2D(Action.ACCELERATE, 10));
+			} else if (sensorvalues.get(1) < 10) {
+				actions.add(new Action2D(Action.ACCELERATE, 40));
+			} else if (sensorvalues.get(1) > 10) {
+				actions.add(new Action2D(Action.ACCELERATE, -40));
+			}
+			*/
 		}
 		return actions;
 	}

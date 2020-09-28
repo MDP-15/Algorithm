@@ -43,7 +43,7 @@ public class Vector2D {
 	}
 	
 	public Vector2D rotate(double radians) {
-		return new Vector2D(this.x*Math.cos(radians) - this.y*Math.sin(radians), this.x*Math.sin(radians) + this.y *Math.cos(radians));
+		return new Vector2D((this.x*Math.cos(radians)) - (this.y*Math.sin(radians)), (this.x*Math.sin(radians)) + (this.y*Math.cos(radians)));
 	}
 	
 	public Vector2D unit() {
@@ -66,7 +66,7 @@ public class Vector2D {
 	}
 	
 	public double angle(Vector2D vec) {
-		return Math.acos((double)this.dot(vec)/(this.length(new Vector2D(0,0))*vec.length(new Vector2D(0,0))));
+		return Math.atan2(this.x,this.y)-Math.atan2(vec.x(), vec.y());
 	}
 	
 	public void print() {

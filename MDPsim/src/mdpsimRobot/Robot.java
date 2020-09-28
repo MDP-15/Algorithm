@@ -10,11 +10,13 @@ public class Robot {
 	public ArrayList<Double> sensorvalues;
 	public double radius;
 	public Object2D taggedobject;
+	public MovementHandler mh;
 	
 	public Robot(ArrayList<Sensor> sensors, double radius) {
 		this.sensors = sensors;
 		this.radius = radius;
 		this.sensorvalues = new ArrayList<>();
+		this.mh = new MovementHandler();
 	}
 	
 	public void addSensor(String name,Vector2D position, Vector2D direction, double minrange, double maxrange) {
@@ -53,18 +55,11 @@ public class Robot {
 	}
 	
 	// robot logic
-	public ArrayList<Action2D> policyUpdate(){
+	public ArrayList<Action2D> policyUpdate(double time){
 		ArrayList<Action2D> actions = new ArrayList<Action2D>(0);
 		if (sensorvalues != null) {
-			/*
-			if (sensorvalues.get(1) == null) {
-				actions.add(new Action2D(Action.ACCELERATE, 10));
-			} else if (sensorvalues.get(1) < 10) {
-				actions.add(new Action2D(Action.ACCELERATE, 40));
-			} else if (sensorvalues.get(1) > 10) {
-				actions.add(new Action2D(Action.ACCELERATE, -40));
-			}
-			*/
+			mh.addAction(RobotAction.TR);
+			actions.add(mh.doNext(time , sensorvalues));
 		}
 		return actions;
 	}

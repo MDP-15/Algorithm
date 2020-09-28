@@ -15,6 +15,7 @@ public class MDPSIM {
 	public static boolean done = false;
 	public static Viewer vw;
 	public static String mdfString = null;
+	public static int timeres = 1;
 	
  static ArrayList<Action2D> actionqueue;
 	public static void main(String[] args) throws InterruptedException{
@@ -34,13 +35,12 @@ public class MDPSIM {
 		//System.out.println("MDF STRING: "+mdfString);
 		String s = parseFormatToMap(mdfString);   
 		ArrayList<Object2D> objects = generateMap(s);
-		Engine2D phyeng = new Engine2D(objects, 0.008);
+		Engine2D phyeng = new Engine2D(objects, (double)timeres/1000);
 		Robot r = initializeRobot();
 		vw.setVisible(true);
 		updateAll(r,phyeng, vw.map1);	
-		actionqueue.add(new Action2D(Action.TURN,Math.PI));
 		while(true) {
-				Thread.sleep(8);
+				Thread.sleep(timeres);
 				if (actionqueue.size() == 0) {
 					phyeng.next(null);
 				} else {
@@ -48,8 +48,7 @@ public class MDPSIM {
 				}
 				updateAll(r, phyeng, vw.map1);
 				sensorUpdate(phyeng, vw.sensors);
-				r.printSensor();
-				actionqueue.addAll(r.policyUpdate());
+				actionqueue.addAll(r.policyUpdate(phyeng.time()));
 				if (vw.flag == true) {
 					vw.flag = false;
 					break;

@@ -1,6 +1,6 @@
 package mdpsimEngine;
-
 import mdpsimEngine.Action2D.Action;
+// ALL ROTATIONS WRT VECTOR2D(0,10)
 
 public class Vehicle2D extends Object2D{
 	private boolean angleindicator;
@@ -30,13 +30,9 @@ public class Vehicle2D extends Object2D{
 			if (action.action() == Action.ACCELERATE) {
 				this.rotationalmomentum = 0;
 				if (velocity().length() == 0) {
-					if (angleindicator) {
-						this.acceleration(this.direction().unit().multiply(action.value()).rotate(0));
-					} else {
-						this.acceleration(this.direction().unit().multiply(action.value()).rotate(0).multiply(-1));
-					}
+					this.acceleration(this.direction().unit().multiply(action.value()));
 				} else {
-					this.acceleration(this.velocity().unit().multiply(action.value()).rotate(0));
+					this.acceleration(this.velocity().unit().multiply(action.value()));
 				}
 			} else if (action.action() == Action.TURN) {
 				rotationalmomentum = action.value();
@@ -54,20 +50,7 @@ public class Vehicle2D extends Object2D{
 		this.velocity(this.velocity().add(this.acceleration().multiply(timestep)));
 		this.position(this.prevpos().add(this.velocity().multiply(timestep).add(this.acceleration().multiply(0.5*Math.pow(timestep, 2)))));
 		if (this.velocity().length() == 0) {
-			double angle1 = new Vector2D(10,0).angle(this.direction());
-			double angle2 = new Vector2D(-10,0).angle(this.direction());
-			if (angle1 < angle2) {
-				angleindicator = true;
-			} else {
-				angleindicator = false;
-			}
 			this.direction(this.direction().rotate(rotationalmomentum*timestep));
-		} else {
-			if (angleindicator) {
-				this.direction(this.prevpos().subtract(this.position()));
-			} else {
-				this.direction(this.position().subtract(this.prevpos()));
-			}
 		}
 	}
 	public boolean angleindicator() {

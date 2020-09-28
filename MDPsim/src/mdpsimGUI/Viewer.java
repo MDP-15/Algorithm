@@ -28,10 +28,12 @@ public class Viewer extends JFrame{
 	public ControlPanel cp;
 	public JMenuBar menu;
 	public String mapBits;
+	public boolean flag;
 	MapReader newMap = new MapReader();
 	
 	
 	public Viewer (String title, int w, int h){
+		this.flag = false;
 		setTitle(title);
 		setSize(w, h);
 		setResizable(false);

@@ -17,10 +17,10 @@ public class Robot {
 		this.sensorvalues = new ArrayList<>();
 	}
 	
-	public void addSensor(Vector2D position, Vector2D direction, double minrange, double maxrange) {
+	public void addSensor(String name,Vector2D position, Vector2D direction, double minrange, double maxrange) {
 		Vector2D posnormalized = position.multiply((double)position.length(new Vector2D(0,0))/radius);
 		Vector2D unitdirection = direction.unit();
-		this.sensors.add(new Sensor(posnormalized,unitdirection, minrange, maxrange));
+		this.sensors.add(new Sensor(name,posnormalized,unitdirection, minrange, maxrange));
 	}
 	
 	public void updateSensors(ArrayList<Double> values) {
@@ -42,6 +42,10 @@ public class Robot {
 	}
 	
 	public void printSensor() {
+		for (int a = 0; a < sensorvalues.size(); a++) {
+			System.out.print(sensors.get(a).name+" ");
+		}
+		System.out.println();
 		for (int a = 0; a < sensorvalues.size(); a++) {
 			System.out.print(sensorvalues.get(a)+" ");
 		}

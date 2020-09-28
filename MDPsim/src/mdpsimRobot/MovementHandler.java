@@ -18,7 +18,7 @@ public class MovementHandler {
 		this.actionhistory = new ArrayList<Action2D>(0);
 		sensorhistory.add(new ArrayList<Double>());
 		timehistory.add(0.0);
-		actionhistory.add(null);
+		actionhistory.add(new Action2D(Action.ACCELERATE, 0));
 		this.currentaction = null;
 		this.desiredaction = null;
 		this.time = 0.0;
@@ -43,7 +43,9 @@ public class MovementHandler {
 				} catch (Exception e) {
 					ac = null;
 				}
-				if (ac != Action.TURN) {
+				if (ac != Action.TURN && act.value() != Math.PI/2) {
+					action = new Action2D(Action.TURN, Math.PI/2);
+				} else if (ac == Action.TURN && act.value() != Math.PI/2) {
 					action = new Action2D(Action.TURN, Math.PI/2);
 				}
 			} else if (currentaction == RobotAction.TL) {
@@ -51,9 +53,12 @@ public class MovementHandler {
 				try {
 					ac = act.action();
 				} catch (Exception e) {
+					System.out.println("called");
 					ac = null;
 				}
 				if (ac != Action.TURN) {
+					action = new Action2D(Action.TURN, -Math.PI/2);
+				} else if (ac == Action.TURN && act.value() != -Math.PI/2) {
 					action = new Action2D(Action.TURN, -Math.PI/2);
 				}
 			}
@@ -67,7 +72,12 @@ public class MovementHandler {
 					}
 				}
 			}
-		actionhistory.add(action);
+		this.actionhistory.add(action);
+		try {
+			System.out.println(action.action()+" "+action.value());
+		} catch (Exception e) {
+			
+		}
 		return action;
 	}
 	

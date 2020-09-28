@@ -14,12 +14,18 @@ public class Robot {
 	public Object2D taggedobject;
 	public MovementHandler mh;
 	private static DecimalFormat df2 = new DecimalFormat("#.##");
+	public ArrayList<RobotAction> actionqueue;
 	
 	public Robot(ArrayList<Sensor> sensors, double radius) {
 		this.sensors = sensors;
 		this.radius = radius;
 		this.sensorvalues = new ArrayList<>();
-		this.mh = new MovementHandler();
+		this.actionqueue = new ArrayList<RobotAction>(0);
+		this.actionqueue.add(RobotAction.TR);
+		this.actionqueue.add(RobotAction.TR);
+		this.actionqueue.add(RobotAction.TR);
+		this.actionqueue.add(RobotAction.TR);
+		this.mh = new MovementHandler(actionqueue);
 	}
 	
 	public void addSensor(String name,Vector2D position, Vector2D direction, double minrange, double maxrange) {
@@ -66,34 +72,7 @@ public class Robot {
 	// robot logic
 	public ArrayList<Action2D> policyUpdate(double time){
 		ArrayList<Action2D> actions = new ArrayList<Action2D>(0);
-//		if (sensorvalues != null) {
-//			mh.addAction(RobotAction.TL);
-//		}
-//		
-//		if(sensorvalues.get(3) != null && sensorvalues.get(3) > 30) {
-//			mh.addAction(RobotAction.TL);
-//		}
-//		
-//		if(sensorvalues.get(3) != null && sensorvalues.get(3) < 15) {
-//			mh.addAction(RobotAction.TR);
-//		}
-//		if(sensorvalues.get(0) != null) {
-//			//System.out.println("INSIDE GET 0");
-//			if(sensorvalues.get(0) <= 15) {
-//				System.out.println("TURN LEFT");
-//				mh.addAction(RobotAction.TL);
-//			}
-//		}
-//		
-//		if(sensorvalues.get(5) != null) {
-//			//System.out.println("INSIDE GET 5");
-//			if(sensorvalues.get(5) <= 15) {
-//				System.out.println("TURN RIGHT");
-//				mh.addAction(RobotAction.TR);
-//			}
-//		}
-		actions.add(mh.doNext(time , sensorvalues));
-		
+		actions.add(mh.doNext(time , sensorvalues)); // DO NOT TOUCH
 		return actions;
 	}
 

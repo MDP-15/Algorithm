@@ -11,8 +11,9 @@ public class MovementHandler {
 	public RobotAction currentaction;
 	public RobotAction desiredaction;
 	public double time;
-	
-	public MovementHandler () {
+	public ArrayList<RobotAction> actionqueue;
+
+	public MovementHandler (ArrayList<RobotAction> actionqueue) {
 		this.sensorhistory = new ArrayList<ArrayList<Double>>(0);
 		this.timehistory = new ArrayList<Double>(0);
 		this.actionhistory = new ArrayList<Action2D>(0);
@@ -22,6 +23,7 @@ public class MovementHandler {
 		this.currentaction = null;
 		this.desiredaction = null;
 		this.time = 0.0;
+		this.actionqueue = actionqueue;
 	}
 	
 	//TR -> turn right at 0.5pi/sec for 1 second
@@ -34,8 +36,9 @@ public class MovementHandler {
 		double actiontime = timehistory.get(actionint);
 		Action2D act = actionhistory.get(actionint);
 		if (currentaction == null) {
-			currentaction = desiredaction;
-			desiredaction = null;
+			if (actionqueue.size() > 0) {
+				currentaction = actionqueue.remove(0);
+				}
 			if (currentaction == RobotAction.TR) {
 				Action ac;
 				try {

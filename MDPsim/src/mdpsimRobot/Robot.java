@@ -3,6 +3,8 @@ import mdpsimEngine.Action2D;
 import mdpsimEngine.Action2D.Action;
 import mdpsimEngine.Object2D;
 import mdpsimEngine.Vector2D;
+
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class Robot {
@@ -11,6 +13,7 @@ public class Robot {
 	public double radius;
 	public Object2D taggedobject;
 	public MovementHandler mh;
+	private static DecimalFormat df2 = new DecimalFormat("#.##");
 	
 	public Robot(ArrayList<Sensor> sensors, double radius) {
 		this.sensors = sensors;
@@ -45,11 +48,17 @@ public class Robot {
 	
 	public void printSensor() {
 		for (int a = 0; a < sensorvalues.size(); a++) {
-			System.out.print(sensors.get(a).name+" ");
+			System.out.print(sensors.get(a).name+"\t ");
 		}
 		System.out.println();
 		for (int a = 0; a < sensorvalues.size(); a++) {
-			System.out.print(sensorvalues.get(a)+" ");
+			if(sensorvalues.get(a) == null) {
+				System.out.print(sensorvalues.get(a)+"\t\t ");
+			}
+			else {
+				System.out.print(df2.format(sensorvalues.get(a))+"\t\t ");
+			}
+			
 		}
 		System.out.println();
 	}

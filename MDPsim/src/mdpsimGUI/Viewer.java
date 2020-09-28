@@ -172,7 +172,7 @@ public class Viewer extends JFrame{
 					
 					MapReader newMap = new MapReader();
 					//remove(map1); //This is correct (maybe) need to re-initialize map1
-					newMap.loadSampleArena(mapInput);
+					newMap.loadSampleArena(mapInput,Viewer.this);
 					//repaint();
 					System.out.println("Arena 1 clicked");
 					
@@ -188,7 +188,7 @@ public class Viewer extends JFrame{
 					String mapInput = "Arena_2";
 					
 					MapReader newMap = new MapReader();
-					newMap.loadSampleArena(mapInput);
+					newMap.loadSampleArena(mapInput, Viewer.this);
 					System.out.println("Arena 2 clicked");
 					
 				}
@@ -203,7 +203,7 @@ public class Viewer extends JFrame{
 					String mapInput = "Arena_3";
 					
 					MapReader newMap = new MapReader();
-					newMap.loadSampleArena(mapInput);
+					newMap.loadSampleArena(mapInput, Viewer.this);
 					System.out.println("Arena 3 clicked");
 					
 				}
@@ -218,13 +218,13 @@ public class Viewer extends JFrame{
 					String mapInput = "Arena_4";
 					
 					MapReader newMap = new MapReader();
-					newMap.loadSampleArena(mapInput);
+					newMap.loadSampleArena(mapInput, Viewer.this);
 					System.out.println("Arena 4 clicked");
 					
 				}
 			});
 			
-			sampleA4.addActionListener(new ActionListener() {
+			sampleA5.addActionListener(new ActionListener() {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {

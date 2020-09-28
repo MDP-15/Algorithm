@@ -11,13 +11,13 @@ import mdpsimGUI.Viewer;
 public class MapReader {
 
 	public String mapString;
-	public Viewer vw; //Not initialized
+	//public Viewer vw; //Not initialized
 	
 	public MapReader() {
 		
 	}
 	
-	public void loadSampleArena(String fileName) {
+	public void loadSampleArena(String fileName, Viewer vw) {
 		
 		try {
 			
@@ -36,8 +36,10 @@ public class MapReader {
 			String newMapString = out.toString();
 			System.out.println("Debugging "+newMapString);
 			//MDPSIM.inputMDF(newMapString,vw); //vw is null cause not initialized
-			vw.add(vw.map1); //Maybe correct
-			MDPSIM.inputMDF(newMapString);
+			//vw.add(vw.map1); //Maybe correct
+			//MDPSIM.inputMDF(newMapString);
+			MDPSIM.mdfString = newMapString;
+			vw.flag = true;
 			
 			
 		}catch(Exception e) {

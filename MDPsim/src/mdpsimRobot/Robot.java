@@ -21,7 +21,7 @@ public class Robot {
 		this.radius = radius;
 		this.sensorvalues = new ArrayList<>();
 		this.actionqueue = new ArrayList<RobotAction>(0);
-		this.actionqueue.add(RobotAction.TR);
+		this.actionqueue.add(RobotAction.F3);
 		this.actionqueue.add(RobotAction.TR);
 		this.actionqueue.add(RobotAction.TR);
 		this.actionqueue.add(RobotAction.TR);
@@ -70,7 +70,7 @@ public class Robot {
 	}
 	
 	// robot logic
-	public ArrayList<Action2D> policyUpdate(double time){
+	public ArrayList<Action2D> getNextAction(double time){
 		ArrayList<Action2D> actions = new ArrayList<Action2D>(0);
 		if (sensorvalues != null) {
 //			mh.addAction(RobotAction.TL);

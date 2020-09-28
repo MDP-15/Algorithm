@@ -39,6 +39,9 @@ public class Vehicle2D extends Object2D{
 				if (velocity().length() != 0) {
 					this.acceleration(this.velocity().unit().multiply(action.value()).rotate(rotationalmomentum*timestep));
 				}
+			} else if (action.action() == Action.STOP) {
+				this.velocity(new Vector2D(0,0));
+				this.acceleration(new Vector2D(0,0));
 			}
 		}
 		this.processphysics(timestep);

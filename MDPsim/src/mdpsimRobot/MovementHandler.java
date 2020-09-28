@@ -8,6 +8,7 @@ public class MovementHandler {
 	public ArrayList<ArrayList<Double>> sensorhistory;
 	public ArrayList<Double> timehistory;
 	public ArrayList<Action2D> actionhistory;
+	public ArrayList<QueuedAction> queuedactions;
 	public RobotAction currentaction;
 	public RobotAction desiredaction;
 	public double time;
@@ -17,6 +18,7 @@ public class MovementHandler {
 		this.sensorhistory = new ArrayList<ArrayList<Double>>(0);
 		this.timehistory = new ArrayList<Double>(0);
 		this.actionhistory = new ArrayList<Action2D>(0);
+		this.queuedactions = new ArrayList<QueuedAction>(0);
 		sensorhistory.add(new ArrayList<Double>());
 		timehistory.add(0.0);
 		actionhistory.add(new Action2D(Action.ACCELERATE, 0));
@@ -32,72 +34,52 @@ public class MovementHandler {
 		Action2D action = null;
 		this.sensorhistory.add(sensorreadings);
 		this.timehistory.add(time);
-		int actionint = getPreviousActionNumber();
-		double actiontime = timehistory.get(actionint);
-		Action2D act = actionhistory.get(actionint);
+		this.time = time;
+		double t = queueLatestTime();
 		if (currentaction == null) {
 			if (actionqueue.size() > 0) {
 				currentaction = actionqueue.remove(0);
 				}
 			if (currentaction == RobotAction.TR) {
-				Action ac;
-				try {
-					ac = act.action();
-				} catch (Exception e) {
-					ac = null;
-				}
-				if (ac != Action.TURN && act.value() != Math.PI/2) {
-					action = new Action2D(Action.TURN, Math.PI/2);
-				} else if (ac == Action.TURN && act.value() != Math.PI/2) {
-					action = new Action2D(Action.TURN, Math.PI/2);
-				}
+				queuedactions.add(new QueuedAction(Action.TURN, Math.PI/2, t, false));
+				queuedactions.add(new QueuedAction(Action.TURN, 0, t + 1,true));
 			} else if (currentaction == RobotAction.TL) {
-				Action ac;
-				try {
-					ac = act.action();
-				} catch (Exception e) {
-					ac = null;
-				}
-				if (ac != Action.TURN) {
-					action = new Action2D(Action.TURN, -Math.PI/2);
-				} else if (ac == Action.TURN && act.value() != -Math.PI/2) {
-					action = new Action2D(Action.TURN, -Math.PI/2);
-				}
+				queuedactions.add(new QueuedAction(Action.TURN, -Math.PI/2, t, false));
+				queuedactions.add(new QueuedAction(Action.TURN, 0, t + 1, true));
 			} else if (currentaction == RobotAction.F1) {
-				Action ac;
-				try {
-					ac = act.action();
-				} catch (Exception e) {
-					ac = null;
-				} if (ac != Action.ACCELERATE) {
-					action = new Action2D(Action.ACCELERATE, 10);
-				} else if (ac == Action.ACCELERATE && act.value() != 10) {
-					action = new Action2D(Action.ACCELERATE, 10);
-				}
-			}
-		} else {
-			if (currentaction == RobotAction.TR || currentaction == RobotAction.TL) {
-				if (time-actiontime >= 1) {
-					action = new Action2D(Action.TURN, 0);							
-					currentaction = null;
-				} else {
-					action = null;
-				}
-			} else if (currentaction == RobotAction.F1) {
-				if (time-actiontime >= 1) {
-					if (act.action() == Action.ACCELERATE && act.value() == 10) {
-						action = new Action2D(Action.ACCELERATE,-10);
-					} else if (act.action() == Action.ACCELERATE && act.value() == -10){
-						action = new Action2D(Action.ACCELERATE,0);
-						currentaction = null;
-					} else {
-						action = null;
-					}
-				}
+				queuedactions.add(new QueuedAction(Action.ACCELERATE, 10, t, false));
+				queuedactions.add(new QueuedAction(Action.ACCELERATE, -10, t+1, false));
+				queuedactions.add(new QueuedAction(Action.STOP, 0, t+2, true));
+			} else if (currentaction == RobotAction.F2) {
+				queuedactions.add(new QueuedAction(Action.ACCELERATE, 20, t, false));
+				queuedactions.add(new QueuedAction(Action.ACCELERATE, -20, t+1, false));
+				queuedactions.add(new QueuedAction(Action.STOP, 0, t+2, true));
+			} else if (currentaction == RobotAction.F3) {
+				queuedactions.add(new QueuedAction(Action.ACCELERATE, 30, t, false));
+				queuedactions.add(new QueuedAction(Action.ACCELERATE, -30, t+1, false));
+				queuedactions.add(new QueuedAction(Action.STOP, 0, t+2, true));
 			}
 		}
+		try {
+			if (time >= ((QueuedAction)queuedactions.get(0)).time) {
+				System.out.println(((QueuedAction)queuedactions.get(0)).time);
+				action = queuedactions.remove(0);
+				System.out.println(action.action());
+				if (((QueuedAction) action).flag()) {
+					currentaction = null;
+				}
+			}
+		} catch (Exception e) {}
 		this.actionhistory.add(action);
 		return action;
+	}
+	
+	public double queueLatestTime() {
+		if (queuedactions.size() == 0) {
+			return time;
+		} else {
+			return queuedactions.get(queuedactions.size()-1).time;
+		}
 	}
 	
 	public int getPreviousActionNumber() {
@@ -108,6 +90,7 @@ public class MovementHandler {
 		}
 		return 0;
 	}
+	
 	public boolean addAction(RobotAction action) {
 		if (desiredaction == null) {
 			desiredaction = action;

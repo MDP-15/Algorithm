@@ -159,8 +159,13 @@ public class MDPSIM {
 		objectmap.add(leftborder);
 		objectmap.add(rightborder);
 		objectmap.add(bottomborder);
+<<<<<<< Updated upstream
 		Circle2D robot = new Circle2D(12.5);
 		Vehicle2D robotobject = new Vehicle2D(robot, new Vector2D(15, 75), new Vector2D(0, 0), new Vector2D(0,0),new Vector2D(-10,0),false,false,20, Math.PI/2);
+=======
+		Circle2D robot = new Circle2D(10);
+		Vehicle2D robotobject = new Vehicle2D(robot, new Vector2D(183, 15), new Vector2D(0, 0), new Vector2D(0,0),new Vector2D(10,0),false,false,20, Math.PI/2);
+>>>>>>> Stashed changes
 		objectmap.addAll(generateXYFromBits(map));
 		objectmap.add(robotobject);
 		return objectmap;

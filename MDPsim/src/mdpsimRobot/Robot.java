@@ -52,6 +52,7 @@ public class Robot {
 	public ArrayList<Action2D> policyUpdate(){
 		ArrayList<Action2D> actions = new ArrayList<Action2D>(0);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		if (sensorvalues.get(1) == null) {
 			actions.add(new Action2D(Action.ACCELERATE, 10));
 		} else if (sensorvalues.get(1) < 10) {
@@ -64,6 +65,37 @@ public class Robot {
 				mh.addAction(RobotAction.TL);
 			}
 			else if(sensorvalues.get(5) <= 15) {
+				mh.addAction(RobotAction.TR);
+			}
+>>>>>>> Stashed changes
+=======
+		
+		
+		if (sensorvalues != null) {
+			mh.addAction(RobotAction.TL);
+		}	
+		if(sensorvalues.get(3) != null && sensorvalues.get(3) > 30) {
+			mh.addAction(RobotAction.TL);
+		}
+		
+		if(sensorvalues.get(3) != null && sensorvalues.get(3) < 15) {
+			
+			//if front sensors >30 move forward 
+			//if front sensors <15 TR
+			mh.addAction(RobotAction.TR);
+		}
+		if(sensorvalues.get(0) != null) {
+			//System.out.println("INSIDE GET 0");
+			if(sensorvalues.get(0) <= 15) {
+				System.out.println("TURN LEFT");
+				mh.addAction(RobotAction.TL);
+			}
+		}
+		
+		if(sensorvalues.get(5) != null) {
+			//System.out.println("INSIDE GET 5");
+			if(sensorvalues.get(5) <= 15) {
+				System.out.println("TURN RIGHT");
 				mh.addAction(RobotAction.TR);
 			}
 >>>>>>> Stashed changes

@@ -71,7 +71,6 @@ public class MDPSIM {
 		ArrayList<Line> lines = new ArrayList<Line>(0);
 		ArrayList<Double> sensoroutput = new ArrayList<Double>();
 		Vector2D origin = phyeng.movingObjects().get(0).position();
-		Vector2D direction = phyeng.movingObjects().get(0).direction();
 		double angle = phyeng.movingObjects().get(0).direction().angle(new Vector2D(0,10));
 		if (phyeng.movingObjects().get(0).getClass() == Vehicle2D.class) {
 				for (Sensor s: r.sensors) {

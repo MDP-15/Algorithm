@@ -43,9 +43,9 @@ public class Robot {
 	
 	public void printSensor() {
 		for (int a = 0; a < sensorvalues.size(); a++) {
-			//System.out.print(sensorvalues.get(a)+" ");
+			System.out.print(sensorvalues.get(a)+" ");
 		}
-		//System.out.println();
+		System.out.println();
 	}
 	
 	// robot logic

@@ -24,6 +24,8 @@ public class MovementHandler {
 		this.time = 0.0;
 	}
 	
+	//TR -> turn right at 0.5pi/sec for 1 second
+	//TL -> turn left at 0.5pi/sec for 1 second
 	public Action2D doNext(double time, ArrayList<Double> sensorreadings) {
 		Action2D action = null;
 		this.sensorhistory.add(sensorreadings);
@@ -57,7 +59,7 @@ public class MovementHandler {
 			}
 		} else {
 			if (currentaction == RobotAction.TR || currentaction == RobotAction.TL) {
-					if (time-actiontime > 1) {
+					if (time-actiontime >= 1) {
 						action = new Action2D(Action.TURN, 0);							
 						currentaction = null;
 					} else {

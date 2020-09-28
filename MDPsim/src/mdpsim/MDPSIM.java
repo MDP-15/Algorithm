@@ -22,18 +22,29 @@ public class MDPSIM {
 		vw = new Viewer("MDP Simulator", 1024, 768); //First Panel
 		pause = false;
 		actionqueue = new ArrayList<Action2D>(0);
+<<<<<<< Updated upstream
 		inputMDF(null);
+=======
+		while (true) {
+			//System.out.println("flag");
+			inputMDF(mdfString);
+		}
+>>>>>>> Stashed changes
 	}
 	//Problem: Removing of panel and Updating of panel 
 	//Cannot see the map
 	
 	//Removed vw cause not initialized in MapReader
 	public static void inputMDF(String mdfString) throws InterruptedException{
+<<<<<<< Updated upstream
 		if(mdfString == null) {
 			mdfString = "0000000000000000000000000000000000000000000000100010000000000000";
 			//mdfString = "000000010000000000000000000000000000000000000000100000000000111100000000000000000001100011000000001100000000000001100000000000000000000111100000000000000100000000000000000000000000000000000000000000000000000001000000111100001000000000100001000000000000000000000000000000000000000000000000100000000000";
 		}
 		System.out.println("MDF STRING: "+mdfString);
+=======
+		//System.out.println("MDF STRING: "+mdfString);
+>>>>>>> Stashed changes
 		String s = parseFormatToMap(mdfString);   
 		//Adding vw.add here doesnt work
 		ArrayList<Object2D> objects = generateMap(s);
@@ -43,7 +54,6 @@ public class MDPSIM {
 		actionqueue.add(new Action2D(Action.TURN, Math.PI));
 		updateAll(r,phyeng, vw.map1);	
 		while(true) {
-			while(!pause) {
 				Thread.sleep(8);
 				if (actionqueue.size() == 0) {
 					phyeng.next(null);
@@ -54,7 +64,14 @@ public class MDPSIM {
 				sensorUpdate(phyeng, vw.sensors);
 				r.printSensor();
 				actionqueue.addAll(r.policyUpdate());
+<<<<<<< Updated upstream
 			}
+=======
+				if (vw.flag = true) {
+					vw.flag = false;
+					break;
+				}
+>>>>>>> Stashed changes
 		}
 	}
 

@@ -147,8 +147,26 @@ public class Viewer extends JFrame{
 				frame.setVisible(true);
 				//frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				
+<<<<<<< Updated upstream
 				JPanel samplePanel = new JPanel();
 				frame.add(samplePanel);
+=======
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					System.out.println("BUTTON PRESSED");
+					String mapInput = "Arena_1";
+					
+					MapReader newMap = new MapReader();
+					newMap.loadSampleArena(mapInput,Viewer.this);
+					System.out.println("Arena 1 clicked");
+					
+				}
+			});
+			
+			//Arena 2
+			sampleA2.addActionListener(new ActionListener() {
+>>>>>>> Stashed changes
 				
 				JButton sample1 = new JButton("Arena 1");
 				samplePanel.add(sample1);

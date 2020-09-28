@@ -159,10 +159,26 @@ public class Viewer extends JFrame{
 		}
 			tcpSocket.addActionListener(new socketBtn());
 			
-			
 			//SampleArenas
 			//Arena 1
 			sampleA1.addActionListener(new ActionListener() {
+				JFrame frame = new JFrame();
+				frame.setSize(300,300);
+				frame.setVisible(true);
+				//frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				
+				
+				JButton sample1 = new JButton("Arena 1");
+				samplePanel.add(sample1);
+				
+				JButton sample2 = new JButton("Arena 2");
+				samplePanel.add(sample2);
+				
+				JButton sample3 = new JButton("Arena 3");
+				samplePanel.add(sample3);
+				
+				JButton sample4 = new JButton("Arena 4");
+				samplePanel.add(sample4);
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {

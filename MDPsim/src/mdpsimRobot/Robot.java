@@ -67,7 +67,7 @@ public class Robot {
 	public ArrayList<Action2D> policyUpdate(double time){
 		ArrayList<Action2D> actions = new ArrayList<Action2D>(0);
 		if (sensorvalues != null) {
-			mh.addAction(RobotAction.TL);
+			mh.addAction(RobotAction.TR);
 			actions.add(mh.doNext(time , sensorvalues));
 		}
 		return actions;

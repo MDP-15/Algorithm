@@ -53,7 +53,6 @@ public class MovementHandler {
 				try {
 					ac = act.action();
 				} catch (Exception e) {
-					System.out.println("called");
 					ac = null;
 				}
 				if (ac != Action.TURN) {
@@ -61,23 +60,40 @@ public class MovementHandler {
 				} else if (ac == Action.TURN && act.value() != -Math.PI/2) {
 					action = new Action2D(Action.TURN, -Math.PI/2);
 				}
+			} else if (currentaction == RobotAction.F1) {
+				Action ac;
+				try {
+					ac = act.action();
+				} catch (Exception e) {
+					ac = null;
+				} if (ac != Action.ACCELERATE) {
+					action = new Action2D(Action.ACCELERATE, 10);
+				} else if (ac == Action.ACCELERATE && act.value() != 10) {
+					action = new Action2D(Action.ACCELERATE, 10);
+				}
 			}
 		} else {
 			if (currentaction == RobotAction.TR || currentaction == RobotAction.TL) {
-					if (time-actiontime >= 1) {
-						action = new Action2D(Action.TURN, 0);							
+				if (time-actiontime >= 1) {
+					action = new Action2D(Action.TURN, 0);							
+					currentaction = null;
+				} else {
+					action = null;
+				}
+			} else if (currentaction == RobotAction.F1) {
+				if (time-actiontime >= 1) {
+					if (act.action() == Action.ACCELERATE && act.value() == 10) {
+						action = new Action2D(Action.ACCELERATE,-10);
+					} else if (act.action() == Action.ACCELERATE && act.value() == -10){
+						action = new Action2D(Action.ACCELERATE,0);
 						currentaction = null;
 					} else {
 						action = null;
 					}
 				}
 			}
-		this.actionhistory.add(action);
-		try {
-			System.out.println(action.action()+" "+action.value());
-		} catch (Exception e) {
-			
 		}
+		this.actionhistory.add(action);
 		return action;
 	}
 	

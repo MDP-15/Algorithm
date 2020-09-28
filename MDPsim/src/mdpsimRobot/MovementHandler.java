@@ -31,8 +31,6 @@ public class MovementHandler {
 		int actionint = getPreviousActionNumber();
 		double actiontime = timehistory.get(actionint);
 		Action2D act = actionhistory.get(actionint);
-		System.out.println(actionint);
-		System.out.println(currentaction);
 		if (currentaction == null) {
 			currentaction = desiredaction;
 			desiredaction = null;
@@ -46,9 +44,19 @@ public class MovementHandler {
 				if (ac != Action.TURN) {
 					action = new Action2D(Action.TURN, Math.PI/2);
 				}
-			}	
+			} else if (currentaction == RobotAction.TL) {
+				Action ac;
+				try {
+					ac = act.action();
+				} catch (Exception e) {
+					ac = null;
+				}
+				if (ac != Action.TURN) {
+					action = new Action2D(Action.TURN, -Math.PI/2);
+				}
+			}
 		} else {
-			if (currentaction == RobotAction.TR) {
+			if (currentaction == RobotAction.TR || currentaction == RobotAction.TL) {
 					if (time-actiontime > 1) {
 						action = new Action2D(Action.TURN, 0);							
 						currentaction = null;

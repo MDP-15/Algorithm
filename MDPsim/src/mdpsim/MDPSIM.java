@@ -48,6 +48,7 @@ public class MDPSIM {
 				}
 				updateAll(r, phyeng, vw.map1);
 				sensorUpdate(phyeng, vw.sensors);
+				r.printSensor();
 				actionqueue.addAll(r.policyUpdate(phyeng.time()));
 				if (vw.flag == true) {
 					vw.flag = false;

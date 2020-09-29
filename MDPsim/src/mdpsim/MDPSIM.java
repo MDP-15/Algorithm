@@ -21,13 +21,12 @@ public class MDPSIM {
 	public static int timeres = 1;
 	public static Vector2D north = new Vector2D(0,10);
 	public static int simspeed = 1;
+	public static double reftime;
 	private static Clock t;
 	private static long t0;
 	
  static ArrayList<Action2D> actionqueue;
 	public static void main(String[] args) throws InterruptedException{
-		t = Clock.systemDefaultZone();
-		t0 = t.millis();
 		mdfString = parseFormatToMap("000000000000000000000000000000000000010000000000000000000000000000000000000000000000001110111111000000000000000000000000000000000000000000000000010000000000000000000000001110000000000000000000000000000000000000010000000000000000000000001110000000000000000000000001000000000000000000000000000000000000"); 
 		vw = new Viewer("MDP Simulator", 1024, 768); //First Panel
 		pause = false;
@@ -42,6 +41,8 @@ public class MDPSIM {
 	//Removed vw cause not initialized in MapReader
 	public static void inputMDF() throws InterruptedException{
 		//System.out.println("MDF STRING: "+mdfString);
+		t = Clock.systemDefaultZone();
+		t0 = t.millis();
 		String s = parseFormatToMap(mdfString);   
 		ArrayList<Object2D> objects = generateMap(s);
 		Engine2D phyeng = new Engine2D(objects, (double)timeres/1000);
@@ -49,7 +50,7 @@ public class MDPSIM {
 		vw.setVisible(true);
 		updateAll(r,phyeng, vw.map1);	
 		while(true) {
-				if (phyeng.time() < t.millis()-t0) {
+				if (phyeng.time()-reftime < t.millis()-t0) {
 					Thread.sleep(timeres*simspeed);
 				} 
 				if (actionqueue.size() == 0) {
@@ -60,7 +61,21 @@ public class MDPSIM {
 				updateAll(r, phyeng, vw.map1);
 				sensorUpdate(phyeng, vw.sensors, r);
 				actionqueue.addAll(r.getNextAction(phyeng.time()));
-				if (flagHandler()) {
+				// flag handler functions
+				if (vw.engineresetflag == true) {
+					vw.engineresetflag = false;
+					break;
+				}
+				if (vw.enginespeedflag == true) {
+					vw.enginespeedflag = false;
+					reftime = phyeng.time();
+					t0 = t.millis();
+					simspeed = vw.enginespeed;
+
+				}
+				if (vw.custommdfresetflag == true) {
+					vw.custommdfresetflag = false;
+					mdfString = parseFormatToMap(vw.mdfstring);
 					break;
 				}
 		}
@@ -69,6 +84,7 @@ public class MDPSIM {
 	private static boolean flagHandler() {
 		if (vw.engineresetflag == true) {
 			vw.engineresetflag = false;
+			reftime = phyeng.
 			return true;
 		}
 		if (vw.enginespeedflag == true) {

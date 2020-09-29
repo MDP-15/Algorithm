@@ -119,7 +119,7 @@ public class Engine2D{
 			} else if (m == 0 ) {
 				return new Vector2D(0, linestart.y());
 			} else {
-				double b = linestart.y() + s*svec.y();
+				double a = linestart.y() + s*svec.y();
 				return new Vector2D(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
 			}
 		} else {

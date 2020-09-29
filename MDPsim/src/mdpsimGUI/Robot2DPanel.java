@@ -41,16 +41,7 @@ public class Robot2DPanel extends JPanel{
 	
 	@Override
 	public void paintComponent(Graphics g) {
-		g.setColor(Color.WHITE);
 		super.paintComponent(g);
-		//DRAW GRID LINES
-		for(i=0;i<rows+1;i++) {
-			g.drawLine(originX, originY + i * cellSize, originX+cols*cellSize , originY + i * cellSize);
-		}
-				
-		for(j=0;j<cols+1;j++) {
-			g.drawLine(originX+ j * cellSize, originY, originX+ j * cellSize , originY+rows*cellSize);
-		}
 		//DRAW MAP
 		int x_size = map.size();
 		int y_size;
@@ -62,7 +53,7 @@ public class Robot2DPanel extends JPanel{
 		for (int a = 0; a < x_size; a++) {
 			for (int b = 0; b < y_size; b++){
 				if(map.get(a).get(b) == 0) {
-					g.setColor(Color.white);
+					g.setColor(Color.gray);
 				} else if (map.get(a).get(b) == 1){
 					g.setColor(Color.green);
 				} else if (map.get(a).get(b) == 2){
@@ -70,8 +61,18 @@ public class Robot2DPanel extends JPanel{
 				} else if (map.get(a).get(b) == 3){
 					g.setColor(Color.yellow);
 				}
-				g.fillRect(a*cellSize,  b*cellSize, cellSize, cellSize);
+				g.fillRect(b*cellSize,  a*cellSize, cellSize, cellSize);
 			}
 		}
+		//DRAW GRID LINES
+		g.setColor(Color.WHITE);
+		for(i=0;i<rows+1;i++) {
+			g.drawLine(originX, originY + i * cellSize, originX+cols*cellSize , originY + i * cellSize);
+		}
+				
+		for(j=0;j<cols+1;j++) {
+			g.drawLine(originX+ j * cellSize, originY, originX+ j * cellSize , originY+rows*cellSize);
+		}
+
 	}
 }

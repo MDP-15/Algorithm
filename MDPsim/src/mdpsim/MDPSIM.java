@@ -49,7 +49,7 @@ public class MDPSIM {
 		Engine2D phyeng = new Engine2D(objects, (double)timeres/1000);
 		Robot r = initializeRobot();
 		vw.setVisible(true);
-		updateAll(r,phyeng, vw.map1);	
+		updateEngine2DPanel(r,phyeng, vw.map1);	
 		while(true) {
 				try {
 					while((phyeng.time()-reftime)*1000 >= ((double)(t.millis()-t0)/simspeed)) {
@@ -61,7 +61,8 @@ public class MDPSIM {
 				} else {
 					phyeng.next(actionqueue.remove(0));
 				}
-				updateAll(r, phyeng, vw.map1);
+				updateEngine2DPanel(r, phyeng, vw.map1);
+				updateRobot2DPanel(r,vw.map2);
 				sensorUpdate(phyeng, vw.sensors, r);
 				actionqueue.addAll(r.getNextAction(phyeng.time()));
 				// flag handler functions
@@ -208,7 +209,7 @@ public class MDPSIM {
 		return objectmap;
 	}
 	
-	private static void updateAll(Robot r, Engine2D phyeng, Engine2DPanel panel) {
+	private static void updateEngine2DPanel(Robot r, Engine2D phyeng, Engine2DPanel panel) {
 		ArrayList<Line> lines = new ArrayList<Line>();
 		double mult = (float) panel.getWidth()/ (float) 150;
 		ArrayList<Circle> circles = new ArrayList<Circle>();
@@ -243,4 +244,8 @@ public class MDPSIM {
 		sc.update(time, timesteps, r.sensors, r.sensorvalues);
 	}
 	
+	
+	public static void updateRobot2DPanel(Robot r, Robot2DPanel rpanel) {
+		rpanel.setMap(r.lh.mapmemory);
+	}
 }

@@ -15,6 +15,7 @@ public class Robot {
 	public MovementHandler mh;
 	private static DecimalFormat df2 = new DecimalFormat("#.##");
 	public ArrayList<RobotAction> actionqueue;
+	public LogicHandler lh;
 	
 	public Robot(ArrayList<Sensor> sensors, double radius) {
 		this.sensors = sensors;
@@ -51,6 +52,8 @@ public class Robot {
 		actionqueue.add(RobotAction.TL);
 		actionqueue.add(RobotAction.TL);
 		this.mh = new MovementHandler(actionqueue);
+		this.lh = new LogicHandler(15,20,1,1);
+		lh.parseMDF("0111111111110101");
 	}
 	
 	public void addSensor(String name,Vector2D position, Vector2D direction, double minrange, double maxrange) {

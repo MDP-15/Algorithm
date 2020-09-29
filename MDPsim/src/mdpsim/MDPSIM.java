@@ -18,7 +18,7 @@ public class MDPSIM {
 	public static boolean done = false;
 	public static Viewer vw;
 	public static String mdfString = null;
-	public static int timeres = 1;
+	public static double timeres = 1;
 	public static Vector2D north = new Vector2D(0,10);
 	public static int simspeed = 1;
 	public static double reftime;
@@ -43,6 +43,7 @@ public class MDPSIM {
 		//System.out.println("MDF STRING: "+mdfString);
 		t = Clock.systemDefaultZone();
 		t0 = t.millis();
+		System.out.println(t0);
 		String s = parseFormatToMap(mdfString);   
 		ArrayList<Object2D> objects = generateMap(s);
 		Engine2D phyeng = new Engine2D(objects, (double)timeres/1000);
@@ -50,9 +51,11 @@ public class MDPSIM {
 		vw.setVisible(true);
 		updateAll(r,phyeng, vw.map1);	
 		while(true) {
-				if (phyeng.time()-reftime < t.millis()-t0) {
-					Thread.sleep(timeres*simspeed);
-				} 
+				try {
+					while((phyeng.time()-reftime)*1000 >= ((double)(t.millis()-t0)/simspeed)) {
+						NOP();
+					}
+				} catch (Exception e) {}
 				if (actionqueue.size() == 0) {
 					phyeng.next(null);
 				} else {
@@ -81,10 +84,13 @@ public class MDPSIM {
 		}
 	}
 	
+	private static void NOP(){
+		assert true;
+	}
+	
 	private static boolean flagHandler() {
 		if (vw.engineresetflag == true) {
 			vw.engineresetflag = false;
-			reftime = phyeng.
 			return true;
 		}
 		if (vw.enginespeedflag == true) {

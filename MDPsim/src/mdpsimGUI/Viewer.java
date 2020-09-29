@@ -30,6 +30,8 @@ public class Viewer extends JFrame{
 	public String mapBits;
 	public boolean engineresetflag;
 	public boolean enginespeedflag;
+	public boolean custommdfresetflag;
+	public String mdfstring;
 	public int enginespeed;
 	MapReader newMap = new MapReader();
 	

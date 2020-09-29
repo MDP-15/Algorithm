@@ -71,7 +71,7 @@ public class SensorScreen extends JPanel{
 		}
 		
 	}
-
+	
 	public void update (double time, long timesteps, ArrayList<Sensor> sensornames, ArrayList<Double> sensordata) {
 		timeelapsed.setText(Double.toString(time));
 		noelapsedtimesteps.setText(Long.toString(timesteps));

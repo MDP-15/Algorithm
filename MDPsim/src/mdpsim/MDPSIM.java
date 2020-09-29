@@ -7,7 +7,10 @@ import mdpsimEngine.Action2D.Action;
 
 import java.awt.Color;
 import java.lang.String;
+import java.time.Clock;
 import java.util.ArrayList;
+import java.util.Timer;
+
 import mdpsimRobot.*;
 
 public class MDPSIM {
@@ -18,22 +21,26 @@ public class MDPSIM {
 	public static int timeres = 1;
 	public static Vector2D north = new Vector2D(0,10);
 	public static int simspeed = 1;
+	private static Clock t;
+	private static long t0;
 	
  static ArrayList<Action2D> actionqueue;
 	public static void main(String[] args) throws InterruptedException{
+		t = Clock.systemDefaultZone();
+		t0 = t.millis();
 		mdfString = parseFormatToMap("000000000000000000000000000000000000010000000000000000000000000000000000000000000000001110111111000000000000000000000000000000000000000000000000010000000000000000000000001110000000000000000000000000000000000000010000000000000000000000001110000000000000000000000001000000000000000000000000000000000000"); 
 		vw = new Viewer("MDP Simulator", 1024, 768); //First Panel
 		pause = false;
 		actionqueue = new ArrayList<Action2D>(0);
 		while (true) {
-			inputMDF(mdfString);
+			inputMDF();
 		}
 	}
 	//Problem: Removing of panel and Updating of panel 
 	//Cannot see the map
 	
 	//Removed vw cause not initialized in MapReader
-	public static void inputMDF(String mdfString) throws InterruptedException{
+	public static void inputMDF() throws InterruptedException{
 		//System.out.println("MDF STRING: "+mdfString);
 		String s = parseFormatToMap(mdfString);   
 		ArrayList<Object2D> objects = generateMap(s);
@@ -42,7 +49,9 @@ public class MDPSIM {
 		vw.setVisible(true);
 		updateAll(r,phyeng, vw.map1);	
 		while(true) {
-				Thread.sleep(timeres*simspeed);
+				if (phyeng.time() < t.millis()-t0) {
+					Thread.sleep(timeres*simspeed);
+				} 
 				if (actionqueue.size() == 0) {
 					phyeng.next(null);
 				} else {
@@ -51,26 +60,38 @@ public class MDPSIM {
 				updateAll(r, phyeng, vw.map1);
 				sensorUpdate(phyeng, vw.sensors, r);
 				actionqueue.addAll(r.getNextAction(phyeng.time()));
-				if (vw.engineresetflag == true) {
-					vw.engineresetflag = false;
+				if (flagHandler()) {
 					break;
-				}
-				if (vw.enginespeedflag == true) {
-					vw.enginespeedflag = false;
-					simspeed = vw.enginespeed;
 				}
 		}
 	}
 	
+	private static boolean flagHandler() {
+		if (vw.engineresetflag == true) {
+			vw.engineresetflag = false;
+			return true;
+		}
+		if (vw.enginespeedflag == true) {
+			vw.enginespeedflag = false;
+			simspeed = vw.enginespeed;
+
+		}
+		if (vw.custommdfresetflag == true) {
+			vw.custommdfresetflag = false;
+			mdfString = parseFormatToMap(vw.mdfstring);
+			return true;
+		}
+		return false;
+	}
 	//initialize virtual robot object;
 	public static Robot initializeRobot() {
 		Robot robot = new Robot(new ArrayList<Sensor>(), 10);
-		robot.addSensor("RIGHT_FRONT",new Vector2D(0,9), new Vector2D(-10,0),10,80);
-		robot.addSensor("RIGHT_BACK",new Vector2D(0,-9), new Vector2D(-10,0),10,80);
-		robot.addSensor("FRONT_LEFT",new Vector2D(-7,7), new Vector2D(0,10), 10, 80);
-		robot.addSensor("FRONT_RIGHT",new Vector2D(7,7), new Vector2D(0,10), 10, 80);
-		robot.addSensor("FRONT_MIDDLE",new Vector2D(0,9), new Vector2D(0,10), 10, 80);
-		robot.addSensor("LEFT_LONG",new Vector2D(0,9), new Vector2D(10,0), 10, 80);
+		robot.addSensor("RIGHT_FRONT",new Vector2D(0,9), new Vector2D(-10,0),10, 30);
+		robot.addSensor("RIGHT_BACK",new Vector2D(0,-9), new Vector2D(-10,0),10, 30);
+		robot.addSensor("FRONT_LEFT",new Vector2D(-7,7), new Vector2D(0,10), 10, 30);
+		robot.addSensor("FRONT_RIGHT",new Vector2D(7,7), new Vector2D(0,10), 10, 30);
+		robot.addSensor("FRONT_MIDDLE",new Vector2D(0,9), new Vector2D(0,10), 10, 30);
+		robot.addSensor("LEFT_LONG",new Vector2D(0,9), new Vector2D(10,0), 20, 50);
 		return robot;
 	}
 	

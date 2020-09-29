@@ -12,7 +12,6 @@ public class Engine2D{
 	private ArrayList<Object2D> movingobjects;
 	private BoundingBoxList bbx_static;
 	private BoundingBoxList bby_static;
-	
 	//Private methods
 	
 	// adds objects to static or moving list depending on indicator in Object2D class.

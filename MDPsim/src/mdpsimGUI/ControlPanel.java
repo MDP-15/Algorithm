@@ -5,14 +5,18 @@ import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 import mdpMapReader.MapReader;
 
 public class ControlPanel extends JPanel{
 	Viewer vw;
 	JComboBox speedindicator;
+	JTextArea mdfinput;
+	JButton resetbutton;
 	
 	private static final long serialVersionUID = 1L;
 	public ControlPanel () {
@@ -39,6 +43,20 @@ public class ControlPanel extends JPanel{
 			}
 		});
 		this.add(speedindicator);
+		this.mdfinput = new JTextArea();
+		mdfinput.setBounds(5,25,300,20);
+		this.add(mdfinput);
+		this.resetbutton = new JButton();
+		resetbutton.setText("Reset!");
+		resetbutton.setBounds(305,25,100,20);
+		this.add(resetbutton);
+		resetbutton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+			vw.custommdfresetflag = true;
+			vw.mdfstring = mdfinput.getText();
+			}
+		});
 	}
 	
 	@Override

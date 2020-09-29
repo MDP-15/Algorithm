@@ -273,10 +273,18 @@ public class LogicHandler {
 		}
 		
 		public Node validNode(ArrayList<ArrayList<Integer>> mapmemory) {
-			if (x < 1 || x > x_size-1 || y < 1 || y > y_size) {
+			if (x < 1 || x > x_size-1 || y < 1 || y > y_size-1) {
 				return null;
 			} else {
-				if (checkValid(x+1,y-1) && checkValid(x,y-1) && checkValid(x-1,y-1) && checkValid(x+1,y) && checkValid(x,y) && checkValid(x-1,y) && checkValid(x+1,y+1) && checkValid(x,y+1) && checkValid(x,y-1)) {
+				if (checkValid(x+1,y-1) 
+						&& checkValid(x,y-1) 
+						&& checkValid(x-1,y-1) 
+						&& checkValid(x+1,y) 
+						&& checkValid(x,y) 
+						&& checkValid(x-1,y) 
+						&& checkValid(x+1,y+1) 
+						&& checkValid(x,y+1) 
+						&& checkValid(x,y+1)) {
 					return this;
 				} else {
 					return null;
@@ -286,6 +294,8 @@ public class LogicHandler {
 		
 		
 		public boolean checkValid(int x, int y) {
+			return true;
+			/*
 			try {
 				int a = mapmemory.get(x).get(y);
 			} catch (Exception e){
@@ -296,6 +306,7 @@ public class LogicHandler {
 			} else {
 				return true;
 			}
+			*/
 		}
 			
 		public void print() {

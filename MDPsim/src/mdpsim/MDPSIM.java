@@ -43,7 +43,6 @@ public class MDPSIM {
 		//System.out.println("MDF STRING: "+mdfString);
 		t = Clock.systemDefaultZone();
 		t0 = t.millis();
-		System.out.println(t0);
 		String s = parseFormatToMap(mdfString);   
 		ArrayList<Object2D> objects = generateMap(s);
 		Engine2D phyeng = new Engine2D(objects, (double)timeres/1000);

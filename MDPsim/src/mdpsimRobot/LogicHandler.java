@@ -1,5 +1,6 @@
 package mdpsimRobot;
 import java.util.ArrayList;
+//0 for nothing, 1 for something;
 
 public class LogicHandler {
 	public int x_size;
@@ -67,48 +68,48 @@ public class LogicHandler {
 		Node start = new Node(start_x,start_y,null, direction,0);
 		Node dest = new Node(dest_x, dest_y, null, null,Double.POSITIVE_INFINITY);
 		NodeList searchspace = new NodeList();
-		searchspace.merge(adjacent(start));
+		searchspace.merge(adjacent(start,mapmemory));
 		while(searchspace.size() > 0) {
 			searchspace.sort();
 			Node n = searchspace.pop();
 			if (n.isCell(dest)) {
 				return n;
 			}
-			NodeList adj = adjacent(n);
+			NodeList adj = adjacent(n,mapmemory);
 			searchspace.merge(adj);
 		}
 		return null;
 	}
 	
-	public NodeList adjacent(Node n) {
+	public NodeList adjacent(Node n, ArrayList<ArrayList<Integer>> mapmemory) {
 		NodeList adjacentcells= new NodeList();
 		//TR
 		try {
-			adjacentcells.add(new Node(n.x, n.y, n,n.rd.TR(), n.score+1).validNode());
+			adjacentcells.add(new Node(n.x, n.y, n,n.rd.TR(), n.score+1).validNode(mapmemory));
 		} catch (Exception e) {
 			adjacentcells.add(null);
 		}
 		//TL
 		try {
-			adjacentcells.add(new Node(n.x, n.y, n, n.rd.TL(), n.score+1).validNode());
+			adjacentcells.add(new Node(n.x, n.y, n, n.rd.TL(), n.score+1).validNode(mapmemory));
 		} catch (Exception e) {
 			adjacentcells.add(null);
 		}
 		//F1
 		try {
-			adjacentcells.add(n.F(1).validNode());
+			adjacentcells.add(n.F(1).validNode(mapmemory));
 		} catch (Exception e) {
 			adjacentcells.add(null);
 		}
 		//F2
 		try {
-			adjacentcells.add(n.F(2).validNode());
+			adjacentcells.add(n.F(2).validNode(mapmemory));
 		} catch (Exception e) {
 			adjacentcells.add(null);
 		}
 		//F3
 		try {
-			adjacentcells.add(n.F(3).validNode());
+			adjacentcells.add(n.F(3).validNode(mapmemory));
 		} catch (Exception e) {
 			adjacentcells.add(null);
 		}
@@ -271,22 +272,32 @@ public class LogicHandler {
 			return null;
 		}
 		
-		public boolean valid() {
-			if (x < 1 || x > 14 || y < 1 || y > 19) {
+		public Node validNode(ArrayList<ArrayList<Integer>> mapmemory) {
+			if (x < 1 || x > x_size-1 || y < 1 || y > y_size) {
+				return null;
+			} else {
+				if (checkValid(x+1,y-1) && checkValid(x,y-1) && checkValid(x-1,y-1) && checkValid(x+1,y) && checkValid(x,y) && checkValid(x-1,y) && checkValid(x+1,y+1) && checkValid(x,y+1) && checkValid(x,y-1)) {
+					return this;
+				} else {
+					return null;
+				}
+			}
+		}
+		
+		
+		public boolean checkValid(int x, int y) {
+			try {
+				int a = mapmemory.get(x).get(y);
+			} catch (Exception e){
+				return false;
+			}
+			if (mapmemory.get(x).get(y) != 0){
 				return false;
 			} else {
 				return true;
 			}
 		}
-		
-		public Node validNode() {
-			if (x < 1 || x > 14 || y < 1 || y > 19) {
-				return null;
-			} else {
-				return this;
-			}
-		}
-		
+			
 		public void print() {
 			System.out.println("X:"+ x + "\tY:"+y+"\tDirection:"+rd+"\t\tScore:"+score);
 		}

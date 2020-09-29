@@ -20,8 +20,7 @@ public class MDPSIM {
 	
  static ArrayList<Action2D> actionqueue;
 	public static void main(String[] args) throws InterruptedException{
-		//mdfString = parseFormatToMap("000000000000000000000000000000000000010000000000000000000000000000000000000000000000001110111111000000000000000000000000000000000000000000000000010000000000000000000000001110000000000000000000000000000000000000010000000000000000000000001110000000000000000000000001000000000000000000000000000000000000"); 
-		mdfString = parseFormatToMap(""); 
+		mdfString = parseFormatToMap("000000000000000000000000000000000000010000000000000000000000000000000000000000000000001110111111000000000000000000000000000000000000000000000000010000000000000000000000001110000000000000000000000000000000000000010000000000000000000000001110000000000000000000000001000000000000000000000000000000000000"); 
 		vw = new Viewer("MDP Simulator", 1024, 768); //First Panel
 		pause = false;
 		actionqueue = new ArrayList<Action2D>(0);
@@ -61,12 +60,12 @@ public class MDPSIM {
 	//initialize virtual robot object;
 	public static Robot initializeRobot() {
 		Robot robot = new Robot(new ArrayList<Sensor>(), 10);
-		robot.addSensor("RIGHT_FRONT",new Vector2D(0,9), new Vector2D(10,0),10,80);
-		robot.addSensor("RIGHT_BACK",new Vector2D(0,-9), new Vector2D(10,0),10,80);
+		robot.addSensor("RIGHT_FRONT",new Vector2D(0,9), new Vector2D(-10,0),10,80);
+		robot.addSensor("RIGHT_BACK",new Vector2D(0,-9), new Vector2D(-10,0),10,80);
 		robot.addSensor("FRONT_LEFT",new Vector2D(-7,7), new Vector2D(0,10), 10, 80);
 		robot.addSensor("FRONT_RIGHT",new Vector2D(7,7), new Vector2D(0,10), 10, 80);
 		robot.addSensor("FRONT_MIDDLE",new Vector2D(0,9), new Vector2D(0,10), 10, 80);
-		robot.addSensor("LEFT_LONG",new Vector2D(0,9), new Vector2D(-10,0), 10, 80);
+		robot.addSensor("LEFT_LONG",new Vector2D(0,9), new Vector2D(10,0), 10, 80);
 		return robot;
 	}
 	

@@ -22,7 +22,34 @@ public class Robot {
 		this.sensorvalues = new ArrayList<>();
 		this.actionqueue = new ArrayList<RobotAction>(0);
 		actionqueue.add(RobotAction.TL);
+		actionqueue.add(RobotAction.F2);
+		actionqueue.add(RobotAction.TL);
+		actionqueue.add(RobotAction.F3);
+		actionqueue.add(RobotAction.F3);
+		actionqueue.add(RobotAction.F3);
+		actionqueue.add(RobotAction.TR);
+		actionqueue.add(RobotAction.F3);
+		actionqueue.add(RobotAction.F2);
+		actionqueue.add(RobotAction.TL);
+		actionqueue.add(RobotAction.F3);
+		actionqueue.add(RobotAction.F2);
+		actionqueue.add(RobotAction.TL);
+		actionqueue.add(RobotAction.F3);
+		actionqueue.add(RobotAction.F3);
+		actionqueue.add(RobotAction.TR);
+		actionqueue.add(RobotAction.TR);
+		actionqueue.add(RobotAction.F3);
+		actionqueue.add(RobotAction.F3);
 		actionqueue.add(RobotAction.F1);
+		actionqueue.add(RobotAction.TL);
+		actionqueue.add(RobotAction.F2);
+		actionqueue.add(RobotAction.TR);
+		actionqueue.add(RobotAction.F3);
+		actionqueue.add(RobotAction.TR);
+		actionqueue.add(RobotAction.TR);
+		actionqueue.add(RobotAction.TR);
+		actionqueue.add(RobotAction.TL);
+		actionqueue.add(RobotAction.TL);
 		this.mh = new MovementHandler(actionqueue);
 	}
 	

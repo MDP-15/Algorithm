@@ -21,6 +21,8 @@ public class Robot {
 		this.radius = radius;
 		this.sensorvalues = new ArrayList<>();
 		this.actionqueue = new ArrayList<RobotAction>(0);
+		actionqueue.add(RobotAction.TL);
+		actionqueue.add(RobotAction.F1);
 		this.mh = new MovementHandler(actionqueue);
 	}
 	

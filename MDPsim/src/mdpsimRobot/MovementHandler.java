@@ -41,30 +41,30 @@ public class MovementHandler {
 				currentaction = actionqueue.remove(0);
 				}
 			if (currentaction == RobotAction.TR) {
-				queuedactions.add(new QueuedAction(Action.TURN, Math.PI/2, t, false));
-				queuedactions.add(new QueuedAction(Action.TURN, 0, t + 1,true));
+				queuedactions.add(new QueuedAction(Action.TURN, -2*Math.PI, t, false));
+				queuedactions.add(new QueuedAction(Action.TURN, 0, t + 0.25,true));
 			} else if (currentaction == RobotAction.TL) {
-				queuedactions.add(new QueuedAction(Action.TURN, -Math.PI/2, t, false));
-				queuedactions.add(new QueuedAction(Action.TURN, 0, t + 1, true));
+				queuedactions.add(new QueuedAction(Action.TURN, 2*Math.PI, t, false));
+				queuedactions.add(new QueuedAction(Action.TURN, 0, t + 0.25, true));
 			} else if (currentaction == RobotAction.F1) {
-				queuedactions.add(new QueuedAction(Action.ACCELERATE, 10, t, false));
-				queuedactions.add(new QueuedAction(Action.ACCELERATE, -10, t+1, false));
-				queuedactions.add(new QueuedAction(Action.STOP, 0, t+2, true));
+				queuedactions.add(new QueuedAction(Action.ACCELERATE, 1000, t, false));
+				queuedactions.add(new QueuedAction(Action.ACCELERATE, -1000, t+0.10, false));
+				queuedactions.add(new QueuedAction(Action.STOP, 0, t+0.20, true));
 			} else if (currentaction == RobotAction.F2) {
-				queuedactions.add(new QueuedAction(Action.ACCELERATE, 20, t, false));
-				queuedactions.add(new QueuedAction(Action.ACCELERATE, -20, t+1, false));
-				queuedactions.add(new QueuedAction(Action.STOP, 0, t+2, true));
+				queuedactions.add(new QueuedAction(Action.ACCELERATE, 1000, t, false));
+				queuedactions.add(new QueuedAction(Action.ACCELERATE, 0, t+0.1, false));
+				queuedactions.add(new QueuedAction(Action.ACCELERATE, -1000, t+0.2, false));
+				queuedactions.add(new QueuedAction(Action.STOP, 0, t+0.30, true));
 			} else if (currentaction == RobotAction.F3) {
-				queuedactions.add(new QueuedAction(Action.ACCELERATE, 30, t, false));
-				queuedactions.add(new QueuedAction(Action.ACCELERATE, -30, t+1, false));
-				queuedactions.add(new QueuedAction(Action.STOP, 0, t+2, true));
+				queuedactions.add(new QueuedAction(Action.ACCELERATE, 1000, t, false));
+				queuedactions.add(new QueuedAction(Action.ACCELERATE, 0, t+0.1, false));
+				queuedactions.add(new QueuedAction(Action.ACCELERATE, -1000, t+0.30, false));
+				queuedactions.add(new QueuedAction(Action.STOP, 0, t+0.40, true));
 			}
 		}
 		try {
 			if (time >= ((QueuedAction)queuedactions.get(0)).time) {
-				System.out.println(((QueuedAction)queuedactions.get(0)).time);
 				action = queuedactions.remove(0);
-				System.out.println(action.action());
 				if (((QueuedAction) action).flag()) {
 					currentaction = null;
 				}

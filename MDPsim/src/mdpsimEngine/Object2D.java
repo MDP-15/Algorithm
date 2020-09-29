@@ -18,11 +18,7 @@ public class Object2D {
 		this.velocity = velocity;
 		this.acceleration = acceleration;
 		this.isstatic = isstatic;
-		if (velocity.length(new Vector2D(0,0)) == 0) {
-			this.direction = new Vector2D(0,1);
-		} else {
-			this.direction = velocity;
-		}
+		this.direction = velocity;
 	}
 	
 	public Object2D (Circle2D circle, Vector2D position, Vector2D velocity, Vector2D acceleration, Vector2D direction, boolean isstatic) {
@@ -42,11 +38,7 @@ public class Object2D {
 		this.velocity = velocity;
 		this.acceleration = acceleration;
 		this.isstatic = isstatic;
-		if (velocity.length(new Vector2D(0,0)) == 0) {
-			this.direction = new Vector2D(0,10);
-		} else {
-			this.direction = velocity;
-		}
+		this.direction = velocity;
 	}
 	
 	public boolean isstatic() {
@@ -124,8 +116,5 @@ public class Object2D {
 		this.prevpos(this.position());
 		this.velocity(this.velocity().add(this.acceleration().multiply(timestep)));
 		this.position(this.prevpos.add(this.velocity.multiply(timestep).add(this.acceleration().multiply(0.5*Math.pow(timestep, 2)))));
-		if(this.velocity().length(new Vector2D(0,0)) != 0) {
-			this.direction(this.position.subtract(this.prevpos));
-		}
 	}
 }

@@ -16,9 +16,11 @@ public class MDPSIM {
 	public static Viewer vw;
 	public static String mdfString = null;
 	public static int timeres = 1;
+	public static Vector2D north = new Vector2D(0,10);
 	
  static ArrayList<Action2D> actionqueue;
 	public static void main(String[] args) throws InterruptedException{
+		//mdfString = parseFormatToMap("000000000000000000000000000000000000010000000000000000000000000000000000000000000000001110111111000000000000000000000000000000000000000000000000010000000000000000000000001110000000000000000000000000000000000000010000000000000000000000001110000000000000000000000001000000000000000000000000000000000000"); 
 		mdfString = parseFormatToMap(""); 
 		vw = new Viewer("MDP Simulator", 1024, 768); //First Panel
 		pause = false;
@@ -40,7 +42,7 @@ public class MDPSIM {
 		vw.setVisible(true);
 		updateAll(r,phyeng, vw.map1);	
 		while(true) {
-				Thread.sleep(timeres);
+				Thread.sleep(timeres*3);
 				if (actionqueue.size() == 0) {
 					phyeng.next(null);
 				} else {
@@ -59,12 +61,12 @@ public class MDPSIM {
 	//initialize virtual robot object;
 	public static Robot initializeRobot() {
 		Robot robot = new Robot(new ArrayList<Sensor>(), 10);
-		robot.addSensor("RIGHT_FRONT",new Vector2D(0,-9), new Vector2D(-10,0),10,80);
-		robot.addSensor("RIGHT_BACK",new Vector2D(0,9), new Vector2D(-10,0),10,80);
-		robot.addSensor("FRONT_LEFT",new Vector2D(7,-7), new Vector2D(0,-10), 10, 80);
-		robot.addSensor("FRONT_RIGHT",new Vector2D(-7,-7), new Vector2D(0,-10), 10, 80);
-		robot.addSensor("FRONT_MIDDLE",new Vector2D(0,-9), new Vector2D(0,-10), 10, 80);
-		robot.addSensor("LEFT_LONG",new Vector2D(0,-9), new Vector2D(10,0), 10, 80);
+		robot.addSensor("RIGHT_FRONT",new Vector2D(0,9), new Vector2D(10,0),10,80);
+		robot.addSensor("RIGHT_BACK",new Vector2D(0,-9), new Vector2D(10,0),10,80);
+		robot.addSensor("FRONT_LEFT",new Vector2D(-7,7), new Vector2D(0,10), 10, 80);
+		robot.addSensor("FRONT_RIGHT",new Vector2D(7,7), new Vector2D(0,10), 10, 80);
+		robot.addSensor("FRONT_MIDDLE",new Vector2D(0,9), new Vector2D(0,10), 10, 80);
+		robot.addSensor("LEFT_LONG",new Vector2D(0,9), new Vector2D(-10,0), 10, 80);
 		return robot;
 	}
 	
@@ -73,7 +75,7 @@ public class MDPSIM {
 		ArrayList<Line> lines = new ArrayList<Line>(0);
 		ArrayList<Double> sensoroutput = new ArrayList<Double>();
 		Vector2D origin = phyeng.movingObjects().get(0).position();
-		double angle = phyeng.movingObjects().get(0).direction().angle(new Vector2D(0,10));
+		double angle = phyeng.movingObjects().get(0).direction().angle(north);
 		if (phyeng.movingObjects().get(0).getClass() == Vehicle2D.class) {
 				for (Sensor s: r.sensors) {
 					Vector2D sensororigin = origin.add(s.position().rotate(angle));
@@ -112,10 +114,10 @@ public class MDPSIM {
 	}
 	
 	private static ArrayList<Object2D> generateLinesAsSquare(double x, double y) {
-		Vector2D topleft = new Vector2D(x - 5, y - 5);
-		Vector2D topright = new Vector2D(x - 5, y + 5);
-		Vector2D bottomleft = new Vector2D(x + 5, y - 5);
-		Vector2D bottomright = new Vector2D(x + 5, y + 5);
+		Vector2D topleft = new Vector2D(y - 5, x - 5);
+		Vector2D topright = new Vector2D(y - 5, x + 5);
+		Vector2D bottomleft = new Vector2D(y + 5, x - 5);
+		Vector2D bottomright = new Vector2D(y + 5, x + 5);
 		Line2D top = new Line2D(topleft, topright);
 		Line2D left = new Line2D(topleft, bottomleft);
 		Line2D right = new Line2D(topright, bottomright);
@@ -140,20 +142,20 @@ public class MDPSIM {
 	
 	private static ArrayList<Object2D> generateMap(String map) {
 		ArrayList<Object2D> objectmap = new ArrayList<Object2D>();
-		Line2D top = new Line2D(new Vector2D(0,0), new Vector2D(200,0));
+		Line2D top = new Line2D(new Vector2D(0,0), new Vector2D(0,200));
 		Object2D topborder = new Object2D(top, top.midpoint(), new Vector2D(0,0), new Vector2D(0,0),true);
-		Line2D left = new Line2D(new Vector2D(0,0), new Vector2D(0,150));
+		Line2D left = new Line2D(new Vector2D(0,0), new Vector2D(150,0));
 		Object2D leftborder = new Object2D(left, left.midpoint(), new Vector2D(0,0), new Vector2D(0,0), true);
-		Line2D right = new Line2D(new Vector2D(200,0), new Vector2D(200,150));
+		Line2D right = new Line2D(new Vector2D(0,200), new Vector2D(150,200));
 		Object2D rightborder = new Object2D(right, right.midpoint(), new Vector2D(0,0), new Vector2D(0,0), true);
-		Line2D bottom = new Line2D(new Vector2D(0,150), new Vector2D(200,150));
+		Line2D bottom = new Line2D(new Vector2D(150,0), new Vector2D(150,200));
 		Object2D bottomborder = new Object2D(bottom, bottom.midpoint(), new Vector2D(0,0), new Vector2D(0,0), true);
 		objectmap.add(topborder);
 		objectmap.add(leftborder);
 		objectmap.add(rightborder);
 		objectmap.add(bottomborder);
 		Circle2D robot = new Circle2D(10);
-		Vehicle2D robotobject = new Vehicle2D(robot, new Vector2D(185, 15), new Vector2D(0, 0), new Vector2D(0,0),new Vector2D(0,-10),false,false,20, Math.PI/2);
+		Vehicle2D robotobject = new Vehicle2D(robot, new Vector2D(15, 185), new Vector2D(0,0), new Vector2D(0,0), new Vector2D(0,10));
 		objectmap.addAll(generateXYFromBits(map));
 		objectmap.add(robotobject);
 		return objectmap;

@@ -12,14 +12,8 @@ public class VecInt {
 	}
 	
 	public VecInt(Vector2D vec, boolean flip) {
-		if (flip) {
-			this.x = (int) Math.round(vec.y());
-			this.y = (int) Math.round(vec.x());
-			
-		} else {
-			this.x = (int) Math.round(vec.x());
-			this.y = (int) Math.round(vec.y());
-		}
+		this.x = (int) Math.round(vec.x());
+		this.y = (int) Math.round(vec.y());
 	}
 	public int x() {
 		return this.x;

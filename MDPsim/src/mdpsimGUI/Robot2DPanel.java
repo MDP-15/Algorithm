@@ -30,7 +30,6 @@ public class Robot2DPanel extends JPanel{
 	public void paintComponent(Graphics g) {
 		g.setColor(Color.WHITE);
 		super.paintComponent(g);
-		
 		//DRAW GRID LINES
 				for(i=0;i<rows+1;i++) {
 					g.drawLine(originX, originY + i * cellSize, originX+cols*cellSize , originY + i * cellSize);

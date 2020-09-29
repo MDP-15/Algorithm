@@ -61,6 +61,7 @@ public class MapReader {
                 mdfbin = "0" + mdfbin;
             mdf = mdf + mdfbin;
         }
+        System.out.println(mdf);
 		return mdf;
 	}
 }

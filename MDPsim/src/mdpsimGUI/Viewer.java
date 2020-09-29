@@ -28,12 +28,15 @@ public class Viewer extends JFrame{
 	public ControlPanel cp;
 	public JMenuBar menu;
 	public String mapBits;
-	public boolean flag;
+	public boolean engineresetflag;
+	public boolean enginespeedflag;
+	public int enginespeed;
 	MapReader newMap = new MapReader();
 	
 	
 	public Viewer (String title, int w, int h){
-		this.flag = false;
+		this.engineresetflag = false;
+		this.enginespeedflag = false;
 		setTitle(title);
 		setSize(w, h);
 		setResizable(false);
@@ -45,7 +48,7 @@ public class Viewer extends JFrame{
 		map1 = constructVirtualMap(c);
 		map2 = constructRobotMap(c);
 		sensors = constructSensorScreen(c);
-		cp = constructControlPanel(c);
+		cp = constructControlPanel(c, this);
 		menuBar();
 	}
 	
@@ -103,8 +106,8 @@ public class Viewer extends JFrame{
 		return virtualmap;
 	}
 	
-	private ControlPanel constructControlPanel(GridBagConstraints c) {
-		ControlPanel controlpanel = new ControlPanel(null);
+	private ControlPanel constructControlPanel(GridBagConstraints c, Viewer vw) {
+		ControlPanel controlpanel = new ControlPanel(null, vw);
 		controlpanel.setSize(1000,250);
 		c.insets = new Insets(1,1,1,1);
 		c.gridx = 0;

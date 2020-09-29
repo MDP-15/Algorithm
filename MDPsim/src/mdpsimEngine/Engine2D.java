@@ -242,7 +242,7 @@ public class Engine2D{
 	
 	//Public methods
 	public Engine2D(ArrayList<Object2D> objects, double timestep) {
-		boolean verbose = true;
+		boolean verbose = false;
 		this.timestep = timestep;
 		this.staticobjects = new ArrayList<Object2D>();
 		this.movingobjects = new ArrayList<Object2D>();

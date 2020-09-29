@@ -17,6 +17,7 @@ public class MDPSIM {
 	public static String mdfString = null;
 	public static int timeres = 1;
 	public static Vector2D north = new Vector2D(0,10);
+	public static int simspeed = 1;
 	
  static ArrayList<Action2D> actionqueue;
 	public static void main(String[] args) throws InterruptedException{
@@ -41,7 +42,7 @@ public class MDPSIM {
 		vw.setVisible(true);
 		updateAll(r,phyeng, vw.map1);	
 		while(true) {
-				Thread.sleep(timeres*3);
+				Thread.sleep(timeres*simspeed);
 				if (actionqueue.size() == 0) {
 					phyeng.next(null);
 				} else {
@@ -50,9 +51,13 @@ public class MDPSIM {
 				updateAll(r, phyeng, vw.map1);
 				sensorUpdate(phyeng, vw.sensors, r);
 				actionqueue.addAll(r.getNextAction(phyeng.time()));
-				if (vw.flag == true) {
-					vw.flag = false;
+				if (vw.engineresetflag == true) {
+					vw.engineresetflag = false;
 					break;
+				}
+				if (vw.enginespeedflag == true) {
+					vw.enginespeedflag = false;
+					simspeed = vw.enginespeed;
 				}
 		}
 	}

@@ -38,7 +38,7 @@ public class MapReader {
 			String newMDF = convertMDF(newMapString);
 			System.out.println("Debugging "+newMDF);
 			MDPSIM.mdfString = newMDF;
-			vw.flag = true;
+			vw.engineresetflag = true;
 			
 			
 		}catch(Exception e) {

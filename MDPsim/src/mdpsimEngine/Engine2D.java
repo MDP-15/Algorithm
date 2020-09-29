@@ -57,7 +57,10 @@ public class Engine2D{
 	
 	// returns an ArrayList of possible colliding static objects given an object.
 	public ArrayList<Object2D> isBroadCollide(Object2D object) {
-		boolean verbose = false;
+		return isBroadCollide(object, false);
+	}
+	
+	public ArrayList<Object2D> isBroadCollide(Object2D object, boolean verbose) {
 		BoundingBox2D objbb = new BoundingBox2D(object);
 		ArrayList<BoundingBoxPointer> objxbbp = objbb.bbpointersx();
 		ArrayList<BoundingBoxPointer> objybbp = objbb.bbpointersy();
@@ -69,12 +72,14 @@ public class Engine2D{
 				collisionobjects.add(xcollide.get(a));
 			}
 		}
+		int k = 0;
 		for (int a = 0 ; a < ycollide.size(); a++) {
 			if (!collisionobjects.contains(ycollide.get(a))) {
 				collisionobjects.add(ycollide.get(a));
 			}
 		}
 		if (verbose) {
+			System.out.println(k);
 			System.out.println(collisionobjects.size() + " objects detected in broad-phase collision detection.");
 		}
 		return collisionobjects;
@@ -237,7 +242,7 @@ public class Engine2D{
 	
 	//Public methods
 	public Engine2D(ArrayList<Object2D> objects, double timestep) {
-		boolean verbose = false;
+		boolean verbose = true;
 		this.timestep = timestep;
 		this.staticobjects = new ArrayList<Object2D>();
 		this.movingobjects = new ArrayList<Object2D>();
@@ -245,6 +250,8 @@ public class Engine2D{
 		this.bby_static = new BoundingBoxList();
 		this.parseStaticity(objects);
 		this.parseBoundingBoxes(objects);
+		this.bbx_static.sort();
+		this.bby_static.sort();
 		if (verbose) {
 			bbx_static.printall();
 			bby_static.printall();

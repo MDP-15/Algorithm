@@ -5,4 +5,5 @@ public class LogicHandler {
 	public int y;
 	public int[][] mapmemory;
 	
+	
 }

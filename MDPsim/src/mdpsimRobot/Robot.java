@@ -15,6 +15,15 @@ public class Robot {
 		this.sensors = sensors;
 		this.radius = radius;
 		this.sensorvalues = new ArrayList<>();
+<<<<<<< Updated upstream
+=======
+		this.actionqueue = new ArrayList<RobotAction>(0);
+		this.actionqueue.add(RobotAction.TL);
+		this.actionqueue.add(RobotAction.TL);
+		this.actionqueue.add(RobotAction.TR);
+		this.actionqueue.add(RobotAction.TR);
+		this.mh = new MovementHandler(actionqueue);
+>>>>>>> Stashed changes
 	}
 	
 	public void addSensor(Vector2D position, Vector2D direction, double minrange, double maxrange) {
@@ -61,6 +70,7 @@ public class Robot {
 			actions.add(new Action2D(Action.ACCELERATE, -40));
 =======
 		if (sensorvalues != null) {
+<<<<<<< Updated upstream
 			if(sensorvalues.get(0) <= 15) {
 				mh.addAction(RobotAction.TL);
 			}
@@ -101,7 +111,36 @@ public class Robot {
 >>>>>>> Stashed changes
 		}
 		actions.add(mh.doNext(time , sensorvalues));
+=======
+//			mh.addAction(RobotAction.TL);
+//		}
+//		
+//		if(sensorvalues.get(3) != null && sensorvalues.get(3) > 30) {
+//			mh.addAction(RobotAction.TL);
+//		}
+//		
+//		if(sensorvalues.get(3) != null && sensorvalues.get(3) < 15) {
+//			mh.addAction(RobotAction.TR);
+//		}
+//		if(sensorvalues.get(0) != null) {
+//			//System.out.println("INSIDE GET 0");
+//			if(sensorvalues.get(0) <= 15) {
+//				System.out.println("TURN LEFT");
+//				mh.addAction(RobotAction.TL);
+//			}
+//		}
+//		
+//		if(sensorvalues.get(5) != null) {
+//			//System.out.println("INSIDE GET 5");
+//			if(sensorvalues.get(5) <= 15) {
+//				System.out.println("TURN RIGHT");
+//				mh.addAction(RobotAction.TR);
+//			}
+	}
+		actions.add(mh.doNext(time , sensorvalues)); // DO NOT TOUCH
+>>>>>>> Stashed changes
 		return actions;
 	}
 
 }
+

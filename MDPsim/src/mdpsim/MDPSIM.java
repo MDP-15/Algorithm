@@ -164,7 +164,11 @@ public class MDPSIM {
 		Vehicle2D robotobject = new Vehicle2D(robot, new Vector2D(15, 75), new Vector2D(0, 0), new Vector2D(0,0),new Vector2D(-10,0),false,false,20, Math.PI/2);
 =======
 		Circle2D robot = new Circle2D(10);
+<<<<<<< Updated upstream
 		Vehicle2D robotobject = new Vehicle2D(robot, new Vector2D(183, 15), new Vector2D(0, 0), new Vector2D(0,0),new Vector2D(10,0),false,false,20, Math.PI/2);
+>>>>>>> Stashed changes
+=======
+		Vehicle2D robotobject = new Vehicle2D(robot, new Vector2D(185, 15), new Vector2D(0, 0), new Vector2D(0,0),new Vector2D(10,0),false,false,20, Math.PI/2);
 >>>>>>> Stashed changes
 		objectmap.addAll(generateXYFromBits(map));
 		objectmap.add(robotobject);

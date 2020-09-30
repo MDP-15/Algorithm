@@ -23,37 +23,37 @@ public class Robot {
 		this.sensorvalues = new ArrayList<>();
 		this.actionqueue = new ArrayList<RobotAction>(0);
 		actionqueue.add(RobotAction.TL);
-		actionqueue.add(RobotAction.F2);
-		actionqueue.add(RobotAction.TL);
-		actionqueue.add(RobotAction.F3);
-		actionqueue.add(RobotAction.F3);
-		actionqueue.add(RobotAction.F3);
-		actionqueue.add(RobotAction.TR);
-		actionqueue.add(RobotAction.F3);
-		actionqueue.add(RobotAction.F2);
-		actionqueue.add(RobotAction.TL);
-		actionqueue.add(RobotAction.F3);
-		actionqueue.add(RobotAction.F2);
-		actionqueue.add(RobotAction.TL);
-		actionqueue.add(RobotAction.F3);
-		actionqueue.add(RobotAction.F3);
-		actionqueue.add(RobotAction.TR);
-		actionqueue.add(RobotAction.TR);
-		actionqueue.add(RobotAction.F3);
-		actionqueue.add(RobotAction.F3);
 		actionqueue.add(RobotAction.F1);
-		actionqueue.add(RobotAction.TL);
-		actionqueue.add(RobotAction.F2);
-		actionqueue.add(RobotAction.TR);
-		actionqueue.add(RobotAction.F3);
-		actionqueue.add(RobotAction.TR);
-		actionqueue.add(RobotAction.TR);
-		actionqueue.add(RobotAction.TR);
-		actionqueue.add(RobotAction.TL);
-		actionqueue.add(RobotAction.TL);
+//		actionqueue.add(RobotAction.F1);
+//		actionqueue.add(RobotAction.F1);
+//		actionqueue.add(RobotAction.F1);
+//		actionqueue.add(RobotAction.F3);
+//		actionqueue.add(RobotAction.TR);
+//		actionqueue.add(RobotAction.F3);
+//		actionqueue.add(RobotAction.F2);
+//		actionqueue.add(RobotAction.TL);
+//		actionqueue.add(RobotAction.F3);
+//		actionqueue.add(RobotAction.F2);
+//		actionqueue.add(RobotAction.TL);
+//		actionqueue.add(RobotAction.F3);
+//		actionqueue.add(RobotAction.F3);
+//		actionqueue.add(RobotAction.TR);
+//		actionqueue.add(RobotAction.TR);
+//		actionqueue.add(RobotAction.F3);
+//		actionqueue.add(RobotAction.F3);
+//		actionqueue.add(RobotAction.F1);
+//		actionqueue.add(RobotAction.TL);
+//		actionqueue.add(RobotAction.F2);
+//		actionqueue.add(RobotAction.TR);
+//		actionqueue.add(RobotAction.F3);
+//		actionqueue.add(RobotAction.TR);
+//		actionqueue.add(RobotAction.TR);
+//		actionqueue.add(RobotAction.TR);
+//		actionqueue.add(RobotAction.TL);
+//		actionqueue.add(RobotAction.TL);
 		this.mh = new MovementHandler(actionqueue);
 		this.lh = new LogicHandler(15,20,1,1);
-		lh.parseMDF("000000100001000001010000011111000000000111100000");
+		lh.parseMDF("000000000000000000000000000000000000010000000000000000000000000000000000000000000000001110111111000000000000000000000000000000000000000000000000010000000000000000000000001110000000000000000000000000000000000000010000000000000000000000001110000000000000000000000010000000000000000000000000000000000000");
 	}
 	
 	public void addSensor(String name,Vector2D position, Vector2D direction, double minrange, double maxrange) {
@@ -100,7 +100,7 @@ public class Robot {
 	// robot logic
 	public ArrayList<Action2D> getNextAction(double time){
 		ArrayList<Action2D> actions = new ArrayList<Action2D>(0);
-		if (sensorvalues != null) {
+//		if (sensorvalues != null) {
 //			mh.addAction(RobotAction.TL);
 //		}
 //		
@@ -126,7 +126,20 @@ public class Robot {
 //				mh.addAction(RobotAction.TR);
 //			}
 //		}
-		}
+//		}
+		
+		if(!mh.moving) {
+			   if(sensorvalues != null) {
+			    if(sensorvalues.get(3) == null) {
+			     
+			    }
+			    else if(sensorvalues.get(3) != null || sensorvalues.get(3) <= 19) {
+			     System.out.println("There is an obstacle");
+			     actionqueue.add(RobotAction.TL);
+			     mh.moving = true;
+			    }
+			   }
+			  }
 		actions.add(mh.doNext(time , sensorvalues)); // DO NOT TOUCH
 		return actions;
 	}

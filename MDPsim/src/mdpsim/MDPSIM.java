@@ -49,6 +49,7 @@ public class MDPSIM {
 		Robot r = initializeRobot();
 		vw.setVisible(true);
 		updateEngine2DPanel(r,phyeng, vw.map1);	
+		updateRobot2DPanel(phyeng, r, vw.map2);
 		while(true) {
 				try {
 					while((phyeng.time()-reftime)*1000 >= ((double)(t.millis()-t0)/simspeed)) {
@@ -61,7 +62,7 @@ public class MDPSIM {
 					phyeng.next(actionqueue.remove(0));
 				}
 				updateEngine2DPanel(r, phyeng, vw.map1);
-				updateRobot2DPanel(r,vw.map2);
+				updateRobot2DPanel(phyeng, r, vw.map2);
 				sensorUpdate(phyeng, vw.sensors, r);
 				actionqueue.addAll(r.getNextAction(phyeng.time()));
 				// flag handler functions
@@ -244,7 +245,20 @@ public class MDPSIM {
 	}
 	
 	
-	public static void updateRobot2DPanel(Robot r, Robot2DPanel rpanel) {
+	public static void updateRobot2DPanel(Engine2D phyeng, Robot r, Robot2DPanel rpanel) {
 		rpanel.setMap(r.lh.mapmemory);
+		ArrayList<Circle> circles = new ArrayList<Circle>();
+		double mult = (float) rpanel.getWidth()/ (float) 150;
+
+		for (Object2D obj : phyeng.movingObjects()) {
+			Circle2D circle = (Circle2D) obj.object();
+			VecInt pos = new VecInt(obj.position().add(new Vector2D(-circle.radius(),-circle.radius())).multiply(mult),true);
+			int diameter = (int)Math.round(2*circle.radius()*mult);
+			circles.add(new Circle(pos,diameter, Color.GRAY, true));
+			circles.add(new Circle(pos,diameter, Color.GREEN, false));
+		}
+		rpanel.circles = circles;
+		rpanel.repaint();
 	}
+	
 }

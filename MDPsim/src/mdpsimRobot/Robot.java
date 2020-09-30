@@ -18,6 +18,7 @@ public class Robot {
 	private static DecimalFormat df2 = new DecimalFormat("#.##");
 	public ArrayList<RobotAction> actionqueue;
 	public LogicHandler lh;
+	public static boolean oneMovement = false;
 	
 	public Robot(ArrayList<Sensor> sensors, double radius) {
 		this.sensors = sensors;
@@ -25,10 +26,10 @@ public class Robot {
 		this.sensorvalues = new ArrayList<>();
 		this.actionqueue = new ArrayList<RobotAction>(0);
 		actionqueue.add(RobotAction.TL);
-		actionqueue.add(RobotAction.F1);
-		actionqueue.add(RobotAction.F1);
-		actionqueue.add(RobotAction.F1);
-		actionqueue.add(RobotAction.F1);
+//		actionqueue.add(RobotAction.F1);
+//		actionqueue.add(RobotAction.F1);
+//		actionqueue.add(RobotAction.F1);
+//		actionqueue.add(RobotAction.F1);
 //		actionqueue.add(RobotAction.F3);
 //		actionqueue.add(RobotAction.TR);
 //		actionqueue.add(RobotAction.F3);
@@ -103,6 +104,7 @@ public class Robot {
 	// robot logic
 	public ArrayList<Action2D> getNextAction(double time){
 		ArrayList<Action2D> actions = new ArrayList<Action2D>(0);
+		
 //		if (sensorvalues != null) {
 //			mh.addAction(RobotAction.TL);
 //		}
@@ -132,18 +134,44 @@ public class Robot {
 //		}
 		
 		if(!mh.moving) {
-			   if(sensorvalues != null) {
-			    if(sensorvalues.get(3) == null) {
-			     
-			    }
-			    else if(sensorvalues.get(3) != null || sensorvalues.get(3) <= 19) {
-			     System.out.println("There is an obstacle");
-			     actionqueue.add(RobotAction.TL);
-			     mh.moving = true;
-			    }
-			   }
-			  }
+			if(sensorvalues.get(3) == null) {
+				if(!oneMovement) {
+					oneMovement = true;
+					actionqueue.add(RobotAction.F1);
+				}
+			}
+			else {
+				if(!oneMovement) {
+//					oneMovement = true;
+//					actionqueue.add(RobotAction.TL);
+				}
+				
+				
+			}
+		}
+		
+
 		actions.add(mh.doNext(time , sensorvalues)); // DO NOT TOUCH
+
 		return actions;
+	}
+	
+	public void robotExploration() {
+		if(!mh.moving) {
+			if(sensorvalues.get(3) == null) {
+				if(!oneMovement) {
+					oneMovement = true;
+					actionqueue.add(RobotAction.F1);
+				}
+			}
+			else {
+				if(!oneMovement) {
+//					oneMovement = true;
+//					actionqueue.add(RobotAction.TL);
+				}
+				
+				
+			}
+		}
 	}
 }

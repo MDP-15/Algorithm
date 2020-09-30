@@ -12,7 +12,7 @@ public class MovementHandler {
 	public RobotAction currentaction;
 	public RobotAction desiredaction;
 	public double time;
-	public boolean moving;
+	public static boolean moving = false;
 	public ArrayList<RobotAction> actionqueue;
 
 	public MovementHandler (ArrayList<RobotAction> actionqueue) {
@@ -65,6 +65,7 @@ public class MovementHandler {
 				queuedactions.add(new QueuedAction(Action.STOP, 0, t+0.40, true));
 			}
 			moving = false;
+			Robot.oneMovement = false;
 		}
 		try {
 			if (time >= ((QueuedAction)queuedactions.get(0)).time) {

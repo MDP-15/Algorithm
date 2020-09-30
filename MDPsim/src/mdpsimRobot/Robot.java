@@ -19,12 +19,16 @@ public class Robot {
 =======
 		this.actionqueue = new ArrayList<RobotAction>(0);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		this.actionqueue.add(RobotAction.TL);
 		this.actionqueue.add(RobotAction.TL);
 		this.actionqueue.add(RobotAction.TR);
 		this.actionqueue.add(RobotAction.TR);
 =======
 //		actionqueue.add(RobotAction.TL);
+=======
+//		actionqueue.add(RobotAction.TL); //STARTING ORIENTATION OF THE ROBOT
+>>>>>>> Stashed changes
 //		actionqueue.add(RobotAction.F1);
 //		actionqueue.add(RobotAction.F1);
 //		actionqueue.add(RobotAction.F1);
@@ -201,6 +205,26 @@ public class Robot {
 
 =======
 	
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+	public void robotExploration() {
+		if(!mh.moving) {
+			if(sensorvalues.get(3) == null) {
+				if(!oneMovement) {
+					oneMovement = true;
+					actionqueue.add(RobotAction.F1);
+				}
+			}
+			else {
+				if(!oneMovement) {
+					oneMovement = true;
+					actionqueue.add(RobotAction.TL);
+				}
+				
+			}
+		}
+	}
 >>>>>>> Stashed changes
 }
 

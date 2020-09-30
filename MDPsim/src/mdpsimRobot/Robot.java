@@ -1,4 +1,5 @@
 package mdpsimRobot;
+
 import mdpsimEngine.Action2D;
 import mdpsimEngine.Action2D.Action;
 import mdpsimEngine.Object2D;
@@ -19,7 +20,7 @@ public class Robot {
 	public ArrayList<RobotAction> actionqueue;
 	public LogicHandler lh;
 	public static boolean oneMovement = false;
-	
+
 	public Robot(ArrayList<Sensor> sensors, double radius) {
 		this.sensors = sensors;
 		this.radius = radius;
@@ -61,17 +62,17 @@ public class Robot {
 //		actionqueue.add(RobotAction.TL);
 //		actionqueue.add(RobotAction.TL);
 		this.mh = new MovementHandler(actionqueue);
-		this.lh = new LogicHandler(15,20,1,1);
-		//lh.parseMDF("000000000000000000000000000000000000010000000000000000000000000000000000000000000000001110111111000000000000000000000000000000000000000000000000010000000000000000000000001110000000000000000000000000000000000000010000000000000000000000001110000000000000000000000010000000000000000000000000000000000000");
+		this.lh = new LogicHandler(15, 20, 1, 1);
+		// lh.parseMDF("000000000000000000000000000000000000010000000000000000000000000000000000000000000000001110111111000000000000000000000000000000000000000000000000010000000000000000000000001110000000000000000000000000000000000000010000000000000000000000001110000000000000000000000010000000000000000000000000000000000000");
 		lh.parseMDF(MDPSIM.mdfString);
 	}
-	
-	public void addSensor(String name,Vector2D position, Vector2D direction, double minrange, double maxrange) {
-		Vector2D posnormalized = position.multiply((double)position.length(new Vector2D(0,0))/radius);
+
+	public void addSensor(String name, Vector2D position, Vector2D direction, double minrange, double maxrange) {
+		Vector2D posnormalized = position.multiply((double) position.length(new Vector2D(0, 0)) / radius);
 		Vector2D unitdirection = direction.unit();
-		this.sensors.add(new Sensor(name,posnormalized,unitdirection, minrange, maxrange));
+		this.sensors.add(new Sensor(name, posnormalized, unitdirection, minrange, maxrange));
 	}
-	
+
 	public void updateSensors(ArrayList<Double> values) {
 		sensorvalues.clear();
 		if (values.size() != sensors.size()) {
@@ -82,35 +83,34 @@ public class Robot {
 			double maxrange = sensors.get(a).maxrange();
 			double minrange = sensors.get(a).minrange();
 			double val = values.get(a);
-			if (val >= minrange && val <= maxrange) {
+			if (val <= maxrange) {
 				sensorvalues.add(val);
 			} else {
 				sensorvalues.add(null);
 			}
 		}
 	}
-	
+
 	public void printSensor() {
 		for (int a = 0; a < sensorvalues.size(); a++) {
-			System.out.print(sensors.get(a).name+"\t ");
+			System.out.print(sensors.get(a).name + "\t ");
 		}
 		System.out.println();
 		for (int a = 0; a < sensorvalues.size(); a++) {
-			if(sensorvalues.get(a) == null) {
-				System.out.print(sensorvalues.get(a)+"\t\t ");
+			if (sensorvalues.get(a) == null) {
+				System.out.print(sensorvalues.get(a) + "\t\t ");
+			} else {
+				System.out.print(df2.format(sensorvalues.get(a)) + "\t\t ");
 			}
-			else {
-				System.out.print(df2.format(sensorvalues.get(a))+"\t\t ");
-			}
-			
+
 		}
 		System.out.println();
 	}
-	
+
 	// robot logic
-	public ArrayList<Action2D> getNextAction(double time){
+	public ArrayList<Action2D> getNextAction(double time) {
 		ArrayList<Action2D> actions = new ArrayList<Action2D>(0);
-		
+
 //		if (sensorvalues != null) {
 //			mh.addAction(RobotAction.TL);
 //		}
@@ -138,27 +138,44 @@ public class Robot {
 //			}
 //		}
 //		}
-	
-		
 
-		actions.add(mh.doNext(time , sensorvalues)); // DO NOT TOUCH
+		actions.add(mh.doNext(time, sensorvalues)); // DO NOT TOUCH
 
 		return actions;
 	}
-	
+
 	public void robotExploration() {
-		if(!mh.moving) {
-			if(sensorvalues.get(2) == null && sensorvalues.get(3) == null && sensorvalues.get(4) == null) {
-				if(!oneMovement) {
+		if (!mh.moving) {
+			if (!oneMovement) {
+				if (sensorvalues.get(2) == null && sensorvalues.get(3) == null && sensorvalues.get(4) == null) {
 					oneMovement = true;
 					actionqueue.add(RobotAction.F1);
-				}
-			}
-			else if (sensorvalues.get(2)== null && sensorvalues.get(3) == null && sensorvalues.get(4) < 15) {
-				if(!oneMovement) {
+				} else if (sensorvalues.get(4) == null && sensorvalues.get(3) == null && sensorvalues.get(2) > 19) {
+					oneMovement = true;
+					actionqueue.add(RobotAction.F1);
+
+				} else if (sensorvalues.get(2) == null && sensorvalues.get(4) == null && sensorvalues.get(3) > 19) {
+					oneMovement = true;
+					actionqueue.add(RobotAction.F1);
+
+				} else if (sensorvalues.get(2) == null && sensorvalues.get(3) == null && sensorvalues.get(4) > 19) {
+					oneMovement = true;
+					actionqueue.add(RobotAction.F1);
+
+				} else if (sensorvalues.get(4) == null && sensorvalues.get(3) == null && sensorvalues.get(2) < 9) {
 					oneMovement = true;
 					actionqueue.add(RobotAction.TL);
+
+				} else if (sensorvalues.get(2) == null && sensorvalues.get(4) == null && sensorvalues.get(3) < 9) {
+					oneMovement = true;
+					actionqueue.add(RobotAction.TL);
+
+				} else if (sensorvalues.get(2) == null && sensorvalues.get(3) == null && sensorvalues.get(4) < 9) {
+					oneMovement = true;
+					actionqueue.add(RobotAction.TL);
+
 				}
+				
 			}
 		}
 	}

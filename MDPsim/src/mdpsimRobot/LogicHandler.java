@@ -20,14 +20,6 @@ public class LogicHandler {
 		for(int a = 0; a < x_size; a++) {
 			mapmemory.add(new ArrayList<Integer>(y_size));
 		}
-		computeFastestPath(1,1,10,10,RobotDirection.UP).printTrail();
-	}
-	public void MapMemory(ArrayList<ArrayList<Integer>> mapmemory) {
-		this.mapmemory = mapmemory;
-	}
-	
-	public ArrayList<ArrayList<Integer>>MapMemory() {
-		return this.mapmemory;
 	}
 
 	private String parseFormatToMap(String b) {
@@ -54,290 +46,81 @@ public class LogicHandler {
 			mem.add(ar);
 		}
 		this.mapmemory = mem;
+		printMapMemory();
+		Node n = computeFastestPath(1,1,1,13,RobotDirection.DOWN);
+		n.printParents();
 	}
 	
-	public void printmemory() {
-		for (int a = 0 ; a < y_size; a++) {
-			System.out.println("Row "+ a);
-			for (int b = 0; b < x_size; b++) {
-				System.out.print(mapmemory.get(a).get(b));
-			}
-			System.out.println();
-		}
-	}
-	
-	public Node computeFastestPath(int start_x, int start_y, int dest_x, int dest_y, RobotDirection direction) {
-		Node start = new Node(start_x,start_y,null, direction,0);
-		Node dest = new Node(dest_x, dest_y, null, null,Double.POSITIVE_INFINITY);
-		NodeList searchspace = new NodeList();
-		searchspace.merge(adjacent(start,mapmemory));
-		while(searchspace.size() > 0) {
-			searchspace.sort();
-			Node n = searchspace.pop();
-			if (n.isCell(dest)) {
+	public Node computeFastestPath(int start_x, int start_y, int dest_x, int dest_y, RobotDirection rd) {
+		Node start = new Node(start_x, start_y, null, null, rd, 0);
+		Node end = new Node(dest_x, dest_y,null,null,null,Double.POSITIVE_INFINITY);
+		//construct searched list;
+		ArrayList<Node> done = new ArrayList<Node>();
+		//construct list of neighbours to search
+		ArrayList<Node>search = new ArrayList<Node>();
+		search.add(start);
+		while(search.size() > 0) {
+			Node n = search.remove(0);
+			done.add(n);
+			if (n.isCell(end)) {
 				return n;
 			}
-			NodeList adj = adjacent(n,mapmemory);
-			searchspace.merge(adj);
+			ArrayList<Node> neighbours = n.neighbours(mapmemory);
+			for (Node nb : neighbours) {
+				if (!in(done, nb)) {
+					search = insert(search, nb);
+				}
+			}
 		}
 		return null;
 	}
 	
-	public NodeList adjacent(Node n, ArrayList<ArrayList<Integer>> mapmemory) {
-		NodeList adjacentcells= new NodeList();
-		//TR
-		try {
-			Node nod = new Node(n.x, n.y, n,n.rd.TR(), n.score+1).validNode(mapmemory);
-			nod.ra = RobotAction.TR;
-			adjacentcells.add(nod);
-		} catch (Exception e) {
-			adjacentcells.add(null);
-		}
-		//TL
-		try {
-			Node nod = new Node(n.x, n.y, n,n.rd.TL(), n.score+1).validNode(mapmemory);
-			nod.ra = RobotAction.TL;
-			adjacentcells.add(nod);
-		} catch (Exception e) {
-			adjacentcells.add(null);
-		}
-		//F1
-		try {
-			Node nod = n.F(1);
-			nod.ra = RobotAction.F1;
-			adjacentcells.add(nod);
-		} catch (Exception e) {
-			adjacentcells.add(null);
-		}
-		//F2
-		try {
-			Node nod = n.F(2);
-			nod.ra = RobotAction.F2;
-			adjacentcells.add(nod);
-		} catch (Exception e) {
-			adjacentcells.add(null);
-		}
-		//F3
-		try {
-			Node nod = n.F(3);
-			nod.ra = RobotAction.F3;
-			adjacentcells.add(nod);
-		} catch (Exception e) {
-			adjacentcells.add(null);
-		}
-		return adjacentcells;
+	public void findAndReplace(ArrayList<ArrayList<Node>>map, Node n) {
+		Node nod = map.get(n.x).get(n.y);
+		if (nod.score > n.score) {
+			ArrayList<Node> arlist = map.get(n.x);
+			arlist.set(n.y, n);
+			map.set(n.x, arlist);
+		}	
 	}
 	
-	class NodeList {
-		ArrayList<Node> nodes;
-		
-		public NodeList() {
-			this.nodes = new ArrayList<Node>();
-			sort();
+	public boolean in(ArrayList<Node> list, Node n) {
+		for (int a = 0 ; a < list.size(); a++) {
+			if (n.is(list.get(a))) {
+				return true;
+			}
 		}
-		public NodeList(ArrayList<Node> nodes) {
-			this.nodes = nodes;
-			sort();
-		}
-		
-		public void sort() {
-			boolean sorted = false;
-			while (!sorted) {
-				sorted = true;
-				for(int a = 1; a < nodes.size(); a++) {
-					Node temp = nodes.get(a);
-					if (nodes.get(a-1).score > temp.score) {
-						nodes.set(a, nodes.get(a-1));
-						nodes.set(a-1, temp);
-						sorted = false;
-					}
+		return false;
+	}
+	
+	public ArrayList<Node> insert(ArrayList<Node> ar, Node n){
+		if (ar.size() == 0) {
+			ar.add(n);
+			return ar;
+		} else {
+			for (int a = 0; a < ar.size(); a++) {
+				if (ar.get(a).score > n.score) {
+					ar.add(a,n);
+					return ar;
 				}
 			}
 		}
-		
-		public void insert(Node n) {
-			if (n == null) {
-				return;
-			}
-			for (int a = 0; a < nodes.size(); a++) {
-				if (nodes.get(a).score < n.score) {
-					nodes.add(a, n);
-					break;
-				}
-			}
-			if (nodes.size() == 0) {
-				nodes.add(n);
-			}
-		}
-		
-		public void add(Node n) {
-			nodes.add(n);
-		}
-		
-		@SuppressWarnings("null")
-		public int in(Node n) {
-			for (int a = 0; a < nodes.size(); a++) {
-				if (nodes.get(a).is(n)) {
-					return a;
-				}
-			}
-			return -1;
-		}
-		
-		public int size() {
-			return nodes.size();
-		}
-		
-		public Node pop() {
-			Node n = nodes.remove(0);
-			return n;
-		}
-		
-		public Node pop(int a) {
-			Node n = nodes.remove(a);
-			return n;
-		}
-		
-		public Node get(int a) {
-			return nodes.get(a);
-		}
-		
-		public void merge(NodeList n) {
-			for (int a = 0; a < n.size(); a++) {
-				Node node = n.get(a);
-				int in = in(node);
-				if (in != -1) {
-					Node inside = get(in);
-					if (inside.score > node.score) {
-						pop(in);
-						insert(node);
-					}
-				} else {
-					insert(node);
-				}	
-			}
-		}
-		
-		public void print() {
-			for (int a = 0; a < nodes.size(); a++) {
-				System.out.println("Node #"+a);
-				nodes.get(a).print();
+		ar.add(n);
+		return ar;
+	}
+	
+	public void printMapMemory() {
+		int x_size = mapmemory.size();
+		int y_size = 0;
+		try {
+			y_size = mapmemory.get(0).size();
+		} catch (Exception e) {}
+		for (int a = 0; a < x_size; a++) {
+			for (int b = 0; b < y_size; b++) {
+				System.out.print(mapmemory.get(a).get(b));
 			}
 			System.out.println();
 		}
-	}
-	
-	class Node{
-		int x;
-		int y;
-		RobotDirection rd;
-		RobotAction ra;
-		Node camefrom;
-		double score;
-		
-		public Node(int x, int y, Node camefrom, RobotDirection rd,double score) {
-			this.x = x;
-			this.y = y;
-			this.rd = rd;
-			this.camefrom = camefrom;
-			this.score = score;
-			this.ra = null;
-		}
-		
-		public boolean is(Node n) {
-			try {
-				RobotDirection r = n.rd;
-			} catch (Exception e) {
-				return false;
-			}
-			if (n.x == x && n.y == y && n.rd == rd) {
-				return true;
-			} else {
-				return false;
-			}
-		}
-		
-		public boolean isCell(Node n) {
-			if (n.x == x && n.y == y) {
-				return true;
-			} else {
-				return false;
-			}
-		}
-		
-		public Node F(int val) {
-			double sc;
-			if (val <= 1) {
-				sc = 1*val;
-			} else if (val <= 2) {
-				sc = 0.8*val;
-			} else {
-				sc = 0.7*val;
-			}
-			if (rd == RobotDirection.UP) {
-				return new Node(x, y-val, this, rd, score+sc);
-			} else if (rd == RobotDirection.DOWN) {
-				return new Node(x, y+val, this, rd, score+sc);
-			} else if (rd == RobotDirection.LEFT) {
-				return new Node(x-val, y, this, rd, score+sc);
-			} else if (rd == RobotDirection.RIGHT) {
-				return new Node(x+val, y, this, rd, score+sc);
-			} 
-			return null;
-		}
-		
-		public Node validNode(ArrayList<ArrayList<Integer>> mapmemory) {
-			if (x < 1 || x > x_size-1 || y < 1 || y > y_size-1) {
-				return null;
-			} else {
-				if (checkValid(x+1,y-1) 
-						&& checkValid(x,y-1) 
-						&& checkValid(x-1,y-1) 
-						&& checkValid(x+1,y) 
-						&& checkValid(x,y) 
-						&& checkValid(x-1,y) 
-						&& checkValid(x+1,y+1) 
-						&& checkValid(x,y+1) 
-						&& checkValid(x,y+1)) {
-					return this;
-				} else {
-					return null;
-				}
-			}
-		}
-		
-		
-		public boolean checkValid(int x, int y) {
-			return true;
-			/*
-			try {
-				int a = mapmemory.get(x).get(y);
-			} catch (Exception e){
-				return false;
-			}
-			if (mapmemory.get(x).get(y) != 0){
-				return false;
-			} else {
-				return true;
-			}
-			*/
-		}
-			
-		public void print() {
-			System.out.println("X:"+ x + "\tY:"+y+"\tDirection:"+rd+"\t\tScore:"+score +"\t\t\t Action:"+ra);
-		}
-		public void printTrail() {
-			Node n = this;
-			boolean isnull = false;
-			while (!isnull) {
-				n.print();
-				if(n.camefrom != null) {
-					isnull = false;
-					n = n.camefrom;
-				} else {
-					isnull = true;
-				}
-			}
-		}
+		System.out.println();
 	}
 }

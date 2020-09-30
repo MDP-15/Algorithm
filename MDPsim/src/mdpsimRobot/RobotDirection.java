@@ -31,4 +31,16 @@ public enum RobotDirection implements Serializable {
 		}
 		return null;
 	}
+	
+	public RobotDirection F1() {
+		return this;
+	}
+	
+	public RobotDirection F2() {
+		return this;
+	}
+	
+	public RobotDirection F3() {
+		return this;
+	}
 }

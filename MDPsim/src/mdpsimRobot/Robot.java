@@ -7,6 +7,8 @@ import mdpsimEngine.Vector2D;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import mdpsim.MDPSIM;
+
 public class Robot {
 	public ArrayList<Sensor> sensors;
 	public ArrayList<Double> sensorvalues;
@@ -24,9 +26,9 @@ public class Robot {
 		this.actionqueue = new ArrayList<RobotAction>(0);
 		actionqueue.add(RobotAction.TL);
 		actionqueue.add(RobotAction.F1);
-//		actionqueue.add(RobotAction.F1);
-//		actionqueue.add(RobotAction.F1);
-//		actionqueue.add(RobotAction.F1);
+		actionqueue.add(RobotAction.F1);
+		actionqueue.add(RobotAction.F1);
+		actionqueue.add(RobotAction.F1);
 //		actionqueue.add(RobotAction.F3);
 //		actionqueue.add(RobotAction.TR);
 //		actionqueue.add(RobotAction.F3);
@@ -53,7 +55,8 @@ public class Robot {
 //		actionqueue.add(RobotAction.TL);
 		this.mh = new MovementHandler(actionqueue);
 		this.lh = new LogicHandler(15,20,1,1);
-		lh.parseMDF("000000000000000000000000000000000000010000000000000000000000000000000000000000000000001110111111000000000000000000000000000000000000000000000000010000000000000000000000001110000000000000000000000000000000000000010000000000000000000000001110000000000000000000000010000000000000000000000000000000000000");
+		//lh.parseMDF("000000000000000000000000000000000000010000000000000000000000000000000000000000000000001110111111000000000000000000000000000000000000000000000000010000000000000000000000001110000000000000000000000000000000000000010000000000000000000000001110000000000000000000000010000000000000000000000000000000000000");
+		lh.parseMDF(MDPSIM.mdfString);
 	}
 	
 	public void addSensor(String name,Vector2D position, Vector2D direction, double minrange, double maxrange) {

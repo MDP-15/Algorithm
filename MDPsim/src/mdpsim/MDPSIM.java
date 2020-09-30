@@ -254,8 +254,8 @@ public class MDPSIM {
 			Circle2D circle = (Circle2D) obj.object();
 			VecInt pos = new VecInt(obj.position().add(new Vector2D(-circle.radius(),-circle.radius())).multiply(mult),true);
 			int diameter = (int)Math.round(2*circle.radius()*mult);
-			circles.add(new Circle(pos,diameter, Color.GRAY, true));
-			circles.add(new Circle(pos,diameter, Color.GREEN, false));
+			circles.add(new Circle(pos,diameter, Color.BLACK, true));
+			circles.add(new Circle(pos,diameter, Color.WHITE, false));
 		}
 		rpanel.circles = circles;
 		rpanel.repaint();

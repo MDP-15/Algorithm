@@ -82,7 +82,7 @@ public class Robot2DPanel extends JPanel{
 		//START ZONE
 		for(int a=20;a>16;a--) {
 			for(int b=0;b<3;b++) {
-				g.setColor(Color.magenta);
+				g.setColor(Color.pink);
 				g.fillRect(b*cellSize,  a*cellSize, cellSize, cellSize);
 			}
 			
@@ -91,7 +91,7 @@ public class Robot2DPanel extends JPanel{
 		//END ZONE
 		for(int a=0;a<3;a++) {
 			for(int b=15;b>11;b--) {
-				g.setColor(Color.magenta);
+				g.setColor(Color.pink);
 				g.fillRect(b*cellSize,  a*cellSize, cellSize, cellSize);
 			}
 			

@@ -32,11 +32,11 @@ public class MapReader {
 			}
 			
 			reader.close();
-			System.out.println("Debugging "+out);
+			//System.out.println("Debugging "+out);
 			mapString = out.toString().replace("\n","");
 			String newMapString = out.toString();
 			String newMDF = convertMDF(newMapString);
-			System.out.println("Debugging "+newMDF);
+			//System.out.println("Debugging "+newMDF);
 			MDPSIM.mdfString = newMDF;
 			vw.engineresetflag = true;
 			

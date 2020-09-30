@@ -47,7 +47,7 @@ public class MovementHandler {
 				queuedactions.add(new QueuedAction(Action.TURN, -2*Math.PI, t, false));
 				queuedactions.add(new QueuedAction(Action.TURN, 0, t + 0.25,true));
 			} else if (currentaction == RobotAction.TL) {
-				queuedactions.add(new QueuedAction(Action.TURN, Math.PI, t, false));
+				queuedactions.add(new QueuedAction(Action.TURN, 2*Math.PI, t, false));
 				queuedactions.add(new QueuedAction(Action.TURN, 0, t + 0.25, true));
 			} else if (currentaction == RobotAction.F1) {
 				queuedactions.add(new QueuedAction(Action.ACCELERATE, 1000, t, false));

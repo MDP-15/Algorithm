@@ -242,7 +242,7 @@ public class MDPSIM {
 	private static void sensorUpdate(Engine2D phyeng, SensorScreen sc, Robot r) {
 		double time = phyeng.time();
 		long timesteps = phyeng.timestepselapsed();
-		sc.update(time, timesteps, r.sensors, r.sensorvalues);
+		sc.update(time, timesteps, r.sensors, r.sensorvalues,r.mh.currentaction,r.mh.actionqueue);
 	}
 	
 	

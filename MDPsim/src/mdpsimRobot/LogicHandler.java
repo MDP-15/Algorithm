@@ -2,6 +2,8 @@ package mdpsimRobot;
 import java.util.ArrayList;
 //0 for nothing, 1 for something;
 
+import mdpsimEngine.Action2D;
+
 public class LogicHandler {
 	public int x_size;
 	public int y_size;
@@ -85,31 +87,41 @@ public class LogicHandler {
 		NodeList adjacentcells= new NodeList();
 		//TR
 		try {
-			adjacentcells.add(new Node(n.x, n.y, n,n.rd.TR(), n.score+1).validNode(mapmemory));
+			Node nod = new Node(n.x, n.y, n,n.rd.TR(), n.score+1).validNode(mapmemory);
+			nod.ra = RobotAction.TR;
+			adjacentcells.add(nod);
 		} catch (Exception e) {
 			adjacentcells.add(null);
 		}
 		//TL
 		try {
-			adjacentcells.add(new Node(n.x, n.y, n, n.rd.TL(), n.score+1).validNode(mapmemory));
+			Node nod = new Node(n.x, n.y, n,n.rd.TL(), n.score+1).validNode(mapmemory);
+			nod.ra = RobotAction.TL;
+			adjacentcells.add(nod);
 		} catch (Exception e) {
 			adjacentcells.add(null);
 		}
 		//F1
 		try {
-			adjacentcells.add(n.F(1).validNode(mapmemory));
+			Node nod = n.F(1);
+			nod.ra = RobotAction.F1;
+			adjacentcells.add(nod);
 		} catch (Exception e) {
 			adjacentcells.add(null);
 		}
 		//F2
 		try {
-			adjacentcells.add(n.F(2).validNode(mapmemory));
+			Node nod = n.F(2);
+			nod.ra = RobotAction.F2;
+			adjacentcells.add(nod);
 		} catch (Exception e) {
 			adjacentcells.add(null);
 		}
 		//F3
 		try {
-			adjacentcells.add(n.F(3).validNode(mapmemory));
+			Node nod = n.F(3);
+			nod.ra = RobotAction.F3;
+			adjacentcells.add(nod);
 		} catch (Exception e) {
 			adjacentcells.add(null);
 		}
@@ -219,6 +231,7 @@ public class LogicHandler {
 		int x;
 		int y;
 		RobotDirection rd;
+		RobotAction ra;
 		Node camefrom;
 		double score;
 		
@@ -228,6 +241,7 @@ public class LogicHandler {
 			this.rd = rd;
 			this.camefrom = camefrom;
 			this.score = score;
+			this.ra = null;
 		}
 		
 		public boolean is(Node n) {
@@ -310,7 +324,7 @@ public class LogicHandler {
 		}
 			
 		public void print() {
-			System.out.println("X:"+ x + "\tY:"+y+"\tDirection:"+rd+"\t\tScore:"+score);
+			System.out.println("X:"+ x + "\tY:"+y+"\tDirection:"+rd+"\t\tScore:"+score +"\t\t\t Action:"+ra);
 		}
 		public void printTrail() {
 			Node n = this;

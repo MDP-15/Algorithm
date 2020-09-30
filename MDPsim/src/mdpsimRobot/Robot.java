@@ -132,23 +132,7 @@ public class Robot {
 //			}
 //		}
 //		}
-		
-		if(!mh.moving) {
-			if(sensorvalues.get(3) == null) {
-				if(!oneMovement) {
-					oneMovement = true;
-					actionqueue.add(RobotAction.F1);
-				}
-			}
-			else {
-				if(!oneMovement) {
-//					oneMovement = true;
-//					actionqueue.add(RobotAction.TL);
-				}
-				
-				
-			}
-		}
+	
 		
 
 		actions.add(mh.doNext(time , sensorvalues)); // DO NOT TOUCH

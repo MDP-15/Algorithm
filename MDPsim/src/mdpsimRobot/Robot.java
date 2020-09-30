@@ -62,6 +62,7 @@ public class Robot {
 		ArrayList<Action2D> actions = new ArrayList<Action2D>(0);
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		if (sensorvalues.get(1) == null) {
 			actions.add(new Action2D(Action.ACCELERATE, 10));
 		} else if (sensorvalues.get(1) < 10) {
@@ -137,10 +138,21 @@ public class Robot {
 //				mh.addAction(RobotAction.TR);
 //			}
 	}
+=======
+		
+		//null == obstacle beyond 30cm 
+		
+
+
+>>>>>>> Stashed changes
 		actions.add(mh.doNext(time , sensorvalues)); // DO NOT TOUCH
 >>>>>>> Stashed changes
 		return actions;
 	}
+<<<<<<< Updated upstream
 
+=======
+	
+>>>>>>> Stashed changes
 }
 

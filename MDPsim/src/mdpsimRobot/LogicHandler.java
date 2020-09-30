@@ -46,31 +46,31 @@ public class LogicHandler {
 			mem.add(ar);
 		}
 		this.mapmemory = mem;
-		this.computeFastestPath(1, 1, 1, 5, RobotDirection.DOWN).printParents();
+		printMapMemory();
+		Node n = computeFastestPath(1,1,1,13,RobotDirection.DOWN);
+		n.printParents();
 	}
 	
 	public Node computeFastestPath(int start_x, int start_y, int dest_x, int dest_y, RobotDirection rd) {
 		Node start = new Node(start_x, start_y, null, null, rd, 0);
 		Node end = new Node(dest_x, dest_y,null,null,null,Double.POSITIVE_INFINITY);
-		//table of nodes;
-		ArrayList<ArrayList<Node>> map = new ArrayList<ArrayList<Node>>();
-		for (int a = 0; a < x_size; a++) {
-			ArrayList<Node> ar = new ArrayList<Node>();
-			for(int b = 0; b < y_size; b++) {
-				ar.add(new Node(a,b,null,null,null,Double.POSITIVE_INFINITY));
-			}
-			map.add(ar);
-		}
+		//construct searched list;
+		ArrayList<Node> done = new ArrayList<Node>();
 		//construct list of neighbours to search
 		ArrayList<Node>search = new ArrayList<Node>();
 		search.add(start);
 		while(search.size() > 0) {
 			Node n = search.remove(0);
-			if (n.is(end)) {
+			done.add(n);
+			if (n.isCell(end)) {
 				return n;
 			}
 			ArrayList<Node> neighbours = n.neighbours(mapmemory);
-			search.addAll(neighbours);
+			for (Node nb : neighbours) {
+				if (!in(done, nb)) {
+					search = insert(search, nb);
+				}
+			}
 		}
 		return null;
 	}
@@ -82,6 +82,15 @@ public class LogicHandler {
 			arlist.set(n.y, n);
 			map.set(n.x, arlist);
 		}	
+	}
+	
+	public boolean in(ArrayList<Node> list, Node n) {
+		for (int a = 0 ; a < list.size(); a++) {
+			if (n.is(list.get(a))) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public ArrayList<Node> insert(ArrayList<Node> ar, Node n){
@@ -98,5 +107,20 @@ public class LogicHandler {
 		}
 		ar.add(n);
 		return ar;
+	}
+	
+	public void printMapMemory() {
+		int x_size = mapmemory.size();
+		int y_size = 0;
+		try {
+			y_size = mapmemory.get(0).size();
+		} catch (Exception e) {}
+		for (int a = 0; a < x_size; a++) {
+			for (int b = 0; b < y_size; b++) {
+				System.out.print(mapmemory.get(a).get(b));
+			}
+			System.out.println();
+		}
+		System.out.println();
 	}
 }

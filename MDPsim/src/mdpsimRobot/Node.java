@@ -17,6 +17,7 @@ public class Node {
 		this.ra = ra;
 		this.rd = rd;
 		this.score = score;
+		return;
 	}
 	
 	public ArrayList<Node>neighbours(ArrayList<ArrayList<Integer>> mapmemory){
@@ -132,20 +133,56 @@ public class Node {
 	public boolean isValid(ArrayList<ArrayList<Integer>> mapmemory) {
 		int mapx = 0;
 		int mapy = 0;
-		try {
-			mapx = mapmemory.size();
-		} catch (Exception e) {}
-		try {
-			mapy = mapmemory.get(0).size();
-		} catch (Exception e) {}
-		if (x < 0 || x > mapx || y < 0 || y >mapy) {
-			return false;
-		} else {
-			return true;
+		boolean verbose = false;
+		if (verbose) {
+			System.out.println(x+" "+y);
+			System.out.print(mapValid(x-1	,y+1	,mapmemory));
+			System.out.print(mapValid(x-1	,y		,mapmemory));
+			System.out.println(mapValid(x-1	,y-1	,mapmemory));
+			System.out.print(mapValid(x		,y+1	,mapmemory));
+			System.out.print(mapValid(x		,y		,mapmemory));
+			System.out.println(mapValid(x	,y-1	,mapmemory));
+			System.out.print(mapValid(x+1	,y+1	,mapmemory));
+			System.out.print(mapValid(x+1	,y		,mapmemory));
+			System.out.println(mapValid(x+1	,y-1	,mapmemory));
+			System.out.println();
 		}
+		if (	mapValid(x+1	,y+1	,mapmemory)
+			&&	mapValid(x		,y+1	,mapmemory)
+			&&	mapValid(x-1	,y+1	,mapmemory)
+			&&	mapValid(x+1	,y		,mapmemory)
+			&&	mapValid(x		,y		,mapmemory)
+			&&	mapValid(x-1	,y		,mapmemory)
+			&&	mapValid(x+1	,y-1	,mapmemory)
+			&&	mapValid(x		,y-1	,mapmemory)
+			&&	mapValid(x-1	,y-1	,mapmemory)) {
+			return true;
+		} else {
+			return false;
+		}
+			
+	}
+	
+	public boolean mapValid(int x, int y, ArrayList<ArrayList<Integer>> mapmemory) {
+		try { 
+			int a = mapmemory.get(x).get(y);
+			if (a != 0) {
+				return false;
+			}
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
 	}
 	
 	public boolean is(Node n) {
+		if (x == n.x && y == n.y && rd == n.rd) {
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isCell(Node n) {
 		if (x == n.x && y == n.y) {
 			return true;
 		}

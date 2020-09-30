@@ -18,10 +18,42 @@ public class Robot {
 <<<<<<< Updated upstream
 =======
 		this.actionqueue = new ArrayList<RobotAction>(0);
+<<<<<<< Updated upstream
 		this.actionqueue.add(RobotAction.TL);
 		this.actionqueue.add(RobotAction.TL);
 		this.actionqueue.add(RobotAction.TR);
 		this.actionqueue.add(RobotAction.TR);
+=======
+//		actionqueue.add(RobotAction.TL);
+//		actionqueue.add(RobotAction.F1);
+//		actionqueue.add(RobotAction.F1);
+//		actionqueue.add(RobotAction.F1);
+//		actionqueue.add(RobotAction.F1);
+//		actionqueue.add(RobotAction.F3);
+//		actionqueue.add(RobotAction.TR);
+//		actionqueue.add(RobotAction.F3);
+//		actionqueue.add(RobotAction.F2);
+//		actionqueue.add(RobotAction.TL);
+//		actionqueue.add(RobotAction.F3);
+//		actionqueue.add(RobotAction.F2);
+//		actionqueue.add(RobotAction.TL);
+//		actionqueue.add(RobotAction.F3);
+//		actionqueue.add(RobotAction.F3);
+//		actionqueue.add(RobotAction.TR);
+//		actionqueue.add(RobotAction.TR);
+//		actionqueue.add(RobotAction.F3);
+//		actionqueue.add(RobotAction.F3);
+//		actionqueue.add(RobotAction.F1);
+//		actionqueue.add(RobotAction.TL);
+//		actionqueue.add(RobotAction.F2);
+//		actionqueue.add(RobotAction.TR);
+//		actionqueue.add(RobotAction.F3);
+//		actionqueue.add(RobotAction.TR);
+//		actionqueue.add(RobotAction.TR);
+//		actionqueue.add(RobotAction.TR);
+//		actionqueue.add(RobotAction.TL);
+//		actionqueue.add(RobotAction.TL);
+>>>>>>> Stashed changes
 		this.mh = new MovementHandler(actionqueue);
 >>>>>>> Stashed changes
 	}
@@ -60,6 +92,7 @@ public class Robot {
 	// robot logic
 	public ArrayList<Action2D> policyUpdate(){
 		ArrayList<Action2D> actions = new ArrayList<Action2D>(0);
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -144,6 +177,21 @@ public class Robot {
 		
 
 
+>>>>>>> Stashed changes
+=======
+		
+		if(!mh.moving) {
+			   if(sensorvalues != null) {
+			    if(sensorvalues.get(3) == null) {
+			    	actionqueue.add(RobotAction.TL);
+			    }
+			    else if(sensorvalues.get(3) != null || sensorvalues.get(3) <= 19) {
+			     System.out.println("There is an obstacle");
+			     actionqueue.add(RobotAction.TR);
+			     mh.moving = true;
+			    }
+			 }
+		 }
 >>>>>>> Stashed changes
 		actions.add(mh.doNext(time , sensorvalues)); // DO NOT TOUCH
 >>>>>>> Stashed changes

@@ -50,6 +50,14 @@ public class Robot2DPanel extends JPanel{
 		} catch(Exception e) {
 			y_size = 0;
 		}
+		
+		for(int a=20;a>16;a--) {
+			for(int b=0;b<3;b++) {
+				g.setColor(Color.magenta);
+				g.fillRect(b*cellSize,  a*cellSize, cellSize, cellSize);
+			}
+			
+		}
 		for (int a = 0; a < x_size; a++) {
 			for (int b = 0; b < y_size; b++){
 				if(map.get(a).get(b) == 0) {
@@ -64,6 +72,25 @@ public class Robot2DPanel extends JPanel{
 				g.fillRect(b*cellSize,  a*cellSize, cellSize, cellSize);
 			}
 		}
+		
+		//START ZONE
+		for(int a=20;a>16;a--) {
+			for(int b=0;b<3;b++) {
+				g.setColor(Color.magenta);
+				g.fillRect(b*cellSize,  a*cellSize, cellSize, cellSize);
+			}
+			
+		}
+		
+		//END ZONE
+		for(int a=0;a<3;a++) {
+			for(int b=15;b>11;b--) {
+				g.setColor(Color.magenta);
+				g.fillRect(b*cellSize,  a*cellSize, cellSize, cellSize);
+			}
+			
+		}
+//		
 		//DRAW GRID LINES
 		g.setColor(Color.WHITE);
 		for(i=0;i<rows+1;i++) {

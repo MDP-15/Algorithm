@@ -25,7 +25,13 @@ public class Robot {
 		this.radius = radius;
 		this.sensorvalues = new ArrayList<>();
 		this.actionqueue = new ArrayList<RobotAction>(0);
-		actionqueue.add(RobotAction.TL);
+//		actionqueue.add(RobotAction.TL);
+//		actionqueue.add(RobotAction.F1);
+//		actionqueue.add(RobotAction.F1);
+//		actionqueue.add(RobotAction.F1);
+//		actionqueue.add(RobotAction.F1);
+//		actionqueue.add(RobotAction.TL);
+//		actionqueue.add(RobotAction.TL);
 //		actionqueue.add(RobotAction.F1);
 //		actionqueue.add(RobotAction.F1);
 //		actionqueue.add(RobotAction.F1);
@@ -142,19 +148,17 @@ public class Robot {
 	
 	public void robotExploration() {
 		if(!mh.moving) {
-			if(sensorvalues.get(3) == null) {
+			if(sensorvalues.get(2) == null && sensorvalues.get(3) == null && sensorvalues.get(4) == null) {
 				if(!oneMovement) {
 					oneMovement = true;
 					actionqueue.add(RobotAction.F1);
 				}
 			}
-			else {
+			else if (sensorvalues.get(2)== null && sensorvalues.get(3) == null && sensorvalues.get(4) < 15) {
 				if(!oneMovement) {
-//					oneMovement = true;
-//					actionqueue.add(RobotAction.TL);
+					oneMovement = true;
+					actionqueue.add(RobotAction.TL);
 				}
-				
-				
 			}
 		}
 	}

@@ -86,17 +86,17 @@ public class Node {
 				n.add(tl);
 			}
 			//F1
-			Node f1 = new Node(x,y-1,this,RobotAction.F1,rd.F1(),score+1);
+			Node f1 = new Node(x,y-1,this,RobotAction.F1,rd.F1(),score+0.8);
 			if (f1.isValid(mapmemory)) {
 				n.add(f1);
 			}
 			//F2
-			Node f2 = new Node(x,y-2,this,RobotAction.F2,rd.F2(),score+1);
+			Node f2 = new Node(x,y-2,this,RobotAction.F2,rd.F2(),score+1.5);
 			if (f2.isValid(mapmemory)) {
 				n.add(f2);
 			} 
 			//F3
-			Node f3 = new Node(x,y-3,this,RobotAction.F3,rd.F3(),score+1);
+			Node f3 = new Node(x,y-3,this,RobotAction.F3,rd.F3(),score+2.3);
 			if (f3.isValid(mapmemory)) {
 				n.add(f3);
 			} 

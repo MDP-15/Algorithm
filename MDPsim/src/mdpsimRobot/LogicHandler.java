@@ -47,7 +47,7 @@ public class LogicHandler {
 		}
 		this.mapmemory = mem;
 		printMapMemory();
-		Node n = computeFastestPath(1,1,1,13,RobotDirection.DOWN);
+		Node n = computeFastestPath(18,1,1,13,RobotDirection.DOWN);
 		n.printParents();
 	}
 	
@@ -98,9 +98,18 @@ public class LogicHandler {
 			ar.add(n);
 			return ar;
 		} else {
-			for (int a = 0; a < ar.size(); a++) {
-				if (ar.get(a).score > n.score) {
-					ar.add(a,n);
+			int end = ar.size()-1;
+			int front = 0;
+			int middle = (front+end)/2;
+			while (front <= end) {
+				middle = (front+end) / 2;
+				int cmp = Double.compare(n.score, ar.get(middle).score);
+				if (cmp < 0) {
+					front = middle + 1;
+				} else if (cmp > 0) {
+					end = middle - 1;
+				} else {
+					ar.add(middle,n);
 					return ar;
 				}
 			}

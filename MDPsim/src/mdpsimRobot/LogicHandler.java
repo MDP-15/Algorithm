@@ -51,6 +51,13 @@ public class LogicHandler {
 		n.printParents();
 	}
 	
+	
+	
+	
+	
+	
+	
+	// A*STAR USING MANHATTAN DISTANCE
 	public Node computeFastestPath(int start_x, int start_y, int dest_x, int dest_y, RobotDirection rd) {
 		Node start = new Node(start_x, start_y, null, null, rd, 0);
 		Node end = new Node(dest_x, dest_y,null,null,null,Double.POSITIVE_INFINITY);
@@ -65,7 +72,7 @@ public class LogicHandler {
 			if (n.isCell(end)) {
 				return n;
 			}
-			ArrayList<Node> neighbours = n.neighbours(mapmemory);
+			ArrayList<Node> neighbours = n.neighbours(dest_x,dest_y,mapmemory);
 			for (Node nb : neighbours) {
 				if (!in(done, nb)) {
 					search = insert(search, nb);
@@ -84,6 +91,7 @@ public class LogicHandler {
 		}	
 	}
 	
+	//CANT USE BINARY UNSORTED ARRAY
 	public boolean in(ArrayList<Node> list, Node n) {
 		for (int a = 0 ; a < list.size(); a++) {
 			if (n.is(list.get(a))) {
@@ -93,6 +101,7 @@ public class LogicHandler {
 		return false;
 	}
 	
+	//CHANGED TO BINARY FOR SPEED
 	public ArrayList<Node> insert(ArrayList<Node> ar, Node n){
 		if (ar.size() == 0) {
 			ar.add(n);

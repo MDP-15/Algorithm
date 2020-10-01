@@ -4,7 +4,8 @@ public class Action2D {
 	public enum Action{
 		ACCELERATE,
 		TURN,
-		STOP;
+		STOP,
+		SCAN;
 	}
 	
 	private Action action;

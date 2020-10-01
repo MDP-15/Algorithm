@@ -20,109 +20,113 @@ public class Node {
 		return;
 	}
 	
-	public ArrayList<Node>neighbours(ArrayList<ArrayList<Integer>> mapmemory){
+	public double manhattanDist(int x1, int y1, int x2, int y2) {
+		return Math.abs(x1-x2)+Math.abs(y1-y2);
+	}
+	
+	public ArrayList<Node>neighbours(int dx, int dy, ArrayList<ArrayList<Integer>> mapmemory){
 		ArrayList<Node> n = new ArrayList<Node>();
 		if (rd == RobotDirection.UP) {
 			//TR
-			Node tr = new Node(x,y,this,RobotAction.TR,rd.TR(),score+1);
+			Node tr = new Node(x,y,this,RobotAction.TR,rd.TR(),score+1+manhattanDist(x,y,dx,dy));
 			if (tr.isValid(mapmemory)) { 
 				n.add(tr);
 			}
 			//TL
-			Node tl =new Node(x,y,this,RobotAction.TL,rd.TL(),score+1);
+			Node tl =new Node(x,y,this,RobotAction.TL,rd.TL(),score+1+manhattanDist(x,y,dx,dy));
 			if (tl.isValid(mapmemory)) {
 				n.add(tl);
 			}
 			//F1
-			Node f1 = new Node(x-1,y,this,RobotAction.F1,rd.F1(),score+1);
+			Node f1 = new Node(x-1,y,this,RobotAction.F1,rd.F1(),score+1+manhattanDist(x,y,dx,dy));
 			if (f1.isValid(mapmemory)) {
 				n.add(f1);
 			}
 			//F2
-			Node f2 = new Node(x-2,y,this,RobotAction.F2,rd.F2(),score+1);
+			Node f2 = new Node(x-2,y,this,RobotAction.F2,rd.F2(),score+1+manhattanDist(x,y,dx,dy));
 			if (f2.isValid(mapmemory)) {
 				n.add(f2);
 			} 
 			//F3
-			Node f3 = new Node(x-3,y,this,RobotAction.F3,rd.F3(),score+1);
+			Node f3 = new Node(x-3,y,this,RobotAction.F3,rd.F3(),score+1+manhattanDist(x,y,dx,dy));
 			if (f3.isValid(mapmemory)) {
 				n.add(f3);
 			} 
 		} else if (rd == RobotDirection.DOWN) {
 			//TR
-			Node tr = new Node(x,y,this,RobotAction.TR,rd.TR(),score+1);
+			Node tr = new Node(x,y,this,RobotAction.TR,rd.TR(),score+1+manhattanDist(x,y,dx,dy));
 			if (tr.isValid(mapmemory)) { 
 				n.add(tr);
 			}
 			//TL
-			Node tl =new Node(x,y,this,RobotAction.TL,rd.TL(),score+1);
+			Node tl =new Node(x,y,this,RobotAction.TL,rd.TL(),score+1+manhattanDist(x,y,dx,dy));
 			if (tl.isValid(mapmemory)) {
 				n.add(tl);
 			}
 			//F1
-			Node f1 = new Node(x+1,y,this,RobotAction.F1,rd.F1(),score+1);
+			Node f1 = new Node(x+1,y,this,RobotAction.F1,rd.F1(),score+1+manhattanDist(x,y,dx,dy));
 			if (f1.isValid(mapmemory)) {
 				n.add(f1);
 			}
 			//F2
-			Node f2 = new Node(x+2,y,this,RobotAction.F2,rd.F2(),score+1);
+			Node f2 = new Node(x+2,y,this,RobotAction.F2,rd.F2(),score+1+manhattanDist(x,y,dx,dy));
 			if (f2.isValid(mapmemory)) {
 				n.add(f2);
 			} 
 			//F3
-			Node f3 = new Node(x+3,y,this,RobotAction.F3,rd.F3(),score+1);
+			Node f3 = new Node(x+3,y,this,RobotAction.F3,rd.F3(),score+1+manhattanDist(x,y,dx,dy));
 			if (f3.isValid(mapmemory)) {
 				n.add(f3);
 			} 
 		} else if (rd == RobotDirection.LEFT) {
 			//TR
-			Node tr = new Node(x,y,this,RobotAction.TR,rd.TR(),score+1);
+			Node tr = new Node(x,y,this,RobotAction.TR,rd.TR(),score+1+manhattanDist(x,y,dx,dy));
 			if (tr.isValid(mapmemory)) { 
 				n.add(tr);
 			}
 			//TL
-			Node tl =new Node(x,y,this,RobotAction.TL,rd.TL(),score+1);
+			Node tl =new Node(x,y,this,RobotAction.TL,rd.TL(),score+1+manhattanDist(x,y,dx,dy));
 			if (tl.isValid(mapmemory)) {
 				n.add(tl);
 			}
 			//F1
-			Node f1 = new Node(x,y-1,this,RobotAction.F1,rd.F1(),score+0.8);
+			Node f1 = new Node(x,y-1,this,RobotAction.F1,rd.F1(),score+1+manhattanDist(x,y,dx,dy));
 			if (f1.isValid(mapmemory)) {
 				n.add(f1);
 			}
 			//F2
-			Node f2 = new Node(x,y-2,this,RobotAction.F2,rd.F2(),score+1.5);
+			Node f2 = new Node(x,y-2,this,RobotAction.F2,rd.F2(),score+1+manhattanDist(x,y,dx,dy));
 			if (f2.isValid(mapmemory)) {
 				n.add(f2);
 			} 
 			//F3
-			Node f3 = new Node(x,y-3,this,RobotAction.F3,rd.F3(),score+2.3);
+			Node f3 = new Node(x,y-3,this,RobotAction.F3,rd.F3(),score+1+manhattanDist(x,y,dx,dy));
 			if (f3.isValid(mapmemory)) {
 				n.add(f3);
 			} 
 		} else if (rd == RobotDirection.RIGHT) {
 			//TR
-			Node tr = new Node(x,y,this,RobotAction.TR,rd.TR(),score+1);
+			Node tr = new Node(x,y,this,RobotAction.TR,rd.TR(),score+1+manhattanDist(x,y,dx,dy));
 			if (tr.isValid(mapmemory)) { 
 				n.add(tr);
 			}
 			//TL
-			Node tl =new Node(x,y,this,RobotAction.TL,rd.TL(),score+1);
+			Node tl =new Node(x,y,this,RobotAction.TL,rd.TL(),score+1+manhattanDist(x,y,dx,dy));
 			if (tl.isValid(mapmemory)) {
 				n.add(tl);
 			}
 			//F1
-			Node f1 = new Node(x,y+1,this,RobotAction.F1,rd.F1(),score+1);
+			Node f1 = new Node(x,y+1,this,RobotAction.F1,rd.F1(),score+1+manhattanDist(x,y,dx,dy));
 			if (f1.isValid(mapmemory)) {
 				n.add(f1);
 			}
 			//F2
-			Node f2 = new Node(x,y+2,this,RobotAction.F2,rd.F2(),score+1);
+			Node f2 = new Node(x,y+2,this,RobotAction.F2,rd.F2(),score+1+manhattanDist(x,y,dx,dy));
 			if (f2.isValid(mapmemory)) {
 				n.add(f2);
 			} 
 			//F3
-			Node f3 = new Node(x,y+3,this,RobotAction.F3,rd.F3(),score+1);
+			Node f3 = new Node(x,y+3,this,RobotAction.F3,rd.F3(),score+1+manhattanDist(x,y,dx,dy));
 			if (f3.isValid(mapmemory)) {
 				n.add(f3);
 			} 

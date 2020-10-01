@@ -12,7 +12,7 @@ import mdpsimGUI.Viewer;
 public class MapReader {
 
 	public String mapString;
-	public Viewer vw; //Not initialized
+	//public Viewer vw; //Not initialized
 	
 	public MapReader() {
 		
@@ -32,24 +32,19 @@ public class MapReader {
 			}
 			
 			reader.close();
-			System.out.println("Debugging "+out);
+			//System.out.println("Debugging "+out);
 			mapString = out.toString().replace("\n","");
 			String newMapString = out.toString();
 			String newMDF = convertMDF(newMapString);
-			System.out.println("Debugging "+newMapString);
-			MDPSIM.mdfString = newMapString;
-			vw.flag = true;
-			vw.add(vw.map1); //Maybe correct
-			MDPSIM.inputMDF(newMapString);
+			//System.out.println("Debugging "+newMDF);
 			MDPSIM.mdfString = newMDF;
-			vw.flag = true;
+			vw.engineresetflag = true;
 			
 			
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
 	}
-	
 	
 	public static String convertMDF(String mdfHex) {
 		String mapdesriptor = mdfHex;
@@ -66,10 +61,7 @@ public class MapReader {
                 mdfbin = "0" + mdfbin;
             mdf = mdf + mdfbin;
         }
+        System.out.println(mdf);
 		return mdf;
 	}
-	
-	
-	
-	
 }

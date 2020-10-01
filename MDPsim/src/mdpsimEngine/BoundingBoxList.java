@@ -49,4 +49,19 @@ public class BoundingBoxList {
 		}
 		System.out.println();
 	}
+	
+	public void sort() {
+		boolean sorted = false;
+		while(!sorted) {
+			sorted = true;
+			for (int a = 0; a < this.bblist.size()-1; a++) {
+				if (bblist.get(a).value()<bblist.get(a+1).value()) {
+					BoundingBoxPointer temp = bblist.get(a);
+					bblist.set(a, bblist.get(a+1));
+					bblist.set(a+1, temp);
+					sorted = false;
+				}
+			}
+		}
+	}
 }

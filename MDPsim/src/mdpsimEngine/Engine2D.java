@@ -12,7 +12,6 @@ public class Engine2D{
 	private ArrayList<Object2D> movingobjects;
 	private BoundingBoxList bbx_static;
 	private BoundingBoxList bby_static;
-	
 	//Private methods
 	
 	// adds objects to static or moving list depending on indicator in Object2D class.
@@ -57,7 +56,10 @@ public class Engine2D{
 	
 	// returns an ArrayList of possible colliding static objects given an object.
 	public ArrayList<Object2D> isBroadCollide(Object2D object) {
-		boolean verbose = false;
+		return isBroadCollide(object, false);
+	}
+	
+	public ArrayList<Object2D> isBroadCollide(Object2D object, boolean verbose) {
 		BoundingBox2D objbb = new BoundingBox2D(object);
 		ArrayList<BoundingBoxPointer> objxbbp = objbb.bbpointersx();
 		ArrayList<BoundingBoxPointer> objybbp = objbb.bbpointersy();
@@ -69,12 +71,14 @@ public class Engine2D{
 				collisionobjects.add(xcollide.get(a));
 			}
 		}
+		int k = 0;
 		for (int a = 0 ; a < ycollide.size(); a++) {
 			if (!collisionobjects.contains(ycollide.get(a))) {
 				collisionobjects.add(ycollide.get(a));
 			}
 		}
 		if (verbose) {
+			System.out.println(k);
 			System.out.println(collisionobjects.size() + " objects detected in broad-phase collision detection.");
 		}
 		return collisionobjects;
@@ -119,8 +123,8 @@ public class Engine2D{
 			} else if (m == 0 ) {
 				return new Vector2D(0, linestart.y());
 			} else {
-				double b = linestart.y() + s*svec.y();
-				return new Vector2D((double)-(m*b)/(Math.pow(m, 2)+1), (double)b/(Math.pow(m, 2)+1));
+				double a = linestart.y() + s*svec.y();
+				return new Vector2D(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
 			}
 		} else {
 			return new Vector2D(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
@@ -152,7 +156,7 @@ public class Engine2D{
 		if (direction.x() == 0 && direction.y() == 0) {
 			return null;
 		} else {
-			Vector2D svec = direction.multiply((double)200/direction.length(new Vector2D(0,0)));
+			Vector2D svec = direction.multiply((double)600/direction.length(new Vector2D(0,0)));
 			Line2D line = new Line2D(origin, origin.add(svec));
 			Object2D lineobj = new Object2D(line, line.start(), new Vector2D(0,0), new Vector2D(0,0), true);
 			ArrayList<Object2D> broadcollide = isBroadCollide(lineobj);
@@ -179,7 +183,7 @@ public class Engine2D{
 		double t = ((( s2_x * (line1_start.y() - line2_start.y())) - (s2_y * (line1_start.x() - line2_start.x()))))/((-s2_x * s1_y) + (s1_x * s2_y));
 		
 		if ( s>= 0 && s <= 1 && t >= 0 && t <= 1) {
-			return s;
+			return t;
 		}
 		
 		return -1;
@@ -245,6 +249,8 @@ public class Engine2D{
 		this.bby_static = new BoundingBoxList();
 		this.parseStaticity(objects);
 		this.parseBoundingBoxes(objects);
+		this.bbx_static.sort();
+		this.bby_static.sort();
 		if (verbose) {
 			bbx_static.printall();
 			bby_static.printall();

@@ -155,7 +155,7 @@ public class Robot {
 //		}
 	}
 
-	public void printActions() {
+	public void startFastestPath() {
 		System.out.println("Doing fastestPath");
 		Node n = lh.computeFastestPath(18, 1, 1, 13, RobotDirection.RIGHT);
 		actionstack = new Stack<String>();

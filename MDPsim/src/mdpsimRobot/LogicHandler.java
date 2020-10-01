@@ -9,6 +9,7 @@ public class LogicHandler {
 	public int y_size;
 	public int x_pos;
 	public int y_pos;
+	public RobotDirection robotdir;
 	public ArrayList<ArrayList<Integer>> mapmemory;
 	
 	public LogicHandler(int x_size, int y_size, int x_pos, int y_pos) {
@@ -16,10 +17,18 @@ public class LogicHandler {
 		this.y_size = y_size;
 		this.x_pos = x_pos;
 		this.y_pos = y_pos;
+		this.robotdir = null;
 		this.mapmemory = new ArrayList<ArrayList<Integer>>();
 		for(int a = 0; a < x_size; a++) {
 			mapmemory.add(new ArrayList<Integer>(y_size));
 		}
+	}
+	
+	public void getNextAction() {
+		
+	}
+	public void setRobotDirection(RobotDirection rd) {
+		this.robotdir = rd;
 	}
 
 	private String parseFormatToMap(String b) {
@@ -29,6 +38,50 @@ public class LogicHandler {
 			s = s.concat("0");
 		}
 		return s.concat(b);
+	}
+	
+	public void setUnexploredMap(int start_x, int start_y, int x_siz, int y_siz, RobotDirection rd) {
+		robotdir = rd;
+		x_pos = start_x;
+		y_pos = start_y;
+		ArrayList<ArrayList<Integer>> mem = new ArrayList<ArrayList<Integer>>();
+		//set all to unexplored
+		for (int a = 0; a < x_siz; a++) {
+			ArrayList<Integer>yarray = new ArrayList<Integer>();
+			for (int b = 0; b < y_siz; b++) {
+				yarray.add(2);
+			}
+			mem.add(yarray);
+		}
+		this.mapmemory = mem;
+		if (isValid(start_x+1, start_y+1)){
+			setMapMemory(start_x+1, start_y+1, 0);
+		}
+		if (isValid(start_x, start_y+1)){
+			setMapMemory(start_x, start_y+1, 0);
+		}
+		if (isValid(start_x-1, start_y+1)){
+			setMapMemory(start_x-1, start_y+1, 0);
+		}
+		if (isValid(start_x+1, start_y)){
+			setMapMemory(start_x+1, start_y, 0);
+		}
+		if (isValid(start_x, start_y)){
+			setMapMemory(start_x, start_y, 0);
+		}
+		if (isValid(start_x-1, start_y)){
+			setMapMemory(start_x-1, start_y, 0);
+		}
+		if (isValid(start_x+1, start_y-1)){
+			setMapMemory(start_x+1, start_y-1, 0);
+		}
+		if (isValid(start_x, start_y-1)){
+			setMapMemory(start_x, start_y-1, 0);
+		}
+		if (isValid(start_x-1, start_y-1)){
+			setMapMemory(start_x-1, start_y-1, 0);
+		}
+
 	}
 	
 	public void parseMDF(String s) {
@@ -46,18 +99,342 @@ public class LogicHandler {
 			mem.add(ar);
 		}
 		this.mapmemory = mem;
-		printMapMemory();
 		Node n = computeFastestPath(18,1,1,13,RobotDirection.DOWN);
 		n.printParents();
 	}
 	
+	//EXPLORATION
+	//CONSTRUCT BOUNDARY, THEN FIND TARGET NODE THAT WILL GIVE HIGHEST EXPLORATION REWARD PER SCORE;
+	public Node nextTarget(int start_x, int start_y, RobotDirection rd) {
+		
+		return null;
+	}
+	
+	//FIND AMOUNT OF INFORMATION GAINED IF SCAN AT GIVEN SQUARE;
+	//SQUARE MUST BE VALID ROBOT POSITION;
+	public int informationGained(int x, int y, RobotDirection rd) {
+		int information = 0;
+		int frontmidbox = 3;
+		int frontrightbox = 3;
+		int frontleftbox = 3;
+		int leftlongbox = 5;
+		int rightfrontbox = 2;
+		int rightbackbox = 2;
+		//CALCULATE POTENTIALLY EXPLORED BLOCKS FROM VALUE;
+		if (robotdir == RobotDirection.RIGHT) {
+			for (int a = 0; a <= frontmidbox; a++) {
+				if (isValidExplored(x_pos, y_pos+1+a)) {
+					information += 1;
+				}
+			}
+			for (int a = 0; a <= frontrightbox; a++) {
+				if (isValidExplored(x_pos+1, y_pos+1+a)) {
+					information += 1;
+				}
+			}
+			for (int a = 0; a <= frontleftbox; a++) {
+				if (isValidExplored(x_pos-1, y_pos+1+a) ){
+					information += 1;
+				}
+			}
+			for (int a = 0; a <= rightfrontbox; a++) {
+				if (isValidExplored(x_pos+1+a, y_pos+1) ){
+					information += 1;
+				}
+			}
+			for (int a = 0; a <= rightbackbox; a++) {
+				if (isValidExplored(x_pos+1+a, y_pos-1) ){
+					information += 1;
+				}
+			}
+			for (int a = 0; a <= leftlongbox; a++) {
+				if (isValidExplored(x_pos-1-a, y_pos+1) ){
+					information += 1;
+				}
+			}
+		} else if (robotdir == RobotDirection.LEFT) {
+			for (int a = 0; a <= frontmidbox; a++) {
+				if (isValidExplored(x_pos, y_pos-1-a) ){
+					information += 1;
+				}
+			}
+			for (int a = 0; a <= frontrightbox; a++) {
+				if (isValidExplored(x_pos-1, y_pos-1-a) ){
+					information += 1;
+				}
+			}
+			for (int a = 0; a <= frontleftbox; a++) {
+				if (isValidExplored(x_pos+1, y_pos-1-a) ){
+					information += 1;
+				}
+			}
+			for (int a = 0; a <= rightfrontbox; a++) {
+				if (isValidExplored(x_pos-1-a, y_pos-1) ){
+					information += 1;
+				}
+			}
+			for (int a = 0; a <= rightbackbox; a++) {
+				if (isValidExplored(x_pos-1-a, y_pos+1) ){
+					information += 1;
+				}
+			}
+			for (int a = 0; a <= leftlongbox; a++) {
+				if (isValidExplored(x_pos+1+a, y_pos-1) ){
+					information += 1;
+				}
+			}
+		} else if (robotdir == RobotDirection.UP) {
+			for (int a = 0; a <= frontmidbox; a++) {
+				if (isValidExplored(x_pos-1-a, y_pos) ){
+					information += 1;
+				}
+			}
+			for (int a = 0; a <= frontrightbox; a++) {
+				if (isValidExplored(x_pos-1-a, y_pos+1) ){
+					information += 1;
+				}
+			}
+			for (int a = 0; a <= frontleftbox; a++) {
+				if (isValidExplored(x_pos-1-a, y_pos-1) ){
+					information += 1;
+				}
+			}
+			for (int a = 0; a <= rightfrontbox; a++) {
+				if (isValidExplored(x_pos-1, y_pos+1+a) ){
+					information += 1;
+				}
+			}
+			for (int a = 0; a <= rightbackbox; a++) {
+				if (isValidExplored(x_pos+1, y_pos+1+a) ){
+					information += 1;
+				}
+			}
+			for (int a = 0; a <= leftlongbox; a++) {
+				if (isValidExplored(x_pos-1, y_pos-1-a) ){
+					information += 1;
+				}
+			}
+		} else if (robotdir == RobotDirection.DOWN) {
+			for (int a = 0; a <= frontmidbox; a++) {
+				if (isValidExplored(x_pos+1+a, y_pos) ){
+					information += 1;
+				}
+			}
+			for (int a = 0; a <= frontrightbox; a++) {
+				if (isValidExplored(x_pos+1+a, y_pos-1) ){
+					information += 1;
+				}
+			}
+			for (int a = 0; a <= frontleftbox; a++) {
+				if (isValidExplored(x_pos+1+a, y_pos+1) ){
+					information += 1;
+				}
+			}
+			for (int a = 0; a <= rightfrontbox; a++) {
+				if (isValidExplored(x_pos+1, y_pos-1-a) ){
+					information += 1;
+				}
+			}
+			for (int a = 0; a <= rightbackbox; a++) {
+				if (isValidExplored(x_pos-1, y_pos-1-a) ){
+					information += 1;
+				}
+			}
+			for (int a = 0; a <= leftlongbox; a++) {
+				if (isValidExplored(x_pos+1, y_pos+1+a) ){
+					information += 1;
+				}
+			}
+		}
+		return information;
+	}
+	
+	//CONVERT SENSOR VALUE INTO USABLE DATA FOR SCANMAP;
+	public void scan(ArrayList<Double> dlist) {
+		boolean verbose = false;
+		double rf = 1000;
+		double rb = 1000;
+		double fr = 1000;
+		double fm = 1000;
+		double fl = 1000;
+		double ll = 1000;
+		if (dlist.get(0) != null) {
+			rf = dlist.get(0);
+		}
+		if (dlist.get(1) != null) {
+			rb = dlist.get(1);
+		}
+		if (dlist.get(2) != null) {
+			fr = dlist.get(2);
+		}
+		if (dlist.get(3) != null) {
+			fm = dlist.get(3);
+		}
+		if (dlist.get(4) != null) {
+			fl = dlist.get(4);
+		}
+		if (dlist.get(5) != null) {
+			ll = dlist.get(5);
+		}
+		if (verbose) {
+			System.out.println("RF: "+ rf+ " RB: "+ rb +" FR: "+fr+" FM: "+ fm +" FL: "+ fl +" LL: "+ll);
+		}
+		scanMap(rf,rb,fr,fm,fl,ll);
+	}
+	//CHECK SENSOR VALUES AND UPDATE MAP -> VALUES SHOULD BE UPDATED HERE
+	public void scanMap(double right_front, double right_back, double front_right, double front_middle, double front_left, double left_long) {
+		boolean verbose = false;
+		int frontmidbox = 3;
+		int frontrightbox = 3;
+		int frontleftbox = 3;
+		int leftlongbox = 5;
+		int rightfrontbox = 2;
+		int rightbackbox = 2;
+		//FROM SENSOR VALUE DETERMINE RANGE OF NEXT BLOCK
+		//DEFINE INTEGERS AS LENGTH PROTRUDING FROM ROBOT 3X3 BODY
+		//HANDLE FRONT MIDDLE;
+		if (front_middle <= 10) {
+			frontmidbox = 0;
+		} else if (front_middle < 20) {
+			frontmidbox = 1;
+		} else if (front_middle < 30) {
+			frontmidbox = 2;
+		} else if (front_middle < 40) {
+			frontmidbox = 3;
+		}
+		//HANDLE FRONT RIGHT;
+		if (front_right <= 10) {
+			frontrightbox = 0;
+		} else if (front_right < 20) {
+			frontrightbox = 1;
+		} else if (front_right < 30) {
+			frontrightbox = 2;
+		} else if (front_right < 40) {
+			frontrightbox = 3;
+		}
+		//HANDLE FRONT LEFT;
+		if (front_left <= 10) {
+			frontleftbox = 0;
+		} else if (front_left < 20) {
+			frontleftbox = 1;
+		} else if (front_left < 30) {
+			frontleftbox = 2;
+		} else if (front_left < 40) {
+			frontleftbox = 3;
+		}
+		//HANDLE LEFT LONG
+		if (left_long <= 20) {
+			leftlongbox = 0;
+		} else if (left_long < 30) {
+			leftlongbox = 1;
+		} else if (left_long < 40) {
+			leftlongbox = 2;
+		} else if (left_long < 50) {
+			leftlongbox = 3;
+		} else if (left_long < 60) {
+			leftlongbox = 4;
+		}
+		//HANDLE RIGHT_FRONT
+		if (right_front <= 20) {
+			rightfrontbox = 0;
+		} else if (right_front < 30) {
+			rightfrontbox = 1;
+		} else if (right_front < 40) {
+			rightfrontbox = 2;
+		}
+		//HANDLE RIGHT_BACK
+		if (right_back <= 20) {
+			rightbackbox = 0;
+		} else if (right_back < 30) {
+			rightbackbox = 1;
+		} else if (right_back < 40) {
+			rightbackbox = 2;
+		}
+		if (verbose) {
+			System.out.println("RF: "+ rightfrontbox+ " RB: "+ rightbackbox +" FR: "+frontrightbox+" FM: "+ frontmidbox +" FL: "+ frontleftbox +" LL: "+leftlongbox);
+		}
+		//FROM KNOWN BLOCK RANGES AND ROBOT DIRECTION UPDATE MAP
+		if (robotdir == RobotDirection.RIGHT) {
+			for (int a = 0; a <= frontmidbox; a++) {
+				setMapMemory(x_pos, y_pos+1+a, 0);
+			}
+			for (int a = 0; a <= frontrightbox; a++) {
+				setMapMemory(x_pos+1, y_pos+1+a,0);
+			}
+			for (int a = 0; a <= frontleftbox; a++) {
+				setMapMemory(x_pos-1, y_pos+1+a,0);
+			}
+			for (int a = 0; a <= rightfrontbox; a++) {
+				setMapMemory(x_pos+1+a, y_pos+1,0);
+			}
+			for (int a = 0; a <= rightbackbox; a++) {
+				setMapMemory(x_pos+1+a, y_pos-1,0);
+			}
+			for (int a = 0; a <= leftlongbox; a++) {
+				setMapMemory(x_pos-1-a, y_pos+1,0);
+			}
+		} else if (robotdir == RobotDirection.LEFT) {
+			for (int a = 0; a <= frontmidbox; a++) {
+				setMapMemory(x_pos, y_pos-1-a, 0);
+			}
+			for (int a = 0; a <= frontrightbox; a++) {
+				setMapMemory(x_pos-1, y_pos-1-a,0);
+			}
+			for (int a = 0; a <= frontleftbox; a++) {
+				setMapMemory(x_pos+1, y_pos-1-a,0);
+			}
+			for (int a = 0; a <= rightfrontbox; a++) {
+				setMapMemory(x_pos-1-a, y_pos-1,0);
+			}
+			for (int a = 0; a <= rightbackbox; a++) {
+				setMapMemory(x_pos-1-a, y_pos+1,0);
+			}
+			for (int a = 0; a <= leftlongbox; a++) {
+				setMapMemory(x_pos+1+a, y_pos-1,0);
+			}
+		} else if (robotdir == RobotDirection.UP) {
+			for (int a = 0; a <= frontmidbox; a++) {
+				setMapMemory(x_pos-1-a, y_pos, 0);
+			}
+			for (int a = 0; a <= frontrightbox; a++) {
+				setMapMemory(x_pos-1-a, y_pos+1,0);
+			}
+			for (int a = 0; a <= frontleftbox; a++) {
+				setMapMemory(x_pos-1-a, y_pos-1,0);
+			}
+			for (int a = 0; a <= rightfrontbox; a++) {
+				setMapMemory(x_pos-1, y_pos+1+a,0);
+			}
+			for (int a = 0; a <= rightbackbox; a++) {
+				setMapMemory(x_pos+1, y_pos+1+a,0);
+			}
+			for (int a = 0; a <= leftlongbox; a++) {
+				setMapMemory(x_pos-1, y_pos-1-a,0);
+			}
+		} else if (robotdir == RobotDirection.DOWN) {
+			for (int a = 0; a <= frontmidbox; a++) {
+				setMapMemory(x_pos+1+a, y_pos, 0);
+			}
+			for (int a = 0; a <= frontrightbox; a++) {
+				setMapMemory(x_pos+1+a, y_pos-1,0);
+			}
+			for (int a = 0; a <= frontleftbox; a++) {
+				setMapMemory(x_pos+1+a, y_pos+1,0);
+			}
+			for (int a = 0; a <= rightfrontbox; a++) {
+				setMapMemory(x_pos+1, y_pos-1-a,0);
+			}
+			for (int a = 0; a <= rightbackbox; a++) {
+				setMapMemory(x_pos-1, y_pos-1-a,0);
+			}
+			for (int a = 0; a <= leftlongbox; a++) {
+				setMapMemory(x_pos+1, y_pos+1+a,0);
+			}
+		}
+	}
 	
 	
-	
-	
-	
-	
-	// A*STAR USING MANHATTAN DISTANCE
+	// A* USING MANHATTAN DISTANCE
 	public Node computeFastestPath(int start_x, int start_y, int dest_x, int dest_y, RobotDirection rd) {
 		Node start = new Node(start_x, start_y, null, null, rd, 0);
 		Node end = new Node(dest_x, dest_y,null,null,null,Double.POSITIVE_INFINITY);
@@ -125,6 +502,43 @@ public class LogicHandler {
 		}
 		ar.add(n);
 		return ar;
+	}
+	
+	public boolean isValidExplored(int x, int y) {
+		if (x < 0 || y < 0 || x > x_size || y > y_size) {
+			return false;
+		}
+		if (mapmemory.get(x).get(y) == 2) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean isValid(int x, int y) {
+		if (x < 0 || y < 0 || x > x_size || y > y_size) {
+			return false;
+		}
+		return true;
+	}
+	
+	public void setMapMemory(int x, int y, int value) {
+		ArrayList<ArrayList<Integer>> mem = this.mapmemory;
+		int x_size = mem.size();
+		int y_size = 0;
+		try {
+			y_size = mem.get(0).size();
+		} catch (Exception e) {
+		}
+		//CHECK FOR VALIDITY OF XY VALUE
+		if (x < 0 || x > x_size || y < 0 || y > y_size) {
+			return;
+		} else {
+			ArrayList<Integer> yarray = mem.get(x);
+			yarray.set(y, value);
+			mem.set(x, yarray);
+			return;
+		}
 	}
 	
 	public void printMapMemory() {

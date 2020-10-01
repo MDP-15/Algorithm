@@ -25,45 +25,9 @@ public class Robot {
 		this.radius = radius;
 		this.sensorvalues = new ArrayList<>();
 		this.actionqueue = new ArrayList<RobotAction>(0);
-//		actionqueue.add(RobotAction.TL);
-//		actionqueue.add(RobotAction.F1);
-//		actionqueue.add(RobotAction.F1);
-//		actionqueue.add(RobotAction.F1);
-//		actionqueue.add(RobotAction.F1);
-//		actionqueue.add(RobotAction.TL);
-//		actionqueue.add(RobotAction.TL);
-//		actionqueue.add(RobotAction.F1);
-//		actionqueue.add(RobotAction.F1);
-//		actionqueue.add(RobotAction.F1);
-//		actionqueue.add(RobotAction.F1);
-//		actionqueue.add(RobotAction.F3);
-//		actionqueue.add(RobotAction.TR);
-//		actionqueue.add(RobotAction.F3);
-//		actionqueue.add(RobotAction.F2);
-//		actionqueue.add(RobotAction.TL);
-//		actionqueue.add(RobotAction.F3);
-//		actionqueue.add(RobotAction.F2);
-//		actionqueue.add(RobotAction.TL);
-//		actionqueue.add(RobotAction.F3);
-//		actionqueue.add(RobotAction.F3);
-//		actionqueue.add(RobotAction.TR);
-//		actionqueue.add(RobotAction.TR);
-//		actionqueue.add(RobotAction.F3);
-//		actionqueue.add(RobotAction.F3);
-//		actionqueue.add(RobotAction.F1);
-//		actionqueue.add(RobotAction.TL);
-//		actionqueue.add(RobotAction.F2);
-//		actionqueue.add(RobotAction.TR);
-//		actionqueue.add(RobotAction.F3);
-//		actionqueue.add(RobotAction.TR);
-//		actionqueue.add(RobotAction.TR);
-//		actionqueue.add(RobotAction.TR);
-//		actionqueue.add(RobotAction.TL);
-//		actionqueue.add(RobotAction.TL);
 		this.mh = new MovementHandler(actionqueue);
 		this.lh = new LogicHandler(15,20,1,1);
-		//lh.parseMDF("000000000000000000000000000000000000010000000000000000000000000000000000000000000000001110111111000000000000000000000000000000000000000000000000010000000000000000000000001110000000000000000000000000000000000000010000000000000000000000001110000000000000000000000010000000000000000000000000000000000000");
-		lh.parseMDF(MDPSIM.mdfString);
+		lh.setUnexploredMap(14, 4, 20, 15, RobotDirection.RIGHT);
 	}
 	
 	public void addSensor(String name,Vector2D position, Vector2D direction, double minrange, double maxrange) {
@@ -84,8 +48,10 @@ public class Robot {
 			double val = values.get(a);
 			if (val >= minrange && val <= maxrange) {
 				sensorvalues.add(val);
-			} else {
+			} else if (val > maxrange){
 				sensorvalues.add(null);
+			} else {
+				sensorvalues.add(10.0);
 			}
 		}
 	}
@@ -107,59 +73,14 @@ public class Robot {
 		System.out.println();
 	}
 	
-	// robot logic
 	public ArrayList<Action2D> getNextAction(double time){
 		ArrayList<Action2D> actions = new ArrayList<Action2D>(0);
-		
-//		if (sensorvalues != null) {
-//			mh.addAction(RobotAction.TL);
-//		}
-//		
-//		if(sensorvalues.get(3) != null && sensorvalues.get(3) > 30) {
-//			mh.addAction(RobotAction.TL);
-//		}
-//		
-//		if(sensorvalues.get(3) != null && sensorvalues.get(3) < 15) {
-//			mh.addAction(RobotAction.TR);
-//		}
-//		if(sensorvalues.get(0) != null) {
-//			//System.out.println("INSIDE GET 0");
-//			if(sensorvalues.get(0) <= 15) {
-//				System.out.println("TURN LEFT");
-//				mh.addAction(RobotAction.TL);
-//			}
-//		}
-//		
-//		if(sensorvalues.get(5) != null) {
-//			//System.out.println("INSIDE GET 5");
-//			if(sensorvalues.get(5) <= 15) {
-//				System.out.println("TURN RIGHT");
-//				mh.addAction(RobotAction.TR);
-//			}
-//		}
-//		}
-	
-		
-
+		try {
+			sensorvalues.get(0);
+			//lh.scan(sensorvalues);
+		} catch (Exception e) {}
+		System.out.println(lh.informationGained(1, 1, RobotDirection.DOWN));
 		actions.add(mh.doNext(time , sensorvalues)); // DO NOT TOUCH
-
 		return actions;
-	}
-	
-	public void robotExploration() {
-		if(!mh.moving) {
-			if(sensorvalues.get(2) == null && sensorvalues.get(3) == null && sensorvalues.get(4) == null) {
-				if(!oneMovement) {
-					oneMovement = true;
-					actionqueue.add(RobotAction.F1);
-				}
-			}
-			else if (sensorvalues.get(2)== null && sensorvalues.get(3) == null && sensorvalues.get(4) < 15) {
-				if(!oneMovement) {
-					oneMovement = true;
-					actionqueue.add(RobotAction.TL);
-				}
-			}
-		}
 	}
 }

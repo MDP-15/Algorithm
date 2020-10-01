@@ -9,6 +9,7 @@ public class LogicHandler {
 	public int y_size;
 	public int x_pos;
 	public int y_pos;
+	public Node heem;
 	public ArrayList<ArrayList<Integer>> mapmemory;
 	
 	public LogicHandler(int x_size, int y_size, int x_pos, int y_pos) {
@@ -31,6 +32,12 @@ public class LogicHandler {
 		return s.concat(b);
 	}
 	
+	public void printhehe() {
+		for(int i = 0; i < mapmemory.size(); i++) {
+			mapmemory.get(i).toString();
+		}
+	}
+	
 	public void parseMDF(String s) {
 		s = parseFormatToMap(s);
 		ArrayList<ArrayList<Integer>> mem = new ArrayList<ArrayList<Integer>>();
@@ -47,8 +54,9 @@ public class LogicHandler {
 		}
 		this.mapmemory = mem;
 		printMapMemory();
-		Node n = computeFastestPath(1,1,1,13,RobotDirection.DOWN);
-		n.printParents();
+		Node n = computeFastestPath(1,1,1,13,RobotDirection.RIGHT);
+		heem = computeFastestPath(18,1,1,13,RobotDirection.RIGHT);
+		heem.printParents();
 	}
 	
 	public Node computeFastestPath(int start_x, int start_y, int dest_x, int dest_y, RobotDirection rd) {

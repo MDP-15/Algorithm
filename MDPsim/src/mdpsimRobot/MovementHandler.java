@@ -44,10 +44,10 @@ public class MovementHandler {
 				currentaction = actionqueue.remove(0);
 				}
 			if (currentaction == RobotAction.TR) {
-				queuedactions.add(new QueuedAction(Action.TURN, -1.571, t, false));
+				queuedactions.add(new QueuedAction(Action.TURN, -Math.PI*2, t, false));
 				queuedactions.add(new QueuedAction(Action.TURN, 0, t + 0.25,true));
 			} else if (currentaction == RobotAction.TL) {
-				queuedactions.add(new QueuedAction(Action.TURN, 1.571, t, false));
+				queuedactions.add(new QueuedAction(Action.TURN, Math.PI*2, t, false));
 				queuedactions.add(new QueuedAction(Action.TURN, 0, t + 0.25, true));
 			} else if (currentaction == RobotAction.F1) {
 				queuedactions.add(new QueuedAction(Action.ACCELERATE, 1000, t, false));

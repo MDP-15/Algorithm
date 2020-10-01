@@ -18,6 +18,8 @@ import javax.swing.JPanel;
 
 import mdpMapReader.MapReader;
 import mdpsim.MDPSIM;
+import mdpsimRobot.LogicHandler;
+import mdpsimRobot.RobotDirection;
 
 import java.util.ArrayList;
 public class Viewer extends JFrame{
@@ -34,6 +36,7 @@ public class Viewer extends JFrame{
 	public String mdfstring;
 	public int enginespeed;
 	MapReader newMap = new MapReader();
+	
 	
 	
 	public Viewer (String title, int w, int h){
@@ -144,6 +147,12 @@ public class Viewer extends JFrame{
 		arenas.add(sampleA3);
 		arenas.add(sampleA4);
 		
+		JMenu fastestpath = new JMenu("FastestPath");
+		menu.add(fastestpath);
+		
+		JMenuItem fpStart = new JMenuItem("Start");
+		fastestpath.add(fpStart);
+		
 		JMenuItem tcpSocket = new JMenuItem("Socket Connection");
 		file.add(tcpSocket);
 		
@@ -162,6 +171,15 @@ public class Viewer extends JFrame{
 		}
 			tcpSocket.addActionListener(new socketBtn());
 			
+			
+			fastestpath.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
 			
 			//SampleArenas
 			//Arena 1
@@ -226,6 +244,7 @@ public class Viewer extends JFrame{
 					
 				}
 			});
+			
 			
     }
 	

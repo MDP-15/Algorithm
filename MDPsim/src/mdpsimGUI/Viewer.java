@@ -156,13 +156,6 @@ public class Viewer extends JFrame{
 		JMenuItem tcpSocket = new JMenuItem("Socket Connection");
 		file.add(tcpSocket);
 		
-		JMenuItem exit = new JMenuItem("Exit");
-		file.add(exit);
-		
-		JMenu settings = new JMenu("Settings");
-		menu.add(settings);
-		JMenuItem view = new JMenuItem("View");
-		settings.add(view);
 		
 		class socketBtn implements ActionListener{
 			public void actionPerformed(ActionEvent e) {

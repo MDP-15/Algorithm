@@ -43,12 +43,12 @@ public class ControlPanel extends JPanel{
 			}
 		});
 		this.add(speedindicator);
-		this.mdfinput = new JTextArea();
-		mdfinput.setBounds(5,25,300,20);
+		this.mdfinput = new JTextArea("Input an MDF string");
+		mdfinput.setBounds(5,35,300,30);
 		this.add(mdfinput);
 		this.resetbutton = new JButton();
-		resetbutton.setText("Reset!");
-		resetbutton.setBounds(305,25,100,20);
+		resetbutton.setText("Enter!");
+		resetbutton.setBounds(305,35,100,30);
 		this.add(resetbutton);
 		resetbutton.addActionListener(new ActionListener() {
 			@Override

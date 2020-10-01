@@ -54,9 +54,9 @@ public class LogicHandler {
 		}
 		this.mapmemory = mem;
 		printMapMemory();
-		Node n = computeFastestPath(1,1,1,13,RobotDirection.RIGHT);
-		heem = computeFastestPath(18,1,1,13,RobotDirection.RIGHT);
-		heem.printParents();
+		//Node n = computeFastestPath(1,1,1,13,RobotDirection.RIGHT);
+		//heem = computeFastestPath(18,1,1,13,RobotDirection.RIGHT);
+		//heem.printParents();
 	}
 	
 	public Node computeFastestPath(int start_x, int start_y, int dest_x, int dest_y, RobotDirection rd) {

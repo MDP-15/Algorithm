@@ -172,11 +172,12 @@ public class Viewer extends JFrame{
 			tcpSocket.addActionListener(new socketBtn());
 			
 			
-			fastestpath.addActionListener(new ActionListener() {
-				
+			fpStart.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
+					System.out.println("Button Pressed");
+					MDPSIM.robot.printActions();
 					
 				}
 			});

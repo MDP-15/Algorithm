@@ -24,6 +24,7 @@ public class MDPSIM {
 	public static double reftime;
 	private static Clock t;
 	private static long t0;
+	public static Robot robot;
 	
  static ArrayList<Action2D> actionqueue;
 	public static void main(String[] args) throws InterruptedException{
@@ -109,7 +110,7 @@ public class MDPSIM {
 	}
 	//initialize virtual robot object;
 	public static Robot initializeRobot() {
-		Robot robot = new Robot(new ArrayList<Sensor>(), 10);
+		robot = new Robot(new ArrayList<Sensor>(), 10);
 		robot.addSensor("RIGHT_FRONT(O)",new Vector2D(0,9), new Vector2D(-10,0),10, 30); //0
 		robot.addSensor("RIGHT_BACK(1)",new Vector2D(0,-9), new Vector2D(-10,0),10, 30); //1
 		robot.addSensor("FRONT_RIGHT(2)",new Vector2D(-7,7), new Vector2D(0,10), 10, 30); //2

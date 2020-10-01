@@ -67,28 +67,7 @@ public class Robot {
 		this.lh = new LogicHandler(15, 20, 1, 1);
 		// lh.parseMDF("000000000000000000000000000000000000010000000000000000000000000000000000000000000000001110111111000000000000000000000000000000000000000000000000010000000000000000000000001110000000000000000000000000000000000000010000000000000000000000001110000000000000000000000010000000000000000000000000000000000000");
 		lh.parseMDF(MDPSIM.mdfString);
-		printActions();
-		
-		while (actionstack.isEmpty()) {
-			switch (actionstack.peek()) {
-			case "F1":
-				actionqueue.add(RobotAction.F1);
-				break;
-			case "F2":
-				actionqueue.add(RobotAction.F2);
-				break;
-			case "F3":
-				actionqueue.add(RobotAction.F3);
-				break;
-			case "TL":
-				actionqueue.add(RobotAction.TL);
-				break;
-			case "TR":
-				actionqueue.add(RobotAction.TR);
-				break;
-			}
-			actionstack.pop();
-		}
+		//printActions();
 	}
 	
 	
@@ -136,36 +115,7 @@ public class Robot {
 	// robot logic
 	public ArrayList<Action2D> getNextAction(double time) {
 		ArrayList<Action2D> actions = new ArrayList<Action2D>(0);
-
-//		if (sensorvalues != null) {
-//			mh.addAction(RobotAction.TL);
-//		}
-//		
-//		if(sensorvalues.get(3) != null && sensorvalues.get(3) > 30) {
-//			mh.addAction(RobotAction.TL);
-//		}
-//		
-//		if(sensorvalues.get(3) != null && sensorvalues.get(3) < 15) {
-//			mh.addAction(RobotAction.TR);
-//		}
-//		if(sensorvalues.get(0) != null) {
-//			//System.out.println("INSIDE GET 0");
-//			if(sensorvalues.get(0) <= 15) {
-//				System.out.println("TURN LEFT");
-//				mh.addAction(RobotAction.TL);
-//			}
-//		}
-//		
-//		if(sensorvalues.get(5) != null) {
-//			//System.out.println("INSIDE GET 5");
-//			if(sensorvalues.get(5) <= 15) {
-//				System.out.println("TURN RIGHT");
-//				mh.addAction(RobotAction.TR);
-//			}
-//		}
-//		}
 		actions.add(mh.doNext(time, sensorvalues)); // DO NOT TOUCH
-
 		return actions;
 	}
 
@@ -187,15 +137,15 @@ public class Robot {
 //					oneMovement = true;
 //					actionqueue.add(RobotAction.F1);
 //
-//				} else if (sensorvalues.get(4) == null && sensorvalues.get(3) == null && sensorvalues.get(2) < 9) {
+//				} else if (sensorvalues.get(4) == null && sensorvalues.get(3) == null && sensorvalues.get(2) < 10) {
 //					oneMovement = true;
 //					actionqueue.add(RobotAction.TL);
 //
-//				} else if (sensorvalues.get(2) == null && sensorvalues.get(4) == null && sensorvalues.get(3) < 9) {
+//				} else if (sensorvalues.get(2) == null && sensorvalues.get(4) == null && sensorvalues.get(3) < 10) {
 //					oneMovement = true;
 //					actionqueue.add(RobotAction.TL);
 //
-//				} else if (sensorvalues.get(2) == null && sensorvalues.get(3) == null && sensorvalues.get(4) < 9) {
+//				} else if (sensorvalues.get(2) == null && sensorvalues.get(3) == null && sensorvalues.get(4) < 10) {
 //					oneMovement = true;
 //					actionqueue.add(RobotAction.TL);
 //
@@ -205,13 +155,10 @@ public class Robot {
 //		}
 	}
 
-	public void fastestpath() {
-		lh.computeFastestPath(1, 1, 13, 18, RobotDirection.RIGHT);
-	}
-
 	public void printActions() {
+		System.out.println("Doing fastestPath");
+		Node n = lh.computeFastestPath(18, 1, 1, 13, RobotDirection.RIGHT);
 		actionstack = new Stack<String>();
-		Node n = lh.heem;
 		boolean isnull = false;
 		while (!isnull) {
 			if (n != null) {
@@ -226,7 +173,27 @@ public class Robot {
 					isnull = true;
 				}
 			}
-
+		}
+		
+		while (!actionstack.isEmpty()) {
+			switch (actionstack.peek()) {
+			case "F1":
+				actionqueue.add(RobotAction.F1);
+				break;
+			case "F2":
+				actionqueue.add(RobotAction.F2);
+				break;
+			case "F3":
+				actionqueue.add(RobotAction.F3);
+				break;
+			case "TL":
+				actionqueue.add(RobotAction.TL);
+				break;
+			case "TR":
+				actionqueue.add(RobotAction.TR);
+				break;
+			}
+			actionstack.pop();
 		}
 	}
 }

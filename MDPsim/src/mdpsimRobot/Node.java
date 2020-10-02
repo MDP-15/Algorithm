@@ -205,6 +205,7 @@ public class Node {
 	
 	public void print() {
 		System.out.println("X: " + x+ "\tY: "+y+"\tRA: "+ra+"\tRD: "+rd+" Score: "+score);
+		System.out.println();
 	}
 	
 	public void printParents() {

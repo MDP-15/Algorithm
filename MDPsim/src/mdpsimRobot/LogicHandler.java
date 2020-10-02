@@ -106,7 +106,6 @@ public class LogicHandler {
 	
 	public RobotAction getNextAction(int dowhat) {
 		//EXPLORATION
-		printPos();
 		//FIND NEXT NODE
 		if (queue.size() == 0) {
 			donext = true;
@@ -185,31 +184,19 @@ public class LogicHandler {
 	//EXPLORATION
 	//CONSTRUCT BOUNDARY, THEN FIND TARGET NODE THAT WILL GIVE HIGHEST EXPLORATION REWARD PER SCORE;
 	public Node findNext() {
-		boolean verbose = false;
-		ArrayList<Node> possiblenodes = validNodes();
-		ArrayList<ExplorationNode> exnodes = new ArrayList<ExplorationNode>();
-		for (Node n: possiblenodes) {
-			int info = informationGained(n.x, n.y, n.rd);
-			Node nod = computeFastestPathRD(x_pos,y_pos,n.x,n.y,robotdir,n.rd);
-			//System.out.println("X: "+nod.x+" Y:"+nod.y+" RD:"+nod.rd+" INF:"+info);
-			if (nod.score != 0) {
-				double inforate = (double)info/nod.score;
-				ExplorationNode en = new ExplorationNode(nod,inforate);
-				exnodes.add(en);
+		ArrayList<Node> pathable = dijkstraSearch(x_pos, y_pos, robotdir);
+		ArrayList<ExplorationNode> first = new ArrayList<ExplorationNode>(0);
+		for (int a = 0; a < pathable.size(); a++) {
+			if (pathable.get(a).score != 0) {
+				double info = informationGained(pathable.get(a).x, pathable.get(a).y,pathable.get(a).rd);
+				ExplorationNode ex = new ExplorationNode(pathable.get(a), (double)info/pathable.get(a).score);
+				first.add(ex);
 			}
 		}
-		exnodes = exSort(exnodes);
-		if (verbose) {
-			System.out.println("Exnodes size : " + exnodes.size());
-			for (int a = 0; a < exnodes.size()-1; a++) {
-				System.out.println("#"+ a+ ": "+exnodes.get(a).informationgain);
-			}
-			System.out.println();
-		}
-		if (!(exnodes.size() == 0)){
-			return exnodes.get(0);
-		}
-		return null;
+		ExplorationNode e = first.get(0);
+		Node n = new Node(e.x,e.y,e.prev,e.ra,e.rd,e.score);
+		n.printParents();
+		return n;
 	}
 	
 	//INSERT INTO SORTED LIST
@@ -656,7 +643,7 @@ public class LogicHandler {
 			ll = dlist.get(5);
 		}
 		if (verbose) {
-			//System.out.println("RF: "+ rf+ " RB: "+ rb +" FR: "+fr+" FM: "+ fm +" FL: "+ fl +" LL: "+ll);
+			System.out.println("RF: "+ rf+ " RB: "+ rb +" FR: "+fr+" FM: "+ fm +" FL: "+ fl +" LL: "+ll);
 		}
 		scanMap(rf,rb,fr,fm,fl,ll);
 	}
@@ -904,9 +891,8 @@ public class LogicHandler {
 	}
 	
 	// MODIFIED COMPUTEFASTESTPATH USING RD FOR INFORMATION GAIN PATHING;
-	public Node computeFastestPathRD(int start_x, int start_y, int dest_x, int dest_y, RobotDirection rd, RobotDirection endrd) {
+	public ArrayList<Node> dijkstraSearch(int start_x, int start_y, RobotDirection rd) {
 		Node start = new Node(start_x, start_y, null, null, rd, 0.0);
-		Node end = new Node(dest_x, dest_y,null,null,endrd,Double.POSITIVE_INFINITY);
 		//construct searched list;
 		ArrayList<Node> done = new ArrayList<Node>();
 		//construct list of neighbours to search
@@ -915,17 +901,14 @@ public class LogicHandler {
 		while(search.size() > 0) {
 			Node n = search.remove(0);
 			done.add(n);
-			if (n.is(end)) {
-				return n;
-			}
-			ArrayList<Node> neighbours = n.neighbours(dest_x,dest_y,mapmemory);
+			ArrayList<Node> neighbours = n.neighbours(n.x,n.y,mapmemory);
 			for (Node nb : neighbours) {
 				if (!in(done, nb)) {
 					search = insert(search, nb);
 				}
 			}
 		}
-		return null;
+		return done;
 	}
 	
 	// A* USING MANHATTAN DISTANCE
@@ -970,6 +953,32 @@ public class LogicHandler {
 			}
 		}
 		return false;
+	}
+	
+	//CHANGED TO BINARY FOR SPEED
+	public ArrayList<ExplorationNode> insertEx(ArrayList<ExplorationNode> ar, ExplorationNode n){
+		if (ar.size() == 0) {
+			ar.add(n);
+			return ar;
+		} else {
+			int end = ar.size()-1;
+			int front = 0;
+			int middle = (front+end)/2;
+			while (front <= end) {
+				middle = (front+end) / 2;
+				int cmp = Double.compare(n.informationgain, ar.get(middle).informationgain);
+				if (cmp < 0) {
+					front = middle + 1;
+				} else if (cmp > 0) {
+					end = middle - 1;
+				} else {
+					ar.add(middle,n);
+					return ar;
+				}
+			}
+		}
+		ar.add(n);
+		return ar;
 	}
 	
 	//CHANGED TO BINARY FOR SPEED

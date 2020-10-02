@@ -18,6 +18,10 @@ public class MDPSIM {
 	public static Viewer vw;
 	public static String mdfString = null;
 	
+	//ROBOT STARTING COORDINATES in CM
+	public static int robot_x = 15;
+	public static int robot_y = 185;
+	
  static ArrayList<Action2D> actionqueue;
 	public static void main(String[] args) throws InterruptedException{
 		mdfString = parseFormatToMap(""); 
@@ -155,8 +159,13 @@ public class MDPSIM {
 		objectmap.add(leftborder);
 		objectmap.add(rightborder);
 		objectmap.add(bottomborder);
+<<<<<<< Updated upstream
 		Circle2D robot = new Circle2D(12.5);
 		Vehicle2D robotobject = new Vehicle2D(robot, new Vector2D(15, 75), new Vector2D(0, 0), new Vector2D(0,0),new Vector2D(10,0),false,false,20, Math.PI/2);
+=======
+		Circle2D robot = new Circle2D(10);
+		Vehicle2D robotobject = new Vehicle2D(robot, new Vector2D(robot_x, robot_y), new Vector2D(0,0), new Vector2D(0,0), new Vector2D(-10,0));
+>>>>>>> Stashed changes
 		objectmap.addAll(generateXYFromBits(map));
 		objectmap.add(robotobject);
 		return objectmap;

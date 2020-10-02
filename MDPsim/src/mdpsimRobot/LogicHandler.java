@@ -106,9 +106,14 @@ public class LogicHandler {
 	
 	public RobotAction getNextAction(int dowhat) {
 		//EXPLORATION
+		printPos();
 		if (nextflag) {
 			if (queue.size() == 0) {
 				Node n = findNext();
+				while (n.ra != null) {
+					queue.add(n.ra);
+					n = n.prev;
+				}
 			}
 		}
 		if (queue.size() > 0) {
@@ -173,7 +178,7 @@ public class LogicHandler {
 	//EXPLORATION
 	//CONSTRUCT BOUNDARY, THEN FIND TARGET NODE THAT WILL GIVE HIGHEST EXPLORATION REWARD PER SCORE;
 	public Node findNext() {
-		boolean verbose = true;
+		boolean verbose = false;
 		ArrayList<Node> possiblenodes = validNodes();
 		ArrayList<ExplorationNode> exnodes = new ArrayList<ExplorationNode>();
 		for (Node n: possiblenodes) {
@@ -188,9 +193,10 @@ public class LogicHandler {
 		exnodes = exSort(exnodes);
 		if (verbose) {
 			System.out.println("Exnodes size : " + exnodes.size());
-			for (int a = 0; a < exnodes.size(); a++) {
-				System.out.println(exnodes.get(a).informationgain);
+			for (int a = 0; a < exnodes.size()-1; a++) {
+				System.out.println("#"+ a+ ": "+exnodes.get(a).informationgain);
 			}
+			System.out.println();
 		}
 		if (!(exnodes.size() == 0)){
 			return exnodes.get(0);
@@ -209,9 +215,9 @@ public class LogicHandler {
 		while (left <= right) {
 			middle = (left + right)/2;
 			int cmp = Double.compare(en.informationgain, ar.get(middle).informationgain);
-			if (cmp > 0) {
+			if (cmp < 0) {
 				left = middle + 1;
-			} else if (cmp < 0) {
+			} else if (cmp > 0) {
 				right = middle - 1;
 			} else {
 				break;
@@ -269,86 +275,86 @@ public class LogicHandler {
 		int rightbackbox = 2;
 		//CALCULATE POTENTIALLY EXPLORED BLOCKS FROM VALUE;
 		if (robotdir == RobotDirection.RIGHT) {
-			for (int a = 0; a <= frontmidbox; a++) {
-				if (isValidExplored(x_pos, y_pos+1+a)) {
+			for (int a = 1; a <= frontmidbox; a++) {
+				if (isValidExplored(x, y+1+a)) {
 					information += 1;
 				}  else {
 					break;
 				}
 			}
-			for (int a = 0; a <= frontrightbox; a++) {
-				if (isValidExplored(x_pos+1, y_pos+1+a)) {
+			for (int a = 1; a <= frontrightbox; a++) {
+				if (isValidExplored(x+1, y+1+a)) {
 					information += 1;
 				} else {
 					break;
 				}
 			}
-			for (int a = 0; a <= frontleftbox; a++) {
-				if (isValidExplored(x_pos-1, y_pos+1+a) ){
+			for (int a = 1; a <= frontleftbox; a++) {
+				if (isValidExplored(x-1, y+1+a) ){
 					information += 1;
 				} else {
 					break;
 				}
 			}
-			for (int a = 0; a <= rightfrontbox; a++) {
-				if (isValidExplored(x_pos+1+a, y_pos+1) ){
+			for (int a = 1; a <= rightfrontbox; a++) {
+				if (isValidExplored(x+1+a, y+1) ){
 					information += 1;
 				} else {
 					break;
 				}
 			}
-			for (int a = 0; a <= rightbackbox; a++) {
-				if (isValidExplored(x_pos+1+a, y_pos-1) ){
+			for (int a = 1; a <= rightbackbox; a++) {
+				if (isValidExplored(x+1+a, y-1) ){
 					information += 1;
 				} else {
 					break;
 				}
 			}
-			for (int a = 0; a <= leftlongbox; a++) {
-				if (isValidExplored(x_pos-1-a, y_pos+1) ){
+			for (int a = 1; a <= leftlongbox; a++) {
+				if (isValidExplored(x-1-a, y+1) ){
 					information += 1;
 				} else {
 					break;
 				}
 			}
 		} else if (robotdir == RobotDirection.LEFT) {
-			for (int a = 0; a <= frontmidbox; a++) {
-				if (isValidExplored(x_pos, y_pos-1-a) ){
+			for (int a = 1; a <= frontmidbox; a++) {
+				if (isValidExplored(x, y-1-a) ){
 					information += 1;
 				} else {
 					break;
 				}
 			}
-			for (int a = 0; a <= frontrightbox; a++) {
-				if (isValidExplored(x_pos-1, y_pos-1-a) ){
+			for (int a = 1; a <= frontrightbox; a++) {
+				if (isValidExplored(x-1, y-1-a) ){
 					information += 1;
 				} else {
 					break;
 				}
 			}
-			for (int a = 0; a <= frontleftbox; a++) {
-				if (isValidExplored(x_pos+1, y_pos-1-a) ){
+			for (int a = 1; a <= frontleftbox; a++) {
+				if (isValidExplored(x+1, y-1-a) ){
 					information += 1;
 				} else {
 					break;
 				}
 			}
-			for (int a = 0; a <= rightfrontbox; a++) {
-				if (isValidExplored(x_pos-1-a, y_pos-1) ){
+			for (int a = 1; a <= rightfrontbox; a++) {
+				if (isValidExplored(x-1-a, y-1) ){
 					information += 1;
 				} else {
 					break;
 				}
 			}
-			for (int a = 0; a <= rightbackbox; a++) {
-				if (isValidExplored(x_pos-1-a, y_pos+1) ){
+			for (int a = 1; a <= rightbackbox; a++) {
+				if (isValidExplored(x-1-a, y+1) ){
 					information += 1;
 				} else {
 					break;
 				}
 			}
-			for (int a = 0; a <= leftlongbox; a++) {
-				if (isValidExplored(x_pos+1+a, y_pos-1) ){
+			for (int a = 1; a <= leftlongbox; a++) {
+				if (isValidExplored(x+1+a, y-1) ){
 					information += 1;
 				} else {
 					break;
@@ -356,85 +362,85 @@ public class LogicHandler {
 			}
 		} else if (robotdir == RobotDirection.UP) {
 			for (int a = 0; a <= frontmidbox; a++) {
-				if (isValidExplored(x_pos-1-a, y_pos) ){
+				if (isValidExplored(x-1-a, y) ){
 					information += 1;
 				} else {
 					break;
 				}
 			}
-			for (int a = 0; a <= frontrightbox; a++) {
-				if (isValidExplored(x_pos-1-a, y_pos+1) ){
+			for (int a = 1; a <= frontrightbox; a++) {
+				if (isValidExplored(x-1-a, y+1) ){
 					information += 1;
 				} else {
 					break;
 				}
 			}
-			for (int a = 0; a <= frontleftbox; a++) {
-				if (isValidExplored(x_pos-1-a, y_pos-1) ){
+			for (int a = 1; a <= frontleftbox; a++) {
+				if (isValidExplored(x-1-a, y-1) ){
 					information += 1;
 				} else {
 					break;
 				}
 			}
-			for (int a = 0; a <= rightfrontbox; a++) {
-				if (isValidExplored(x_pos-1, y_pos+1+a) ){
+			for (int a = 1; a <= rightfrontbox; a++) {
+				if (isValidExplored(x-1, y+1+a) ){
 					information += 1;
 				} else {
 					break;
 				}
 			}
-			for (int a = 0; a <= rightbackbox; a++) {
-				if (isValidExplored(x_pos+1, y_pos+1+a) ){
+			for (int a = 1; a <= rightbackbox; a++) {
+				if (isValidExplored(x+1, y+1+a) ){
 					information += 1;
 				} else {
 					break;
 				}
 			}
-			for (int a = 0; a <= leftlongbox; a++) {
-				if (isValidExplored(x_pos-1, y_pos-1-a) ){
+			for (int a = 1; a <= leftlongbox; a++) {
+				if (isValidExplored(x-1, y-1-a) ){
 					information += 1;
 				} else {
 					break;
 				}
 			}
 		} else if (robotdir == RobotDirection.DOWN) {
-			for (int a = 0; a <= frontmidbox; a++) {
-				if (isValidExplored(x_pos+1+a, y_pos) ){
+			for (int a = 1; a <= frontmidbox; a++) {
+				if (isValidExplored(x+1+a, y) ){
 					information += 1;
 				} else {
 					break;
 				}
 			}
-			for (int a = 0; a <= frontrightbox; a++) {
-				if (isValidExplored(x_pos+1+a, y_pos-1) ){
+			for (int a = 1; a <= frontrightbox; a++) {
+				if (isValidExplored(x+1+a, y-1) ){
 					information += 1;
 				} else {
 					break;
 				}
 			}
-			for (int a = 0; a <= frontleftbox; a++) {
-				if (isValidExplored(x_pos+1+a, y_pos+1) ){
+			for (int a = 1; a <= frontleftbox; a++) {
+				if (isValidExplored(x+1+a, y+1) ){
 					information += 1;
 				} else {
 					break;
 				}
 			}
-			for (int a = 0; a <= rightfrontbox; a++) {
-				if (isValidExplored(x_pos+1, y_pos-1-a) ){
+			for (int a = 1; a <= rightfrontbox; a++) {
+				if (isValidExplored(x+1, y-1-a) ){
 					information += 1;
 				} else {
 					break;
 				}
 			}
-			for (int a = 0; a <= rightbackbox; a++) {
-				if (isValidExplored(x_pos-1, y_pos-1-a) ){
+			for (int a = 1; a <= rightbackbox; a++) {
+				if (isValidExplored(x-1, y-1-a) ){
 					information += 1;
 				} else {
 					break;
 				}
 			}
-			for (int a = 0; a <= leftlongbox; a++) {
-				if (isValidExplored(x_pos+1, y_pos+1+a) ){
+			for (int a = 1; a <= leftlongbox; a++) {
+				if (isValidExplored(x+1, y+1+a) ){
 					information += 1;
 				} else {
 					break;
@@ -815,11 +821,18 @@ public class LogicHandler {
 	}
 	
 	public boolean isValidExplored(int x, int y) {
-		return isValid(x,y);
+		if (isValid(x,y)) {;
+			if (mapmemory.get(x).get(y) == 2) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+		return false;
 	}
 	
 	public boolean isValid(int x, int y) {
-		boolean verbose = true;
+		boolean verbose = false;
 		if (verbose) {
 			System.out.println("X SIZE: "+x_size+" Y SIZE: "+y_size);
 			for(int a = 0; a < y_size; a++) {

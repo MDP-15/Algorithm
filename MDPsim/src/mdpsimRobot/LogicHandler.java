@@ -190,7 +190,7 @@ public class LogicHandler {
 				if (info == 0) {
 					continue;
 				}
-				ExplorationNode ex = new ExplorationNode(pathable.get(a), (double)info/pathable.get(a).score);
+				ExplorationNode ex = new ExplorationNode(pathable.get(a), Math.pow((double)info/pathable.get(a).score,2));
 				first.add(ex);
 			}
 		}
@@ -902,7 +902,7 @@ public class LogicHandler {
 		while(search.size() > 0) {
 			Node n = search.remove(0);
 			done.add(n);
-			ArrayList<Node> neighbours = n.neighbours(n.x,n.y,mapmemory);
+			ArrayList<Node> neighbours = n.neighbours(start_x,start_y,mapmemory);
 			for (Node nb : neighbours) {
 				if (!in(done, nb) && !in(search,nb)) {
 					search.add(nb);

@@ -904,7 +904,7 @@ public class LogicHandler {
 			done.add(n);
 			ArrayList<Node> neighbours = n.neighbours(n.x,n.y,mapmemory);
 			for (Node nb : neighbours) {
-				if (!in(done, nb)) {
+				if (!in(done, nb) && !in(search,nb)) {
 					search.add(nb);
 				}
 			}

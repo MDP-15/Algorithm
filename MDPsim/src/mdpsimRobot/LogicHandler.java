@@ -288,68 +288,81 @@ public class LogicHandler {
 			for (int a = 0; a <= leftlongbox; a++) {
 				if (isValidExplored(x_pos+1+a, y_pos-1) ){
 					information += 1;
+					break;
 				}
 			}
 		} else if (robotdir == RobotDirection.UP) {
 			for (int a = 0; a <= frontmidbox; a++) {
 				if (isValidExplored(x_pos-1-a, y_pos) ){
 					information += 1;
+					break;
 				}
 			}
 			for (int a = 0; a <= frontrightbox; a++) {
 				if (isValidExplored(x_pos-1-a, y_pos+1) ){
 					information += 1;
+					break;
 				}
 			}
 			for (int a = 0; a <= frontleftbox; a++) {
 				if (isValidExplored(x_pos-1-a, y_pos-1) ){
 					information += 1;
+					break;
 				}
 			}
 			for (int a = 0; a <= rightfrontbox; a++) {
 				if (isValidExplored(x_pos-1, y_pos+1+a) ){
 					information += 1;
+					break;
 				}
 			}
 			for (int a = 0; a <= rightbackbox; a++) {
 				if (isValidExplored(x_pos+1, y_pos+1+a) ){
 					information += 1;
+					break;
 				}
 			}
 			for (int a = 0; a <= leftlongbox; a++) {
 				if (isValidExplored(x_pos-1, y_pos-1-a) ){
 					information += 1;
+					break;
 				}
 			}
 		} else if (robotdir == RobotDirection.DOWN) {
 			for (int a = 0; a <= frontmidbox; a++) {
 				if (isValidExplored(x_pos+1+a, y_pos) ){
 					information += 1;
+					break;
 				}
 			}
 			for (int a = 0; a <= frontrightbox; a++) {
 				if (isValidExplored(x_pos+1+a, y_pos-1) ){
 					information += 1;
+					break;
 				}
 			}
 			for (int a = 0; a <= frontleftbox; a++) {
 				if (isValidExplored(x_pos+1+a, y_pos+1) ){
 					information += 1;
+					break;
 				}
 			}
 			for (int a = 0; a <= rightfrontbox; a++) {
 				if (isValidExplored(x_pos+1, y_pos-1-a) ){
 					information += 1;
+					break;
 				}
 			}
 			for (int a = 0; a <= rightbackbox; a++) {
 				if (isValidExplored(x_pos-1, y_pos-1-a) ){
 					information += 1;
+					break;
 				}
 			}
 			for (int a = 0; a <= leftlongbox; a++) {
 				if (isValidExplored(x_pos+1, y_pos+1+a) ){
 					information += 1;
+					break;
 				}
 			}
 		}
@@ -390,12 +403,13 @@ public class LogicHandler {
 	}
 	//CHECK SENSOR VALUES AND UPDATE MAP -> VALUES SHOULD BE UPDATED HERE
 	public void scanMap(double right_front, double right_back, double front_right, double front_middle, double front_left, double left_long) {
-		boolean verbose = false;
+		boolean verbose = true;
 		int fmbmax = 3;
 		int frbmax = 3;
 		int flbmax = 3;
 		int llbmax = 5;
 		int rfbmax = 2;
+		int rbbmax = 2;
 		int frontmidbox = 3;
 		int frontrightbox = 3;
 		int frontleftbox = 3;
@@ -463,7 +477,7 @@ public class LogicHandler {
 			rightbackbox = 2;
 		}
 		if (verbose) {
-			System.out.println("RF: "+ rightfrontbox+ " RB: "+ rightbackbox +" FR: "+frontrightbox+" FM: "+ frontmidbox +" FL: "+ frontleftbox +" LL: "+leftlongbox);
+			System.out.println("RF: "+ rightfrontbox+ "/"+rfbmax+" RB: "+ rightbackbox +"/"+rbbmax+" FR: "+frontrightbox+"/"+ frbmax+" FM: "+ frontmidbox +"/"+fmbmax+" FL: "+ frontleftbox +"/"+flbmax+" LL: "+leftlongbox+"/"+llbmax);
 		}
 		//FROM KNOWN BLOCK RANGES AND ROBOT DIRECTION UPDATE MAP
 		if (robotdir == RobotDirection.RIGHT) {
@@ -485,14 +499,36 @@ public class LogicHandler {
 			for (int a = 0; a <= leftlongbox; a++) {
 				setMapMemory(x_pos-1-a, y_pos+1,0);
 			}
-			if (frontmidbox < frbmax) {
+			System.out.println("called");
+			if (frontmidbox < fmbmax) {
 				setMapMemory(x_pos,y_pos+1+frontmidbox+1,1);
 			}
+			System.out.println("called1");
+
 			if (frontrightbox < frbmax) {
 				setMapMemory(x_pos+1,y_pos+1+frontrightbox+1,1);
 			}
+			System.out.println("called2");
+
 			if (frontleftbox < flbmax) {
 				setMapMemory(x_pos-1,y_pos+1+frontleftbox+1,1);
+			}
+			System.out.println("called3");
+
+			if (rightfrontbox < rfbmax) {
+				if (isValid(x_pos+1+rightfrontbox+1, y_pos+1)) {
+					setMapMemory(x_pos+1+rightfrontbox+1, y_pos+1,1);
+				}
+			}
+			System.out.println("called4");
+
+			if (rightbackbox < rbbmax) {
+				setMapMemory(x_pos+1+rightbackbox+1, y_pos-1,1);
+			}
+			System.out.println("called5");
+
+			if (leftlongbox < llbmax) {
+				setMapMemory(x_pos-1-leftlongbox, y_pos+1,1);
 			}
 		} else if (robotdir == RobotDirection.LEFT) {
 			for (int a = 0; a <= frontmidbox; a++) {
@@ -513,6 +549,24 @@ public class LogicHandler {
 			for (int a = 0; a <= leftlongbox; a++) {
 				setMapMemory(x_pos+1+a, y_pos-1,0);
 			}
+			if (frontmidbox < fmbmax) {
+				setMapMemory(x_pos,y_pos-1-frontmidbox-1,1);
+			}
+			if (frontrightbox < frbmax) {
+				setMapMemory(x_pos-1,y_pos-1-frontrightbox-1,1);
+			}
+			if (frontleftbox < flbmax) {
+				setMapMemory(x_pos+1,y_pos-1-frontleftbox-1,1);
+			}
+			if (rightfrontbox < rfbmax) {
+				setMapMemory(x_pos-1-rightfrontbox-1, y_pos-1,1);
+			}
+			if (rightbackbox < rbbmax) {
+				setMapMemory(x_pos-1-rightbackbox-1, y_pos+1,1);
+			}
+			if (leftlongbox < llbmax) {
+				setMapMemory(x_pos+1+leftlongbox+1, y_pos-1,1);
+			}
 		} else if (robotdir == RobotDirection.UP) {
 			for (int a = 0; a <= frontmidbox; a++) {
 				setMapMemory(x_pos-1-a, y_pos, 0);
@@ -532,6 +586,24 @@ public class LogicHandler {
 			for (int a = 0; a <= leftlongbox; a++) {
 				setMapMemory(x_pos-1, y_pos-1-a,0);
 			}
+			if (frontmidbox < fmbmax) {
+				setMapMemory(x_pos-1-frontmidbox-1,y_pos,1);
+			}
+			if (frontrightbox < frbmax) {
+				setMapMemory(x_pos-1-frontrightbox-1,y_pos+1,1);
+			}
+			if (frontleftbox < flbmax) {
+				setMapMemory(x_pos-1-frontrightbox-1,y_pos-1,1);
+			}
+			if (rightfrontbox < rfbmax) {
+				setMapMemory(x_pos-1, y_pos+1+rightfrontbox+1,1);
+			}
+			if (rightbackbox < rbbmax) {
+				setMapMemory(x_pos+1, y_pos+1+rightbackbox+1,1);
+			}
+			if (leftlongbox < llbmax) {
+				setMapMemory(x_pos-1, y_pos-1-leftlongbox-1,1);
+			}
 		} else if (robotdir == RobotDirection.DOWN) {
 			for (int a = 0; a <= frontmidbox; a++) {
 				setMapMemory(x_pos+1+a, y_pos, 0);
@@ -550,6 +622,24 @@ public class LogicHandler {
 			}
 			for (int a = 0; a <= leftlongbox; a++) {
 				setMapMemory(x_pos+1, y_pos+1+a,0);
+			}
+			if (frontmidbox < fmbmax) {
+				setMapMemory(x_pos+1+frontmidbox+1,y_pos,1);
+			}
+			if (frontrightbox < frbmax) {
+				setMapMemory(x_pos+1+frontrightbox+1,y_pos-1,1);
+			}
+			if (frontleftbox < flbmax) {
+				setMapMemory(x_pos+1+frontrightbox+1,y_pos+1,1);
+			}
+			if (rightfrontbox < rfbmax) {
+				setMapMemory(x_pos+1, y_pos-1-rightfrontbox-1,1);
+			}
+			if (rightbackbox < rbbmax) {
+				setMapMemory(x_pos-1, y_pos-1-rightbackbox-1,1);
+			}
+			if (leftlongbox < llbmax) {
+				setMapMemory(x_pos+1, y_pos+1+leftlongbox+1,1);
 			}
 		}
 	}
@@ -682,6 +772,7 @@ public class LogicHandler {
 			ArrayList<Integer> yarray = mem.get(x);
 			yarray.set(y, value);
 			mem.set(x, yarray);
+			this.mapmemory = mem;
 			return;
 		}
 	}

@@ -27,7 +27,7 @@ public class MDPSIM {
 	
  static ArrayList<Action2D> actionqueue;
 	public static void main(String[] args) throws InterruptedException{
-		mdfString = parseFormatToMap("000000000000000000000000000000000000010000000000000000000000000000000000000000000000001110111111000000000000000000000000000000000000000000000000010000000000000000000000001110000000000000000000000000000000000000010000000000000000000000001110000000000000000000000001000000000000000000000000011111111111"); 
+		mdfString = parseFormatToMap(""); 
 		vw = new Viewer("MDP Simulator", 1024, 768); //First Panel
 		pause = false;
 		actionqueue = new ArrayList<Action2D>(0);
@@ -114,7 +114,7 @@ public class MDPSIM {
 		robot.addSensor("FRONT_RIGHT(2)",new Vector2D(-7,7), new Vector2D(0,10), 10, 30); //2
 		robot.addSensor("FRONT_MIDDLE(3)",new Vector2D(0,9), new Vector2D(0,10), 10, 30); //3
 		robot.addSensor("FRONT_LEFT(4)",new Vector2D(7,7), new Vector2D(0,10), 10, 30); //4
-		robot.addSensor("LEFT_LONG(5)",new Vector2D(0,9), new Vector2D(10,0), 20, 50);//5
+		robot.addSensor("LEFT_LONG(5)",new Vector2D(0,9), new Vector2D(10,0), 20, 55);//5
 		return robot;
 	}
 	

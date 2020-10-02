@@ -164,19 +164,29 @@ public class Node {
 		} else {
 			return false;
 		}
-			
 	}
 	
-	public boolean mapValid(int x, int y, ArrayList<ArrayList<Integer>> mapmemory) {
+	public boolean mapValid(int xpos, int ypos, ArrayList<ArrayList<Integer>> mapmemory) {
+		boolean verbose = false;
+		if (verbose) {
+			for (int a = 0; a < mapmemory.size(); a++) {
+				for (int b = 0; b < mapmemory.get(0).size(); b++) {
+					System.out.print(mapmemory.get(a).get(b));
+				}
+				System.out.println();
+			}
+			System.out.println();
+		}
 		try { 
-			int a = mapmemory.get(x).get(y);
+			int a = mapmemory.get(xpos).get(ypos);
 			if (a != 0) {
 				return false;
+			} else {
+				return true;
 			}
 		} catch (Exception e) {
 			return false;
 		}
-		return true;
 	}
 	
 	public boolean is(Node n) {

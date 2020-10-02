@@ -11,13 +11,19 @@ public class LogicHandler {
 	public int y_pos;
 	public RobotDirection robotdir;
 	public ArrayList<ArrayList<Integer>> mapmemory;
-	public RobotAction ra;
+	public ArrayList<RobotAction> queue;
+	public RobotAction prevaction;
+	public boolean nextflag;
+	
 	public LogicHandler(int x_size, int y_size, int x_pos, int y_pos) {
 		this.x_size = x_size;
 		this.y_size = y_size;
 		this.x_pos = x_pos;
 		this.y_pos = y_pos;
 		this.robotdir = null;
+		this.prevaction = null;
+		this.queue = new ArrayList<RobotAction>();
+		this.nextflag = false;
 		this.mapmemory = new ArrayList<ArrayList<Integer>>();
 		for(int a = 0; a < x_size; a++) {
 			mapmemory.add(new ArrayList<Integer>(y_size));
@@ -31,20 +37,35 @@ public class LogicHandler {
 		return;
 	}
 	
-	public ArrayList<RobotAction> getNextAction(int dowhat) {
-		ArrayList<RobotAction> robotactionlist = new ArrayList<RobotAction>();
+	public void updatePos(){
+		if (robotdir == RobotDirection.UP) {
+			
+		}
+	}
+	
+	public RobotAction getNextAction(int dowhat) {
 		//EXPLORATION
-		if (dowhat == 1) {
-			Node n = findNext();
-			if (n != null) {
-				n.printParents();
-				while (n.ra != null) {
-					robotactionlist.add(n.ra);
-					n = n.prev;
+		if (nextflag) {
+			if (queue.size() == 0) {
+				if (dowhat == 1) {
+					Node n = findNext();
+					if (n != null) {
+						this.nextflag = false;
+						System.out.println(nextflag);
+						while (n.ra != null) {
+							queue.add(n.ra);
+							n = n.prev;
+						}
+					}
 				}
 			}
+		
 		}
-		return robotactionlist;
+		if (queue.size() > 0) {
+			return queue.get(0);
+		} else {
+			return null;
+		}
 	}
 	
 	public void setRobotDirection(RobotDirection rd) {
@@ -136,7 +157,6 @@ public class LogicHandler {
 				exInsert(exnodes, en);
 			}
 		}
-		System.out.println(exnodes.size());
 		if (exnodes.size() == 0) {
 			return null; 
 		} else {
@@ -173,14 +193,14 @@ public class LogicHandler {
 	//FIND ALL VALID NODES TO ENTER;
 	public ArrayList<Node> validNodes() {
 		ArrayList<Node> validnodes = new ArrayList<Node>();
-		for (int a = 1; a < x_size-1; a++) {
-			for (int b = 1; b < y_size-1; b++) {
-				Node n = new Node(a,b,null,null,null,0.0);
+		for (int a = 0; a < x_size; a++) {
+			for (int b = 0; b < y_size; b++) {
+				Node n = new Node(b,a,null,null,null,0.0);
 				if (n.isValid(mapmemory)) {
-					Node up = new Node(a,b,null,null,RobotDirection.UP,0.0);
-					Node down = new Node(a,b,null,null,RobotDirection.DOWN,0.0);
-					Node left = new Node(a,b,null,null,RobotDirection.LEFT,0.0);
-					Node right = new Node(a,b,null,null,RobotDirection.RIGHT,0.0);
+					Node up = new Node(b,a,null,null,RobotDirection.UP,0.0);
+					Node down = new Node(b,a,null,null,RobotDirection.DOWN,0.0);
+					Node left = new Node(b,a,null,null,RobotDirection.LEFT,0.0);
+					Node right = new Node(b,a,null,null,RobotDirection.RIGHT,0.0);
 					validnodes.add(up);
 					validnodes.add(down);
 					validnodes.add(left);
@@ -194,12 +214,6 @@ public class LogicHandler {
 	//SQUARE MUST BE VALID ROBOT POSITION;
 	public int informationGained(int x, int y, RobotDirection rd) {
 		int information = 0;
-		int fmbmax = 3;
-		int frbmax = 3;
-		int flbmax = 3;
-		int llbmax = 5;
-		int rfbmax = 2;
-		int rbb = 2;
 		int frontmidbox = 3;
 		int frontrightbox = 3;
 		int frontleftbox = 3;

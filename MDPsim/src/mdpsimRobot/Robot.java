@@ -76,12 +76,10 @@ public class Robot {
 		ArrayList<Action2D> actions = new ArrayList<Action2D>(0);
 		if (mh.currentaction == null) {
 			try {
+				lh.nextflag = true;
 				sensorvalues.get(0);
 				lh.scan(sensorvalues);
-				ArrayList<RobotAction> ar = lh.getNextAction(1);
-				for (RobotAction ra : ar) {
-					mh.addAction(ra);
-				}
+				mh.addAction(lh.getNextAction(1));
 			} catch (Exception e) {}
 		}
 		actions.add(mh.doNext(time , sensorvalues)); // DO NOT TOUCH

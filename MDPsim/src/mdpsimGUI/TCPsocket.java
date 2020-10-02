@@ -18,16 +18,10 @@ public class TCPsocket {
 	public static PrintStream dout = null;
 	public static String[] bufferableCommand = new String[] { "Image" };
 
-	public static void main(String[] args) {
-
-		tcpSocket();
-
-	}
-
 	public static void tcpSocket() {
 		try {
-			// socket = new Socket("192.168.15.1", 9000);
-			socket = new Socket("127.0.0.1", 9000);
+			socket = new Socket("192.168.15.1", 9000);
+			//socket = new Socket("127.0.0.1", 9000);
 			System.out.println("Connected to " + socket.getInetAddress() + ":" + Integer.toString(socket.getPort()));
 			din = socket.getInputStream();
 			dout = new PrintStream(socket.getOutputStream());
@@ -38,6 +32,15 @@ public class TCPsocket {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		Runnable r = new Runnable() {
+	         public void run() {
+	        	 while(true) {
+	        		 receiveMessage();
+	        	 }
+	         }
+	     };
+	     new Thread(r).start();
 
 		/*while (true) {
 			// sendMessage("dsfa");

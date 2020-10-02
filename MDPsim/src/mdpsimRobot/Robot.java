@@ -132,23 +132,23 @@ public class Robot {
 		      switch (actionstack.peek()) {
 		      case "F1":
 		        actionqueue.add(RobotAction.F1);
-		        TCPsocket.sendMessage("F1s");
+		        //TCPsocket.sendMessage("F1s");
 		        break;
 		      case "F2":
 		        actionqueue.add(RobotAction.F2);
-		        TCPsocket.sendMessage("F2s");
+		        //TCPsocket.sendMessage("F2s");
 		        break;
 		      case "F3":
 		        actionqueue.add(RobotAction.F3);
-		        TCPsocket.sendMessage("F3s");
+		       // TCPsocket.sendMessage("F3s");
 		        break;
 		      case "TL":
 		        actionqueue.add(RobotAction.TL);
-		        TCPsocket.sendMessage("TLs");
+		       // TCPsocket.sendMessage("TLs");
 		        break;
 		      case "TR":
 		        actionqueue.add(RobotAction.TR);
-		        TCPsocket.sendMessage("TRs");
+		       // TCPsocket.sendMessage("TRs");
 		        break;
 		      }
 		      actionstack.pop();

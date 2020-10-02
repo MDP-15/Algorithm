@@ -28,12 +28,8 @@ public class MDPSIM {
 	
  static ArrayList<Action2D> actionqueue;
 	public static void main(String[] args) throws InterruptedException{
-		Runnable r = new Runnable() {
-	         public void run() {
-	        	 TCPsocket.tcpSocket();
-	         }
-	     };
-	     new Thread(r).start();
+
+	    //TCPsocket.tcpSocket();
 		mdfString = parseFormatToMap(""); 
 		vw = new Viewer("MDP Simulator", 1024, 768); //First Panel
 		pause = false;
@@ -58,7 +54,6 @@ public class MDPSIM {
 		updateEngine2DPanel(r,phyeng, vw.map1);	
 		updateRobot2DPanel(phyeng, r, vw.map2);
 		while(true) { //can put true
-			TCPsocket.receiveMessage();
 				try {
 					while((phyeng.time()-reftime)*1000 >= ((double)(t.millis()-t0)/simspeed)) {
 						NOP();

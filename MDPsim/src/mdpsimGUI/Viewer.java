@@ -164,6 +164,20 @@ public class Viewer extends JFrame{
 		JMenuItem view = new JMenuItem("View");
 		settings.add(view);
 		
+		JMenu exploreButton = new JMenu("Exploration");
+		menu.add(exploreButton);
+		JMenuItem startexplore = new JMenuItem("Start");
+		exploreButton.add(startexplore);
+		
+		exploreButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
 		class socketBtn implements ActionListener{
 			public void actionPerformed(ActionEvent e) {
 				TCPsocket.tcpSocket();

@@ -107,17 +107,15 @@ public class LogicHandler {
 	public RobotAction getNextAction(int dowhat) {
 		//EXPLORATION
 		//FIND NEXT NODE
+		System.out.println("called");
 		if (queue.size() == 0) {
-			donext = true;
-		} else {
-			donext = false;
-		}
-		if (donext) {
 			Node n = findNext();
 			queue = trailAction(n);
 		} else {
 			RobotAction ra = queue.remove(queue.size()-1);
-			prevaction = ra;
+			if (ra != null) {
+				prevaction = ra;
+			}
 			return ra;
 		}
 		return null;
@@ -189,13 +187,16 @@ public class LogicHandler {
 		for (int a = 0; a < pathable.size(); a++) {
 			if (pathable.get(a).score != 0) {
 				double info = informationGained(pathable.get(a).x, pathable.get(a).y,pathable.get(a).rd);
+				if (info == 0) {
+					continue;
+				}
 				ExplorationNode ex = new ExplorationNode(pathable.get(a), (double)info/pathable.get(a).score);
 				first.add(ex);
 			}
 		}
+		first = exSort(first);
 		ExplorationNode e = first.get(0);
 		Node n = new Node(e.x,e.y,e.prev,e.ra,e.rd,e.score);
-		n.printParents();
 		return n;
 	}
 	
@@ -904,7 +905,7 @@ public class LogicHandler {
 			ArrayList<Node> neighbours = n.neighbours(n.x,n.y,mapmemory);
 			for (Node nb : neighbours) {
 				if (!in(done, nb)) {
-					search = insert(search, nb);
+					search.add(nb);
 				}
 			}
 		}
@@ -954,31 +955,20 @@ public class LogicHandler {
 		}
 		return false;
 	}
-	
-	//CHANGED TO BINARY FOR SPEED
-	public ArrayList<ExplorationNode> insertEx(ArrayList<ExplorationNode> ar, ExplorationNode n){
-		if (ar.size() == 0) {
-			ar.add(n);
-			return ar;
-		} else {
-			int end = ar.size()-1;
-			int front = 0;
-			int middle = (front+end)/2;
-			while (front <= end) {
-				middle = (front+end) / 2;
-				int cmp = Double.compare(n.informationgain, ar.get(middle).informationgain);
-				if (cmp < 0) {
-					front = middle + 1;
-				} else if (cmp > 0) {
-					end = middle - 1;
-				} else {
-					ar.add(middle,n);
-					return ar;
+	public boolean inScore(ArrayList<Node> list, Node n) {
+		double lowest = Double.POSITIVE_INFINITY;
+		for (int a = 0; a < list.size(); a++) {
+			if (n.is(list.get(a))) {
+				if (list.get(a).score < lowest) {
+					lowest = list.get(a).score;
 				}
 			}
 		}
-		ar.add(n);
-		return ar;
+		if (n.score < lowest) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	//CHANGED TO BINARY FOR SPEED
@@ -1036,7 +1026,7 @@ public class LogicHandler {
 		} catch (Exception e) {
 		}
 		//CHECK FOR VALIDITY OF XY VALUE
-		if (x < 0 || x > x_size || y < 0 || y > y_size) {
+		if (x < 0 || x >= x_size || y < 0 || y >= y_size) {
 			return;
 		} else {
 			ArrayList<Integer> yarray = mem.get(x);
@@ -1047,6 +1037,33 @@ public class LogicHandler {
 		}
 	}
 	
+	public ArrayList<Node> sort(ArrayList<Node> ar) {
+		boolean sorted = false;
+		while (!sorted) {
+			sorted = true;
+			for (int a = 1; a < ar.size(); a++) {
+				if (ar.get(a-1).score < ar.get(a).score) {
+					Node temp = ar.get(a);
+					ar.set(a, ar.get(a-1));
+					ar.set(a-1, temp);
+					sorted = false;
+				}
+			}
+		}
+		return ar;
+	}
+	
+	public ArrayList<Node> replace(ArrayList<Node> ar, Node n){
+		int k = ar.size();
+		for (int a = 0; a < k; a++) {
+			if (n.is(ar.get(a))) {
+				ar.remove(a);
+				a -= 1;
+				k -= 1;
+			}
+		}
+		return ar;
+	}
 	public void printMapMemory() {
 		int x_size = mapmemory.size();
 		int y_size = 0;

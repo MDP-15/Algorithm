@@ -81,12 +81,10 @@ public class Robot {
 	
 	public ArrayList<Action2D> getNextAction(double time){
 		ArrayList<Action2D> actions = new ArrayList<Action2D>(0);
-		if (mh.currentaction == null && mh.actionqueue.size() == 0 && flag) {
-			try {
-				lh.updatePos();
-				lh.scan(sensorvalues);
-				mh.actionqueue.add(lh.getNextAction(1));
-			} catch (Exception e) {}
+		if (mh.currentaction == null && mh.actionqueue.size() == 0) {
+			lh.updatePos();
+			lh.scan(sensorvalues);
+			mh.actionqueue.add(lh.getNextAction(1));
 		}
 		actions.add(mh.doNext(time , sensorvalues)); // DO NOT TOUCH
 		return actions;

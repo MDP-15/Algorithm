@@ -19,13 +19,10 @@ public class Robot {
 	public MovementHandler mh;
 	private static DecimalFormat df2 = new DecimalFormat("#.##");
 	public ArrayList<RobotAction> actionqueue;
-	
 	//WAYPOINT INITILIASATION
 	public static int way_x = 11;
 	public static int way_y = 10;
-	
 	public LogicHandler lh;
-	public static boolean flag = false;
 	private Stack<String> actionstack;
 	
 	public Robot(ArrayList<Sensor> sensors, double radius) {
@@ -79,12 +76,12 @@ public class Robot {
 		System.out.println();
 	}
 	
-	public ArrayList<Action2D> getNextAction(double time){
+	public ArrayList<Action2D> explore(double time){
 		ArrayList<Action2D> actions = new ArrayList<Action2D>(0);
-		if (mh.currentaction == null && mh.actionqueue.size() == 0 && flag) {
+		if (mh.currentaction == null && mh.actionqueue.size() == 0 && MDPSIM.mode == 1) {
 			lh.updatePos();
 			lh.scan(sensorvalues);
-			mh.actionqueue.add(lh.getNextAction(1));
+			mh.actionqueue.add(lh.getNextAction());
 		}
 		actions.add(mh.doNext(time , sensorvalues)); // DO NOT TOUCH
 		return actions;

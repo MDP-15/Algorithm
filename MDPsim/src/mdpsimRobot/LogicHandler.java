@@ -2,6 +2,7 @@ package mdpsimRobot;
 import java.util.ArrayList;
 //0 for nothing, 1 for something;
 
+import mdpsim.MDPSIM;
 import mdpsimEngine.Action2D;
 
 public class LogicHandler {
@@ -13,17 +14,17 @@ public class LogicHandler {
 	public ArrayList<ArrayList<Integer>> mapmemory;
 	public ArrayList<RobotAction> queue;
 	public RobotAction prevaction;
-	public boolean donext = false;
+	public int recal;
 	
 	public LogicHandler(int x_size, int y_size, int x_pos, int y_pos) {
 		this.x_size = x_size;
 		this.y_size = y_size;
 		this.x_pos = x_pos;
 		this.y_pos = y_pos;
+		this.recal = 0;
 		this.robotdir = null;
 		this.prevaction = null;
 		this.queue = new ArrayList<RobotAction>();
-		this.donext = true;
 		this.mapmemory = new ArrayList<ArrayList<Integer>>();
 		for(int a = 0; a < x_size; a++) {
 			mapmemory.add(new ArrayList<Integer>(y_size));
@@ -104,12 +105,20 @@ public class LogicHandler {
 		prevaction = null;
 	}
 	
-	public RobotAction getNextAction(int dowhat) {
+	public Node returnToBase(){
+		Node n = computeFastestPath(x_pos,y_pos,18,1,robotdir);
+		n.printParents();
+		return n;
+	}
+	
+	public RobotAction getNextAction() {
 		//EXPLORATION
 		//FIND NEXT NODE
-		System.out.println("called");
 		if (queue.size() == 0) {
 			Node n = findNext();
+			if (n == null) {
+				n = returnToBase();
+			} 
 			queue = trailAction(n);
 		} else {
 			RobotAction ra = queue.remove(queue.size()-1);
@@ -195,6 +204,9 @@ public class LogicHandler {
 			}
 		}
 		first = exSort(first);
+		if (first.size() == 0) {
+			return null;
+		}
 		ExplorationNode e = first.get(0);
 		Node n = new Node(e.x,e.y,e.prev,e.ra,e.rd,e.score);
 		return n;

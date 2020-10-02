@@ -5,7 +5,8 @@ public class Action2D {
 		ACCELERATE,
 		TURN,
 		STOP,
-		SCAN;
+		SCAN,
+		CALIBRATE;
 	}
 	
 	private Action action;

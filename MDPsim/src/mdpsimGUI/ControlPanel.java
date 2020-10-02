@@ -11,6 +11,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import mdpMapReader.MapReader;
+import mdpsim.MDPSIM;
+import mdpsimRobot.LogicHandler;
 import mdpsimRobot.Robot;
 
 public class ControlPanel extends JPanel{
@@ -70,7 +72,11 @@ public class ControlPanel extends JPanel{
 				flag.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					 Robot.flag = !Robot.flag;
+						if (MDPSIM.mode == 1) {
+							MDPSIM.mode = 0;
+						} else if (MDPSIM.mode == 0) {
+							MDPSIM.mode = 1;
+						}
 					}
 				});
 				this.add(flag);

@@ -28,6 +28,23 @@ public class Vehicle2D extends Object2D{
 				this.rotationalmomentum = 0;
 				this.velocity(new Vector2D(0,0));
 				this.acceleration(new Vector2D(0,0));
+			} else if (action.action() == Action.CALIBRATE) {
+				Vector2D vec = super.position();
+				Vector2D dir = super.direction();
+				double x = Math.floor((vec.x()-5)/10);
+				double y = Math.floor((vec.y()-5)/10);
+				this.position(new Vector2D((x*10)+5, (y*10)+5));
+				Vector2D newdir = new Vector2D(0,10);
+				if (dir.angle(new Vector2D(0,-10)) < dir.angle(newdir)){
+					newdir = new Vector2D(0,-10);
+				}
+				if (dir.angle(new Vector2D(10,0)) < dir.angle(newdir)){
+					newdir = new Vector2D(10,0);
+				}
+				if (dir.angle(new Vector2D(-10,0)) < dir.angle(newdir)){
+					newdir = new Vector2D(-10,0);
+				}
+				this.direction(newdir);
 			}
 		}
 		this.processphysics(timestep);

@@ -25,6 +25,7 @@ public class MDPSIM {
 	private static Clock t;
 	private static long t0;
 	public static Robot robot;
+	public static int mode;
 	
  static ArrayList<Action2D> actionqueue;
 	public static void main(String[] args) throws InterruptedException{
@@ -67,7 +68,9 @@ public class MDPSIM {
 				updateEngine2DPanel(r, phyeng, vw.map1);
 				updateRobot2DPanel(phyeng, r, vw.map2);
 				sensorUpdate(phyeng, vw.sensors, r);
-				actionqueue.addAll(r.getNextAction(phyeng.time()));
+				if (mode == 1 || mode == 2) {
+					actionqueue.addAll(r.explore(phyeng.time()));
+				}
 				// flag handler functions
 				if (vw.engineresetflag == true) {
 					vw.engineresetflag = false;

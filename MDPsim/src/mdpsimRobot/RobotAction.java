@@ -5,5 +5,6 @@ public enum RobotAction {
 		F2,
 		F3,
 		TR,
-		TL
+		TL,
+		RC
 }

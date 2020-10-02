@@ -64,22 +64,19 @@ public class Robot {
 			if(sensorvalues.get(a) == null) {
 				System.out.print(sensorvalues.get(a)+"\t\t ");
 			}
-			else {
-				System.out.print(df2.format(sensorvalues.get(a))+"\t\t ");
-			}
-			
+			else {}
 		}
 		System.out.println();
 	}
 	
 	public ArrayList<Action2D> getNextAction(double time){
 		ArrayList<Action2D> actions = new ArrayList<Action2D>(0);
-		if (mh.currentaction == null) {
+		if (mh.currentaction == null && mh.actionqueue.size() == 0) {
 			try {
 				lh.nextflag = true;
-				sensorvalues.get(0);
+				lh.updatePos();
 				lh.scan(sensorvalues);
-				mh.addAction(lh.getNextAction(1));
+				mh.actionqueue.add(lh.getNextAction(1));
 			} catch (Exception e) {}
 		}
 		actions.add(mh.doNext(time , sensorvalues)); // DO NOT TOUCH

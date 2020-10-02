@@ -23,46 +23,98 @@ public class LogicHandler {
 		this.robotdir = null;
 		this.prevaction = null;
 		this.queue = new ArrayList<RobotAction>();
-		this.nextflag = false;
+		this.nextflag = true;
 		this.mapmemory = new ArrayList<ArrayList<Integer>>();
 		for(int a = 0; a < x_size; a++) {
 			mapmemory.add(new ArrayList<Integer>(y_size));
 		}
 	}
 	
-	
+	public void printPos() {
+		System.out.println("X: "+x_pos+" Y:"+y_pos);
+	}
 	public void updatePosition(int x, int y) {
 		this.x_pos = x;
 		this.y_pos = y;
 		return;
 	}
 	
+	public void initPos(int x, int y) {
+		setMapMemory(x+1,y+1,0);
+		setMapMemory(x,y+1,0);
+		setMapMemory(x-1,y+1,0);
+		setMapMemory(x+1,y,0);
+		setMapMemory(x,y,0);
+		setMapMemory(x-1,y,0);
+		setMapMemory(x+1,y-1,0);
+		setMapMemory(x,y-1,0);
+		setMapMemory(x-1,y-1,0);
+
+	}
 	public void updatePos(){
 		if (robotdir == RobotDirection.UP) {
-			
+			if (prevaction == RobotAction.F1) {
+				this.x_pos = x_pos - 1;
+			} else if (prevaction == RobotAction.F2) {
+				this.x_pos = x_pos - 2;
+			} else if (prevaction == RobotAction.F3) {
+				this.x_pos = x_pos - 3;
+			} else if (prevaction == RobotAction.TR) {
+				this.robotdir = RobotDirection.RIGHT;
+			} else if (prevaction == RobotAction.TL) {
+				this.robotdir = RobotDirection.LEFT;
+			}
+		} else if (robotdir == RobotDirection.DOWN) {
+			if (prevaction == RobotAction.F1) {
+				this.x_pos = x_pos + 1;
+			} else if (prevaction == RobotAction.F2) {
+				this.x_pos = x_pos + 2;
+			} else if (prevaction == RobotAction.F3) {
+				this.x_pos = x_pos + 3;
+			} else if (prevaction == RobotAction.TR) {
+				this.robotdir = RobotDirection.LEFT;
+			} else if (prevaction == RobotAction.TL) {
+				this.robotdir = RobotDirection.RIGHT;
+			}
+		} else if (robotdir == RobotDirection.LEFT) {
+			if (prevaction == RobotAction.F1) {
+				this.y_pos = y_pos - 1;
+			} else if (prevaction == RobotAction.F2) {
+				this.y_pos = y_pos - 2;
+			} else if (prevaction == RobotAction.F3) {
+				this.y_pos = y_pos - 3;
+			} else if (prevaction == RobotAction.TR) {
+				this.robotdir = RobotDirection.UP;
+			} else if (prevaction == RobotAction.TL) {
+				this.robotdir = RobotDirection.DOWN;
+			}
+		} else if (robotdir == RobotDirection.RIGHT) {
+			if (prevaction == RobotAction.F1) {
+				this.y_pos = y_pos + 1;
+			} else if (prevaction == RobotAction.F2) {
+				this.y_pos = y_pos + 2;
+			} else if (prevaction == RobotAction.F3) {
+				this.y_pos = y_pos + 3;
+			} else if (prevaction == RobotAction.TR) {
+				this.robotdir = RobotDirection.DOWN;
+			} else if (prevaction == RobotAction.TL) {
+				this.robotdir = RobotDirection.UP;
+			}
 		}
+		prevaction = null;
 	}
 	
 	public RobotAction getNextAction(int dowhat) {
 		//EXPLORATION
 		if (nextflag) {
 			if (queue.size() == 0) {
-				if (dowhat == 1) {
-					Node n = findNext();
-					if (n != null) {
-						this.nextflag = false;
-						System.out.println(nextflag);
-						while (n.ra != null) {
-							queue.add(n.ra);
-							n = n.prev;
-						}
-					}
-				}
+				Node n = findNext();
 			}
-		
 		}
 		if (queue.size() > 0) {
-			return queue.get(0);
+			RobotAction retra = queue.remove(0);
+			prevaction = retra;
+			return retra;
 		} else {
 			return null;
 		}
@@ -95,33 +147,8 @@ public class LogicHandler {
 			mem.add(yarray);
 		}
 		this.mapmemory = mem;
-		if (isValid(start_x+1, start_y+1)){
-			setMapMemory(start_x+1, start_y+1, 0);
-		}
-		if (isValid(start_x, start_y+1)){
-			setMapMemory(start_x, start_y+1, 0);
-		}
-		if (isValid(start_x-1, start_y+1)){
-			setMapMemory(start_x-1, start_y+1, 0);
-		}
-		if (isValid(start_x+1, start_y)){
-			setMapMemory(start_x+1, start_y, 0);
-		}
-		if (isValid(start_x, start_y)){
-			setMapMemory(start_x, start_y, 0);
-		}
-		if (isValid(start_x-1, start_y)){
-			setMapMemory(start_x-1, start_y, 0);
-		}
-		if (isValid(start_x+1, start_y-1)){
-			setMapMemory(start_x+1, start_y-1, 0);
-		}
-		if (isValid(start_x, start_y-1)){
-			setMapMemory(start_x, start_y-1, 0);
-		}
-		if (isValid(start_x-1, start_y-1)){
-			setMapMemory(start_x-1, start_y-1, 0);
-		}
+		initPos(start_x,start_y);
+		
 	}
 	
 	public void parseMDF(String s) {
@@ -146,6 +173,7 @@ public class LogicHandler {
 	//EXPLORATION
 	//CONSTRUCT BOUNDARY, THEN FIND TARGET NODE THAT WILL GIVE HIGHEST EXPLORATION REWARD PER SCORE;
 	public Node findNext() {
+		boolean verbose = true;
 		ArrayList<Node> possiblenodes = validNodes();
 		ArrayList<ExplorationNode> exnodes = new ArrayList<ExplorationNode>();
 		for (Node n: possiblenodes) {
@@ -154,39 +182,58 @@ public class LogicHandler {
 			if (nod.score != 0) {
 				double inforate = (double)info/nod.score;
 				ExplorationNode en = new ExplorationNode(nod,inforate);
-				exInsert(exnodes, en);
+				exnodes = exInsert(exnodes, en);
 			}
 		}
-		if (exnodes.size() == 0) {
-			return null; 
-		} else {
-			return exnodes.get(exnodes.size()-1);
+		exnodes = exSort(exnodes);
+		if (verbose) {
+			System.out.println("Exnodes size : " + exnodes.size());
+			for (int a = 0; a < exnodes.size(); a++) {
+				System.out.println(exnodes.get(a).informationgain);
+			}
 		}
+		if (!(exnodes.size() == 0)){
+			return exnodes.get(0);
+		}
+		return null;
 	}
 	
 	//INSERT INTO SORTED LIST
 	public ArrayList<ExplorationNode> exInsert(ArrayList<ExplorationNode> ar, ExplorationNode en){
 		if (ar.size() == 0) {
 			ar.add(en);
-			return ar;
-		} else {
-			int end = ar.size()-1;
-			int front = 0;
-			int middle = (front+end)/2;
-			while (front <= end) {
-				middle = (front+end) / 2;
-				int cmp = Double.compare(en.informationgain, ar.get(middle).informationgain);
-				if (cmp < 0) {
-					front = middle + 1;
-				} else if (cmp > 0) {
-					end = middle - 1;
-				} else {
-					ar.add(middle,en);
-					return ar;
+		}
+		int left = 0;
+		int right = ar.size() - 1;
+		int middle = 0;
+		while (left <= right) {
+			middle = (left + right)/2;
+			int cmp = Double.compare(en.informationgain, ar.get(middle).informationgain);
+			if (cmp > 0) {
+				left = middle + 1;
+			} else if (cmp < 0) {
+				right = middle - 1;
+			} else {
+				break;
+			}
+		}
+		ar.add(middle, en);
+		return ar;
+	}
+	
+	public ArrayList<ExplorationNode> exSort(ArrayList<ExplorationNode> ar){
+		boolean sorted = false;
+		while (!sorted) {
+			sorted = true;
+			for (int a = 1; a < ar.size(); a++) {
+				if (ar.get(a-1).informationgain < ar.get(a).informationgain) {
+					ExplorationNode temp = ar.get(a);
+					ar.set(a, ar.get(a-1));
+					ar.set(a-1, temp);
+					sorted = false;
 				}
 			}
 		}
-		ar.add(en);
 		return ar;
 	}
 	
@@ -225,7 +272,7 @@ public class LogicHandler {
 			for (int a = 0; a <= frontmidbox; a++) {
 				if (isValidExplored(x_pos, y_pos+1+a)) {
 					information += 1;
-				} else {
+				}  else {
 					break;
 				}
 			}
@@ -303,6 +350,7 @@ public class LogicHandler {
 			for (int a = 0; a <= leftlongbox; a++) {
 				if (isValidExplored(x_pos+1+a, y_pos-1) ){
 					information += 1;
+				} else {
 					break;
 				}
 			}
@@ -310,36 +358,42 @@ public class LogicHandler {
 			for (int a = 0; a <= frontmidbox; a++) {
 				if (isValidExplored(x_pos-1-a, y_pos) ){
 					information += 1;
+				} else {
 					break;
 				}
 			}
 			for (int a = 0; a <= frontrightbox; a++) {
 				if (isValidExplored(x_pos-1-a, y_pos+1) ){
 					information += 1;
+				} else {
 					break;
 				}
 			}
 			for (int a = 0; a <= frontleftbox; a++) {
 				if (isValidExplored(x_pos-1-a, y_pos-1) ){
 					information += 1;
+				} else {
 					break;
 				}
 			}
 			for (int a = 0; a <= rightfrontbox; a++) {
 				if (isValidExplored(x_pos-1, y_pos+1+a) ){
 					information += 1;
+				} else {
 					break;
 				}
 			}
 			for (int a = 0; a <= rightbackbox; a++) {
 				if (isValidExplored(x_pos+1, y_pos+1+a) ){
 					information += 1;
+				} else {
 					break;
 				}
 			}
 			for (int a = 0; a <= leftlongbox; a++) {
 				if (isValidExplored(x_pos-1, y_pos-1-a) ){
 					information += 1;
+				} else {
 					break;
 				}
 			}
@@ -347,36 +401,42 @@ public class LogicHandler {
 			for (int a = 0; a <= frontmidbox; a++) {
 				if (isValidExplored(x_pos+1+a, y_pos) ){
 					information += 1;
+				} else {
 					break;
 				}
 			}
 			for (int a = 0; a <= frontrightbox; a++) {
 				if (isValidExplored(x_pos+1+a, y_pos-1) ){
 					information += 1;
+				} else {
 					break;
 				}
 			}
 			for (int a = 0; a <= frontleftbox; a++) {
 				if (isValidExplored(x_pos+1+a, y_pos+1) ){
 					information += 1;
+				} else {
 					break;
 				}
 			}
 			for (int a = 0; a <= rightfrontbox; a++) {
 				if (isValidExplored(x_pos+1, y_pos-1-a) ){
 					information += 1;
+				} else {
 					break;
 				}
 			}
 			for (int a = 0; a <= rightbackbox; a++) {
 				if (isValidExplored(x_pos-1, y_pos-1-a) ){
 					information += 1;
+				} else {
 					break;
 				}
 			}
 			for (int a = 0; a <= leftlongbox; a++) {
 				if (isValidExplored(x_pos+1, y_pos+1+a) ){
 					information += 1;
+				} else {
 					break;
 				}
 			}
@@ -545,7 +605,6 @@ public class LogicHandler {
 					setMapMemory(x_pos-1-leftlongbox-1, y_pos+1,1);
 				}
 			}
-			System.out.println();
 		} else if (robotdir == RobotDirection.LEFT) {
 			for (int a = 0; a <= frontmidbox; a++) {
 				setMapMemory(x_pos, y_pos-1-a, 0);
@@ -756,19 +815,21 @@ public class LogicHandler {
 	}
 	
 	public boolean isValidExplored(int x, int y) {
-		try {
-			int a = mapmemory.get(x).get(y);
-			if (a == 2) {
-				return true;
-			} else {
-				return false;
-			}
-		} catch (Exception e) {
-			return false;
-		}
+		return isValid(x,y);
 	}
 	
 	public boolean isValid(int x, int y) {
+		boolean verbose = true;
+		if (verbose) {
+			System.out.println("X SIZE: "+x_size+" Y SIZE: "+y_size);
+			for(int a = 0; a < y_size; a++) {
+				for (int b = 0 ; b < x_size; b++) {
+					System.out.print(mapmemory.get(b).get(a));
+				}
+				System.out.println();
+			}
+			System.out.println();
+		}
 		try {
 			int a = mapmemory.get(x).get(y);
 			return true;

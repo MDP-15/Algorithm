@@ -98,6 +98,7 @@ public class Robot {
 	}
 
 	public void startFastestPath() {
+		System.out.println(way_x +" "+ way_y);
 		lh.parseMDF(MDPSIM.mdfString);
 	    System.out.println("Doing fastestPath");
 	    Node n = lh.computeFastestPath(18, 1, way_x, way_y, RobotDirection.RIGHT);
@@ -140,15 +141,15 @@ public class Robot {
 		        break;
 		      case "F3":
 		        actionqueue.add(RobotAction.F3);
-		       // TCPsocket.sendMessage("F3s");
+		        //TCPsocket.sendMessage("F3s");
 		        break;
 		      case "TL":
 		        actionqueue.add(RobotAction.TL);
-		       // TCPsocket.sendMessage("TLs");
+		        //TCPsocket.sendMessage("TLs");
 		        break;
 		      case "TR":
 		        actionqueue.add(RobotAction.TR);
-		       // TCPsocket.sendMessage("TRs");
+		        //TCPsocket.sendMessage("TRs");
 		        break;
 		      }
 		      actionstack.pop();

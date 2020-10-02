@@ -130,11 +130,13 @@ public class TCPsocket {
 					break;
 				case "RI":
 					String instruction = jobj.getString("RI");
+					sendMessage(instruction);
 					// Send instruction to RPI
 					break;
 				case "W":
 					Robot.way_x = jobj.getInt("X");
 					Robot.way_y = jobj.getInt("Y");
+					System.out.println(Robot.way_x +" "+ Robot.way_y);
 					break;
 				default:
 					break;

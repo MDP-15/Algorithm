@@ -11,7 +11,7 @@ public class LogicHandler {
 	public int y_pos;
 	public RobotDirection robotdir;
 	public ArrayList<ArrayList<Integer>> mapmemory;
-	
+	public RobotAction ra;
 	public LogicHandler(int x_size, int y_size, int x_pos, int y_pos) {
 		this.x_size = x_size;
 		this.y_size = y_size;
@@ -136,6 +136,7 @@ public class LogicHandler {
 				exInsert(exnodes, en);
 			}
 		}
+		System.out.println(exnodes.size());
 		if (exnodes.size() == 0) {
 			return null; 
 		} else {
@@ -403,7 +404,7 @@ public class LogicHandler {
 	}
 	//CHECK SENSOR VALUES AND UPDATE MAP -> VALUES SHOULD BE UPDATED HERE
 	public void scanMap(double right_front, double right_back, double front_right, double front_middle, double front_left, double left_long) {
-		boolean verbose = true;
+		boolean verbose = false;
 		int fmbmax = 3;
 		int frbmax = 3;
 		int flbmax = 3;

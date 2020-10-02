@@ -26,7 +26,7 @@ public class Robot {
 		this.actionqueue = new ArrayList<RobotAction>(0);
 		this.mh = new MovementHandler(actionqueue);
 		this.lh = new LogicHandler(15,20,1,1);
-		lh.setUnexploredMap(18, 1, 20, 15, RobotDirection.RIGHT);
+		lh.setUnexploredMap(18, 1, 20, 15, RobotDirection.UP);
 	}
 	
 	public void addSensor(String name,Vector2D position, Vector2D direction, double minrange, double maxrange) {

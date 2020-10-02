@@ -499,49 +499,38 @@ public class LogicHandler {
 			for (int a = 0; a <= leftlongbox; a++) {
 				setMapMemory(x_pos-1-a, y_pos+1,0);
 			}
-			System.out.println("called");
+			
 			if (frontmidbox < fmbmax) {
 				if (isValid(x_pos,y_pos+1+frontmidbox+1)) {
 					setMapMemory(x_pos,y_pos+1+frontmidbox+1,1);
 				}
 			}
-			System.out.println("called1");
-
 			if (frontrightbox < frbmax) {
 				if (isValid(x_pos+1,y_pos+1+frontrightbox+1)) {
 					setMapMemory(x_pos+1,y_pos+1+frontrightbox+1,1);
 				}
 			}
-			System.out.println("called2");
-
 			if (frontleftbox < flbmax) {
 				if (isValid(x_pos-1,y_pos+1+frontleftbox+1)) {
 					setMapMemory(x_pos-1,y_pos+1+frontleftbox+1,1);
 				}
 			}
-			System.out.println("called3");
-
 			if (rightfrontbox < rfbmax) {
 				if (isValid(x_pos+1+rightfrontbox+1, y_pos+1)) {
 					setMapMemory(x_pos+1+rightfrontbox+1, y_pos+1,1);
 				}
 			}
-			System.out.println("called4");
-
 			if (rightbackbox < rbbmax) {
 				if (isValid(x_pos+1+rightbackbox+1, y_pos-1)) {
 					setMapMemory(x_pos+1+rightbackbox+1, y_pos-1,1);
 				}
 			}
-			System.out.println("called5");
-
 			if (leftlongbox < llbmax) {
-				System.out.println("less");
-				if (isValid(x_pos-1-leftlongbox, y_pos+1)) {
+				if (isValid(x_pos-1-leftlongbox-1, y_pos+1)) {
 					setMapMemory(x_pos-1-leftlongbox-1, y_pos+1,1);
 				}
 			}
-			System.out.println("called6");
+			System.out.println();
 		} else if (robotdir == RobotDirection.LEFT) {
 			for (int a = 0; a <= frontmidbox; a++) {
 				setMapMemory(x_pos, y_pos-1-a, 0);
@@ -752,21 +741,25 @@ public class LogicHandler {
 	}
 	
 	public boolean isValidExplored(int x, int y) {
-		if (x < 0 || y < 0 || x > x_size || y > y_size) {
-			return false;
-		}
-		if (mapmemory.get(x).get(y) == 2) {
-			return true;
-		} else {
+		try {
+			int a = mapmemory.get(x).get(y);
+			if (a == 2) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
 			return false;
 		}
 	}
 	
 	public boolean isValid(int x, int y) {
-		if (x < 0 || y < 0 || x > x_size || y > y_size) {
+		try {
+			int a = mapmemory.get(x).get(y);
+			return true;
+		} catch (Exception e) {
 			return false;
 		}
-		return true;
 	}
 	
 	public void setMapMemory(int x, int y, int value) {

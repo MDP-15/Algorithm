@@ -8,6 +8,8 @@ import java.awt.RenderingHints;
 
 import javax.swing.JPanel;
 
+import mdpsimRobot.Robot;
+
 public class Robot2DPanel extends JPanel{
 	
 	static final int cols = 15;
@@ -106,6 +108,11 @@ public class Robot2DPanel extends JPanel{
 		for(j=0;j<cols+1;j++) {
 			g.drawLine(originX+ j * cellSize, originY, originX+ j * cellSize , originY+rows*cellSize);
 		}
+		
+		//PAINT WAYPOINT
+		g.setColor(Color.orange);
+		g.fillRect((Robot.way_x*cellSize), (Robot.way_y*cellSize), cellSize, cellSize);
+				
 		
 		
 		//ROBOT 

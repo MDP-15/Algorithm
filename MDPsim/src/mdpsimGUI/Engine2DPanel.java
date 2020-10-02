@@ -8,6 +8,8 @@ import java.awt.RenderingHints;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 
+import mdpsimRobot.Robot;
+
 public class Engine2DPanel extends JPanel{
 
 	public ArrayList<Line> lines;
@@ -33,8 +35,12 @@ public class Engine2DPanel extends JPanel{
 	public void paintComponent(Graphics g) {
 		boolean verbose = false;
 		super.paintComponent(g);
-		g.setColor(Color.pink);
-		g.fillRect((8*15), (13*15), 22, 22);
+		
+		//PAINT WAYPOINT
+		g.setColor(Color.orange);
+		g.fillRect((Robot.way_x*22), (Robot.way_y*22), 22, 22);
+		
+		//PAINT GRID CIRCLES
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2.setColor(Color.lightGray);

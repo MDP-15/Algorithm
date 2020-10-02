@@ -115,7 +115,7 @@ public class MDPSIM {
 		robot.addSensor("FRONT_RIGHT(2)",new Vector2D(-7,7), new Vector2D(0,10), 10, 30); //2
 		robot.addSensor("FRONT_MIDDLE(3)",new Vector2D(0,9), new Vector2D(0,10), 10, 30); //3
 		robot.addSensor("FRONT_LEFT(4)",new Vector2D(7,7), new Vector2D(0,10), 10, 30); //4
-		robot.addSensor("LEFT_LONG(5)",new Vector2D(0,9), new Vector2D(10,0), 20, 50);//5
+		robot.addSensor("LEFT_LONG(5)",new Vector2D(0,9), new Vector2D(10,0), 20, 55);//5
 		return robot;
 	}
 	
@@ -204,7 +204,7 @@ public class MDPSIM {
 		objectmap.add(rightborder);
 		objectmap.add(bottomborder);
 		Circle2D robot = new Circle2D(10);
-		Vehicle2D robotobject = new Vehicle2D(robot, new Vector2D(15, 185), new Vector2D(0,0), new Vector2D(0,0), new Vector2D(-10,0));
+		Vehicle2D robotobject = new Vehicle2D(robot, new Vector2D(15, 185), new Vector2D(0,0), new Vector2D(0,0), new Vector2D(0,-10));
 		objectmap.addAll(generateXYFromBits(map));
 		objectmap.add(robotobject);
 		return objectmap;

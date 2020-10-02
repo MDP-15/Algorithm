@@ -19,7 +19,7 @@ public class ExplorationNode extends Node{
 	
 	@Override
 	public void print() {
-		System.out.print("Information Gain: " + informationgain);
+		System.out.print("Information Gain: " + informationgain+ " ");
 		super.print();
 	}
 }

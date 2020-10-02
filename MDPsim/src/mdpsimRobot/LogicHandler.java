@@ -110,9 +110,11 @@ public class LogicHandler {
 		for (Node n: possiblenodes) {
 			int info = informationGained(n.x, n.y, n.rd);
 			Node nod = computeFastestPathRD(x_pos,y_pos,n.x,n.y,robotdir,n.rd);
-			double inforate = (double)info/nod.score;
-			ExplorationNode en = new ExplorationNode(nod,inforate);
-			exInsert(exnodes, en);
+			if (nod.score != 0) {
+				double inforate = (double)info/nod.score;
+				ExplorationNode en = new ExplorationNode(nod,inforate);
+				exInsert(exnodes, en);
+			}
 		}
 		return exnodes.get(exnodes.size()-1);
 	}

@@ -185,14 +185,13 @@ public class LogicHandler {
 	//EXPLORATION
 	//CONSTRUCT BOUNDARY, THEN FIND TARGET NODE THAT WILL GIVE HIGHEST EXPLORATION REWARD PER SCORE;
 	public Node findNext() {
-		boolean verbose = true;
-		printMapMemory();
+		boolean verbose = false;
 		ArrayList<Node> possiblenodes = validNodes();
 		ArrayList<ExplorationNode> exnodes = new ArrayList<ExplorationNode>();
 		for (Node n: possiblenodes) {
 			int info = informationGained(n.x, n.y, n.rd);
 			Node nod = computeFastestPathRD(x_pos,y_pos,n.x,n.y,robotdir,n.rd);
-			System.out.println("X: "+nod.x+" Y:"+nod.y+" RD:"+nod.rd+" INF:"+info);
+			//System.out.println("X: "+nod.x+" Y:"+nod.y+" RD:"+nod.rd+" INF:"+info);
 			if (nod.score != 0) {
 				double inforate = (double)info/nod.score;
 				ExplorationNode en = new ExplorationNode(nod,inforate);
@@ -216,6 +215,7 @@ public class LogicHandler {
 	public ArrayList<ExplorationNode> exInsert(ArrayList<ExplorationNode> ar, ExplorationNode en){
 		if (ar.size() == 0) {
 			ar.add(en);
+			return ar;
 		}
 		int left = 0;
 		int right = ar.size() - 1;
@@ -228,10 +228,11 @@ public class LogicHandler {
 			} else if (cmp < 0) {
 				right = middle - 1;
 			} else {
-				break;
+				ar.add(middle, en);
+				return ar;
 			}
 		}
-		ar.add(middle, en);
+		ar.add(en);
 		return ar;
 	}
 	

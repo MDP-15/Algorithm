@@ -33,6 +33,8 @@ public class Engine2DPanel extends JPanel{
 	public void paintComponent(Graphics g) {
 		boolean verbose = false;
 		super.paintComponent(g);
+		g.setColor(Color.pink);
+		g.fillRect((8*15), (13*15), 22, 22);
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2.setColor(Color.lightGray);
@@ -60,5 +62,6 @@ public class Engine2DPanel extends JPanel{
 			System.out.println(lines.size() + " lines drawn.");
 		}
 		return;
+		
 	}
 }

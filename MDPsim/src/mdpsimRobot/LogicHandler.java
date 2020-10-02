@@ -397,7 +397,7 @@ public class LogicHandler {
 			ll = dlist.get(5);
 		}
 		if (verbose) {
-			System.out.println("RF: "+ rf+ " RB: "+ rb +" FR: "+fr+" FM: "+ fm +" FL: "+ fl +" LL: "+ll);
+			//System.out.println("RF: "+ rf+ " RB: "+ rb +" FR: "+fr+" FM: "+ fm +" FL: "+ fl +" LL: "+ll);
 		}
 		scanMap(rf,rb,fr,fm,fl,ll);
 	}
@@ -477,7 +477,7 @@ public class LogicHandler {
 			rightbackbox = 2;
 		}
 		if (verbose) {
-			System.out.println("RF: "+ rightfrontbox+ "/"+rfbmax+" RB: "+ rightbackbox +"/"+rbbmax+" FR: "+frontrightbox+"/"+ frbmax+" FM: "+ frontmidbox +"/"+fmbmax+" FL: "+ frontleftbox +"/"+flbmax+" LL: "+leftlongbox+"/"+llbmax);
+			//System.out.println("RF: "+ rightfrontbox+ "/"+rfbmax+" RB: "+ rightbackbox +"/"+rbbmax+" FR: "+frontrightbox+"/"+ frbmax+" FM: "+ frontmidbox +"/"+fmbmax+" FL: "+ frontleftbox +"/"+flbmax+" LL: "+leftlongbox+"/"+llbmax);
 		}
 		//FROM KNOWN BLOCK RANGES AND ROBOT DIRECTION UPDATE MAP
 		if (robotdir == RobotDirection.RIGHT) {

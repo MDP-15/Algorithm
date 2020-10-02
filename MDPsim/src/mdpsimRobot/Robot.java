@@ -18,6 +18,11 @@ public class Robot {
 	public MovementHandler mh;
 	private static DecimalFormat df2 = new DecimalFormat("#.##");
 	public ArrayList<RobotAction> actionqueue;
+	
+	//WAYPOINT INITILIASATION
+	public static int way_x = 11;
+	public static int way_y = 10;
+	
 	public LogicHandler lh;
 	private Stack<String> actionstack;
 	
@@ -29,6 +34,7 @@ public class Robot {
 		this.mh = new MovementHandler(actionqueue);
 		this.lh = new LogicHandler(15,20,1,1);
 		//lh.setUnexploredMap(18, 1, 20, 15, RobotDirection.RIGHT);
+		lh.parseMDF(MDPSIM.mdfString);
 	}
 	
 	public void addSensor(String name,Vector2D position, Vector2D direction, double minrange, double maxrange) {
@@ -93,9 +99,17 @@ public class Robot {
 	public void startFastestPath() {
 		lh.parseMDF(MDPSIM.mdfString);
 	    System.out.println("Doing fastestPath");
-	    Node n = lh.computeFastestPath(18, 1, 1, 13, RobotDirection.RIGHT);
+	    Node n = lh.computeFastestPath(18, 1, way_x, way_y, RobotDirection.RIGHT);
+	    Node c = lh.computeFastestPath(way_x, way_y, 1, 13, n.rd);//Need to pass waypoint coordinates thru here
 	    actionstack = new Stack<String>();
-	    boolean isnull = false;
+	    stackactions(c);
+	    stackactions(n);
+	    moveFP(actionstack);
+	    
+	  }
+	
+	public void stackactions(Node n) {
+		boolean isnull = false;
 	    while (!isnull) {
 	      if (n != null) {
 	        if (n.ra != null) {
@@ -110,26 +124,28 @@ public class Robot {
 	        }
 	      }
 	    }
-	    
-	    while (!actionstack.isEmpty()) {
-	      switch (actionstack.peek()) {
-	      case "F1":
-	        actionqueue.add(RobotAction.F1);
-	        break;
-	      case "F2":
-	        actionqueue.add(RobotAction.F2);
-	        break;
-	      case "F3":
-	        actionqueue.add(RobotAction.F3);
-	        break;
-	      case "TL":
-	        actionqueue.add(RobotAction.TL);
-	        break;
-	      case "TR":
-	        actionqueue.add(RobotAction.TR);
-	        break;
-	      }
-	      actionstack.pop();
-	    }
-	  }
+	}
+	
+	public void moveFP(Stack<String> actionstack) {
+		while (!actionstack.isEmpty()) {
+		      switch (actionstack.peek()) {
+		      case "F1":
+		        actionqueue.add(RobotAction.F1);
+		        break;
+		      case "F2":
+		        actionqueue.add(RobotAction.F2);
+		        break;
+		      case "F3":
+		        actionqueue.add(RobotAction.F3);
+		        break;
+		      case "TL":
+		        actionqueue.add(RobotAction.TL);
+		        break;
+		      case "TR":
+		        actionqueue.add(RobotAction.TR);
+		        break;
+		      }
+		      actionstack.pop();
+		    }
+	}
 }

@@ -6,6 +6,7 @@ import mdpsimEngine.Vector2D;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Stack;
 
 import mdpsim.MDPSIM;
 
@@ -18,6 +19,7 @@ public class Robot {
 	private static DecimalFormat df2 = new DecimalFormat("#.##");
 	public ArrayList<RobotAction> actionqueue;
 	public LogicHandler lh;
+	private Stack<String> actionstack;
 	
 	public Robot(ArrayList<Sensor> sensors, double radius) {
 		this.sensors = sensors;
@@ -26,7 +28,7 @@ public class Robot {
 		this.actionqueue = new ArrayList<RobotAction>(0);
 		this.mh = new MovementHandler(actionqueue);
 		this.lh = new LogicHandler(15,20,1,1);
-		lh.setUnexploredMap(18, 1, 20, 15, RobotDirection.RIGHT);
+		//lh.setUnexploredMap(18, 1, 20, 15, RobotDirection.RIGHT);
 	}
 	
 	public void addSensor(String name,Vector2D position, Vector2D direction, double minrange, double maxrange) {
@@ -87,4 +89,47 @@ public class Robot {
 		actions.add(mh.doNext(time , sensorvalues)); // DO NOT TOUCH
 		return actions;
 	}
+
+	public void startFastestPath() {
+		lh.parseMDF(MDPSIM.mdfString);
+	    System.out.println("Doing fastestPath");
+	    Node n = lh.computeFastestPath(18, 1, 1, 13, RobotDirection.RIGHT);
+	    actionstack = new Stack<String>();
+	    boolean isnull = false;
+	    while (!isnull) {
+	      if (n != null) {
+	        if (n.ra != null) {
+	          String raction = n.ra.toString();
+	          System.out.println(raction);
+	          actionstack.push(raction);
+	        }
+	        if (n.prev != null) {
+	          n = n.prev;
+	        } else {
+	          isnull = true;
+	        }
+	      }
+	    }
+	    
+	    while (!actionstack.isEmpty()) {
+	      switch (actionstack.peek()) {
+	      case "F1":
+	        actionqueue.add(RobotAction.F1);
+	        break;
+	      case "F2":
+	        actionqueue.add(RobotAction.F2);
+	        break;
+	      case "F3":
+	        actionqueue.add(RobotAction.F3);
+	        break;
+	      case "TL":
+	        actionqueue.add(RobotAction.TL);
+	        break;
+	      case "TR":
+	        actionqueue.add(RobotAction.TR);
+	        break;
+	      }
+	      actionstack.pop();
+	    }
+	  }
 }

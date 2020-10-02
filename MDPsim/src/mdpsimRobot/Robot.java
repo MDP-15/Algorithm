@@ -73,7 +73,6 @@ public class Robot {
 		ArrayList<Action2D> actions = new ArrayList<Action2D>(0);
 		if (mh.currentaction == null && mh.actionqueue.size() == 0) {
 			try {
-				lh.nextflag = true;
 				lh.updatePos();
 				lh.scan(sensorvalues);
 				mh.actionqueue.add(lh.getNextAction(1));

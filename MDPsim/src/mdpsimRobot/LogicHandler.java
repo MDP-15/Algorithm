@@ -13,7 +13,7 @@ public class LogicHandler {
 	public ArrayList<ArrayList<Integer>> mapmemory;
 	public ArrayList<RobotAction> queue;
 	public RobotAction prevaction;
-	public boolean nextflag;
+	public boolean donext = false;
 	
 	public LogicHandler(int x_size, int y_size, int x_pos, int y_pos) {
 		this.x_size = x_size;
@@ -23,7 +23,7 @@ public class LogicHandler {
 		this.robotdir = null;
 		this.prevaction = null;
 		this.queue = new ArrayList<RobotAction>();
-		this.nextflag = true;
+		this.donext = true;
 		this.mapmemory = new ArrayList<ArrayList<Integer>>();
 		for(int a = 0; a < x_size; a++) {
 			mapmemory.add(new ArrayList<Integer>(y_size));
@@ -31,7 +31,7 @@ public class LogicHandler {
 	}
 	
 	public void printPos() {
-		System.out.println("X: "+x_pos+" Y:"+y_pos);
+		System.out.println("X: "+x_pos+" Y:"+y_pos+ " RD:"+robotdir);
 	}
 	public void updatePosition(int x, int y) {
 		this.x_pos = x;
@@ -107,24 +107,31 @@ public class LogicHandler {
 	public RobotAction getNextAction(int dowhat) {
 		//EXPLORATION
 		printPos();
-		if (nextflag) {
-			if (queue.size() == 0) {
-				Node n = findNext();
-				while (n.ra != null) {
-					queue.add(n.ra);
-					n = n.prev;
-				}
-			}
-		}
-		if (queue.size() > 0) {
-			RobotAction retra = queue.remove(0);
-			prevaction = retra;
-			return retra;
+		//FIND NEXT NODE
+		if (queue.size() == 0) {
+			donext = true;
 		} else {
-			return null;
+			donext = false;
 		}
+		if (donext) {
+			Node n = findNext();
+			queue = trailAction(n);
+		} else {
+			RobotAction ra = queue.remove(queue.size()-1);
+			prevaction = ra;
+			return ra;
+		}
+		return null;
 	}
 	
+	public ArrayList<RobotAction> trailAction(Node n){
+		ArrayList<RobotAction> ar = new ArrayList<RobotAction>();
+		while (n.ra != null) {
+			ar.add(n.ra);
+			n = n.prev;
+		}
+		return ar;
+	}
 	public void setRobotDirection(RobotDirection rd) {
 		this.robotdir = rd;
 	}

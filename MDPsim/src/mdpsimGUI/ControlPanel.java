@@ -11,12 +11,14 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import mdpMapReader.MapReader;
+import mdpsimRobot.Robot;
 
 public class ControlPanel extends JPanel{
 	Viewer vw;
 	JComboBox speedindicator;
 	JTextArea mdfinput;
 	JButton resetbutton;
+	JButton flag;
 	
 	private static final long serialVersionUID = 1L;
 	public ControlPanel () {
@@ -57,6 +59,16 @@ public class ControlPanel extends JPanel{
 			vw.mdfstring = mdfinput.getText();
 			}
 		});
+		//FLAG BUTTON
+				flag = new JButton("Explore");
+				flag.setBounds(5, 120, 100, 30);
+				flag.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					 Robot.flag = !Robot.flag;
+					}
+				});
+				this.add(flag);
 	}
 	
 	@Override

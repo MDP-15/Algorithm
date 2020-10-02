@@ -18,6 +18,7 @@ public class Robot {
 	private static DecimalFormat df2 = new DecimalFormat("#.##");
 	public ArrayList<RobotAction> actionqueue;
 	public LogicHandler lh;
+	public static boolean flag = false;
 	
 	public Robot(ArrayList<Sensor> sensors, double radius) {
 		this.sensors = sensors;
@@ -71,7 +72,7 @@ public class Robot {
 	
 	public ArrayList<Action2D> getNextAction(double time){
 		ArrayList<Action2D> actions = new ArrayList<Action2D>(0);
-		if (mh.currentaction == null && mh.actionqueue.size() == 0) {
+		if (mh.currentaction == null && mh.actionqueue.size() == 0 && flag) {
 			try {
 				lh.updatePos();
 				lh.scan(sensorvalues);

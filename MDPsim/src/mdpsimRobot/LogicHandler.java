@@ -196,9 +196,10 @@ public class LogicHandler {
 			if (nod.score != 0) {
 				double inforate = (double)info/nod.score;
 				ExplorationNode en = new ExplorationNode(nod,inforate);
-				exnodes = exInsert(exnodes, en);
+				exnodes.add(en);
 			}
 		}
+		exnodes = exSort(exnodes);
 		if (verbose) {
 			System.out.println("Exnodes size : " + exnodes.size());
 			for (int a = 0; a < exnodes.size()-1; a++) {
@@ -207,6 +208,7 @@ public class LogicHandler {
 			System.out.println();
 		}
 		if (!(exnodes.size() == 0)){
+			exnodes.get(0).print();
 			return exnodes.get(0);
 		}
 		return null;

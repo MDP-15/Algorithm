@@ -19,7 +19,11 @@ public class ExplorationNode extends Node{
 	
 	@Override
 	public void print() {
-		System.out.print("Information Gain: " + informationgain+ " ");
-		super.print();
+		ExplorationNode n = this;
+		while (n != null) {
+			System.out.print("Information Gain: " + informationgain+ " ");
+			super.print();
+			n = (ExplorationNode) super.prev;
+		}
 	}
 }

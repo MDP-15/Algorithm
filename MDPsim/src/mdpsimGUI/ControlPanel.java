@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import mdpMapReader.MapReader;
+import mdpsimRobot.Robot;
 
 public class ControlPanel extends JPanel{
 	Viewer vw;
@@ -19,6 +20,7 @@ public class ControlPanel extends JPanel{
 	JTextArea mdfinput;
 	JTextArea userTime;
 	JButton resetbutton;
+	JButton flag;
 	JButton setTime;
 	
 	private static final long serialVersionUID = 1L;
@@ -48,43 +50,12 @@ public class ControlPanel extends JPanel{
 			}
 		});
 		this.add(speedindicator);
-		
-		//SELECT % OF EXPLORATION
-		String[] explore = {"100%","75%","50%"};
-		this.explorePercent = new JComboBox(explore);
-		explorePercent.setBounds(110, 5, 100, 20);
-		explorePercent.setSelectedIndex(1);
-		explorePercent.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-			//ADD ACTION
-			}
-		});
-		this.add(explorePercent);
-		
-
-		//USER SELECTED TIME LIMIT
-		this.userTime = new JTextArea("Input Time Limit in seconds");
-		userTime.setBounds(5,70,300,30);
-		this.add(userTime);
-		this.setTime = new JButton();
-		setTime.setText("Set Time");
-		setTime.setBounds(305,70, 100,30);
-		this.add(setTime);
-		setTime.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-			//ADD ACTION
-			}
-		});
-		
-		//INPUT MDF STRING
-		this.mdfinput = new JTextArea("Input an MDF string");
-		mdfinput.setBounds(5,35,300,30);
+		this.mdfinput = new JTextArea();
+		mdfinput.setBounds(5,25,300,20);
 		this.add(mdfinput);
 		this.resetbutton = new JButton();
-		resetbutton.setText("Enter!");
-		resetbutton.setBounds(305,35,100,30);
+		resetbutton.setText("Reset!");
+		resetbutton.setBounds(305,25,100,20);
 		this.add(resetbutton);
 		resetbutton.addActionListener(new ActionListener() {
 			@Override
@@ -93,6 +64,16 @@ public class ControlPanel extends JPanel{
 			vw.mdfstring = mdfinput.getText();
 			}
 		});
+		//FLAG BUTTON
+				flag = new JButton("Explore");
+				flag.setBounds(5, 120, 100, 30);
+				flag.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					 Robot.flag = !Robot.flag;
+					}
+				});
+				this.add(flag);
 	}
 	
 	@Override

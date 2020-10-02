@@ -10,7 +10,6 @@ public class MovementHandler {
 	public ArrayList<Action2D> actionhistory;
 	public ArrayList<QueuedAction> queuedactions;
 	public RobotAction currentaction;
-	public RobotAction desiredaction;
 	public double time;
 	public ArrayList<RobotAction> actionqueue;
 
@@ -22,7 +21,6 @@ public class MovementHandler {
 		sensorhistory.add(new ArrayList<Double>());
 		timehistory.add(0.0);
 		this.currentaction = null;
-		this.desiredaction = null;
 		this.time = 0.0;
 		this.actionqueue = actionqueue;
 	}
@@ -91,8 +89,8 @@ public class MovementHandler {
 	}
 	
 	public boolean addAction(RobotAction action) {
-		if (desiredaction == null) {
-			desiredaction = action;
+		if (action != null) {
+			actionqueue.add(action);
 			return true;
 		} else {
 			return false;

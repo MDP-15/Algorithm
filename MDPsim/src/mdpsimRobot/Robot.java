@@ -25,6 +25,7 @@ public class Robot {
 	public static int way_y = 10;
 	
 	public LogicHandler lh;
+	public static boolean flag = false;
 	private Stack<String> actionstack;
 	
 	public Robot(ArrayList<Sensor> sensors, double radius) {
@@ -34,8 +35,8 @@ public class Robot {
 		this.actionqueue = new ArrayList<RobotAction>(0);
 		this.mh = new MovementHandler(actionqueue);
 		this.lh = new LogicHandler(15,20,1,1);
-		//lh.setUnexploredMap(18, 1, 20, 15, RobotDirection.RIGHT);
-		lh.parseMDF(MDPSIM.mdfString);
+		lh.setUnexploredMap(18, 1, 20, 15, RobotDirection.RIGHT);
+		//lh.parseMDF(MDPSIM.mdfString);
 	}
 	
 	public void addSensor(String name,Vector2D position, Vector2D direction, double minrange, double maxrange) {
@@ -73,24 +74,18 @@ public class Robot {
 			if(sensorvalues.get(a) == null) {
 				System.out.print(sensorvalues.get(a)+"\t\t ");
 			}
-			else {
-				System.out.print(df2.format(sensorvalues.get(a))+"\t\t ");
-			}
-			
+			else {}
 		}
 		System.out.println();
 	}
 	
 	public ArrayList<Action2D> getNextAction(double time){
 		ArrayList<Action2D> actions = new ArrayList<Action2D>(0);
-		if (mh.currentaction == null) {
+		if (mh.currentaction == null && mh.actionqueue.size() == 0 && flag) {
 			try {
-				sensorvalues.get(0);
+				lh.updatePos();
 				lh.scan(sensorvalues);
-				ArrayList<RobotAction> ar = lh.getNextAction(1);
-				for (RobotAction ra : ar) {
-					mh.addAction(ra);
-				}
+				mh.actionqueue.add(lh.getNextAction(1));
 			} catch (Exception e) {}
 		}
 		actions.add(mh.doNext(time , sensorvalues)); // DO NOT TOUCH

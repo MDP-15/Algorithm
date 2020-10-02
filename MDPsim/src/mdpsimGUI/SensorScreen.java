@@ -8,6 +8,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import mdpsimRobot.QueuedAction;
+import mdpsimRobot.RobotAction;
 import mdpsimRobot.Sensor;
 
 public class SensorScreen extends JPanel{
@@ -15,12 +17,16 @@ public class SensorScreen extends JPanel{
 	JLabel timeelapsedlabel;
 	JTextArea noelapsedtimesteps;
 	JLabel noelapsedtimestepslabel;
+	JTextArea action;
+	JLabel actionlabel;
 	ArrayList<Sensor> sensornames;
 	ArrayList<Double> sensordata;
 	ArrayList<JTextArea> jsensordata;
 	ArrayList<JLabel> jsensornames;
 	private static final long serialVersionUID = -6839293665463710847L;
 	
+	RobotAction currentaction;
+	ArrayList<RobotAction> queuedactions;
 	public SensorScreen() {
 		super();
 		constructSS();
@@ -69,14 +75,31 @@ public class SensorScreen extends JPanel{
 			jsensornames.add(name);
 			this.add(name);
 		}
-		
+		this.actionlabel = new JLabel("Current Action");
+		actionlabel.setBounds(5,300,100,20);
+		actionlabel.setBackground(Color.DARK_GRAY);
+		actionlabel.setForeground(Color.white);
+		this.add(actionlabel);
+		this.action = new JTextArea();
+		action.setBounds(105, 300, 225, 20);
+		action.setBackground(Color.DARK_GRAY);
+		action.setForeground(Color.white);
+		this.add(action);
 	}
 	
-	public void update (double time, long timesteps, ArrayList<Sensor> sensornames, ArrayList<Double> sensordata) {
+	public void update (double time, long timesteps, ArrayList<Sensor> sensornames, ArrayList<Double> sensordata, RobotAction currentaction, ArrayList<RobotAction> queuedactions) {
 		timeelapsed.setText(Double.toString(time));
 		noelapsedtimesteps.setText(Long.toString(timesteps));
 		this.sensornames = sensornames;
 		this.sensordata = sensordata;
+		this.currentaction = currentaction;
+		this.queuedactions = queuedactions;
+		if (currentaction == null) {
+			action.setText("null");
+		} else {
+			action.setText(this.currentaction.toString());
+		}
+		
 		for (int a = 0; a < sensornames.size(); a++) {
 			jsensornames.get(a).setText(sensornames.get(a).name);
 			try {

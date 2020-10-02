@@ -28,7 +28,7 @@ public class MDPSIM {
 	
  static ArrayList<Action2D> actionqueue;
 	public static void main(String[] args) throws InterruptedException{
-		mdfString = parseFormatToMap("000000000000000000000000000000000000010000000000000000000000000000000000000000000000001110111111000000000000000000000000000000000000000000000000010000000000000000000000001110000000000000000000000000000000000000010000000000000000000000001110000000000000000000000001000000000000000000000000000000000000"); 
+		mdfString = parseFormatToMap("000000000000000000000000000000000000010000000000000000000000000000000000000000000000001110111111000000000000000000000000000000000000000000000000010000000000000000000000001110000000000000000000000000000000000000010000000000000000000000001110000000000000000000000001000000000000000000000000011111111111"); 
 		vw = new Viewer("MDP Simulator", 1024, 768); //First Panel
 		pause = false;
 		actionqueue = new ArrayList<Action2D>(0);
@@ -51,7 +51,7 @@ public class MDPSIM {
 		vw.setVisible(true);
 		updateEngine2DPanel(r,phyeng, vw.map1);	
 		updateRobot2DPanel(phyeng, r, vw.map2);
-		while(MovementHandler.moving == false) { //can put true
+		while(true) { //can put true
 				try {
 					while((phyeng.time()-reftime)*1000 >= ((double)(t.millis()-t0)/simspeed)) {
 						NOP();
@@ -66,7 +66,6 @@ public class MDPSIM {
 				updateRobot2DPanel(phyeng, r, vw.map2);
 				sensorUpdate(phyeng, vw.sensors, r);
 				actionqueue.addAll(r.getNextAction(phyeng.time()));
-				r.robotExploration();
 				// flag handler functions
 				if (vw.engineresetflag == true) {
 					vw.engineresetflag = false;
@@ -243,7 +242,7 @@ public class MDPSIM {
 	private static void sensorUpdate(Engine2D phyeng, SensorScreen sc, Robot r) {
 		double time = phyeng.time();
 		long timesteps = phyeng.timestepselapsed();
-		sc.update(time, timesteps, r.sensors, r.sensorvalues);
+		sc.update(time, timesteps, r.sensors, r.sensorvalues,r.mh.currentaction,r.mh.actionqueue);
 	}
 	
 	

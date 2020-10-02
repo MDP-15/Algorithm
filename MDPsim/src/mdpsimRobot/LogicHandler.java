@@ -129,6 +129,14 @@ public class LogicHandler {
 		}
 		return null;
 	}
+
+	/*
+	public boolean canCalibrate() {
+		if (robotdir = RobotDirection.UP) {
+			
+		}
+	}
+	*/
 	
 	public ArrayList<RobotAction> trailAction(Node n){
 		ArrayList<RobotAction> ar = new ArrayList<RobotAction>();

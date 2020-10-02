@@ -81,7 +81,6 @@ public class LogicHandler {
 		if (isValid(start_x-1, start_y-1)){
 			setMapMemory(start_x-1, start_y-1, 0);
 		}
-
 	}
 	
 	public void parseMDF(String s) {
@@ -105,11 +104,65 @@ public class LogicHandler {
 	
 	//EXPLORATION
 	//CONSTRUCT BOUNDARY, THEN FIND TARGET NODE THAT WILL GIVE HIGHEST EXPLORATION REWARD PER SCORE;
-	public Node nextTarget(int start_x, int start_y, RobotDirection rd) {
-		
-		return null;
+	public Node findNext() {
+		ArrayList<Node> possiblenodes = validNodes();
+		ArrayList<ExplorationNode> exnodes = new ArrayList<ExplorationNode>();
+		for (Node n: possiblenodes) {
+			int info = informationGained(n.x, n.y, n.rd);
+			Node nod = computeFastestPathRD(x_pos,y_pos,n.x,n.y,robotdir,n.rd);
+			double inforate = (double)info/nod.score;
+			ExplorationNode en = new ExplorationNode(nod,inforate);
+			exInsert(exnodes, en);
+		}
+		return exnodes.get(0);
 	}
 	
+	//INSERT INTO SORTED LIST
+	public ArrayList<ExplorationNode> exInsert(ArrayList<ExplorationNode> ar, ExplorationNode en){
+		if (ar.size() == 0) {
+			ar.add(en);
+			return ar;
+		} else {
+			int end = ar.size()-1;
+			int front = 0;
+			int middle = (front+end)/2;
+			while (front <= end) {
+				middle = (front+end) / 2;
+				int cmp = Double.compare(en.informationgain, ar.get(middle).informationgain);
+				if (cmp < 0) {
+					front = middle + 1;
+				} else if (cmp > 0) {
+					end = middle - 1;
+				} else {
+					ar.add(middle,en);
+					return ar;
+				}
+			}
+		}
+		ar.add(en);
+		return ar;
+	}
+	
+	//FIND ALL VALID NODES TO ENTER;
+	public ArrayList<Node> validNodes() {
+		ArrayList<Node> validnodes = new ArrayList<Node>();
+		for (int a = 1; a < x_size-1; a++) {
+			for (int b = 1; b < y_size-1; b++) {
+				Node n = new Node(a,b,null,null,null,0.0);
+				if (n.isValid(mapmemory)) {
+					Node up = new Node(a,b,null,null,RobotDirection.UP,0.0);
+					Node down = new Node(a,b,null,null,RobotDirection.DOWN,0.0);
+					Node left = new Node(a,b,null,null,RobotDirection.LEFT,0.0);
+					Node right = new Node(a,b,null,null,RobotDirection.RIGHT,0.0);
+					validnodes.add(up);
+					validnodes.add(down);
+					validnodes.add(left);
+					validnodes.add(right);
+				}
+			}
+		}
+		return validnodes;
+	}
 	//FIND AMOUNT OF INFORMATION GAINED IF SCAN AT GIVEN SQUARE;
 	//SQUARE MUST BE VALID ROBOT POSITION;
 	public int informationGained(int x, int y, RobotDirection rd) {
@@ -433,6 +486,30 @@ public class LogicHandler {
 		}
 	}
 	
+	// MODIFIED COMPUTEFASTESTPATH USING RD FOR INFORMATION GAIN PATHING;
+	public Node computeFastestPathRD(int start_x, int start_y, int dest_x, int dest_y, RobotDirection rd, RobotDirection endrd) {
+		Node start = new Node(start_x, start_y, null, null, rd, 0);
+		Node end = new Node(dest_x, dest_y,null,null,endrd,Double.POSITIVE_INFINITY);
+		//construct searched list;
+		ArrayList<Node> done = new ArrayList<Node>();
+		//construct list of neighbours to search
+		ArrayList<Node>search = new ArrayList<Node>();
+		search.add(start);
+		while(search.size() > 0) {
+			Node n = search.remove(0);
+			done.add(n);
+			if (n.is(end)) {
+				return n;
+			}
+			ArrayList<Node> neighbours = n.neighbours(dest_x,dest_y,mapmemory);
+			for (Node nb : neighbours) {
+				if (!in(done, nb)) {
+					search = insert(search, nb);
+				}
+			}
+		}
+		return null;
+	}
 	
 	// A* USING MANHATTAN DISTANCE
 	public Node computeFastestPath(int start_x, int start_y, int dest_x, int dest_y, RobotDirection rd) {

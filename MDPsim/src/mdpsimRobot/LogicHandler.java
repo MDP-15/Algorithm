@@ -501,17 +501,23 @@ public class LogicHandler {
 			}
 			System.out.println("called");
 			if (frontmidbox < fmbmax) {
-				setMapMemory(x_pos,y_pos+1+frontmidbox+1,1);
+				if (isValid(x_pos,y_pos+1+frontmidbox+1)) {
+					setMapMemory(x_pos,y_pos+1+frontmidbox+1,1);
+				}
 			}
 			System.out.println("called1");
 
 			if (frontrightbox < frbmax) {
-				setMapMemory(x_pos+1,y_pos+1+frontrightbox+1,1);
+				if (isValid(x_pos+1,y_pos+1+frontrightbox+1)) {
+					setMapMemory(x_pos+1,y_pos+1+frontrightbox+1,1);
+				}
 			}
 			System.out.println("called2");
 
 			if (frontleftbox < flbmax) {
-				setMapMemory(x_pos-1,y_pos+1+frontleftbox+1,1);
+				if (isValid(x_pos-1,y_pos+1+frontleftbox+1)) {
+					setMapMemory(x_pos-1,y_pos+1+frontleftbox+1,1);
+				}
 			}
 			System.out.println("called3");
 
@@ -523,13 +529,19 @@ public class LogicHandler {
 			System.out.println("called4");
 
 			if (rightbackbox < rbbmax) {
-				setMapMemory(x_pos+1+rightbackbox+1, y_pos-1,1);
+				if (isValid(x_pos+1+rightbackbox+1, y_pos-1)) {
+					setMapMemory(x_pos+1+rightbackbox+1, y_pos-1,1);
+				}
 			}
 			System.out.println("called5");
 
 			if (leftlongbox < llbmax) {
-				setMapMemory(x_pos-1-leftlongbox, y_pos+1,1);
+				System.out.println("less");
+				if (isValid(x_pos-1-leftlongbox, y_pos+1)) {
+					setMapMemory(x_pos-1-leftlongbox-1, y_pos+1,1);
+				}
 			}
+			System.out.println("called6");
 		} else if (robotdir == RobotDirection.LEFT) {
 			for (int a = 0; a <= frontmidbox; a++) {
 				setMapMemory(x_pos, y_pos-1-a, 0);

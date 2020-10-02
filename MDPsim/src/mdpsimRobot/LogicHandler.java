@@ -114,7 +114,7 @@ public class LogicHandler {
 			ExplorationNode en = new ExplorationNode(nod,inforate);
 			exInsert(exnodes, en);
 		}
-		return exnodes.get(0);
+		return exnodes.get(exnodes.size()-1);
 	}
 	
 	//INSERT INTO SORTED LIST

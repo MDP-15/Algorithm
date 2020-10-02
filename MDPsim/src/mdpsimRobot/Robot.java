@@ -27,7 +27,7 @@ public class Robot {
 		this.actionqueue = new ArrayList<RobotAction>(0);
 		this.mh = new MovementHandler(actionqueue);
 		this.lh = new LogicHandler(15,20,1,1);
-		lh.setUnexploredMap(14, 4, 20, 15, RobotDirection.RIGHT);
+		lh.setUnexploredMap(1, 1, 20, 15, RobotDirection.RIGHT);
 	}
 	
 	public void addSensor(String name,Vector2D position, Vector2D direction, double minrange, double maxrange) {
@@ -79,7 +79,7 @@ public class Robot {
 			sensorvalues.get(0);
 			//lh.scan(sensorvalues);
 		} catch (Exception e) {}
-		System.out.println(lh.informationGained(1, 1, RobotDirection.DOWN));
+		lh.findNext().print();
 		actions.add(mh.doNext(time , sensorvalues)); // DO NOT TOUCH
 		return actions;
 	}

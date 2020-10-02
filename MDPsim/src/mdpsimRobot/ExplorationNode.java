@@ -16,4 +16,10 @@ public class ExplorationNode extends Node{
 	public void constructor(double informationgain) {
 		this.informationgain = informationgain;
 	}
+	
+	@Override
+	public void print() {
+		System.out.print("Information Gain: " + informationgain);
+		super.print();
+	}
 }

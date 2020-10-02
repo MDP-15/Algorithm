@@ -147,11 +147,17 @@ public class Viewer extends JFrame{
 		arenas.add(sampleA3);
 		arenas.add(sampleA4);
 		
-		JMenu fastestpath = new JMenu("FastestPath");
-		menu.add(fastestpath);
+		JMenu instructions = new JMenu("Instructions");
+		menu.add(instructions);
 		
-		JMenuItem fpStart = new JMenuItem("Start");
-		fastestpath.add(fpStart);
+		JMenuItem exStart = new JMenuItem("Explore Map");
+		instructions.add(exStart);
+		JMenuItem fpStart = new JMenuItem("Fastest Path");
+		instructions.add(fpStart);
+		
+		
+		
+		
 		
 		JMenuItem tcpSocket = new JMenuItem("Socket Connection");
 		file.add(tcpSocket);
@@ -164,6 +170,15 @@ public class Viewer extends JFrame{
 		}
 			tcpSocket.addActionListener(new socketBtn());
 			
+			
+			exStart.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
 			
 			fpStart.addActionListener(new ActionListener() {
 				@Override

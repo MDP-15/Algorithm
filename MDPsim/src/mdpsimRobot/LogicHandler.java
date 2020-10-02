@@ -118,8 +118,8 @@ public class LogicHandler {
 			mem.add(ar);
 		}
 		this.mapmemory = mem;
-		Node n = computeFastestPath(18,1,1,13,RobotDirection.DOWN);
-		n.printParents();
+//		Node n = computeFastestPath(18,1,1,13,RobotDirection.DOWN);
+//		n.printParents();
 	}
 	
 	//EXPLORATION

@@ -824,7 +824,7 @@ public class LogicHandler {
 			System.out.println("X SIZE: "+x_size+" Y SIZE: "+y_size);
 			for(int a = 0; a < y_size; a++) {
 				for (int b = 0 ; b < x_size; b++) {
-					System.out.print(mapmemory.get(b).get(a));
+					System.out.print(mapmemory.get(a).get(b));
 				}
 				System.out.println();
 			}

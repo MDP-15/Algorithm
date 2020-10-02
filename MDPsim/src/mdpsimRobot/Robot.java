@@ -18,7 +18,6 @@ public class Robot {
 	private static DecimalFormat df2 = new DecimalFormat("#.##");
 	public ArrayList<RobotAction> actionqueue;
 	public LogicHandler lh;
-	public static boolean oneMovement = false;
 	
 	public Robot(ArrayList<Sensor> sensors, double radius) {
 		this.sensors = sensors;
@@ -27,7 +26,7 @@ public class Robot {
 		this.actionqueue = new ArrayList<RobotAction>(0);
 		this.mh = new MovementHandler(actionqueue);
 		this.lh = new LogicHandler(15,20,1,1);
-		lh.setUnexploredMap(1, 1, 20, 15, RobotDirection.RIGHT);
+		lh.setUnexploredMap(18, 1, 20, 15, RobotDirection.RIGHT);
 	}
 	
 	public void addSensor(String name,Vector2D position, Vector2D direction, double minrange, double maxrange) {
@@ -75,11 +74,16 @@ public class Robot {
 	
 	public ArrayList<Action2D> getNextAction(double time){
 		ArrayList<Action2D> actions = new ArrayList<Action2D>(0);
-		try {
-			sensorvalues.get(0);
-			//lh.scan(sensorvalues);
-		} catch (Exception e) {}
-		lh.findNext().print();
+		if (mh.currentaction == null) {
+			try {
+				sensorvalues.get(0);
+				lh.scan(sensorvalues);
+				ArrayList<RobotAction> ar = lh.getNextAction(1);
+				for (RobotAction ra : ar) {
+					mh.addAction(ra);
+				}
+			} catch (Exception e) {}
+		}
 		actions.add(mh.doNext(time , sensorvalues)); // DO NOT TOUCH
 		return actions;
 	}

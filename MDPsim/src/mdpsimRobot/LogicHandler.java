@@ -24,9 +24,29 @@ public class LogicHandler {
 		}
 	}
 	
-	public void getNextAction() {
-		
+	
+	public void updatePosition(int x, int y) {
+		this.x_pos = x;
+		this.y_pos = y;
+		return;
 	}
+	
+	public ArrayList<RobotAction> getNextAction(int dowhat) {
+		ArrayList<RobotAction> robotactionlist = new ArrayList<RobotAction>();
+		//EXPLORATION
+		if (dowhat == 1) {
+			Node n = findNext();
+			if (n != null) {
+				n.printParents();
+				while (n.ra != null) {
+					robotactionlist.add(n.ra);
+					n = n.prev;
+				}
+			}
+		}
+		return robotactionlist;
+	}
+	
 	public void setRobotDirection(RobotDirection rd) {
 		this.robotdir = rd;
 	}
@@ -116,7 +136,11 @@ public class LogicHandler {
 				exInsert(exnodes, en);
 			}
 		}
-		return exnodes.get(exnodes.size()-1);
+		if (exnodes.size() == 0) {
+			return null; 
+		} else {
+			return exnodes.get(exnodes.size()-1);
+		}
 	}
 	
 	//INSERT INTO SORTED LIST
@@ -169,6 +193,12 @@ public class LogicHandler {
 	//SQUARE MUST BE VALID ROBOT POSITION;
 	public int informationGained(int x, int y, RobotDirection rd) {
 		int information = 0;
+		int fmbmax = 3;
+		int frbmax = 3;
+		int flbmax = 3;
+		int llbmax = 5;
+		int rfbmax = 2;
+		int rbb = 2;
 		int frontmidbox = 3;
 		int frontrightbox = 3;
 		int frontleftbox = 3;
@@ -180,57 +210,79 @@ public class LogicHandler {
 			for (int a = 0; a <= frontmidbox; a++) {
 				if (isValidExplored(x_pos, y_pos+1+a)) {
 					information += 1;
+				} else {
+					break;
 				}
 			}
 			for (int a = 0; a <= frontrightbox; a++) {
 				if (isValidExplored(x_pos+1, y_pos+1+a)) {
 					information += 1;
+				} else {
+					break;
 				}
 			}
 			for (int a = 0; a <= frontleftbox; a++) {
 				if (isValidExplored(x_pos-1, y_pos+1+a) ){
 					information += 1;
+				} else {
+					break;
 				}
 			}
 			for (int a = 0; a <= rightfrontbox; a++) {
 				if (isValidExplored(x_pos+1+a, y_pos+1) ){
 					information += 1;
+				} else {
+					break;
 				}
 			}
 			for (int a = 0; a <= rightbackbox; a++) {
 				if (isValidExplored(x_pos+1+a, y_pos-1) ){
 					information += 1;
+				} else {
+					break;
 				}
 			}
 			for (int a = 0; a <= leftlongbox; a++) {
 				if (isValidExplored(x_pos-1-a, y_pos+1) ){
 					information += 1;
+				} else {
+					break;
 				}
 			}
 		} else if (robotdir == RobotDirection.LEFT) {
 			for (int a = 0; a <= frontmidbox; a++) {
 				if (isValidExplored(x_pos, y_pos-1-a) ){
 					information += 1;
+				} else {
+					break;
 				}
 			}
 			for (int a = 0; a <= frontrightbox; a++) {
 				if (isValidExplored(x_pos-1, y_pos-1-a) ){
 					information += 1;
+				} else {
+					break;
 				}
 			}
 			for (int a = 0; a <= frontleftbox; a++) {
 				if (isValidExplored(x_pos+1, y_pos-1-a) ){
 					information += 1;
+				} else {
+					break;
 				}
 			}
 			for (int a = 0; a <= rightfrontbox; a++) {
 				if (isValidExplored(x_pos-1-a, y_pos-1) ){
 					information += 1;
+				} else {
+					break;
 				}
 			}
 			for (int a = 0; a <= rightbackbox; a++) {
 				if (isValidExplored(x_pos-1-a, y_pos+1) ){
 					information += 1;
+				} else {
+					break;
 				}
 			}
 			for (int a = 0; a <= leftlongbox; a++) {
@@ -339,6 +391,11 @@ public class LogicHandler {
 	//CHECK SENSOR VALUES AND UPDATE MAP -> VALUES SHOULD BE UPDATED HERE
 	public void scanMap(double right_front, double right_back, double front_right, double front_middle, double front_left, double left_long) {
 		boolean verbose = false;
+		int fmbmax = 3;
+		int frbmax = 3;
+		int flbmax = 3;
+		int llbmax = 5;
+		int rfbmax = 2;
 		int frontmidbox = 3;
 		int frontrightbox = 3;
 		int frontleftbox = 3;
@@ -427,6 +484,15 @@ public class LogicHandler {
 			}
 			for (int a = 0; a <= leftlongbox; a++) {
 				setMapMemory(x_pos-1-a, y_pos+1,0);
+			}
+			if (frontmidbox < frbmax) {
+				setMapMemory(x_pos,y_pos+1+frontmidbox+1,1);
+			}
+			if (frontrightbox < frbmax) {
+				setMapMemory(x_pos+1,y_pos+1+frontrightbox+1,1);
+			}
+			if (frontleftbox < flbmax) {
+				setMapMemory(x_pos-1,y_pos+1+frontleftbox+1,1);
 			}
 		} else if (robotdir == RobotDirection.LEFT) {
 			for (int a = 0; a <= frontmidbox; a++) {

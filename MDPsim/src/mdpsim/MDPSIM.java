@@ -50,7 +50,7 @@ public class MDPSIM {
 		vw.setVisible(true);
 		updateEngine2DPanel(r,phyeng, vw.map1);	
 		updateRobot2DPanel(phyeng, r, vw.map2);
-		while(MovementHandler.moving == false) { //can put true
+		while(true) { //can put true
 				try {
 					while((phyeng.time()-reftime)*1000 >= ((double)(t.millis()-t0)/simspeed)) {
 						NOP();

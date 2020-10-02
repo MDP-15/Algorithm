@@ -12,7 +12,6 @@ public class MovementHandler {
 	public RobotAction currentaction;
 	public RobotAction desiredaction;
 	public double time;
-	public static boolean moving = false;
 	public ArrayList<RobotAction> actionqueue;
 
 	public MovementHandler (ArrayList<RobotAction> actionqueue) {
@@ -22,12 +21,10 @@ public class MovementHandler {
 		this.queuedactions = new ArrayList<QueuedAction>(0);
 		sensorhistory.add(new ArrayList<Double>());
 		timehistory.add(0.0);
-		actionhistory.add(new Action2D(Action.ACCELERATE, 0));
 		this.currentaction = null;
 		this.desiredaction = null;
 		this.time = 0.0;
 		this.actionqueue = actionqueue;
-		this.moving = false;
 	}
 	
 	//TR -> turn right at 0.5pi/sec for 1 second
@@ -39,7 +36,6 @@ public class MovementHandler {
 		this.time = time;
 		double t = queueLatestTime();
 		if (currentaction == null) {
-			moving = true;
 			if (actionqueue.size() > 0) {
 				currentaction = actionqueue.remove(0);
 				}
@@ -64,8 +60,6 @@ public class MovementHandler {
 				queuedactions.add(new QueuedAction(Action.ACCELERATE, -1000, t+0.30, false));
 				queuedactions.add(new QueuedAction(Action.STOP, 0, t+0.40, true));
 			}
-			moving = false;
-			Robot.oneMovement = false;
 		}
 		try {
 			if (time >= ((QueuedAction)queuedactions.get(0)).time) {

@@ -195,9 +195,10 @@ public class LogicHandler {
 			if (nod.score != 0) {
 				double inforate = (double)info/nod.score;
 				ExplorationNode en = new ExplorationNode(nod,inforate);
-				exnodes = exInsert(exnodes, en);
+				exnodes.add(en);
 			}
 		}
+		exnodes = exSort(exnodes);
 		if (verbose) {
 			System.out.println("Exnodes size : " + exnodes.size());
 			for (int a = 0; a < exnodes.size()-1; a++) {
@@ -285,172 +286,340 @@ public class LogicHandler {
 		//CALCULATE POTENTIALLY EXPLORED BLOCKS FROM VALUE;
 		if (robotdir == RobotDirection.RIGHT) {
 			for (int a = 1; a <= frontmidbox; a++) {
-				if (isValidExplored(x, y+1+a)) {
-					information += 1;
+				if (isValid(x, y+1+a)) {
+					int b = mapmemory.get(x).get(y+1+a);
+					if (b == 2) {
+						information += 1;
+					} else if (b == 0){
+						continue;
+					} else {
+						break;
+					}
 				}  else {
 					break;
 				}
 			}
 			for (int a = 1; a <= frontrightbox; a++) {
-				if (isValidExplored(x+1, y+1+a)) {
-					information += 1;
+				if (isValid(x+1, y+1+a)) {
+					int b = mapmemory.get(x+1).get(y+1+a);
+					if (b == 2) {
+						information += 1;
+					} else if (b == 0){
+						continue;
+					} else {
+						break;
+					}	
 				} else {
 					break;
 				}
 			}
 			for (int a = 1; a <= frontleftbox; a++) {
-				if (isValidExplored(x-1, y+1+a) ){
-					information += 1;
+				if (isValid(x-1, y+1+a) ){
+					int b = mapmemory.get(x-1).get(y+1+a);
+					if (b == 2) {
+						information += 1;
+					} else if (b == 0){
+						continue;
+					} else {
+						break;
+					}
 				} else {
 					break;
 				}
 			}
 			for (int a = 1; a <= rightfrontbox; a++) {
-				if (isValidExplored(x+1+a, y+1) ){
-					information += 1;
+				if (isValid(x+1+a, y+1) ){
+					int b = mapmemory.get(x+1+a).get(y+1);
+					if (b == 2) {
+						information += 1;
+					} else if (b == 0){
+						continue;
+					} else {
+						break;
+					}
 				} else {
 					break;
 				}
 			}
 			for (int a = 1; a <= rightbackbox; a++) {
-				if (isValidExplored(x+1+a, y-1) ){
-					information += 1;
+				if (isValid(x+1+a, y-1) ){
+					int b = mapmemory.get(x+1+a).get(y-1);
+					if (b == 2) {
+						information += 1;
+					} else if (b == 0){
+						continue;
+					} else {
+						break;
+					}
 				} else {
 					break;
 				}
 			}
 			for (int a = 1; a <= leftlongbox; a++) {
-				if (isValidExplored(x-1-a, y+1) ){
-					information += 1;
+				if (isValid(x-1-a, y+1) ){
+					int b = mapmemory.get(x-1-a).get(y+1);
+					if (b == 2) {
+						information += 1;
+					} else if (b == 0){
+						continue;
+					} else {
+						break;
+					}
 				} else {
 					break;
 				}
 			}
 		} else if (robotdir == RobotDirection.LEFT) {
 			for (int a = 1; a <= frontmidbox; a++) {
-				if (isValidExplored(x, y-1-a) ){
-					information += 1;
+				if (isValid(x, y-1-a) ){
+					int b = mapmemory.get(x).get(y-1-a);
+					if (b == 2) {
+						information += 1;
+					} else if (b == 0){
+						continue;
+					} else {
+						break;
+					}
 				} else {
 					break;
 				}
 			}
 			for (int a = 1; a <= frontrightbox; a++) {
-				if (isValidExplored(x-1, y-1-a) ){
-					information += 1;
+				if (isValid(x-1, y-1-a) ){
+					int b = mapmemory.get(x-1).get(y-1-a);
+					if (b == 2) {
+						information += 1;
+					} else if (b == 0){
+						continue;
+					} else {
+						break;
+					}
 				} else {
 					break;
 				}
 			}
 			for (int a = 1; a <= frontleftbox; a++) {
-				if (isValidExplored(x+1, y-1-a) ){
-					information += 1;
+				if (isValid(x+1, y-1-a) ){
+					int b = mapmemory.get(x+1).get(y-1-a);
+					if (b == 2) {
+						information += 1;
+					} else if (b == 0){
+						continue;
+					} else {
+						break;
+					}
 				} else {
 					break;
 				}
 			}
 			for (int a = 1; a <= rightfrontbox; a++) {
-				if (isValidExplored(x-1-a, y-1) ){
-					information += 1;
+				if (isValid(x-1-a, y-1) ){
+					int b = mapmemory.get(x-1-a).get(y-1);
+					if (b == 2) {
+						information += 1;
+					} else if (b == 0){
+						continue;
+					} else {
+						break;
+					}
 				} else {
 					break;
 				}
 			}
 			for (int a = 1; a <= rightbackbox; a++) {
-				if (isValidExplored(x-1-a, y+1) ){
-					information += 1;
+				if (isValid(x-1-a, y+1) ){
+					int b = mapmemory.get(x-1-a).get(y+1);
+					if (b == 2) {
+						information += 1;
+					} else if (b == 0){
+						continue;
+					} else {
+						break;
+					}
 				} else {
 					break;
 				}	
 			}
 			for (int a = 1; a <= leftlongbox; a++) {
-				if (isValidExplored(x+1+a, y-1) ){
-					information += 1;
+				if (isValid(x+1+a, y-1) ){
+					int b = mapmemory.get(x+1+a).get(y-1);
+					if (b == 2) {
+						information += 1;
+					} else if (b == 0){
+						continue;
+					} else {
+						break;
+					}
 				} else {
 					break;
 				}
 			}
 		} else if (robotdir == RobotDirection.UP) {
 			for (int a = 0; a <= frontmidbox; a++) {
-				if (isValidExplored(x-1-a, y) ){
-					information += 1;
+				if (isValid(x-1-a, y) ){
+					int b = mapmemory.get(x-1-a).get(y);
+					if (b == 2) {
+						information += 1;
+					} else if (b == 0){
+						continue;
+					} else {
+						break;
+					}
 				} else {
 					break;
 				}
 			}
 			for (int a = 1; a <= frontrightbox; a++) {
-				if (isValidExplored(x-1-a, y+1) ){
-					information += 1;
+				if (isValid(x-1-a, y+1) ){
+					int b = mapmemory.get(x-1-a).get(y+1);
+					if (b == 2) {
+						information += 1;
+					} else if (b == 0){
+						continue;
+					} else {
+						break;
+					}
 				} else {
 					break;
 				}
 			}
 			for (int a = 1; a <= frontleftbox; a++) {
-				if (isValidExplored(x-1-a, y-1) ){
-					information += 1;
+				if (isValid(x-1-a, y-1) ){
+					int b = mapmemory.get(x-1-a).get(y-1);
+					if (b == 2) {
+						information += 1;
+					} else if (b == 0){
+						continue;
+					} else {
+						break;
+					}
 				} else {
 					break;
 				}
 			}
 			for (int a = 1; a <= rightfrontbox; a++) {
-				if (isValidExplored(x-1, y+1+a) ){
-					information += 1;
+				if (isValid(x-1, y+1+a) ){
+					int b = mapmemory.get(x-1).get(y+1+a);
+					if (b == 2) {
+						information += 1;
+					} else if (b == 0){
+						continue;
+					} else {
+						break;
+					}
 				} else {
 					break;
 				}
 			}
 			for (int a = 1; a <= rightbackbox; a++) {
-				if (isValidExplored(x+1, y+1+a) ){
-					information += 1;
+				if (isValid(x+1, y+1+a) ){
+					int b = mapmemory.get(x+1).get(y+1+a);
+					if (b == 2) {
+						information += 1;
+					} else if (b == 0){
+						continue;
+					} else {
+						break;
+					}
 				} else {
 					break;
 				}
 			}
 			for (int a = 1; a <= leftlongbox; a++) {
-				if (isValidExplored(x-1, y-1-a) ){
-					information += 1;
+				if (isValid(x-1, y-1-a) ){
+					int b = mapmemory.get(x-1).get(y-1-a);
+					if (b == 2) {
+						information += 1;
+					} else if (b == 0){
+						continue;
+					} else {
+						break;
+					}
 				} else {
 					break;
 				}
 			}
 		} else if (robotdir == RobotDirection.DOWN) {
 			for (int a = 1; a <= frontmidbox; a++) {
-				if (isValidExplored(x+1+a, y) ){
-					information += 1;
+				if (isValid(x+1+a, y) ){
+					int b = mapmemory.get(x+1+a).get(y);
+					if (b == 2) {
+						information += 1;
+					} else if (b == 0){
+						continue;
+					} else {
+						break;
+					}
 				} else {
 					break;
 				}
 			}
 			for (int a = 1; a <= frontrightbox; a++) {
-				if (isValidExplored(x+1+a, y-1) ){
-					information += 1;
+				if (isValid(x+1+a, y-1) ){
+					int b = mapmemory.get(x+1+a).get(y-1);
+					if (b == 2) {
+						information += 1;
+					} else if (b == 0){
+						continue;
+					} else {
+						break;
+					}
 				} else {
 					break;
 				}
 			}
 			for (int a = 1; a <= frontleftbox; a++) {
-				if (isValidExplored(x+1+a, y+1) ){
-					information += 1;
+				if (isValid(x+1+a, y+1) ){
+					int b = mapmemory.get(x+1+a).get(y+1);
+					if (b == 2) {
+						information += 1;
+					} else if (b == 0){
+						continue;
+					} else {
+						break;
+					}
 				} else {
 					break;
 				}
 			}
 			for (int a = 1; a <= rightfrontbox; a++) {
-				if (isValidExplored(x+1, y-1-a) ){
-					information += 1;
+				if (isValid(x+1, y-1-a) ){
+					int b = mapmemory.get(x+1).get(y-1-a);
+					if (b == 2) {
+						information += 1;
+					} else if (b == 0){
+						continue;
+					} else {
+						break;
+					}
 				} else {
 					break;
 				}
 			}
 			for (int a = 1; a <= rightbackbox; a++) {
-				if (isValidExplored(x-1, y-1-a) ){
-					information += 1;
+				if (isValid(x-1, y-1-a) ){
+					int b = mapmemory.get(x-1).get(y-1-a);
+					if (b == 2) {
+						information += 1;
+					} else if (b == 0){
+						continue;
+					} else {
+						break;
+					}
 				} else {
 					break;
 				}
 			}
 			for (int a = 1; a <= leftlongbox; a++) {
-				if (isValidExplored(x+1, y+1+a) ){
-					information += 1;
+				if (isValid(x+1, y+1+a) ){
+					int b = mapmemory.get(x+1).get(y+1+a);
+					if (b == 2) {
+						information += 1;
+					} else if (b == 0){
+						continue;
+					} else {
+						break;
+					}
 				} else {
 					break;
 				}
@@ -736,7 +905,7 @@ public class LogicHandler {
 	
 	// MODIFIED COMPUTEFASTESTPATH USING RD FOR INFORMATION GAIN PATHING;
 	public Node computeFastestPathRD(int start_x, int start_y, int dest_x, int dest_y, RobotDirection rd, RobotDirection endrd) {
-		Node start = new Node(start_x, start_y, null, null, rd, 0);
+		Node start = new Node(start_x, start_y, null, null, rd, 0.0);
 		Node end = new Node(dest_x, dest_y,null,null,endrd,Double.POSITIVE_INFINITY);
 		//construct searched list;
 		ArrayList<Node> done = new ArrayList<Node>();
@@ -761,7 +930,7 @@ public class LogicHandler {
 	
 	// A* USING MANHATTAN DISTANCE
 	public Node computeFastestPath(int start_x, int start_y, int dest_x, int dest_y, RobotDirection rd) {
-		Node start = new Node(start_x, start_y, null, null, rd, 0);
+		Node start = new Node(start_x, start_y, null, null, rd, 0.0);
 		Node end = new Node(dest_x, dest_y,null,null,null,Double.POSITIVE_INFINITY);
 		//construct searched list;
 		ArrayList<Node> done = new ArrayList<Node>();
@@ -827,17 +996,6 @@ public class LogicHandler {
 		}
 		ar.add(n);
 		return ar;
-	}
-	
-	public boolean isValidExplored(int x, int y) {	
-		if (isValid(x,y)) {;
-			if (mapmemory.get(x).get(y) == 2) {
-				return true;
-			} else {
-				return false;
-			}
-		}
-		return false;
 	}
 	
 	public boolean isValid(int x, int y) {

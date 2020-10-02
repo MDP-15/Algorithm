@@ -216,12 +216,6 @@ public class LogicHandler {
 	public ArrayList<ExplorationNode> exInsert(ArrayList<ExplorationNode> ar, ExplorationNode en){
 		if (ar.size() == 0) {
 			ar.add(en);
-		} else if (ar.size() == 1) {
-			if (ar.get(0).informationgain > en.informationgain) {
-				ar.add(en);
-			} else {
-				ar.add(0,en);
-			}
 		}
 		int left = 0;
 		int right = ar.size() - 1;
@@ -229,9 +223,9 @@ public class LogicHandler {
 		while (left <= right) {
 			middle = (left + right)/2;
 			int cmp = Double.compare(en.informationgain, ar.get(middle).informationgain);
-			if (cmp < 0) {
+			if (cmp > 0) {
 				left = middle + 1;
-			} else if (cmp > 0) {
+			} else if (cmp < 0) {
 				right = middle - 1;
 			} else {
 				break;
@@ -365,7 +359,7 @@ public class LogicHandler {
 					information += 1;
 				} else {
 					break;
-				}
+				}	
 			}
 			for (int a = 1; a <= leftlongbox; a++) {
 				if (isValidExplored(x+1+a, y-1) ){

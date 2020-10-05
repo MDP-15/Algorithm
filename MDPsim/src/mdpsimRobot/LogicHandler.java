@@ -230,7 +230,7 @@ public class LogicHandler {
 		int right = ar.size() - 1;
 		int middle = 0;
 		while (left <= right) {
-			middle = (left + right)/2;
+			middle = Math.floorDiv((left + right),2);
 			int cmp = Double.compare(en.informationgain, ar.get(middle).informationgain);
 			if (cmp > 0) {
 				left = middle + 1;
@@ -999,9 +999,9 @@ public class LogicHandler {
 		} else {
 			int end = ar.size()-1;
 			int front = 0;
-			int middle = (front+end)/2;
+			int middle = Math.floorDiv((front+end),2);
 			while (front <= end) {
-				middle = (front+end) / 2;
+				middle = Math.floorDiv((front+end),2);
 				int cmp = Double.compare(n.score, ar.get(middle).score);
 				if (cmp < 0) {
 					front = middle + 1;

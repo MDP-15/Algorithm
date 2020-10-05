@@ -19,7 +19,7 @@ public class BoundingBoxList {
 		int right = bblist.size() - 1;
 		int middle = 0;
 		while (left <= right) {
-			middle = (left + right) / 2;
+			middle = Math.floorDiv((left + right),2);
 			int cmp = Double.compare(bbpointer.value(), bblist.get(middle).value());
 			if (cmp < 0) {
 				left = middle + 1;

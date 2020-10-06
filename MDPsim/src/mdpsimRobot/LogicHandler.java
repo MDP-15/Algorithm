@@ -15,6 +15,8 @@ public class LogicHandler {
 	public ArrayList<RobotAction> queue;
 	public RobotAction prevaction;
 	public int recal;
+	public double time;
+	public double inittime;
 	
 	public LogicHandler(int x_size, int y_size, int x_pos, int y_pos) {
 		this.x_size = x_size;
@@ -22,6 +24,8 @@ public class LogicHandler {
 		this.x_pos = x_pos;
 		this.y_pos = y_pos;
 		this.recal = 0;
+		this.time = 0;
+		this.inittime = 0;
 		this.robotdir = null;
 		this.prevaction = null;
 		this.queue = new ArrayList<RobotAction>();
@@ -140,7 +144,7 @@ public class LogicHandler {
 		if (queue.size() == 0) {
 			Node n = null;
 			if (MDPSIM.mode == 1) {
-				if (coverage() >= MDPSIM.coverage) {
+				if (coverage() >= MDPSIM.coverage ) {
 					MDPSIM.mode = 2;
 					return null;
 				}

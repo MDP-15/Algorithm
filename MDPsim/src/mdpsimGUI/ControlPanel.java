@@ -57,7 +57,7 @@ public class ControlPanel extends JPanel {
 		this.add(speedindicator);
 
 		// USER SELECTED TIME LIMIT
-		this.userTime = new JTextArea("Input Time Limit in seconds");
+		this.userTime = new JTextArea("360");
 		userTime.setBounds(5, 70, 300, 30);
 		this.add(userTime);
 		this.setTime = new JButton();

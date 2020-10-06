@@ -81,7 +81,7 @@ public class Robot {
 		if (mh.currentaction == null && mh.actionqueue.size() == 0 && (MDPSIM.mode == 1 || MDPSIM.mode == 2)) {
 			lh.updatePos();
 			lh.scan(sensorvalues);
-			mh.actionqueue.add(lh.getNextAction());
+			mh.actionqueue.add(lh.getNextAction(time));
 		}
 		actions.add(mh.doNext(time , sensorvalues)); // DO NOT TOUCH
 		return actions;

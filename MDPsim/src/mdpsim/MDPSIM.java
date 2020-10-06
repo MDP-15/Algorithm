@@ -27,6 +27,7 @@ public class MDPSIM {
 	public static Robot robot;
 	public static int mode = 0; // 1:explore 2: return to base after explore 3: fastest path
 	public static double coverage;
+	public static int timelimit;
 	
  static ArrayList<Action2D> actionqueue;
 	public static void main(String[] args) throws InterruptedException{
@@ -47,6 +48,7 @@ public class MDPSIM {
 	public static void inputMDF() throws InterruptedException{
 		//System.out.println("MDF STRING: "+mdfString);
 		t = Clock.systemDefaultZone();
+		timelimit = 0;
 		t0 = t.millis();
 		String s = parseFormatToMap(mdfString);   
 		ArrayList<Object2D> objects = generateMap(s);
@@ -97,6 +99,11 @@ public class MDPSIM {
 				if (vw.coverageflag == true) {
 					vw.coverageflag = false;
 					coverage = Double.parseDouble(vw.cp.explorePercent.getText());
+				}
+				if (vw.timeflag == true) {
+					vw.timeflag = false;
+					r.lh.timelimit = phyeng.time()+Double.parseDouble(vw.cp.userTime.getText());
+					mode = 1;
 				}
 		}
 	}

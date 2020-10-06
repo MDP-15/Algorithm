@@ -285,12 +285,12 @@ public class LogicHandler {
 	//SQUARE MUST BE VALID ROBOT POSITION;
 	public int informationGained(int x, int y, RobotDirection rd) {
 		int information = 0;
-		int frontmidbox = 3;
-		int frontrightbox = 3;
-		int frontleftbox = 3;
-		int leftlongbox = 5;
-		int rightfrontbox = 2;
-		int rightbackbox = 2;
+		int frontmidbox = 1;
+		int frontrightbox = 1;
+		int frontleftbox = 1;
+		int leftlongbox = 1;
+		int rightfrontbox = 1;
+		int rightbackbox = 1;
 		//CALCULATE POTENTIALLY EXPLORED BLOCKS FROM VALUE;
 		if (robotdir == RobotDirection.RIGHT) {
 			for (int a = 1; a <= frontmidbox; a++) {
@@ -671,77 +671,43 @@ public class LogicHandler {
 	//CHECK SENSOR VALUES AND UPDATE MAP -> VALUES SHOULD BE UPDATED HERE
 	public void scanMap(double right_front, double right_back, double front_right, double front_middle, double front_left, double left_long) {
 		boolean verbose = false;
-		int fmbmax = 3;
-		int frbmax = 3;
-		int flbmax = 3;
-		int llbmax = 5;
-		int rfbmax = 2;
-		int rbbmax = 2;
-		int frontmidbox = 3;
-		int frontrightbox = 3;
-		int frontleftbox = 3;
-		int leftlongbox = 5;
-		int rightfrontbox = 2;
-		int rightbackbox = 2;
+		int fmbmax = 1;
+		int frbmax = 1;
+		int flbmax = 1;
+		int llbmax = 1;
+		int rfbmax = 1;
+		int rbbmax = 1;
+		int frontmidbox = 1;
+		int frontrightbox = 1;
+		int frontleftbox = 1;
+		int leftlongbox = 1;
+		int rightfrontbox = 1;
+		int rightbackbox = 1;
 		//FROM SENSOR VALUE DETERMINE RANGE OF NEXT BLOCK
 		//DEFINE INTEGERS AS LENGTH PROTRUDING FROM ROBOT 3X3 BODY
 		//HANDLE FRONT MIDDLE;
-		if (front_middle <= 10) {
+		if (front_middle <= 10.5) {
 			frontmidbox = 0;
-		} else if (front_middle < 20) {
-			frontmidbox = 1;
-		} else if (front_middle < 30) {
-			frontmidbox = 2;
-		} else if (front_middle < 40) {
-			frontmidbox = 3;
 		}
 		//HANDLE FRONT RIGHT;
-		if (front_right <= 10) {
+		if (front_right <= 10.5) {
 			frontrightbox = 0;
-		} else if (front_right < 20) {
-			frontrightbox = 1;
-		} else if (front_right < 30) {
-			frontrightbox = 2;
-		} else if (front_right < 40) {
-			frontrightbox = 3;
 		}
 		//HANDLE FRONT LEFT;
-		if (front_left <= 10) {
+		if (front_left <= 10.5) {
 			frontleftbox = 0;
-		} else if (front_left < 20) {
-			frontleftbox = 1;
-		} else if (front_left < 30) {
-			frontleftbox = 2;
-		} else if (front_left < 40) {
-			frontleftbox = 3;
 		}
 		//HANDLE LEFT LONG
-		if (left_long <= 20) {
+		if (left_long <= 20.5) {
 			leftlongbox = 0;
-		} else if (left_long < 30) {
-			leftlongbox = 1;
-		} else if (left_long < 40) {
-			leftlongbox = 2;
-		} else if (left_long < 50) {
-			leftlongbox = 3;
-		} else if (left_long < 60) {
-			leftlongbox = 4;
 		}
 		//HANDLE RIGHT_FRONT
-		if (right_front <= 20) {
+		if (right_front <= 20.5) {
 			rightfrontbox = 0;
-		} else if (right_front < 30) {
-			rightfrontbox = 1;
-		} else if (right_front < 40) {
-			rightfrontbox = 2;
 		}
 		//HANDLE RIGHT_BACK
-		if (right_back <= 20) {
+		if (right_back <= 20.5) {
 			rightbackbox = 0;
-		} else if (right_back < 30) {
-			rightbackbox = 1;
-		} else if (right_back < 40) {
-			rightbackbox = 2;
 		}
 		if (verbose) {
 			//System.out.println("RF: "+ rightfrontbox+ "/"+rfbmax+" RB: "+ rightbackbox +"/"+rbbmax+" FR: "+frontrightbox+"/"+ frbmax+" FM: "+ frontmidbox +"/"+fmbmax+" FL: "+ frontleftbox +"/"+flbmax+" LL: "+leftlongbox+"/"+llbmax);

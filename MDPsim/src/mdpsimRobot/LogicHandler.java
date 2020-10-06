@@ -725,7 +725,7 @@ public class LogicHandler {
 	}
 	//CHECK SENSOR VALUES AND UPDATE MAP -> VALUES SHOULD BE UPDATED HERE
 	public void scanMap(double right_front, double right_back, double front_right, double front_middle, double front_left, double left_long) {
-		boolean verbose = false;
+		boolean verbose = true;
 		int fmbmax = 1;
 		int frbmax = 1;
 		int flbmax = 1;
@@ -741,31 +741,31 @@ public class LogicHandler {
 		//FROM SENSOR VALUE DETERMINE RANGE OF NEXT BLOCK
 		//DEFINE INTEGERS AS LENGTH PROTRUDING FROM ROBOT 3X3 BODY
 		//HANDLE FRONT MIDDLE;
-		if (front_middle <= 10.5) {
+		if (front_middle <= 12.5) {
 			frontmidbox = 0;
 		}
 		//HANDLE FRONT RIGHT;
-		if (front_right <= 10.5) {
+		if (front_right <= 12.5) {
 			frontrightbox = 0;
 		}
 		//HANDLE FRONT LEFT;
-		if (front_left <= 10.5) {
+		if (front_left <= 12.5) {
 			frontleftbox = 0;
 		}
 		//HANDLE LEFT LONG
-		if (left_long <= 20.5) {
+		if (left_long <= 22.5) {
 			leftlongbox = 0;
 		}
 		//HANDLE RIGHT_FRONT
-		if (right_front <= 20.5) {
+		if (right_front <= 22.5) {
 			rightfrontbox = 0;
 		}
 		//HANDLE RIGHT_BACK
-		if (right_back <= 20.5) {
+		if (right_back <= 22.5) {
 			rightbackbox = 0;
 		}
 		if (verbose) {
-			//System.out.println("RF: "+ rightfrontbox+ "/"+rfbmax+" RB: "+ rightbackbox +"/"+rbbmax+" FR: "+frontrightbox+"/"+ frbmax+" FM: "+ frontmidbox +"/"+fmbmax+" FL: "+ frontleftbox +"/"+flbmax+" LL: "+leftlongbox+"/"+llbmax);
+			System.out.println("RF: "+ rightfrontbox+ "/"+rfbmax+" RB: "+ rightbackbox +"/"+rbbmax+" FR: "+frontrightbox+"/"+ frbmax+" FM: "+ frontmidbox +"/"+fmbmax+" FL: "+ frontleftbox +"/"+flbmax+" LL: "+leftlongbox+"/"+llbmax);
 		}
 		//FROM KNOWN BLOCK RANGES AND ROBOT DIRECTION UPDATE MAP
 		if (robotdir == RobotDirection.RIGHT) {
@@ -881,7 +881,7 @@ public class LogicHandler {
 				setMapMemory(x_pos-1-frontrightbox-1,y_pos+1,1);
 			}
 			if (frontleftbox < flbmax) {
-				setMapMemory(x_pos-1-frontrightbox-1,y_pos-1,1);
+				setMapMemory(x_pos-1-frontleftbox-1,y_pos-1,1);
 			}
 			if (rightfrontbox < rfbmax) {
 				setMapMemory(x_pos-1, y_pos+1+rightfrontbox+1,1);
@@ -918,7 +918,7 @@ public class LogicHandler {
 				setMapMemory(x_pos+1+frontrightbox+1,y_pos-1,1);
 			}
 			if (frontleftbox < flbmax) {
-				setMapMemory(x_pos+1+frontrightbox+1,y_pos+1,1);
+				setMapMemory(x_pos+1+frontleftbox+1,y_pos+1,1);
 			}
 			if (rightfrontbox < rfbmax) {
 				setMapMemory(x_pos+1, y_pos-1-rightfrontbox-1,1);

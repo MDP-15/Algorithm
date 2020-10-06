@@ -34,6 +34,7 @@ public class Viewer extends JFrame{
 	public boolean enginespeedflag;
 	public boolean custommdfresetflag;
 	public boolean fpflag;
+	public boolean coverageflag;
 	public String mdfstring;
 	public int enginespeed;
 	MapReader newMap = new MapReader();
@@ -44,6 +45,7 @@ public class Viewer extends JFrame{
 		this.engineresetflag = false;
 		this.enginespeedflag = false;
 		this.fpflag = false;
+		this.coverageflag = false;
 		setTitle(title);
 		setSize(w, h);
 		setResizable(false);

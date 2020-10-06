@@ -94,6 +94,10 @@ public class MDPSIM {
 					vw.fpflag = false;
 					break;
 				}
+				if (vw.coverageflag == true) {
+					vw.coverageflag = false;
+					coverage = Double.parseDouble(vw.cp.explorePercent.getText());
+				}
 		}
 	}
 	

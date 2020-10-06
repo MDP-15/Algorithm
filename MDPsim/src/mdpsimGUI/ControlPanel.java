@@ -17,8 +17,9 @@ import mdpsimRobot.Robot;
 
 public class ControlPanel extends JPanel {
 	Viewer vw;
+	public double coverage = 1;
 	JComboBox speedindicator;
-	JTextArea explorePercent;
+	public JTextArea explorePercent;
 	JTextArea timeCover;
 	JTextArea mdfinput;
 	JTextArea userTime;
@@ -45,6 +46,7 @@ public class ControlPanel extends JPanel {
 		// SELECT ROBOT SPEED
 		String[] strings = { "MAX", "1x", "0.5x", "0.25x" };
 		this.speedindicator = new JComboBox(strings);
+		this.coverage = 1;
 		speedindicator.setBounds(5, 5, 100, 20);
 		speedindicator.setSelectedIndex(1);
 		speedindicator.addActionListener(new ActionListener() {
@@ -82,7 +84,7 @@ public class ControlPanel extends JPanel {
 		setPercent.addActionListener(new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-				// ADD ACTION
+				vw.coverageflag = true;
 			}
 		});
 

@@ -25,7 +25,7 @@ public class MDPSIM {
 	private static Clock t;
 	private static long t0;
 	public static Robot robot;
-	public static int mode = 0;
+	public static int mode = 0; // 1:explore 2: return to base after explore 3: fastest path
 	
  static ArrayList<Action2D> actionqueue;
 	public static void main(String[] args) throws InterruptedException{
@@ -70,6 +70,8 @@ public class MDPSIM {
 				sensorUpdate(phyeng, vw.sensors, r);
 				if (mode == 1 || mode == 2) {
 					actionqueue.addAll(r.explore(phyeng.time()));
+				} else if (mode == 3) {
+					r.startFastestPath();
 				}
 				// flag handler functions
 				if (vw.engineresetflag == true) {
@@ -79,11 +81,12 @@ public class MDPSIM {
 				if (vw.enginespeedflag == true) {
 					vw.enginespeedflag = false;
 					reftime = phyeng.time();
-					t0 = t.millis();
+					t0 = t.millis();  
 					simspeed = vw.enginespeed;
 
 				}
 				if (vw.custommdfresetflag == true) {
+					vw.enginespeedflag = true;
 					vw.custommdfresetflag = false;
 					mdfString = parseFormatToMap(vw.mdfstring);
 					break;

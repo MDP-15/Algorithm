@@ -91,13 +91,12 @@ public class Robot {
 		System.out.println(way_x +" "+ way_y);
 		lh.parseMDF(MDPSIM.mdfString);
 	    System.out.println("Doing fastestPath");
-	    Node n = lh.computeFastestPath(18, 1, way_x, way_y, RobotDirection.RIGHT);
+	    Node n = lh.computeFastestPath(lh.x_pos, lh.y_pos, way_x, way_y, lh.robotdir);
 	    Node c = lh.computeFastestPath(way_x, way_y, 1, 13, n.rd);//Need to pass waypoint coordinates thru here
 	    actionstack = new Stack<String>();
 	    stackactions(c);
 	    stackactions(n);
 	    moveFP(actionstack);
-	    
 	  }
 	
 	public void stackactions(Node n) {

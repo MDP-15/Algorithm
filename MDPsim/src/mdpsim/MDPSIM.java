@@ -25,7 +25,7 @@ public class MDPSIM {
 	private static Clock t;
 	private static long t0;
 	public static Robot robot;
-	public static int mode;
+	public static int mode = 0;
 	
  static ArrayList<Action2D> actionqueue;
 	public static void main(String[] args) throws InterruptedException{

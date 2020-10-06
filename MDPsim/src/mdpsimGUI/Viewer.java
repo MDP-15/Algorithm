@@ -176,6 +176,7 @@ public class Viewer extends JFrame{
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
+					MDPSIM.mode = 1;
 					
 				}
 			});
@@ -185,6 +186,7 @@ public class Viewer extends JFrame{
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
 					System.out.println("Button Pressed");
+					MDPSIM.robot.lh.parseMDF(MDPSIM.mdfString);
 					MDPSIM.robot.startFastestPath();
 					
 				}

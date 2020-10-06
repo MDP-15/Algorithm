@@ -17,11 +17,12 @@ public class TCPsocket {
 	public static InputStream din = null;
 	public static PrintStream dout = null;
 	public static String[] bufferableCommand = new String[] { "Image" };
-
+	public static double[] ssD = new double[6];
+	
 	public static void tcpSocket() {
 		try {
-			//socket = new Socket("192.168.15.1", 9000);
-			socket = new Socket("127.0.0.1", 9000);
+			socket = new Socket("192.168.15.1", 9000);
+			//socket = new Socket("127.0.0.1", 9000);
 			System.out.println("Connected to " + socket.getInetAddress() + ":" + Integer.toString(socket.getPort()));
 			din = socket.getInputStream();
 			dout = new PrintStream(socket.getOutputStream());
@@ -141,7 +142,7 @@ public class TCPsocket {
 				case "SENSORS":
 					String ss = jobj.getString("SENSORS");
 					String[] ss1 = ss.split(";");
-					double[] ssD = new double[ss1.length];
+					//double[] ssD = new double[ss1.length];
 					for(int i=0; i<ss1.length; i++)
 					{
 						ssD[i] = Double.parseDouble(ss1[i]);

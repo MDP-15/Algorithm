@@ -103,20 +103,20 @@ public class ControlPanel extends JPanel {
 			}
 		});
 
-		// FLAG BUTTON
-		flag = new JButton("Explore");
-		flag.setBounds(5, 140, 100, 30);
-		flag.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (MDPSIM.mode == 1) {
-					MDPSIM.mode = 0;
-				} else if (MDPSIM.mode == 0) {
-					MDPSIM.mode = 1;
-				}
-			}
-		});
-		this.add(flag);
+//		// FLAG BUTTON
+//		flag = new JButton("Explore");
+//		flag.setBounds(5, 140, 100, 30);
+//		flag.addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				if (MDPSIM.mode == 1) {
+//					MDPSIM.mode = 0;
+//				} else if (MDPSIM.mode == 0) {
+//					MDPSIM.mode = 1;
+//				}
+//			}
+//		});
+//		this.add(flag);
 	}
 
 	@Override

@@ -62,7 +62,7 @@ public class TCPsocket {
 	 */
 
 	public static void sendMessage(String message) {
-		System.out.println("wtf");
+		//System.out.println("wtf");
 		try {
 			dout.write(message.getBytes());
 			dout.flush();
@@ -98,6 +98,7 @@ public class TCPsocket {
 				size++;
 			}
 			String message = new String(byteData, 0, size, "UTF-8");
+			System.out.println(message);
 			JSONObject jobj;
 			try {
 				jobj = new JSONObject(message);

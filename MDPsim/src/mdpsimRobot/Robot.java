@@ -97,6 +97,8 @@ public class Robot {
 	    stackactions(c);
 	    stackactions(n);
 	    moveFP(actionstack);
+	    //moveFP2(actionstack);
+	    
 	  }
 	
 	public void stackactions(Node n) {
@@ -122,23 +124,46 @@ public class Robot {
 		      switch (actionstack.peek()) {
 		      case "F1":
 		        actionqueue.add(RobotAction.F1);
-		        //TCPsocket.sendMessage("F1s");
 		        break;
 		      case "F2":
 		        actionqueue.add(RobotAction.F2);
-		        //TCPsocket.sendMessage("F2s");
 		        break;
 		      case "F3":
 		        actionqueue.add(RobotAction.F3);
-		        //TCPsocket.sendMessage("F3s");
 		        break;
 		      case "TL":
 		        actionqueue.add(RobotAction.TL);
-		        //TCPsocket.sendMessage("TLs");
 		        break;
 		      case "TR":
 		        actionqueue.add(RobotAction.TR);
-		        //TCPsocket.sendMessage("TRs");
+		        break;
+		      }
+		      actionstack.pop();
+		    }
+	}
+	
+	public void moveFP2(Stack<String> actionstack) {
+		while (!actionstack.isEmpty()) {
+		      switch (actionstack.peek()) {
+		      case "F1":
+		        actionqueue.add(RobotAction.F1);
+		        TCPsocket.sendMessage("F1s");
+		        break;
+		      case "F2":
+		        actionqueue.add(RobotAction.F2);
+		        TCPsocket.sendMessage("F2s");
+		        break;
+		      case "F3":
+		        actionqueue.add(RobotAction.F3);
+		        TCPsocket.sendMessage("F3s");
+		        break;
+		      case "TL":
+		        actionqueue.add(RobotAction.TL);
+		        TCPsocket.sendMessage("Ls");
+		        break;
+		      case "TR":
+		        actionqueue.add(RobotAction.TR);
+		        TCPsocket.sendMessage("Rs");
 		        break;
 		      }
 		      actionstack.pop();

@@ -188,8 +188,8 @@ public class Viewer extends JFrame{
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
 					System.out.println("Button Pressed");
-					MDPSIM.robot.lh.parseMDF();
 					MDPSIM.mode = 3;
+					MDPSIM.robot.startFastestPath();
 					
 				}
 			});

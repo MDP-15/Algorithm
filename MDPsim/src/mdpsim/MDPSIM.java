@@ -68,10 +68,8 @@ public class MDPSIM {
 				updateEngine2DPanel(r, phyeng, vw.map1);
 				updateRobot2DPanel(phyeng, r, vw.map2);
 				sensorUpdate(phyeng, vw.sensors, r);
-				if (mode == 1 || mode == 2) {
+				if (mode == 1 || mode == 2 || mode == 3) {
 					actionqueue.addAll(r.explore(phyeng.time()));
-				} else if (mode == 3) {
-					r.startFastestPath();
 				}
 				// flag handler functions
 				if (vw.engineresetflag == true) {
@@ -89,6 +87,10 @@ public class MDPSIM {
 					vw.enginespeedflag = true;
 					vw.custommdfresetflag = false;
 					mdfString = parseFormatToMap(vw.mdfstring);
+					break;
+				}
+				if (vw.fpflag == true) {
+					vw.fpflag = false;
 					break;
 				}
 		}

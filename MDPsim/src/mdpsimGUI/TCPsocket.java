@@ -71,6 +71,9 @@ public class TCPsocket {
 	 } catch (Exception e) {
    	 	socket.close();
    	 	socket = new Socket("192.168.15.1",9000);
+		System.out.println("Connected to " + socket.getInetAddress() + ":" + Integer.toString(socket.getPort()));
+		din = socket.getInputStream();
+		dout = new PrintStream(socket.getOutputStream());
 		Runnable r = new Runnable() {
 	         public void run() {
 	        	 try {

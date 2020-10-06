@@ -29,12 +29,12 @@ public class MDPSIM {
 	public static int mode = 0; // 1:explore 2: return to base after explore 3: fastest path
 	public static double coverage;
 	public static int timelimit;
-	public static boolean real = false;
+	public static boolean real;
 	
  static ArrayList<Action2D> actionqueue;
 	public static void main(String[] args) throws InterruptedException, IOException{
 		coverage = 1.0;
-		real = false;
+		real = true;
 		mdfString = parseFormatToMap(""); 
 		vw = new Viewer("MDP Simulator", 1024, 768); //First Panel
 		pause = false;

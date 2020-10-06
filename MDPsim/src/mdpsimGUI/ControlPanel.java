@@ -26,7 +26,7 @@ public class ControlPanel extends JPanel {
 	JButton flag;
 	JButton setTime;
 	JButton setPercent;
-
+	
 	private static final long serialVersionUID = 1L;
 
 	public ControlPanel() {

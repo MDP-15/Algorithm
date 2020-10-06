@@ -4,7 +4,10 @@ import java.io.IOException;
 
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketAddress;
 import java.net.UnknownHostException;
 import org.json.*;
 
@@ -21,22 +24,22 @@ public class TCPsocket {
 	
 	public static void tcpSocket() {
 		try {
-			socket = new Socket("192.168.15.1", 9000);
-			//socket = new Socket("127.0.0.1", 9000);
+			socket = new Socket();
 			System.out.println("Connected to " + socket.getInetAddress() + ":" + Integer.toString(socket.getPort()));
 			din = socket.getInputStream();
 			dout = new PrintStream(socket.getOutputStream());
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		
 		Runnable r = new Runnable() {
 	         public void run() {
-	        	 while(true) {
+	        	 try {
+	        		 receiveMessage();
+	        	 } catch (Exception e) {
+	        		 return;
+	        	 }
+	        	 while(socket != null) {
 	        		 receiveMessage();
 	        	 }
 	         }
@@ -61,9 +64,30 @@ public class TCPsocket {
 	 * 
 	 * }
 	 */
-
+	public static void tryConnect() throws IOException {
+   	 try {
+		 receiveMessage();
+		 return;
+	 } catch (Exception e) {
+   	 	socket.close();
+   	 	socket = new Socket("192.168.15.1",9000);
+		Runnable r = new Runnable() {
+	         public void run() {
+	        	 try {
+	        		 receiveMessage();
+	        	 } catch (Exception e) {
+	        		 return;
+	        	 }
+	        	 while(socket != null) {
+	        		 receiveMessage();
+	        	 }
+	         }
+	     };
+	     new Thread(r).start();
+	 }
+	}
+	
 	public static void sendMessage(String message) {
-		System.out.println("wtf");
 		try {
 			dout.write(message.getBytes());
 			dout.flush();

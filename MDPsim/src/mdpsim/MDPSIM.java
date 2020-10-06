@@ -6,6 +6,7 @@ import mdpsimEngine.*;
 import mdpsimEngine.Action2D.Action;
 
 import java.awt.Color;
+import java.io.IOException;
 import java.lang.String;
 import java.time.Clock;
 import java.util.ArrayList;
@@ -28,83 +29,101 @@ public class MDPSIM {
 	public static int mode = 0; // 1:explore 2: return to base after explore 3: fastest path
 	public static double coverage;
 	public static int timelimit;
+	public static boolean real = false;
 	
  static ArrayList<Action2D> actionqueue;
-	public static void main(String[] args) throws InterruptedException{
+	public static void main(String[] args) throws InterruptedException, IOException{
 		coverage = 1.0;
-	    //TCPsocket.tcpSocket();
+		real = false;
 		mdfString = parseFormatToMap(""); 
 		vw = new Viewer("MDP Simulator", 1024, 768); //First Panel
 		pause = false;
 		actionqueue = new ArrayList<Action2D>(0);
 		while (true) {
-			inputMDF();
+			inputMDF(real);
 		}
 	}
 	//Problem: Removing of panel and Updating of panel 
 	//Cannot see the map
 	
 	//Removed vw cause not initialized in MapReader
-	public static void inputMDF() throws InterruptedException{
+	public static void inputMDF(boolean real) throws InterruptedException, IOException{
 		//System.out.println("MDF STRING: "+mdfString);
-		t = Clock.systemDefaultZone();
-		timelimit = 0;
-		t0 = t.millis();
-		String s = parseFormatToMap(mdfString);   
-		ArrayList<Object2D> objects = generateMap(s);
-		Engine2D phyeng = new Engine2D(objects, (double)timeres/1000);
-		Robot r = initializeRobot();
-		vw.setVisible(true);
-		updateEngine2DPanel(r,phyeng, vw.map1);	
-		updateRobot2DPanel(phyeng, r, vw.map2);
-		while(true) { //can put true
-				try {
-					while((phyeng.time()-reftime)*1000 >= ((double)(t.millis()-t0)/simspeed)) {
-						NOP();
+		if (!real) {
+			t = Clock.systemDefaultZone();
+			timelimit = 0;
+			t0 = t.millis();
+			String s = parseFormatToMap(mdfString);   
+			ArrayList<Object2D> objects = generateMap(s);
+			Engine2D phyeng = new Engine2D(objects, (double)timeres/1000);
+			Robot r = initializeRobot();
+			vw.setVisible(true);
+			updateEngine2DPanel(r,phyeng, vw.map1);	
+			updateFakeRobot2DPanel(phyeng, r, vw.map2);
+			while(!real) { //can put true
+					try {
+						while((phyeng.time()-reftime)*1000 >= ((double)(t.millis()-t0)/simspeed)) {
+							NOP();
+						}
+					} catch (Exception e) {}
+					if (actionqueue.size() == 0) {
+						phyeng.next(null);
+					} else {
+						phyeng.next(actionqueue.remove(0));
 					}
+					updateEngine2DPanel(r, phyeng, vw.map1);
+					updateFakeRobot2DPanel(phyeng, r, vw.map2);
+					sensorUpdate(phyeng, vw.sensors, r);
+					if (mode == 1 || mode == 2 || mode == 3) {
+						actionqueue.addAll(r.explore(phyeng.time()));
+					}
+					// flag handler functions
+					if (vw.engineresetflag == true) {
+						vw.engineresetflag = false;
+						break;
+					}
+					if (vw.enginespeedflag == true) {
+						vw.enginespeedflag = false;
+						reftime = phyeng.time();
+						t0 = t.millis();  
+						simspeed = vw.enginespeed;
+	
+					}
+					if (vw.custommdfresetflag == true) {
+						vw.enginespeedflag = true;
+						vw.custommdfresetflag = false;
+						mdfString = parseFormatToMap(vw.mdfstring);
+						break;
+					}
+					if (vw.fpflag == true) {
+						vw.fpflag = false;
+						break;
+					}
+					if (vw.coverageflag == true) {
+						vw.coverageflag = false;
+						coverage = Double.parseDouble(vw.cp.explorePercent.getText());
+					}
+					if (vw.timeflag == true) {
+						vw.timeflag = false;
+						r.lh.timelimit = phyeng.time()+Double.parseDouble(vw.cp.userTime.getText());
+						mode = 1;
+					}
+			}
+		} else {
+			try {
+				TCPsocket.tcpSocket();
+			} catch (Exception e) {}
+			Robot r = initializeRobot();
+			r.lh.setRobotDirection(RobotDirection.UP);
+			r.lh.updatePosition(18, 1);
+			updateRealEngine2DPanel(r, vw.map1);
+			updateRealRobot2DPanel(r, vw.map2);
+			vw.setVisible(true);
+			while (real) {
+				try {
+					TCPsocket.tryConnect();
 				} catch (Exception e) {}
-				if (actionqueue.size() == 0) {
-					phyeng.next(null);
-				} else {
-					phyeng.next(actionqueue.remove(0));
-				}
-				updateEngine2DPanel(r, phyeng, vw.map1);
-				updateRobot2DPanel(phyeng, r, vw.map2);
-				sensorUpdate(phyeng, vw.sensors, r);
-				if (mode == 1 || mode == 2 || mode == 3) {
-					actionqueue.addAll(r.explore(phyeng.time()));
-				}
-				// flag handler functions
-				if (vw.engineresetflag == true) {
-					vw.engineresetflag = false;
-					break;
-				}
-				if (vw.enginespeedflag == true) {
-					vw.enginespeedflag = false;
-					reftime = phyeng.time();
-					t0 = t.millis();  
-					simspeed = vw.enginespeed;
-
-				}
-				if (vw.custommdfresetflag == true) {
-					vw.enginespeedflag = true;
-					vw.custommdfresetflag = false;
-					mdfString = parseFormatToMap(vw.mdfstring);
-					break;
-				}
-				if (vw.fpflag == true) {
-					vw.fpflag = false;
-					break;
-				}
-				if (vw.coverageflag == true) {
-					vw.coverageflag = false;
-					coverage = Double.parseDouble(vw.cp.explorePercent.getText());
-				}
-				if (vw.timeflag == true) {
-					vw.timeflag = false;
-					r.lh.timelimit = phyeng.time()+Double.parseDouble(vw.cp.userTime.getText());
-					mode = 1;
-				}
+			}
 		}
 	}
 	
@@ -112,23 +131,6 @@ public class MDPSIM {
 		assert true;
 	}
 	
-	private static boolean flagHandler() {
-		if (vw.engineresetflag == true) {
-			vw.engineresetflag = false;
-			return true;
-		}
-		if (vw.enginespeedflag == true) {
-			vw.enginespeedflag = false;
-			simspeed = vw.enginespeed;
-
-		}
-		if (vw.custommdfresetflag == true) {
-			vw.custommdfresetflag = false;
-			mdfString = parseFormatToMap(vw.mdfstring);
-			return true;
-		}
-		return false;
-	}
 	//initialize virtual robot object;
 	public static Robot initializeRobot() {
 		robot = new Robot(new ArrayList<Sensor>(), 10);
@@ -268,7 +270,7 @@ public class MDPSIM {
 	}
 	
 	
-	public static void updateRobot2DPanel(Engine2D phyeng, Robot r, Robot2DPanel rpanel) {
+	public static void updateFakeRobot2DPanel(Engine2D phyeng, Robot r, Robot2DPanel rpanel) {
 		rpanel.setMap(r.lh.mapmemory);
 		ArrayList<Circle> circles = new ArrayList<Circle>();
 		double mult = (float) rpanel.getWidth()/ (float) 150;
@@ -284,4 +286,19 @@ public class MDPSIM {
 		rpanel.repaint();
 	}
 	
+	public static void updateRealRobot2DPanel(Robot r, Robot2DPanel rpanel) {
+		rpanel.setMap(r.lh.mapmemory);
+		ArrayList<Circle> circles = new ArrayList<Circle>();
+		double mult = (float) rpanel.getWidth()/ (float) 150;
+		VecInt vec = new VecInt((int)Math.round(r.lh.x_pos*10*mult),(int) Math.round(r.lh.y_pos*10*mult));
+		circles.add(new Circle(vec,20, Color.BLACK,true));
+		rpanel.circles = circles;
+		rpanel.repaint();
+	}
+	
+	public static void updateRealEngine2DPanel(Robot r, Engine2DPanel rpanel) {
+		rpanel.lines = new ArrayList<Line>();
+		rpanel.circles = new ArrayList<Circle>();
+		rpanel.repaint();
+	}
 }

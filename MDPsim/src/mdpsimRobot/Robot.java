@@ -78,7 +78,7 @@ public class Robot {
 	
 	public ArrayList<Action2D> explore(double time){
 		ArrayList<Action2D> actions = new ArrayList<Action2D>(0);
-		if (mh.currentaction == null && mh.actionqueue.size() == 0 && MDPSIM.mode == 1) {
+		if (mh.currentaction == null && mh.actionqueue.size() == 0 && (MDPSIM.mode == 1 || MDPSIM.mode == 2)) {
 			lh.updatePos();
 			lh.scan(sensorvalues);
 			mh.actionqueue.add(lh.getNextAction());
@@ -89,14 +89,15 @@ public class Robot {
 
 	public void startFastestPath() {
 		System.out.println(way_x +" "+ way_y);
-		lh.parseMDF(MDPSIM.mdfString);
+		//lh.parseMDF(MDPSIM.mdfString);
 	    System.out.println("Doing fastestPath");
-	    Node n = lh.computeFastestPath(18, 1, way_x, way_y, RobotDirection.RIGHT);
+	    Node n = lh.computeFastestPath(lh.x_pos, lh.y_pos, way_x, way_y, lh.robotdir);
 	    Node c = lh.computeFastestPath(way_x, way_y, 1, 13, n.rd);//Need to pass waypoint coordinates thru here
 	    actionstack = new Stack<String>();
 	    stackactions(c);
 	    stackactions(n);
 	    moveFP(actionstack);
+	    //moveFP2(actionstack);
 	    
 	  }
 	
@@ -123,23 +124,46 @@ public class Robot {
 		      switch (actionstack.peek()) {
 		      case "F1":
 		        actionqueue.add(RobotAction.F1);
-		        //TCPsocket.sendMessage("F1s");
 		        break;
 		      case "F2":
 		        actionqueue.add(RobotAction.F2);
-		        //TCPsocket.sendMessage("F2s");
 		        break;
 		      case "F3":
 		        actionqueue.add(RobotAction.F3);
-		        //TCPsocket.sendMessage("F3s");
 		        break;
 		      case "TL":
 		        actionqueue.add(RobotAction.TL);
-		        //TCPsocket.sendMessage("TLs");
 		        break;
 		      case "TR":
 		        actionqueue.add(RobotAction.TR);
-		        //TCPsocket.sendMessage("TRs");
+		        break;
+		      }
+		      actionstack.pop();
+		    }
+	}
+	
+	public void moveFP2(Stack<String> actionstack) {
+		while (!actionstack.isEmpty()) {
+		      switch (actionstack.peek()) {
+		      case "F1":
+		        actionqueue.add(RobotAction.F1);
+		        TCPsocket.sendMessage("F1s");
+		        break;
+		      case "F2":
+		        actionqueue.add(RobotAction.F2);
+		        TCPsocket.sendMessage("F2s");
+		        break;
+		      case "F3":
+		        actionqueue.add(RobotAction.F3);
+		        TCPsocket.sendMessage("F3s");
+		        break;
+		      case "TL":
+		        actionqueue.add(RobotAction.TL);
+		        TCPsocket.sendMessage("Ls");
+		        break;
+		      case "TR":
+		        actionqueue.add(RobotAction.TR);
+		        TCPsocket.sendMessage("Rs");
 		        break;
 		      }
 		      actionstack.pop();

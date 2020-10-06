@@ -107,16 +107,46 @@ public class LogicHandler {
 	
 	public Node returnToBase(){
 		Node n = computeFastestPath(x_pos,y_pos,18,1,robotdir);
-		n.printParents();
+		if (n.isCell(new Node (x_pos,y_pos,null,null,null,0.0))) {
+			MDPSIM.mode = 0;
+		}
 		return n;
+	}
+	
+	
+	public double coverage() {
+		int x_size = mapmemory.size();
+		int y_size = 0;
+		int covered = 0;
+		try {
+			y_size = mapmemory.get(0).size();
+		} catch (Exception e) {
+			return 0.0;
+		}
+		int maxsize = x_size * y_size;
+		for (int a = 0; a < x_size; a++) {
+			for (int b = 0; b < y_size; b++) {
+				if (mapmemory.get(a).get(b) != 2) {
+					covered += 1;
+				}
+			}
+		}
+		return (double)covered/maxsize;
 	}
 	
 	public RobotAction getNextAction() {
 		//EXPLORATION
 		//FIND NEXT NODE
 		if (queue.size() == 0) {
-			Node n = findNext();
-			if (n == null) {
+			Node n = null;
+			if (MDPSIM.mode == 1) {
+				if (coverage() >= MDPSIM.coverage) {
+					MDPSIM.mode = 2;
+					return null;
+				}
+				n = findNext();
+			}
+			if (MDPSIM.mode == 2) {
 				n = returnToBase();
 				//printMapMemory();
 			} 
@@ -139,6 +169,36 @@ public class LogicHandler {
 		}
 	}
 	*/
+	public String updateMDFStringFromRobotMemory() {
+		ArrayList<ArrayList<Integer>> mem = mapmemory;
+		String mdf = "";
+		int x_size = mem.size();
+		int y_size = 0;
+		try {
+			y_size = mem.get(0).size();
+		} catch (Exception e){
+			return null;
+		}
+		for (int a = 0; a < x_size; a++) {
+			for(int b = 0; b < y_size; b++) {
+				if (mem.get(a).get(b) == 0) {
+					mdf.concat("0");
+				} else if (mem.get(a).get(b) == 1) {
+					mdf.concat("1");
+				}  else if (mem.get(a).get(b) == 2) {
+					mdf.concat("2");
+				}
+			}
+		}
+		String fin = "";
+		if (mdf.length() > 0) {
+			for (int a = mdf.length()-1; a == 0; a--) {
+				fin.concat(Character.toString(mdf.charAt(a)));
+			}
+
+		}
+		return fin;
+	}
 	
 	public ArrayList<RobotAction> trailAction(Node n){
 		ArrayList<RobotAction> ar = new ArrayList<RobotAction>();
@@ -198,6 +258,25 @@ public class LogicHandler {
 //		n.printParents();
 	}
 	
+	public void parseMDF() {
+		String s = updateMDFStringFromRobotMemory();
+		ArrayList<ArrayList<Integer>> mem = new ArrayList<ArrayList<Integer>>();
+		for (int a = 0 ; a < y_size; a++) {
+			ArrayList<Integer> ar = new ArrayList<Integer>();
+			for (int b = 0; b < x_size; b++) {
+				if (s.charAt((a*x_size)+b) == '1') {
+					ar.add(1);
+				} else {
+					ar.add(0);
+				}
+			}
+			mem.add(ar);
+		}
+		this.mapmemory = mem;
+//		Node n = computeFastestPath(18,1,1,13,RobotDirection.DOWN);
+//		n.printParents();
+	}
+	
 	//EXPLORATION
 	//CONSTRUCT BOUNDARY, THEN FIND TARGET NODE THAT WILL GIVE HIGHEST EXPLORATION REWARD PER SCORE;
 	public Node findNext() {
@@ -215,6 +294,7 @@ public class LogicHandler {
 		}
 		first = exSort(first);
 		if (first.size() == 0) {
+			MDPSIM.mode = 2;
 			return null;
 		}
 		ExplorationNode e = first.get(0);
@@ -672,7 +752,7 @@ public class LogicHandler {
 	}
 	//CHECK SENSOR VALUES AND UPDATE MAP -> VALUES SHOULD BE UPDATED HERE
 	public void scanMap(double right_front, double right_back, double front_right, double front_middle, double front_left, double left_long) {
-		boolean verbose = false;
+		boolean verbose = true;
 		int fmbmax = 1;
 		int frbmax = 1;
 		int flbmax = 1;
@@ -688,31 +768,31 @@ public class LogicHandler {
 		//FROM SENSOR VALUE DETERMINE RANGE OF NEXT BLOCK
 		//DEFINE INTEGERS AS LENGTH PROTRUDING FROM ROBOT 3X3 BODY
 		//HANDLE FRONT MIDDLE;
-		if (front_middle <= 10.5) {
+		if (front_middle <= 12.5) {
 			frontmidbox = 0;
 		}
 		//HANDLE FRONT RIGHT;
-		if (front_right <= 10.5) {
+		if (front_right <= 12.5) {
 			frontrightbox = 0;
 		}
 		//HANDLE FRONT LEFT;
-		if (front_left <= 10.5) {
+		if (front_left <= 12.5) {
 			frontleftbox = 0;
 		}
 		//HANDLE LEFT LONG
-		if (left_long <= 20.5) {
+		if (left_long <= 22.5) {
 			leftlongbox = 0;
 		}
 		//HANDLE RIGHT_FRONT
-		if (right_front <= 20.5) {
+		if (right_front <= 22.5) {
 			rightfrontbox = 0;
 		}
 		//HANDLE RIGHT_BACK
-		if (right_back <= 20.5) {
+		if (right_back <= 22.5) {
 			rightbackbox = 0;
 		}
 		if (verbose) {
-			//System.out.println("RF: "+ rightfrontbox+ "/"+rfbmax+" RB: "+ rightbackbox +"/"+rbbmax+" FR: "+frontrightbox+"/"+ frbmax+" FM: "+ frontmidbox +"/"+fmbmax+" FL: "+ frontleftbox +"/"+flbmax+" LL: "+leftlongbox+"/"+llbmax);
+			System.out.println("RF: "+ rightfrontbox+ "/"+rfbmax+" RB: "+ rightbackbox +"/"+rbbmax+" FR: "+frontrightbox+"/"+ frbmax+" FM: "+ frontmidbox +"/"+fmbmax+" FL: "+ frontleftbox +"/"+flbmax+" LL: "+leftlongbox+"/"+llbmax);
 		}
 		//FROM KNOWN BLOCK RANGES AND ROBOT DIRECTION UPDATE MAP
 		if (robotdir == RobotDirection.RIGHT) {
@@ -828,7 +908,7 @@ public class LogicHandler {
 				setMapMemory(x_pos-1-frontrightbox-1,y_pos+1,1);
 			}
 			if (frontleftbox < flbmax) {
-				setMapMemory(x_pos-1-frontrightbox-1,y_pos-1,1);
+				setMapMemory(x_pos-1-frontleftbox-1,y_pos-1,1);
 			}
 			if (rightfrontbox < rfbmax) {
 				setMapMemory(x_pos-1, y_pos+1+rightfrontbox+1,1);
@@ -865,7 +945,7 @@ public class LogicHandler {
 				setMapMemory(x_pos+1+frontrightbox+1,y_pos-1,1);
 			}
 			if (frontleftbox < flbmax) {
-				setMapMemory(x_pos+1+frontrightbox+1,y_pos+1,1);
+				setMapMemory(x_pos+1+frontleftbox+1,y_pos+1,1);
 			}
 			if (rightfrontbox < rfbmax) {
 				setMapMemory(x_pos+1, y_pos-1-rightfrontbox-1,1);

@@ -33,6 +33,7 @@ public class Viewer extends JFrame{
 	public boolean engineresetflag;
 	public boolean enginespeedflag;
 	public boolean custommdfresetflag;
+	public boolean fpflag;
 	public String mdfstring;
 	public int enginespeed;
 	MapReader newMap = new MapReader();
@@ -42,6 +43,7 @@ public class Viewer extends JFrame{
 	public Viewer (String title, int w, int h){
 		this.engineresetflag = false;
 		this.enginespeedflag = false;
+		this.fpflag = false;
 		setTitle(title);
 		setSize(w, h);
 		setResizable(false);
@@ -186,7 +188,7 @@ public class Viewer extends JFrame{
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
 					System.out.println("Button Pressed");
-					MDPSIM.robot.lh.parseMDF(MDPSIM.mdfString);
+					MDPSIM.mode = 3;
 					MDPSIM.robot.startFastestPath();
 					
 				}

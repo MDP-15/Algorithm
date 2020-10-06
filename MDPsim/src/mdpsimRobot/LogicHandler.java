@@ -118,6 +118,7 @@ public class LogicHandler {
 			Node n = findNext();
 			if (n == null) {
 				n = returnToBase();
+				//printMapMemory();
 			} 
 			queue = trailAction(n);
 		} else {
@@ -127,6 +128,7 @@ public class LogicHandler {
 			}
 			return ra;
 		}
+		printMapMemory(); //prints final mdf output 
 		return null;
 	}
 

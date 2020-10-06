@@ -18,12 +18,14 @@ import mdpsimRobot.Robot;
 public class ControlPanel extends JPanel {
 	Viewer vw;
 	JComboBox speedindicator;
-	JComboBox explorePercent;
+	JTextArea explorePercent;
+	JTextArea timeCover;
 	JTextArea mdfinput;
 	JTextArea userTime;
 	JButton resetbutton;
 	JButton flag;
 	JButton setTime;
+	JButton setPercent;
 
 	private static final long serialVersionUID = 1L;
 
@@ -54,19 +56,6 @@ public class ControlPanel extends JPanel {
 		});
 		this.add(speedindicator);
 
-		// SELECT % OF EXPLORATION
-		String[] explore = { "100%", "75%", "50%" };
-		this.explorePercent = new JComboBox(explore);
-		explorePercent.setBounds(110, 5, 100, 20);
-		explorePercent.setSelectedIndex(1);
-		explorePercent.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// ADD ACTION
-			}
-		});
-		this.add(explorePercent);
-
 		// USER SELECTED TIME LIMIT
 		this.userTime = new JTextArea("Input Time Limit in seconds");
 		userTime.setBounds(5, 70, 300, 30);
@@ -81,6 +70,22 @@ public class ControlPanel extends JPanel {
 				// ADD ACTION
 			}
 		});
+		
+		// SELECT % OF EXPLORATION
+		this.explorePercent = new JTextArea("Enter a value between 0 and 1");
+		explorePercent.setBounds(5, 105, 300, 30);
+		this.add(explorePercent);
+		this.setPercent = new JButton();
+		setPercent.setText("Coverage");
+		setPercent.setBounds(305, 105, 100, 30);
+		this.add(setPercent);
+		setPercent.addActionListener(new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+				// ADD ACTION
+			}
+		});
+
 
 		// INPUT MDF STRING
 		this.mdfinput = new JTextArea("Input an MDF string");
@@ -100,7 +105,7 @@ public class ControlPanel extends JPanel {
 
 		// FLAG BUTTON
 		flag = new JButton("Explore");
-		flag.setBounds(5, 120, 100, 30);
+		flag.setBounds(5, 140, 100, 30);
 		flag.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

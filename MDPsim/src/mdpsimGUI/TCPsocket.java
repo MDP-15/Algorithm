@@ -20,8 +20,8 @@ public class TCPsocket {
 
 	public static void tcpSocket() {
 		try {
-			socket = new Socket("192.168.15.1", 9000);
-			//socket = new Socket("127.0.0.1", 9000);
+			//socket = new Socket("192.168.15.1", 9000);
+			socket = new Socket("127.0.0.1", 9000);
 			System.out.println("Connected to " + socket.getInetAddress() + ":" + Integer.toString(socket.getPort()));
 			din = socket.getInputStream();
 			dout = new PrintStream(socket.getOutputStream());
@@ -62,7 +62,7 @@ public class TCPsocket {
 	 */
 
 	public static void sendMessage(String message) {
-		//System.out.println("wtf");
+		System.out.println("wtf");
 		try {
 			dout.write(message.getBytes());
 			dout.flush();
@@ -98,11 +98,10 @@ public class TCPsocket {
 				size++;
 			}
 			String message = new String(byteData, 0, size, "UTF-8");
-			System.out.println(message);
 			JSONObject jobj;
 			try {
 				jobj = new JSONObject(message);
-				message = jobj.getString("A15");
+				message = jobj.getString("MDP15");
 				switch (message) {
 				case "RP":
 					int robotx = jobj.getInt("X");
@@ -138,6 +137,16 @@ public class TCPsocket {
 					Robot.way_x = jobj.getInt("X");
 					Robot.way_y = jobj.getInt("Y");
 					System.out.println(Robot.way_x +" "+ Robot.way_y);
+					break;
+				case "SENSORS":
+					String ss = jobj.getString("SENSORS");
+					String[] ss1 = ss.split(";");
+					double[] ssD = new double[ss1.length];
+					for(int i=0; i<ss1.length; i++)
+					{
+						ssD[i] = Double.parseDouble(ss1[i]);
+					}
+					System.out.println(ssD[1]);
 					break;
 				default:
 					break;

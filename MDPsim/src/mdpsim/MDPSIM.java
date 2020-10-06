@@ -26,10 +26,11 @@ public class MDPSIM {
 	private static long t0;
 	public static Robot robot;
 	public static int mode = 0; // 1:explore 2: return to base after explore 3: fastest path
+	public static double coverage;
 	
  static ArrayList<Action2D> actionqueue;
 	public static void main(String[] args) throws InterruptedException{
-
+		coverage = 1.0;
 	    //TCPsocket.tcpSocket();
 		mdfString = parseFormatToMap(""); 
 		vw = new Viewer("MDP Simulator", 1024, 768); //First Panel

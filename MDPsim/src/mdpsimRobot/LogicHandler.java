@@ -113,12 +113,37 @@ public class LogicHandler {
 		return n;
 	}
 	
+	
+	public double coverage() {
+		int x_size = mapmemory.size();
+		int y_size = 0;
+		int covered = 0;
+		try {
+			y_size = mapmemory.get(0).size();
+		} catch (Exception e) {
+			return 0.0;
+		}
+		int maxsize = x_size * y_size;
+		for (int a = 0; a < x_size; a++) {
+			for (int b = 0; b < y_size; b++) {
+				if (mapmemory.get(a).get(b) != 2) {
+					covered += 1;
+				}
+			}
+		}
+		return (double)covered/maxsize;
+	}
+	
 	public RobotAction getNextAction() {
 		//EXPLORATION
 		//FIND NEXT NODE
 		if (queue.size() == 0) {
 			Node n = null;
 			if (MDPSIM.mode == 1) {
+				if (coverage() >= MDPSIM.coverage) {
+					MDPSIM.mode = 2;
+					return null;
+				}
 				n = findNext();
 			}
 			if (MDPSIM.mode == 2) {

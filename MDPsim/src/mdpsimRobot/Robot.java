@@ -82,7 +82,7 @@ public class Robot {
 			lh.updatePos();
 			lh.scan(sensorvalues);
 			mh.actionqueue.add(lh.getNextAction(time));
-		} else if (mh.currentaction == null && mh.actionqueue.size() == 0 && MDPSIM.real) {
+		} else if (MDPSIM.real) {
 			RobotAction r = lh.getNextAction(time);
 			if (r != null) {
 				System.out.println(r.toString());

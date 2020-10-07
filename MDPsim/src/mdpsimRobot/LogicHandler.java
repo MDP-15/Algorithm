@@ -155,7 +155,7 @@ public class LogicHandler {
 			if (n != null) {
 				queue = trailAction(n);
 			}
-		} else if (!MDPSIM.real){
+		} else {
 			RobotAction ra = queue.remove(queue.size()-1);
 			if (ra != null) {
 				prevaction = ra;
@@ -163,7 +163,11 @@ public class LogicHandler {
 			return ra;
 		}
 		if (MDPSIM.real) {
-			return queue.remove(0);
+			RobotAction ra = queue.remove(queue.size()-1);
+			if (ra != null) {
+				prevaction = ra;
+			}
+			return ra;
 		}
 		return null;
 	}

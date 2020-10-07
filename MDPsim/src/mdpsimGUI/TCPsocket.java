@@ -4,10 +4,7 @@ import java.io.IOException;
 
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.net.SocketAddress;
 import java.net.UnknownHostException;
 import org.json.*;
 
@@ -20,74 +17,49 @@ public class TCPsocket {
 	public static InputStream din = null;
 	public static PrintStream dout = null;
 	public static String[] bufferableCommand = new String[] { "Image" };
-	public static double[] ssD = new double[6];
-	
+	public static boolean on=false;
 	public static void tcpSocket() {
 		try {
-			socket = new Socket();
+			socket = new Socket("192.168.15.1", 9000);
+			//socket = new Socket("127.0.0.1", 9000);
 			System.out.println("Connected to " + socket.getInetAddress() + ":" + Integer.toString(socket.getPort()));
 			din = socket.getInputStream();
 			dout = new PrintStream(socket.getOutputStream());
-		} catch (UnknownHostException e) {
-		} catch (IOException e) {
-		}
-		
-		Runnable r = new Runnable() {
-	         public void run() {
-	        	 try {
-	        		 receiveMessage();
-	        	 } catch (Exception e) {
-	        		 return;
-	        	 }
-	        	 while(socket != null) {
-	        		 receiveMessage();
-	        	 }
-	         }
-	     };
-	     new Thread(r).start();
+			
+			Runnable r1 = new Runnable() {
+		         public void run() {
+		        	/* try {
+						while(din.read()>=0) {
+							 
+								 receiveMessage();	
+						 }
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						System.out.println("nah3");
+						//e.printStackTrace();
+					}*/
+		        	 while(true)
+		        	 {
+		        		 receiveMessage();
+		        	 }
+		         }
+		     };
+		     new Thread(r1).start();
 
-		/*while (true) {
-			// sendMessage("dsfa");
-			String receivedString = receiveMessage();
-			System.out.println(receivedString);
-		}*/
-	}
-	/*
-	 * public static void tcpSocket2() { try { //socket = new Socket("192.168.15.1",
-	 * 9000); socket = new Socket("127.0.0.1", 9000);
-	 * System.out.println("Connected to " + socket.getInetAddress() + ":" +
-	 * Integer.toString(socket.getPort())); din = socket.getInputStream(); dout =
-	 * new PrintStream(socket.getOutputStream()); } catch (UnknownHostException e) {
-	 * // TODO Auto-generated catch block e.printStackTrace(); } catch (IOException
-	 * e) { // TODO Auto-generated catch block e.printStackTrace(); }
-	 * 
-	 * 
-	 * }
-	 */
-	public static void tryConnect() throws IOException {
-   	 try {
-		 receiveMessage();
-		 return;
-	 } catch (Exception e) {
-   	 	socket.close();
-   	 	socket = new Socket("192.168.15.1",9000);
-		Runnable r = new Runnable() {
-	         public void run() {
-	        	 try {
-	        		 receiveMessage();
-	        	 } catch (Exception e) {
-	        		 return;
-	        	 }
-	        	 while(socket != null) {
-	        		 receiveMessage();
-	        	 }
-	         }
-	     };
-	     new Thread(r).start();
-	 }
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			System.out.println("nah");
+			//e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+			System.out.println("nah2");
+		}
 	}
 	
+
 	public static void sendMessage(String message) {
+		//System.out.println("wtf");
 		try {
 			dout.write(message.getBytes());
 			dout.flush();
@@ -103,6 +75,8 @@ public class TCPsocket {
 		byte[] byteData = new byte[1024];
 		try {
 			int size = 0;
+			
+				
 			while (din.available() == 0) {
 				try {
 
@@ -110,6 +84,7 @@ public class TCPsocket {
 					System.out.println("Error in receive message");
 				}
 			}
+			
 			din.read(byteData);
 
 			// This is to get rid of junk bytes
@@ -117,12 +92,10 @@ public class TCPsocket {
 				if (byteData[size] == 0) {
 					break;
 				}
-				// size is the array character index position and byteData[size] is the ASCII
-				// code
-				// System.out.println(size + " :" + byteData[size]);
 				size++;
 			}
 			String message = new String(byteData, 0, size, "UTF-8");
+			//System.out.println(message);
 			JSONObject jobj;
 			try {
 				jobj = new JSONObject(message);
@@ -166,7 +139,7 @@ public class TCPsocket {
 				case "SENSORS":
 					String ss = jobj.getString("SENSORS");
 					String[] ss1 = ss.split(";");
-					//double[] ssD = new double[ss1.length];
+					double[] ssD = new double[ss1.length];
 					for(int i=0; i<ss1.length; i++)
 					{
 						ssD[i] = Double.parseDouble(ss1[i]);
@@ -179,7 +152,8 @@ public class TCPsocket {
 				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				//e.printStackTrace();
+				System.out.println("not yet recieve msg");
 			}
 
 			//return message;

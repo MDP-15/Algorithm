@@ -183,7 +183,6 @@ public class Viewer extends JFrame{
 		tcpSocketOFF.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				MDPSIM.real = false;
 				
 			}

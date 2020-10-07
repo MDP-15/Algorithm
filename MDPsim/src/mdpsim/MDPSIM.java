@@ -29,7 +29,7 @@ public class MDPSIM {
 	public static int mode; // 1:explore 2: return to base after explore 3: fastest path
 	public static double coverage;
 	public static int timelimit;
-	public static boolean real;
+	public static boolean real=false;;
 	public static ArrayList<Double> realsensors;
 	public static boolean sensorflag;
 	public static boolean nextmessage;
@@ -40,7 +40,7 @@ public class MDPSIM {
 		sensorflag = false;
 		realsensors = new ArrayList<Double>();
 		mode = 0;
-		real = true;
+		//real = true;
 		mdfString = parseFormatToMap(""); 
 		vw = new Viewer("MDP Simulator", 1024, 768); //First Panel
 		pause = false;

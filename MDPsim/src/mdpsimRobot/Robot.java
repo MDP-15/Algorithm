@@ -78,10 +78,23 @@ public class Robot {
 	
 	public ArrayList<Action2D> explore(double time){
 		ArrayList<Action2D> actions = new ArrayList<Action2D>(0);
-		if (mh.currentaction == null && mh.actionqueue.size() == 0 && (MDPSIM.mode == 1 || MDPSIM.mode == 2)) {
+		if (mh.currentaction == null && mh.actionqueue.size() == 0 && (MDPSIM.mode == 1 || MDPSIM.mode == 2) && !MDPSIM.real) {
 			lh.updatePos();
 			lh.scan(sensorvalues);
 			mh.actionqueue.add(lh.getNextAction(time));
+		} else if (mh.currentaction == null && mh.actionqueue.size() == 0 && (MDPSIM.mode == 1 || MDPSIM.mode == 2) && MDPSIM.real) {
+			lh.updatePos();
+			lh.scan(sensorvalues);
+			RobotAction r = lh.getNextAction(0.0);
+			if (r != null) {
+				System.out.println(r.toString());
+			}
+			/*
+			String s = r.toString();
+			actionstack = new Stack<String>();
+			actionstack.push(s);
+			moveExplore(actionstack);
+			*/
 		}
 		actions.add(mh.doNext(time , sensorvalues)); // DO NOT TOUCH
 		return actions;
@@ -168,5 +181,34 @@ public class Robot {
 		      }
 		      actionstack.pop();
 		    }
+	}
+	
+	public void moveExplore(Stack<String> actionstack) {
+		while (!actionstack.isEmpty()) {
+		      switch (actionstack.peek()) {
+		      case "F1":
+		        actionqueue.add(RobotAction.F1);
+		        TCPsocket.sendMessage("F1");
+		        break;
+		      case "F2":
+		        actionqueue.add(RobotAction.F2);
+		        TCPsocket.sendMessage("F2");
+		        break;
+		      case "F3":
+		        actionqueue.add(RobotAction.F3);
+		        TCPsocket.sendMessage("F3s");
+		        break;
+		      case "TL":
+		        actionqueue.add(RobotAction.TL);
+		        TCPsocket.sendMessage("L");
+		        break;
+		      case "TR":
+		        actionqueue.add(RobotAction.TR);
+		        TCPsocket.sendMessage("R");
+		        break;
+		      }
+		      actionstack.pop();
+		}
+        TCPsocket.sendMessage("s");
 	}
 }

@@ -26,7 +26,7 @@ public class MDPSIM {
 	private static Clock t;
 	private static long t0;
 	public static Robot robot;
-	public static int mode = 0; // 1:explore 2: return to base after explore 3: fastest path
+	public static int mode; // 1:explore 2: return to base after explore 3: fastest path
 	public static double coverage;
 	public static int timelimit;
 	public static boolean real;
@@ -34,6 +34,7 @@ public class MDPSIM {
  static ArrayList<Action2D> actionqueue;
 	public static void main(String[] args) throws InterruptedException, IOException{
 		coverage = 1.0;
+		mode = 0;
 		real = true;
 		mdfString = parseFormatToMap(""); 
 		vw = new Viewer("MDP Simulator", 1024, 768); //First Panel
@@ -111,12 +112,17 @@ public class MDPSIM {
 			}
 		} else {
 			try {
-				TCPsocket.tcpSocket();
+				
+				Runnable tcpthread = new Runnable() {
+			         public void run() {
+			        	TCPsocket.tcpSocket();
+			         }
+			     };
+			     new Thread(tcpthread).start();
 			} catch (Exception e) {}
 			Robot r = initializeRobot();
 			r.lh.setRobotDirection(RobotDirection.UP);
 			r.lh.updatePosition(18, 1);
-			updateRealEngine2DPanel(r, vw.map1);
 			updateRealRobot2DPanel(r, vw.map2);
 			vw.setVisible(true);
 			while (real) {

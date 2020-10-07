@@ -6,10 +6,13 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+
 import org.json.*;
 
 import mdpsim.MDPSIM;
 import mdpsimRobot.Robot;
+import mdpsimRobot.RobotAction;
 import mdpsimRobot.RobotDirection;
 
 public class TCPsocket {
@@ -18,6 +21,9 @@ public class TCPsocket {
 	public static PrintStream dout = null;
 	public static String[] bufferableCommand = new String[] { "Image" };
 	public static boolean on=false;
+	public static ArrayList<Double> sensorvalues;
+	public static ArrayList<RobotAction> ralist;
+	
 	public static void tcpSocket() {
 		try {
 			socket = new Socket("192.168.15.1", 9000);
@@ -28,7 +34,7 @@ public class TCPsocket {
 			
 			Runnable r1 = new Runnable() {
 		         public void run() {
-		        	/* try {
+		        	try {
 						while(din.read()>=0) {
 							 
 								 receiveMessage();	
@@ -37,7 +43,7 @@ public class TCPsocket {
 						// TODO Auto-generated catch block
 						System.out.println("nah3");
 						//e.printStackTrace();
-					}*/
+					}
 		        	 while(true)
 		        	 {
 		        		 receiveMessage();
@@ -114,13 +120,14 @@ public class TCPsocket {
 	 }
 	}
 	
+	public static void sendNextAction(ArrayList<RobotAction> r) {
 
+	}
+	
 	public static void sendMessage(String message) {
-		//System.out.println("wtf");
 		try {
 			dout.write(message.getBytes());
 			dout.flush();
-
 		} catch (IOException IOEx) {
 			System.out.println("IOException in ConnectionSocket sendMessage Function");
 		}
@@ -196,12 +203,10 @@ public class TCPsocket {
 				case "SENSORS":
 					String ss = jobj.getString("SENSORS");
 					String[] ss1 = ss.split(";");
-					double[] ssD = new double[ss1.length];
-					for(int i=0; i<ss1.length; i++)
-					{
-						ssD[i] = Double.parseDouble(ss1[i]);
+					ArrayList<Double> ar = new ArrayList<Double>();
+					for (int a = 0; a < ss1.length; a++) {
+						ar.add(Double.parseDouble(ss1[a]));
 					}
-					System.out.println(ssD[1]);
 					break;
 				default:
 					break;

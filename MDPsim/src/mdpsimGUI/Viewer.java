@@ -162,39 +162,48 @@ public class Viewer extends JFrame{
 		instructions.add(fpStart);
 		
 		
+		JMenuItem tcpSocketON = new JMenuItem("Socket Connection ON");
+		file.add(tcpSocketON);
 		
+		JMenuItem tcpSocketOFF = new JMenuItem("Socket Connection OFF");
+		file.add(tcpSocketOFF);
 		
-		
-		JMenuItem tcpSocket = new JMenuItem("Socket Connection");
-		file.add(tcpSocket);
-		
-		
-		class socketBtn implements ActionListener{
+		//TCP ON
+		tcpSocketON.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				TCPsocket.tcpSocket();
-			}
-		}
-			tcpSocket.addActionListener(new socketBtn());
-			
-			
-			exStart.addActionListener(new ActionListener() {
+				// TODO Auto-generated method stub
+				MDPSIM.real = true;
 				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					// TODO Auto-generated method stub
-					MDPSIM.mode = 1;
-					
+			}
+		});
+		
+		
+		//TCP OFF
+		tcpSocketOFF.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				MDPSIM.real = false;
+				
+			}
+		});
+		
+		//EXPLORATION START
+		exStart.addActionListener(new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+				MDPSIM.mode = 1;
 				}
 			});
-			
-			fpStart.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					// TODO Auto-generated method stub
-					System.out.println("Button Pressed");
-					MDPSIM.mode = 3;
-					MDPSIM.robot.startFastestPath();
-					
+		
+		//FASTEST PATH
+		fpStart.addActionListener(new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			System.out.println("Button Pressed");
+			MDPSIM.mode = 3;
+			MDPSIM.robot.startFastestPath();
 				}
 			});
 			
@@ -261,8 +270,7 @@ public class Viewer extends JFrame{
 					
 				}
 			});
-			
-			
+	
     }
 	
 	

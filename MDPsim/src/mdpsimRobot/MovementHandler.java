@@ -1,6 +1,7 @@
 package mdpsimRobot;
 import java.util.ArrayList;
 
+import mdpsim.MDPSIM;
 import mdpsimEngine.Action2D;
 import mdpsimEngine.Action2D.Action;
 
@@ -66,6 +67,10 @@ public class MovementHandler {
 				action = queuedactions.remove(0);
 				if (((QueuedAction) action).flag()) {
 					currentaction = null;
+					System.out.println("STOP MOVING");
+					//Send MDF to android 
+					//TCP.sendMessage();
+					MDPSIM.robot.lh.getMapMemory();
 				}
 			}
 		} catch (Exception e) {}

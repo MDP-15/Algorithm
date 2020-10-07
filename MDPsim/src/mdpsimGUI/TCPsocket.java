@@ -21,8 +21,6 @@ public class TCPsocket {
 	public static PrintStream dout = null;
 	public static String[] bufferableCommand = new String[] { "Image" };
 	public static boolean on=false;
-	public static ArrayList<Double> sensorvalues;
-	public static ArrayList<RobotAction> ralist;
 	
 	public static void tcpSocket() {
 		try {
@@ -35,19 +33,14 @@ public class TCPsocket {
 			Runnable r1 = new Runnable() {
 		         public void run() {
 		        	try {
-						while(din.read()>=0) {
-							 
-								 receiveMessage();	
+						while(din.read()>=0) {	 
+							receiveMessage();	
 						 }
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						System.out.println("nah3");
 						//e.printStackTrace();
 					}
-		        	 while(true)
-		        	 {
-		        		 receiveMessage();
-		        	 }
 		         }
 		     };
 		     new Thread(r1).start();
@@ -75,25 +68,7 @@ public class TCPsocket {
 	         }
 	     };
 	     new Thread(r).start();
-
-		/*while (true) {
-			// sendMessage("dsfa");
-			String receivedString = receiveMessage();
-			System.out.println(receivedString);
-		}*/
 	}
-	/*
-	 * public static void tcpSocket2() { try { //socket = new Socket("192.168.15.1",
-	 * 9000); socket = new Socket("127.0.0.1", 9000);
-	 * System.out.println("Connected to " + socket.getInetAddress() + ":" +
-	 * Integer.toString(socket.getPort())); din = socket.getInputStream(); dout =
-	 * new PrintStream(socket.getOutputStream()); } catch (UnknownHostException e) {
-	 * // TODO Auto-generated catch block e.printStackTrace(); } catch (IOException
-	 * e) { // TODO Auto-generated catch block e.printStackTrace(); }
-	 * 
-	 * 
-	 * }
-	 */
 	public static void tryConnect() throws IOException {
    	 try {
 		 receiveMessage();
@@ -132,15 +107,12 @@ public class TCPsocket {
 			System.out.println("IOException in ConnectionSocket sendMessage Function");
 		}
 	}
-
+	
 	// Get message from buffer
 	public static String receiveMessage() {
-
 		byte[] byteData = new byte[1024];
 		try {
 			int size = 0;
-			
-				
 			while (din.available() == 0) {
 				try {
 
@@ -159,7 +131,10 @@ public class TCPsocket {
 				size++;
 			}
 			String message = new String(byteData, 0, size, "UTF-8");
-			//System.out.println(message);
+			if (message.charAt(0) != '{') {
+				message = "{" + message;
+			}
+			System.out.println(message);
 			JSONObject jobj;
 			try {
 				jobj = new JSONObject(message);
@@ -206,22 +181,22 @@ public class TCPsocket {
 					ArrayList<Double> ar = new ArrayList<Double>();
 					for (int a = 0; a < ss1.length; a++) {
 						ar.add(Double.parseDouble(ss1[a]));
+						System.out.println(ss1[a]);
+					}
+					if (ar.size() > 0) {
+						MDPSIM.realsensors = ar;
+						MDPSIM.sensorflag = true;
 					}
 					break;
 				default:
 					break;
-
 				}
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				//e.printStackTrace();
 				System.out.println("not yet recieve msg");
 			}
-
-			//return message;
 		} catch (IOException IOEx) {
 			System.out.println("IOException in ConnectionSocket receiveMessage Function");
 		}
-		return "Error";
+		return "";
 	}
 }

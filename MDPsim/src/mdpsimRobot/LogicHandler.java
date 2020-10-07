@@ -151,16 +151,20 @@ public class LogicHandler {
 			if (MDPSIM.mode == 2) {
 				n = returnToBase();
 				//printMapMemory();
-			} 
-			queue = trailAction(n);
-		} else {
+			}
+			if (n != null) {
+				queue = trailAction(n);
+			}
+		} else if (!MDPSIM.real){
 			RobotAction ra = queue.remove(queue.size()-1);
 			if (ra != null) {
 				prevaction = ra;
 			}
 			return ra;
 		}
-		printMapMemory(); //prints final mdf output 
+		if (MDPSIM.real) {
+			return queue.remove(0);
+		}
 		return null;
 	}
 
@@ -206,6 +210,9 @@ public class LogicHandler {
 		ArrayList<RobotAction> ar = new ArrayList<RobotAction>();
 		while (n.ra != null) {
 			ar.add(n.ra);
+			if (n.prev == null) {
+				break;
+			}
 			n = n.prev;
 		}
 		return ar;

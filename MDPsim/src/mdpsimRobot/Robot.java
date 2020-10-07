@@ -82,19 +82,18 @@ public class Robot {
 			lh.updatePos();
 			lh.scan(sensorvalues);
 			mh.actionqueue.add(lh.getNextAction(time));
-		} else if (mh.currentaction == null && mh.actionqueue.size() == 0 && (MDPSIM.mode == 1 || MDPSIM.mode == 2) && MDPSIM.real) {
-			lh.updatePos();
-			lh.scan(sensorvalues);
-			RobotAction r = lh.getNextAction(0.0);
+		} else if (mh.currentaction == null && mh.actionqueue.size() == 0 && MDPSIM.real) {
+			RobotAction r = lh.getNextAction(time);
 			if (r != null) {
 				System.out.println(r.toString());
 			}
-			/*
-			String s = r.toString();
-			actionstack = new Stack<String>();
-			actionstack.push(s);
-			moveExplore(actionstack);
-			*/
+			if (MDPSIM.real && r != null) {
+				System.out.println("called");
+				String s = r.toString();
+				actionstack = new Stack<String>();
+				actionstack.push(s);
+				moveExplore(actionstack);
+			}
 		}
 		actions.add(mh.doNext(time , sensorvalues)); // DO NOT TOUCH
 		return actions;
@@ -109,9 +108,7 @@ public class Robot {
 	    actionstack = new Stack<String>();
 	    stackactions(c);
 	    stackactions(n);
-	    moveFP(actionstack);
-	    //moveFP2(actionstack);
-	    
+	    moveFP(actionstack);	    
 	  }
 	
 	public void stackactions(Node n) {
@@ -187,28 +184,32 @@ public class Robot {
 		while (!actionstack.isEmpty()) {
 		      switch (actionstack.peek()) {
 		      case "F1":
+		    	  lh.prevaction = RobotAction.F1;
 		        actionqueue.add(RobotAction.F1);
-		        TCPsocket.sendMessage("F1");
+		        TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"F1s\"}");
 		        break;
 		      case "F2":
+		    	  lh.prevaction = RobotAction.F2;
 		        actionqueue.add(RobotAction.F2);
-		        TCPsocket.sendMessage("F2");
+		        TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"F2s\"}");
 		        break;
 		      case "F3":
+		    	  lh.prevaction = RobotAction.F3;
 		        actionqueue.add(RobotAction.F3);
-		        TCPsocket.sendMessage("F3s");
+		        TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"F3s\"}");
 		        break;
 		      case "TL":
+		    	  lh.prevaction = RobotAction.TL;
 		        actionqueue.add(RobotAction.TL);
-		        TCPsocket.sendMessage("L");
+		        TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"Ls\"}");
 		        break;
 		      case "TR":
+		    	  lh.prevaction = RobotAction.TR;
 		        actionqueue.add(RobotAction.TR);
-		        TCPsocket.sendMessage("R");
+		        TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"Rs\"}");
 		        break;
 		      }
 		      actionstack.pop();
 		}
-        TCPsocket.sendMessage("s");
 	}
 }

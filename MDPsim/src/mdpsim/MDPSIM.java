@@ -30,10 +30,15 @@ public class MDPSIM {
 	public static double coverage;
 	public static int timelimit;
 	public static boolean real;
+	public static ArrayList<Double> realsensors;
+	public static boolean sensorflag;
+	public static boolean nextmessage;
 	
  static ArrayList<Action2D> actionqueue;
 	public static void main(String[] args) throws InterruptedException, IOException{
 		coverage = 1.0;
+		sensorflag = false;
+		realsensors = new ArrayList<Double>();
 		mode = 0;
 		real = true;
 		mdfString = parseFormatToMap(""); 
@@ -111,8 +116,8 @@ public class MDPSIM {
 					}
 			}
 		} else {
-			try {
-				
+			/*
+			try {		
 				Runnable tcpthread = new Runnable() {
 			         public void run() {
 			        	TCPsocket.tcpSocket();
@@ -120,15 +125,30 @@ public class MDPSIM {
 			     };
 			     new Thread(tcpthread).start();
 			} catch (Exception e) {}
+			*/
+			TCPsocket.tcpSocket();
 			Robot r = initializeRobot();
 			r.lh.setRobotDirection(RobotDirection.UP);
 			r.lh.updatePosition(18, 1);
+			r.lh.initPos(18, 1);
+			r.lh.timelimit = Double.POSITIVE_INFINITY;
 			updateRealRobot2DPanel(r, vw.map2);
 			vw.setVisible(true);
-			while (real) {
-				try {
-					TCPsocket.tryConnect();
-				} catch (Exception e) {}
+			while (real) {	
+				System.out.print("");
+				if(sensorflag == true) {
+					if (realsensors.size() > 0) {
+						r.lh.scan(realsensors);
+						updateRealRobot2DPanel(r, vw.map2);
+						r.lh.updatePos();
+						r.lh.printPos();
+						r.sensorvalues = realsensors;
+						updateRealRobot2DPanel(r, vw.map2);
+						r.explore(0.0);
+					}
+					updateRealRobot2DPanel(r, vw.map2);
+					sensorflag = false;
+				}
 			}
 		}
 	}

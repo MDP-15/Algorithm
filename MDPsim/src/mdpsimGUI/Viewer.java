@@ -184,6 +184,7 @@ public class Viewer extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				MDPSIM.real = false;
+				engineresetflag = true;
 				
 			}
 		});

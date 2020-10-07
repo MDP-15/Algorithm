@@ -148,9 +148,11 @@ public class LogicHandler {
 				}
 				n = findNext();
 			}
-			if (MDPSIM.mode == 2) {
+			if (MDPSIM.mode == 2 && !MDPSIM.real) {
 				n = returnToBase();
 				//printMapMemory();
+			} else if (MDPSIM.mode == 2 && MDPSIM.real) {
+				System.out.println("called");
 			}
 			if (n != null) {
 				queue = trailAction(n);
@@ -162,7 +164,7 @@ public class LogicHandler {
 			}
 			return ra;
 		}
-		if (MDPSIM.real) {
+		if (MDPSIM.real && queue.size() > 0) {
 			RobotAction ra = queue.remove(queue.size()-1);
 			if (ra != null) {
 				prevaction = ra;
@@ -781,28 +783,54 @@ public class LogicHandler {
 		//FROM SENSOR VALUE DETERMINE RANGE OF NEXT BLOCK
 		//DEFINE INTEGERS AS LENGTH PROTRUDING FROM ROBOT 3X3 BODY
 		//HANDLE FRONT MIDDLE;
-		if (front_middle <= 12.5) {
-			frontmidbox = 0;
-		}
-		//HANDLE FRONT RIGHT;
-		if (front_right <= 12.5) {
-			frontrightbox = 0;
-		}
-		//HANDLE FRONT LEFT;
-		if (front_left <= 12.5) {
-			frontleftbox = 0;
-		}
-		//HANDLE LEFT LONG
-		if (left_long <= 22.5) {
-			leftlongbox = 0;
-		}
-		//HANDLE RIGHT_FRONT
-		if (right_front <= 22.5) {
-			rightfrontbox = 0;
-		}
-		//HANDLE RIGHT_BACK
-		if (right_back <= 22.5) {
-			rightbackbox = 0;
+		if (MDPSIM.real) {
+			if (front_middle <= 9.5) {
+				frontmidbox = 0;
+			}
+			//HANDLE FRONT RIGHT;
+			if (front_right <= 9.5) {
+				frontrightbox = 0;
+			}
+			//HANDLE FRONT LEFT;
+			if (front_left <= 9.5) {
+				frontleftbox = 0;
+			}
+			//HANDLE LEFT LONG
+			if (left_long <= 9.5) {
+				leftlongbox = 0;
+			}
+			//HANDLE RIGHT_FRONT
+			if (right_front <= 9.5) {
+				rightfrontbox = 0;
+			}
+			//HANDLE RIGHT_BACK
+			if (right_back <= 9.5) {
+				rightbackbox = 0;
+			}
+		} else {
+			if (front_middle <= 12.5) {
+				frontmidbox = 0;
+			}
+			//HANDLE FRONT RIGHT;
+			if (front_right <= 12.5) {
+				frontrightbox = 0;
+			}
+			//HANDLE FRONT LEFT;
+			if (front_left <= 12.5) {
+				frontleftbox = 0;
+			}
+			//HANDLE LEFT LONG
+			if (left_long <= 22.5) {
+				leftlongbox = 0;
+			}
+			//HANDLE RIGHT_FRONT
+			if (right_front <= 22.5) {
+				rightfrontbox = 0;
+			}
+			//HANDLE RIGHT_BACK
+			if (right_back <= 22.5) {
+				rightbackbox = 0;
+			}
 		}
 		if (verbose) {
 			System.out.println("RF: "+ rightfrontbox+ "/"+rfbmax+" RB: "+ rightbackbox +"/"+rbbmax+" FR: "+frontrightbox+"/"+ frbmax+" FM: "+ frontmidbox +"/"+fmbmax+" FL: "+ frontleftbox +"/"+flbmax+" LL: "+leftlongbox+"/"+llbmax);

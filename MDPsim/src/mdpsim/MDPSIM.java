@@ -40,7 +40,7 @@ public class MDPSIM {
 		sensorflag = false;
 		realsensors = new ArrayList<Double>();
 		mode = 0;
-		//real = true;
+		real = true;
 		mdfString = parseFormatToMap(""); 
 		vw = new Viewer("MDP Simulator", 1024, 768); //First Panel
 		pause = false;
@@ -137,15 +137,12 @@ public class MDPSIM {
 			while (real) {	
 				System.out.print("");
 				if(sensorflag == true) {
-					if (realsensors.size() > 0) {
-						r.lh.scan(realsensors);
-						updateRealRobot2DPanel(r, vw.map2);
 						r.lh.updatePos();
 						r.lh.printPos();
-						r.sensorvalues = realsensors;
+						r.lh.scan(realsensors);
 						updateRealRobot2DPanel(r, vw.map2);
+						r.sensorvalues = realsensors;
 						r.explore(0.0);
-					}
 					updateRealRobot2DPanel(r, vw.map2);
 					sensorflag = false;
 				}

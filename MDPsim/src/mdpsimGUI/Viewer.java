@@ -163,6 +163,29 @@ public class Viewer extends JFrame{
 			tcpSocket.addActionListener(new socketBtn());
 			
 			
+<<<<<<< Updated upstream
+=======
+			exStart.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					MDPSIM.mode = 1;
+				}
+			});
+			
+			fpStart.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					System.out.println("Button Pressed");
+					MDPSIM.mode = 3;
+					MDPSIM.robot.startFastestPath();
+					
+				}
+			});
+			
+>>>>>>> Stashed changes
 			//SampleArenas
 			//Arena 1
 			sampleA1.addActionListener(new ActionListener() {

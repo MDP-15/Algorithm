@@ -70,6 +70,7 @@ public class Robot {
 		System.out.println();
 	}
 	
+<<<<<<< Updated upstream
 	public ArrayList<Action2D> getNextAction(double time){
 		ArrayList<Action2D> actions = new ArrayList<Action2D>(0);
 		if (mh.currentaction == null && mh.actionqueue.size() == 0 && flag) {
@@ -78,8 +79,148 @@ public class Robot {
 				lh.scan(sensorvalues);
 				mh.actionqueue.add(lh.getNextAction(1));
 			} catch (Exception e) {}
+=======
+	public ArrayList<Action2D> explore(double time){
+		System.out.println("hello world");
+		ArrayList<Action2D> actions = new ArrayList<Action2D>(0);
+		if (mh.currentaction == null && mh.actionqueue.size() == 0 && (MDPSIM.mode == 1 || MDPSIM.mode == 2) && !MDPSIM.real) {
+			lh.updatePos();
+			lh.scan(sensorvalues);
+			mh.actionqueue.add(lh.getNextAction(time));
+		} else if (mh.currentaction == null && mh.actionqueue.size() == 0 && (MDPSIM.mode == 1 || MDPSIM.mode == 2) && MDPSIM.real) {
+			lh.updatePos();
+			lh.scan(sensorvalues);
+			RobotAction r = lh.getNextAction(0.0);
+			if (r != null) {
+				System.out.println(r.toString());
+				String s = r.toString();
+				actionstack = new Stack<String>();
+				actionstack.push(s);
+				if (MDPSIM.real == true) {
+					moveExplore(actionstack);
+				}
+			}
+>>>>>>> Stashed changes
 		}
 		actions.add(mh.doNext(time , sensorvalues)); // DO NOT TOUCH
 		return actions;
 	}
+<<<<<<< Updated upstream
+=======
+
+	public void startFastestPath() {
+		System.out.println(way_x +" "+ way_y);
+		//lh.parseMDF(MDPSIM.mdfString);
+	    System.out.println("Doing fastestPath");
+	    Node n = lh.computeFastestPath(lh.x_pos, lh.y_pos, way_x, way_y, lh.robotdir);
+	    Node c = lh.computeFastestPath(way_x, way_y, 1, 13, n.rd);//Need to pass waypoint coordinates thru here
+	    actionstack = new Stack<String>();
+	    stackactions(c);
+	    stackactions(n);
+	    moveFP(actionstack);
+	    //moveFP2(actionstack);
+	    
+	  }
+	
+	public void stackactions(Node n) {
+		boolean isnull = false;
+	    while (!isnull) {
+	      if (n != null) {
+	        if (n.ra != null) {
+	          String raction = n.ra.toString();
+	          System.out.println(raction);
+	          actionstack.push(raction);
+	        }
+	        if (n.prev != null) {
+	          n = n.prev;
+	        } else {
+	          isnull = true;
+	        }
+	      }
+	    }
+	}
+	
+	public void moveFP(Stack<String> actionstack) {
+		while (!actionstack.isEmpty()) {
+		      switch (actionstack.peek()) {
+		      case "F1":
+		        actionqueue.add(RobotAction.F1);
+		        break;
+		      case "F2":
+		        actionqueue.add(RobotAction.F2);
+		        break;
+		      case "F3":
+		        actionqueue.add(RobotAction.F3);
+		        break;
+		      case "TL":
+		        actionqueue.add(RobotAction.TL);
+		        break;
+		      case "TR":
+		        actionqueue.add(RobotAction.TR);
+		        break;
+		      }
+		      actionstack.pop();
+		    }
+	}
+	
+	public void moveFP2(Stack<String> actionstack) {
+		while (!actionstack.isEmpty()) {
+		      switch (actionstack.peek()) {
+		      case "F1":
+		        actionqueue.add(RobotAction.F1);
+		        TCPsocket.sendMessage("F1s");
+		        break;
+		      case "F2":
+		        actionqueue.add(RobotAction.F2);
+		        TCPsocket.sendMessage("F2s");
+		        break;
+		      case "F3":
+		        actionqueue.add(RobotAction.F3);
+		        TCPsocket.sendMessage("F3s");
+		        break;
+		      case "TL":
+		        actionqueue.add(RobotAction.TL);
+		        TCPsocket.sendMessage("Ls");
+		        break;
+		      case "TR":
+		        actionqueue.add(RobotAction.TR);
+		        TCPsocket.sendMessage("Rs");
+		        break;
+		      }
+		      actionstack.pop();
+		    }
+	}
+	
+	public void moveExplore(Stack<String> actionstack) {
+		System.out.println("Inside Move");
+		TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"F1s\"}");
+		while (!actionstack.isEmpty()) {
+		      switch (actionstack.peek()) {
+		      case "F1":
+		        actionqueue.add(RobotAction.F1);
+		        TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"F1s\"}");
+		        System.out.println("In move switch");
+		        break;
+		      case "F2":
+		        actionqueue.add(RobotAction.F2);
+		        TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"F2s\"}");
+		        break;
+		      case "F3":
+		        actionqueue.add(RobotAction.F3);
+		        TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"F3s\"}");
+		        break;
+		      case "TL":
+		        actionqueue.add(RobotAction.TL);
+		        TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"Ls\"}");
+		        break;
+		      case "TR":
+		        actionqueue.add(RobotAction.TR);
+		        TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"Rs\"}");
+		        break;
+		      }
+		      actionstack.pop();
+		}
+        //TCPsocket.sendMessage("s");
+	}
+>>>>>>> Stashed changes
 }

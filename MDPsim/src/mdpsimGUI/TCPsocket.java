@@ -21,8 +21,33 @@ public class TCPsocket {
 		try {
 			socket = new Socket("192.168.15.1", 9000);
 			System.out.println("Connected to " + socket.getInetAddress() + ":" + Integer.toString(socket.getPort()));
+<<<<<<< Updated upstream
 			din  = socket.getInputStream(); 
 			dout = new PrintStream(socket.getOutputStream()); 
+=======
+			din = socket.getInputStream();
+			dout = new PrintStream(socket.getOutputStream());
+			
+			Runnable r1 = new Runnable() {
+		         public void run() {
+		        	try {
+						while(din.read()>=0) {
+								 receiveMessage();	
+						 }
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						System.out.println("nah3");
+						//e.printStackTrace();
+					}
+		        	 while(true)
+		        	 {
+		        		 receiveMessage();
+		        	 }
+		         }
+		     };
+		     new Thread(r1).start();
+
+>>>>>>> Stashed changes
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -38,6 +63,7 @@ public class TCPsocket {
 	    }
 	}
 	
+<<<<<<< Updated upstream
 	 public static void sendMessage(String message) {
 	    	try {
 	    		dout.write(message.getBytes());
@@ -83,4 +109,111 @@ public class TCPsocket {
 	    	}
 	    	return "Error";
 	    }
+=======
+	public static ArrayList<Double> getSensors() {
+		return sensorvalues;
+	}
+	
+	public static void sendMessage(String message) {
+		try {
+			dout.write(message.getBytes());
+			dout.flush();
+		} catch (IOException IOEx) {
+			System.out.println("IOException in ConnectionSocket sendMessage Function");
+		}
+	}
+
+	// Get message from buffer
+	public static String receiveMessage() {
+
+		byte[] byteData = new byte[1024];
+		try {
+			int size = 0;
+			
+				
+			while (din.available() == 0) {
+				try {
+
+				} catch (Exception e) {
+					System.out.println("Error in receive message");
+				}
+			}
+			
+			din.read(byteData);
+
+			// This is to get rid of junk bytes
+			while (size < 1024) {
+				if (byteData[size] == 0) {
+					break;
+				}
+				size++;
+			}
+			String message = new String(byteData, 0, size, "UTF-8");
+			System.out.println(message);
+			JSONObject jobj;
+			try {
+				jobj = new JSONObject(message);
+				message = jobj.getString("MDP15");
+				switch (message) {
+				case "RP":
+					int robotx = jobj.getInt("X");
+					int roboty = jobj.getInt("Y");
+					String dir = jobj.getString("O");
+					RobotDirection rdir;
+					if (dir == "RIGHT") {
+						rdir = RobotDirection.RIGHT;
+					}
+					if (dir == "UP") {
+						rdir = RobotDirection.UP;
+					}
+					if (dir == "LEFT") {
+						rdir = RobotDirection.LEFT;
+					}
+					if (dir == "DOWN") {
+						rdir = RobotDirection.DOWN;
+					}
+					// Set Robot Starting Position for exploration
+					break;
+				case "SE": // call the start exploration
+					System.out.println("Doing Stuff");
+					break;
+				case "SF":
+					MDPSIM.robot.startFastestPath();
+					break;
+				case "RI":
+					String instruction = jobj.getString("RI");
+					sendMessage(instruction);
+					// Send instruction to RPI
+					break;
+				case "W":
+					Robot.way_x = jobj.getInt("X");
+					Robot.way_y = jobj.getInt("Y");
+					System.out.println(Robot.way_x +" "+ Robot.way_y);
+					break;
+				case "SENSORS":
+					String ss = jobj.getString("SENSORS");
+					String[] ss1 = ss.split(";");
+					ArrayList<Double> ar = new ArrayList<Double>();
+					for (int a = 0; a < ss1.length; a++) {
+						ar.add(Double.parseDouble(ss1[a]));
+						System.out.println(ss1[a]);
+					}
+					break;
+				default:
+					break;
+
+				}
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				//e.printStackTrace();
+				System.out.println("not yet recieve msg");
+			}
+
+			//return message;
+		} catch (IOException IOEx) {
+			System.out.println("IOException in ConnectionSocket receiveMessage Function");
+		}
+		return "";
+	}
+>>>>>>> Stashed changes
 }

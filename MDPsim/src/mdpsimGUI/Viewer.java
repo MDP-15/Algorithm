@@ -193,7 +193,9 @@ public class Viewer extends JFrame{
 		exStart.addActionListener(new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-				MDPSIM.mode = 1;
+				//MDPSIM.mode = 1;
+				String message = "{\"MDP15\":\"FP\",\"FP\":\"F1F1F1\"}";
+				TCPsocket.sendMessage(message);
 				}
 			});
 		

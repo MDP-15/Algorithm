@@ -161,15 +161,17 @@ public class TCPsocket {
 					break;
 				case "SE": // call the start exploration
 					System.out.println("Doing Stuff");
+					String msg = "{\"MDP15\":\"FP\",\"FP\":\"F1F1F1E\"}";
+					TCPsocket.sendMessage(msg);
 					break;
 				case "SF":
 					MDPSIM.robot.startFastestPath();
 					break;
-				case "RI":
-					String instruction = jobj.getString("RI");
-					sendMessage(instruction);
-					// Send instruction to RPI
-					break;
+//				case "RI":
+//					String instruction = jobj.getString("RI");
+//					sendMessage(instruction);
+//					// Send instruction to RPI
+//					break;
 				case "W":
 					Robot.way_x = jobj.getInt("X");
 					Robot.way_y = jobj.getInt("Y");

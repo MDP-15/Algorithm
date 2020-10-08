@@ -319,6 +319,239 @@ public class LogicHandler {
 		return n;
 	}
 	
+	int x = x_pos;
+	int y = y_pos;
+	int front_left,front_middle,front_right,obstacleRight,obstacleLeft,obstacleUp,obstacleDown;
+	boolean goback = false;
+	int obstacles = 0;
+	
+	public void scanMapMemory() {
+		switch(robotdir) {
+			
+		case RIGHT:
+			if(x+2 > 14){
+				//turn left
+				break;
+			}
+			else
+			
+			front_left = mapmemory.get(x+2).get(y+1);
+			front_middle = mapmemory.get(x+2).get(y);
+			front_right = mapmemory.get(x+2).get(y-1);
+
+			if(front_left == 0 && front_middle == 0 && front_right == 0)
+				obstacleRight = 0;
+			if(front_left == 1 && front_middle == 1 && front_right == 1)
+				obstacleRight = 3;
+			if(front_left == 0 && front_middle == 1 && front_right == 1)
+				obstacleRight = 2;
+			if(front_left == 0 && front_middle == 0 && front_right == 1)
+				obstacleRight = 1;
+			if(front_left == 1 && front_middle == 0 && front_right == 1)
+				obstacleRight = 3;
+			if(front_left == 1 && front_middle == 1 && front_right == 0)
+				obstacleRight = 3;
+			if(front_left == 1 && front_middle == 0 && front_right == 0)
+				obstacleRight = 3;
+			if(front_left == 0 && front_middle == 1 && front_right == 0)
+				obstacleRight = 2;
+			break;
+			
+		case UP:
+			if(y+2 > 19){
+				//turn left
+				break;
+			}		
+
+			front_left = mapmemory.get(x-1).get(y+2);
+			front_middle = mapmemory.get(x).get(y+2);
+			front_right = mapmemory.get(x+1).get(y+2);
+			
+			if(front_left == 0 && front_middle == 0 && front_right == 0)
+				obstacleUp = 0;
+			if(front_left == 1 && front_middle == 1 && front_right == 1)
+				obstacleRight = 3;
+			if(front_left == 0 && front_middle == 1 && front_right == 1)
+				obstacleRight = 2;
+			if(front_left == 0 && front_middle == 0 && front_right == 1)
+				obstacleRight = 1;
+			if(front_left == 1 && front_middle == 0 && front_right == 1)
+				obstacleRight = 3;
+			if(front_left == 1 && front_middle == 1 && front_right == 0)
+				obstacleRight = 3;
+			if(front_left == 1 && front_middle == 0 && front_right == 0)
+				obstacleRight = 3;
+			if(front_left == 0 && front_middle == 1 && front_right == 0)
+				obstacleRight = 2;
+			break;
+			
+		case DOWN:
+			if(y-2 < 0){
+				//turn left
+				break;
+			}		
+
+
+			front_left = mapmemory.get(x-1).get(y-2);
+			front_middle = mapmemory.get(x).get(y-2);
+			front_right = mapmemory.get(x+1).get(y-2);
+
+			
+			if(front_left == 0 && front_middle == 0 && front_right == 0)
+				obstacleRight = 0;
+			if(front_left == 1 && front_middle == 1 && front_right == 1)
+				obstacleRight = 3;
+			if(front_left == 0 && front_middle == 1 && front_right == 1)
+				obstacleRight = 2;
+			if(front_left == 0 && front_middle == 0 && front_right == 1)
+				obstacleRight = 1;
+			if(front_left == 1 && front_middle == 0 && front_right == 1)
+				obstacleRight = 3;
+			if(front_left == 1 && front_middle == 1 && front_right == 0)
+				obstacleRight = 3;
+			if(front_left == 1 && front_middle == 0 && front_right == 0)
+				obstacleRight = 3;
+			if(front_left == 0 && front_middle == 1 && front_right == 0)
+				obstacleRight = 2;
+			break;
+			
+		case LEFT:
+			if(x-2 < 0){
+				//turn left
+				break;
+			}		
+
+
+			front_left = mapmemory.get(x-2).get(y+1);
+			front_middle = mapmemory.get(x-2).get(y);
+			front_right = mapmemory.get(x-2).get(y-1);
+
+			if(front_left == 0 && front_middle == 0 && front_right == 0)
+				obstacleLeft = 0;
+			if(front_left == 1 && front_middle == 1 && front_right == 1)
+				obstacleLeft = 3;
+			if(front_left == 0 && front_middle == 1 && front_right == 1)
+				obstacleLeft = 2;
+			if(front_left == 0 && front_middle == 0 && front_right == 1)
+				obstacleLeft = 1;
+			if(front_left == 1 && front_middle == 0 && front_right == 1)
+				obstacleLeft = 3;
+			if(front_left == 1 && front_middle == 1 && front_right == 0)
+				obstacleLeft = 3;
+			if(front_left == 1 && front_middle == 0 && front_right == 0)
+				obstacleLeft = 3;
+			if(front_left == 0 && front_middle == 1 && front_right == 0)
+				obstacleLeft = 2;
+			break;
+		}
+		getNextAction(obstacleRight,obstacleLeft,obstacleUp,obstacleDown);
+	}
+	
+	public void getNextAction(int obstaclesRight, int obstaclesLeft, int obstaclesUp, int obstaclesDown) {
+		
+		if(goback== true)
+			if(obstacles > 0) {
+				//turn left
+			}
+			else {	
+				//move forward
+				//turn right
+				goback = false;
+			}
+		else {
+			switch(robotdir) {
+			case RIGHT:
+				if(obstaclesRight > 0) {
+					//turn left
+					obstacles = obstaclesRight;
+				}
+				else {
+					//move forward
+					obstacles--;
+				}
+			case UP:
+				if(obstaclesUp > 0) {
+					//turn left
+					obstacles = obstaclesUp;
+				}
+				else {
+					//move forward
+					obstacles--;
+				}
+			case DOWN:
+				if(obstaclesDown > 0) {
+					//turn left
+					obstacles = obstaclesDown;
+				}
+				else {
+					//move forward
+					obstacles--;
+				}
+			case LEFT:
+				if(obstaclesLeft > 0) {
+					//turn left
+					obstacles = obstaclesLeft;
+				}
+				else {
+					//move forward
+					obstacles--;
+				}
+			}
+			if(obstacles == 0) {
+				//turn right
+				goback = true;
+			}
+				
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public void setUnexploredMap(int start_x, int start_y, int x_siz, int y_siz, RobotDirection rd) {
 		robotdir = rd;
 		x_pos = start_x;

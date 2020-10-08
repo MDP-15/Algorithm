@@ -38,7 +38,7 @@ public class MDPSIM {
 	public static void main(String[] args) throws InterruptedException, IOException{
 		coverage = 1.0;
 		sensorflag = false;
-		realsensors = new ArrayList<Double>();
+		realsensors = new ArrayList<Double>();	
 		mode = 0;
 		real = false;
 		mdfString = parseFormatToMap(""); 

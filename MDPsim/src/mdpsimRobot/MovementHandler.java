@@ -72,7 +72,10 @@ public class MovementHandler {
 					//Send MDF to android 
 					//TCP.sendMessage();
 					String mdf = MDPSIM.robot.lh.reverseMdf();
-					TCPsocket.sendMessage("{\"MDP15\":\"MDF\",\"MDF\":\""+mdf+"\"}");
+					if(MDPSIM.real) {
+						TCPsocket.sendMessage("{\"MDP15\":\"MDF\",\"MDF\":\""+mdf+"\"}");
+					}
+					
 				}
 			}
 		} catch (Exception e) {}

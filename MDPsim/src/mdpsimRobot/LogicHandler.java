@@ -16,8 +16,10 @@ public class LogicHandler {
 	public RobotAction prevaction;
 	public int recal;
 	public double timelimit;
+	public int calibratecounter;
 	
 	public LogicHandler(int x_size, int y_size, int x_pos, int y_pos) {
+		this.calibratecounter = 0;
 		this.x_size = x_size;
 		this.y_size = y_size;
 		this.x_pos = x_pos;
@@ -95,6 +97,7 @@ public class LogicHandler {
 					return true;
 				}
 		}
+		return false;
 	}
 	
 	public boolean isException(int x, int y) {

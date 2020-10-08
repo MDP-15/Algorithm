@@ -54,6 +54,57 @@ public class LogicHandler {
 		setMapMemory(x-1,y-1,0);
 
 	}
+	
+	public boolean isCalibrate(Node n) {
+		int x = n.x;
+		int y = n.y;
+		if (n.rd == RobotDirection.UP) {
+			if ((	mapmemory.get(x-1).get(y+2) == 1
+				&&	mapmemory.get(x).get(y+2) == 1
+				&& 	mapmemory.get(x+1).get(y+2) == 1) || 
+				(	isException(x-1,y+2)
+				&&	isException(x,y+2)
+				&&	isException(x+1, y+2))) {
+				return true;
+			}
+		} else if (n.rd == RobotDirection.DOWN) {
+			if ((	mapmemory.get(x-1).get(y-2) == 1
+					&&	mapmemory.get(x).get(y-2) == 1
+					&& 	mapmemory.get(x+1).get(y-2) == 1) || 
+					(	isException(x-1,y-2)
+					&&	isException(x,y-2)
+					&&	isException(x+1, y-2))) {
+					return true;
+				}
+		} else if (n.rd == RobotDirection.LEFT) {
+			if ((	mapmemory.get(x-2).get(y-1) == 1
+					&&	mapmemory.get(x-2).get(y) == 1
+					&& 	mapmemory.get(x-2).get(y+1) == 1) || 
+					(	isException(x-2,y-1)
+					&&	isException(x-2,y)
+					&&	isException(x-2, y+1))) {
+					return true;
+				}
+		} else if (n.rd == RobotDirection.RIGHT) {
+			if ((	mapmemory.get(x+2).get(y-1) == 1
+					&&	mapmemory.get(x+2).get(y) == 1
+					&& 	mapmemory.get(x+2).get(y+1) == 1) || 
+					(	isException(x+2,y-1)
+					&&	isException(x+2,y)
+					&&	isException(x+2, y+1))) {
+					return true;
+				}
+		}
+	}
+	
+	public boolean isException(int x, int y) {
+		try {
+			int a = mapmemory.get(x).get(y);
+			return false;
+		} catch (Exception e) {
+			return true;
+		}
+	}
 	public void updatePos(){
 		if (robotdir == RobotDirection.UP) {
 			if (prevaction == RobotAction.F1) {
@@ -152,7 +203,7 @@ public class LogicHandler {
 				n = returnToBase();
 				//printMapMemory();
 			} else if (MDPSIM.mode == 2 && MDPSIM.real) {
-				System.out.println("called");
+				n = returnToBase();
 			}
 			if (n != null) {
 				queue = trailAction(n);
@@ -1188,19 +1239,88 @@ public class LogicHandler {
 		System.out.println();
 	}
 	
-	public String reverseMdf() {
+	public void getMapMemory() {
+		//0 - empty
+		//1 - obstacle
+		//2 - unexplored
+		String mapmap = mapmemory.toString().replaceAll("\\W", "");
+		//System.out.println(mapmap);
+		String MDF1 = "";
+		String MDF2 = "";
+		String MDF3 = "";
+		
+		MDF1 = mapmap;
+		MDF1 = mapmap.replace("1", "1");
+		MDF1 = MDF1.replace("0", "1");
+		MDF1 = MDF1.replace("2", "0");
+		MDF1 = convertMDFReverse(MDF1);
+		MDF1 = convertMDFHex(MDF1);
+		System.out.println("MDF1: \n"+MDF1);
+
+		
+		System.out.println("Before MDF2");
+		MDF2 = mapmap;
+		System.out.println("At MDF2 1");
+		MDF2 = MDF2.replace("2","");
+		System.out.println("At MDF2 2");
+		MDF2 = convertMDFReverse(MDF2);
+		System.out.println("At MDF2 3");
+		MDF2 = convertMDFHex(MDF2);
+		System.out.println("At MDF2 4");
+		System.out.println("MDF2: \n"+MDF2);
+		
+		System.out.println("Before MDF3");
+		MDF3 = mapmap;
+		MDF3 = mapmap.replace("2","0");
+		MDF3 = convertMDFReverse(MDF3);
+		MDF3 = convertMDFHex(MDF3);
+		System.out.println("MDF3 :\n"+MDF3);
+		
+		System.out.println("After MDF3");
+		
+	}
+	
+	public static String convertMDFReverse(String mdf){
+        String mdfsix = "";
+        String mdfString = "";
+        for(int i = 0; i < mdf.length(); i = i + 15){
+            mdfsix = "";
+            for(int k = 0; k < 15 ; k++){
+                mdfsix = mdfsix + mdf.charAt(i+k);
+            }
+            mdfString = mdfsix + mdfString;
+        }
+        return mdfString;
+    }
+	
+	public static String convertMDFHex(String mdf){
+        int decimal;
+        String hexStr = "";
+        String mdffour = "";
+        String mdfString = "";
+        
+        
+        for(int i = 0; i < mdf.length(); i = i + 4){
+            mdffour = "";
+            hexStr = "";
+            for(int k = 0; k < 4 ; k++){
+                mdffour = mdffour + mdf.charAt(i+k);
+            }
+            decimal = Integer.parseInt(mdffour,2);
+            hexStr = Integer.toString(decimal,16);
+            mdfString = mdfString + hexStr;
+        }
+        
+        return mdfString;
+    }
+	
+	public static String reverseMdf(String mdf) {
 		//get x get y
-		String nMdf = "";
-		String row = "";
 		
-		for(int i = mapmemory.size(); i > 0; i++) {
-			for(int l = 0; i < mapmemory.get(0).size(); l++) {
-				row = row + mapmemory.get(i).get(l);
-			}
-			nMdf = nMdf + row;
-		}
 		
-		return nMdf;
+		
+		
+		return "";
 	}
 	
 	

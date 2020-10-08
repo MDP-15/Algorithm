@@ -11,6 +11,7 @@ import java.lang.String;
 import java.time.Clock;
 import java.util.ArrayList;
 import java.util.Timer;
+import java.util.concurrent.TimeUnit;
 
 import mdpsimRobot.*;
 
@@ -128,6 +129,23 @@ public class MDPSIM {
 			*/
 			TCPsocket.tcpSocket();
 			ImageTCPsocket.tcpSocket();
+
+			// simulation send instruction
+			Runnable runnable = new Runnable() {
+				public void run() {
+					while (true) {
+						try {
+							TCPsocket.sendMessage("PIC");
+							System.out.println("Take picture");
+							TimeUnit.SECONDS.sleep(5);
+						} catch (InterruptedException e) {
+
+						}
+					}
+				}
+			};
+			new Thread(runnable).start();
+
 			Robot r = initializeRobot();
 			r.lh.setRobotDirection(RobotDirection.UP);
 			r.lh.updatePosition(18, 1);

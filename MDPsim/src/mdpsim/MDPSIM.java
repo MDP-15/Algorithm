@@ -140,9 +140,9 @@ public class MDPSIM {
 						r.lh.updatePos();
 						r.lh.printPos();
 						r.lh.scan(realsensors);
-						String mdf = r.lh.reverseMdf();
+						//String mdf = r.lh.reverseMdf();
 						/// I was here touching your code and guess what I change.
-						TCPsocket.sendMessage("{\"MDP15\":\"MDF\",\"MDF\":\""+mdf+"\"}");
+						//TCPsocket.sendMessage("{\"MDP15\":\"MDF\",\"MDF\":\""+mdf+"\"}");
 						updateRealRobot2DPanel(r, vw.map2);
 						r.sensorvalues = realsensors;
 						r.explore(0.0);

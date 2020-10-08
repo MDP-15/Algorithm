@@ -202,7 +202,7 @@ public class LogicHandler {
 					MDPSIM.mode = 2;
 					return null;
 				}
-				if (calibratecounter >= 10) {
+				if (calibratecounter >= 5) {
 					calibratecounter = 0;
 					n = findNextCalibrateNode();
 				} else {
@@ -229,7 +229,9 @@ public class LogicHandler {
 			RobotAction ra = queue.remove(queue.size()-1);
 			if (ra != null) {
 				prevaction = ra;
-				calibratecounter += 1;
+				if (ra != RobotAction.RC) {
+					calibratecounter += 1;
+				}
 			}
 			return ra;
 		}

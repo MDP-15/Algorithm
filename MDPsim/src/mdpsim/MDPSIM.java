@@ -127,6 +127,7 @@ public class MDPSIM {
 			} catch (Exception e) {}
 			*/
 			TCPsocket.tcpSocket();
+			ImageTCPsocket.tcpSocket();
 			Robot r = initializeRobot();
 			r.lh.setRobotDirection(RobotDirection.UP);
 			r.lh.updatePosition(18, 1);

@@ -14,6 +14,7 @@ import mdpsimRobot.Sensor;
 
 public class SensorScreen extends JPanel{
 	JTextArea timeelapsed;
+	JTextArea MDF;
 	JLabel timeelapsedlabel;
 	JTextArea noelapsedtimesteps;
 	JLabel noelapsedtimestepslabel;
@@ -85,6 +86,12 @@ public class SensorScreen extends JPanel{
 		action.setBackground(Color.DARK_GRAY);
 		action.setForeground(Color.white);
 		this.add(action);
+		this.MDF = new JTextArea();
+		MDF.setBounds(5, 400, 300, 60);
+		MDF.setLineWrap(true);
+		MDF.setBackground(Color.DARK_GRAY);
+		MDF.setForeground(Color.white);
+		this.add(MDF);
 	}
 	
 	public void update (double time, long timesteps, ArrayList<Sensor> sensornames, ArrayList<Double> sensordata, RobotAction currentaction, ArrayList<RobotAction> queuedactions) {
@@ -109,6 +116,11 @@ public class SensorScreen extends JPanel{
 				jsensordata.get(a).setText("null");
 			}
 		}
+		return;
+	}
+	
+	public void updateMDF(String mdf) {
+		this.MDF.setText(mdf);
 		return;
 	}
 	

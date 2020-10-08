@@ -72,7 +72,7 @@ public class ControlPanel extends JPanel {
 		});
 		
 		// SELECT % OF EXPLORATION
-		this.explorePercent = new JTextArea("Enter a value between 0 and 1");
+		this.explorePercent = new JTextArea("1");
 		explorePercent.setBounds(5, 105, 300, 30);
 		this.add(explorePercent);
 		this.setPercent = new JButton();

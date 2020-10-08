@@ -80,6 +80,7 @@ public class MDPSIM {
 					updateEngine2DPanel(r, phyeng, vw.map1);
 					updateFakeRobot2DPanel(phyeng, r, vw.map2);
 					sensorUpdate(phyeng, vw.sensors, r);
+					vw.sensors.updateMDF(convertMDF(r.lh.updateMDFStringFromRobotMemory()));
 					if (mode == 1 || mode == 2 || mode == 3) {
 						actionqueue.addAll(r.explore(phyeng.time()));
 					}
@@ -108,6 +109,7 @@ public class MDPSIM {
 					if (vw.coverageflag == true) {
 						vw.coverageflag = false;
 						coverage = Double.parseDouble(vw.cp.explorePercent.getText());
+						mode = 1;
 					}
 					if (vw.timeflag == true) {
 						vw.timeflag = false;
@@ -116,16 +118,6 @@ public class MDPSIM {
 					}
 			}
 		} else {
-			/*
-			try {		
-				Runnable tcpthread = new Runnable() {
-			         public void run() {
-			        	TCPsocket.tcpSocket();
-			         }
-			     };
-			     new Thread(tcpthread).start();
-			} catch (Exception e) {}
-			*/
 			TCPsocket.tcpSocket();
 			Robot r = initializeRobot();
 			r.lh.setRobotDirection(RobotDirection.RIGHT);
@@ -140,8 +132,7 @@ public class MDPSIM {
 						r.lh.updatePos();
 						r.lh.scan(realsensors);
 						String mdf = r.lh.reverseMdf();
-						/// I was here touching your code and guess what I change.
-						//TCPsocket.sendMessage("{\"MDP15\":\"MDF\",\"MDF\":\""+mdf+"\"}");
+						TCPsocket.sendMessage("{\"MDP15\":\"MDF\",\"MDF\":\""+mdf+"\"}");
 						updateRealRobot2DPanel(r, vw.map2);
 						r.sensorvalues = realsensors;
 						r.explore(0.0);
@@ -321,7 +312,64 @@ public class MDPSIM {
 		rpanel.repaint();
 	}
 	
-	
+	public static String convertMDF(String s) {
+		String ret = "";
+		s = s.replaceAll("2", "0");
+		for (int a = 74; a >= 0; a--) {
+			String sub = s.substring(a*4,(a+1)*4);
+			switch(sub) {
+				case "0000":
+					ret = ret.concat("0");
+					break;
+				case "0001":
+					ret = ret.concat("1");
+					break;
+				case "0010":
+					ret = ret.concat("2");
+					break;
+				case "0011":
+					ret = ret.concat("3");
+					break;
+				case "0100":
+					ret = ret.concat("4");
+					break;
+				case "0101":
+					ret = ret.concat("5");
+					break;
+				case "0110":
+					ret = ret.concat("6");
+					break;
+				case "0111":
+					ret = ret.concat("7");
+					break;
+				case "1000":
+					ret = ret.concat("8");
+					break;
+				case "1001":
+					ret = ret.concat("9");
+					break;
+				case "1010":
+					ret = ret.concat("A");
+					break;
+				case "1011":
+					ret = ret.concat("B");
+					break;
+				case "1100":
+					ret = ret.concat("C");
+					break;
+				case "1101":
+					ret = ret.concat("D");
+					break;
+				case "1110":
+					ret = ret.concat("E");
+					break;
+				case "1111":
+					ret = ret.concat("F");
+					break;
+			}	
+		}
+		return ret;
+	}
 	public static void updateRealEngine2DPanel(Robot r, Engine2DPanel rpanel) {
 		rpanel.lines = new ArrayList<Line>();
 		rpanel.circles = new ArrayList<Circle>();

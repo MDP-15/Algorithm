@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import mdpsim.MDPSIM;
 import mdpsimEngine.Action2D;
+import mdpsimGUI.TCPsocket;
 
 public class LogicHandler {
 	public int x_size;
@@ -39,7 +40,7 @@ public class LogicHandler {
 		this.x_pos = x_pos;
 		this.y_pos = y_pos;
 		this.recal = 0;
-		this.timelimit = 0;
+		this.timelimit = Double.POSITIVE_INFINITY;
 		this.robotdir = null;
 		this.prevaction = null;
 		this.queue = new ArrayList<RobotAction>();
@@ -156,33 +157,31 @@ public class LogicHandler {
 	
 	public RobotAction getNextAction(double time) {
 		//EXPLORATION
-		//FIND NEXT NODE
+		//FIND NEXT NODEs
 		if (queue.size() == 0) {
 			Node n = null;
 			if (MDPSIM.mode == 1) {
 				if (coverage() >= MDPSIM.coverage || time >= timelimit) {
+					System.out.println("called");
 					MDPSIM.mode = 2;
-					return null;
 				}
-				n = findNext();
 				if (calibratecountera >= alimit || calibratecounterh >= hlimit) {
 					n = findNextCalibrateNode();
 					if (n == null) {
-						System.out.println("called");
 						n = findNext();
 					}
 				} else {
 					n = findNext();
 				}
 			}
-			if (MDPSIM.mode == 2 && !MDPSIM.real) {
+			if (MDPSIM.mode == 2) {
 				n = returnToBase();
 				//printMapMemory();
-			} else if (MDPSIM.mode == 2 && MDPSIM.real) {
-				System.out.println("called");
 			}
 			if (n != null) {
 				queue = trailAction(n);
+			} else if (n == null && MDPSIM.real){
+				//TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"E\"}");
 			}
 		} else {
 			RobotAction ra = queue.remove(queue.size()-1);
@@ -195,7 +194,7 @@ public class LogicHandler {
 			RobotAction ra = queue.remove(queue.size()-1);
 			if (ra != null) {
 				prevaction = ra;
-				if (ra != RobotAction.RCA) {
+				if (ra != RobotAction.RCA || ra != RobotAction.RCH) {
 					calibratecountera += 1;
 				}
 			}
@@ -262,18 +261,18 @@ public class LogicHandler {
 		for (int a = 0; a < x_size; a++) {
 			for(int b = 0; b < y_size; b++) {
 				if (mem.get(a).get(b) == 0) {
-					mdf.concat("0");
+					mdf = mdf.concat("0");
 				} else if (mem.get(a).get(b) == 1) {
-					mdf.concat("1");
+					mdf = mdf.concat("1");
 				}  else if (mem.get(a).get(b) == 2) {
-					mdf.concat("2");
+					mdf = mdf.concat("2");
 				}
 			}
 		}
 		String fin = "";
 		if (mdf.length() > 0) {
-			for (int a = mdf.length()-1; a == 0; a--) {
-				fin.concat(Character.toString(mdf.charAt(a)));
+			for (int a = mdf.length()-1; a >= 0; a--) {
+				fin = fin.concat(Character.toString(mdf.charAt(a)));
 			}
 
 		}
@@ -312,10 +311,19 @@ public class LogicHandler {
 				filtered.add(ar.get(a));
 			}
 		}
-		System.out.println(filtered.size());
-		sort(filtered);
-		Node n = filtered.get(filtered.size()-1);
+		filtered = sort(filtered);
+		Node n = null;
+		try {
+			n = filtered.get(filtered.size()-1);
+		} catch (Exception e) {
+			n = null;
+		}
 		Node now = n;
+		if (n == null) {
+			calibratecountera -= 1;
+			calibratecounterh -= 1;
+			return n;
+		}
 		while (now.prev != null) {
 			now = now.prev;
 		}
@@ -413,10 +421,10 @@ public class LogicHandler {
 			}
 			enodes = exSort(enodes);
 			if (enodes.size() == 0) {
+				System.out.println("called exit exploration");
 				MDPSIM.mode = 2;
 				return null;
 			} else {
-				System.out.println(enodes.get(0).informationgain);
 				return enodes.get(0);
 			}
 		}
@@ -447,7 +455,7 @@ public class LogicHandler {
 				&& 	(!isException(x_pos+1,y_pos+2) && mapmemory.get(x_pos+1).get(y_pos+2) == 0)))	{
 				rwaction = RobotAction.F1;
 				return new Node(x_pos,y_pos+1,now,RobotAction.F1,RobotDirection.RIGHT,0.0);
-			} else if ((	(!isException(x_pos+2,y_pos+1) && mapmemory.get(x_pos+2).get(y_pos+1) == 0) 
+			} else if (((!isException(x_pos+2,y_pos+1) && mapmemory.get(x_pos+2).get(y_pos+1) == 0) 
 					&&	(!isException(x_pos+2,y_pos) && mapmemory.get(x_pos+2).get(y_pos) == 0) 
 					&& 	(!isException(x_pos+2,y_pos-1) && mapmemory.get(x_pos+2).get(y_pos-1) == 0) )){
 				if (rwaction == RobotAction.TR) {
@@ -564,6 +572,9 @@ public class LogicHandler {
 	}
 	
 	public ArrayList<ExplorationNode> exSort(ArrayList<ExplorationNode> ar){
+		if (ar.size() == 0) {
+			return ar;
+		}
 		boolean sorted = false;
 		while (!sorted) {
 			sorted = true;
@@ -1273,7 +1284,6 @@ public class LogicHandler {
 		Node start = new Node(start_x, start_y, null, null, rd, 0.0);
 		//construct searched list;
 		ArrayList<Node> done = new ArrayList<Node>();
-		//construct list of neighbours to search
 		ArrayList<Node>search = new ArrayList<Node>();
 		search.add(start);
 		while(search.size() > 0) {
@@ -1456,80 +1466,6 @@ public class LogicHandler {
 		System.out.println();
 	}
 	
-	public void getMapMemory() {
-		//0 - empty
-		//1 - obstacle
-		//2 - unexplored
-		String mapmap = mapmemory.toString().replaceAll("\\W", "");
-		//System.out.println(mapmap);
-		String MDF1 = "";
-		String MDF2 = "";
-		String MDF3 = "";
-		
-		MDF1 = mapmap;
-		MDF1 = mapmap.replace("1", "1");
-		MDF1 = MDF1.replace("0", "1");
-		MDF1 = MDF1.replace("2", "0");
-		MDF1 = convertMDFReverse(MDF1);
-		MDF1 = convertMDFHex(MDF1);
-		System.out.println("MDF1: \n"+MDF1);
-
-		
-		System.out.println("Before MDF2");
-		MDF2 = mapmap;
-		System.out.println("At MDF2 1");
-		MDF2 = MDF2.replace("2","");
-		System.out.println("At MDF2 2");
-		MDF2 = convertMDFReverse(MDF2);
-		System.out.println("At MDF2 3");
-		MDF2 = convertMDFHex(MDF2);
-		System.out.println("At MDF2 4");
-		System.out.println("MDF2: \n"+MDF2);
-		
-		System.out.println("Before MDF3");
-		MDF3 = mapmap;
-		MDF3 = mapmap.replace("2","0");
-		MDF3 = convertMDFReverse(MDF3);
-		MDF3 = convertMDFHex(MDF3);
-		System.out.println("MDF3 :\n"+MDF3);
-		
-		System.out.println("After MDF3");
-		
-	}
-	
-	public static String convertMDFReverse(String mdf){
-        String mdfsix = "";
-        String mdfString = "";
-        for(int i = 0; i < mdf.length(); i = i + 15){
-            mdfsix = "";
-            for(int k = 0; k < 15 ; k++){
-                mdfsix = mdfsix + mdf.charAt(i+k);
-            }
-            mdfString = mdfsix + mdfString;
-        }
-        return mdfString;
-    }
-	
-	public static String convertMDFHex(String mdf){
-        int decimal;
-        String hexStr = "";
-        String mdffour = "";
-        String mdfString = "";
-        
-        
-        for(int i = 0; i < mdf.length(); i = i + 4){
-            mdffour = "";
-            hexStr = "";
-            for(int k = 0; k < 4 ; k++){
-                mdffour = mdffour + mdf.charAt(i+k);
-            }
-            decimal = Integer.parseInt(mdffour,2);
-            hexStr = Integer.toString(decimal,16);
-            mdfString = mdfString + hexStr;
-        }
-        
-        return mdfString;
-    }
 	
 	public String reverseMdf() {
 		//get x get y

@@ -16,6 +16,7 @@ public class Robot {
 	public ArrayList<Double> sensorvalues;
 	public double radius;
 	public Object2D taggedobject;
+	String fP = "";
 	public MovementHandler mh;
 	private static DecimalFormat df2 = new DecimalFormat("#.##");
 	public ArrayList<RobotAction> actionqueue;
@@ -84,11 +85,7 @@ public class Robot {
 			mh.actionqueue.add(lh.getNextAction(time));
 		} else if (MDPSIM.real) {
 			RobotAction r = lh.getNextAction(time);
-			if (r != null) {
-				System.out.println(r.toString());
-			}
 			if (MDPSIM.real && r != null) {
-				System.out.println("called");
 				String s = r.toString();
 				actionstack = new Stack<String>();
 				actionstack.push(s);
@@ -108,7 +105,7 @@ public class Robot {
 	    actionstack = new Stack<String>();
 	    stackactions(c);
 	    stackactions(n);
-	    moveFP(actionstack);	    
+	    moveFP2(actionstack);	    
 	  }
 	
 	public void stackactions(Node n) {
@@ -157,27 +154,33 @@ public class Robot {
 		      switch (actionstack.peek()) {
 		      case "F1":
 		        actionqueue.add(RobotAction.F1);
-		        TCPsocket.sendMessage("F1s");
+		        //TCPsocket.sendMessage("F1s");
+		        fP = fP + "F1";
 		        break;
 		      case "F2":
 		        actionqueue.add(RobotAction.F2);
-		        TCPsocket.sendMessage("F2s");
+		        //TCPsocket.sendMessage("F2s");
+		        fP = fP + "F2";
 		        break;
 		      case "F3":
 		        actionqueue.add(RobotAction.F3);
-		        TCPsocket.sendMessage("F3s");
+		        //TCPsocket.sendMessage("F3s");
+		        fP = fP + "F3";
 		        break;
 		      case "TL":
 		        actionqueue.add(RobotAction.TL);
-		        TCPsocket.sendMessage("Ls");
+		        //TCPsocket.sendMessage("Ls");
+		        fP = fP + "L";
 		        break;
 		      case "TR":
 		        actionqueue.add(RobotAction.TR);
-		        TCPsocket.sendMessage("Rs");
+		        //TCPsocket.sendMessage("Rs");
+		        fP = fP + "R";
 		        break;
 		      }
 		      actionstack.pop();
 		    }
+		TCPsocket.sendMessage("{\"MDP15\":\"FP\",\"FP\":\""+fP+"\"}");
 	}
 	
 	public void moveExplore(Stack<String> actionstack) {

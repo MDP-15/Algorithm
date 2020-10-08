@@ -143,23 +143,39 @@ public class TCPsocket {
 					int robotx = jobj.getInt("X");
 					int roboty = jobj.getInt("Y");
 					String dir = jobj.getString("O");
-					RobotDirection rdir;
 					if (dir == "RIGHT") {
-						rdir = RobotDirection.RIGHT;
+						MDPSIM.robot.lh.robotdir = RobotDirection.RIGHT;
 					}
 					if (dir == "UP") {
-						rdir = RobotDirection.UP;
+						MDPSIM.robot.lh.robotdir = RobotDirection.UP;
 					}
 					if (dir == "LEFT") {
-						rdir = RobotDirection.LEFT;
+						MDPSIM.robot.lh.robotdir = RobotDirection.LEFT;
 					}
 					if (dir == "DOWN") {
-						rdir = RobotDirection.DOWN;
+						MDPSIM.robot.lh.robotdir = RobotDirection.DOWN;
 					}
 					// Set Robot Starting Position for exploration
 					break;
+				case "O":
+					String rdir = jobj.getString("O");
+					if (rdir == "RIGHT") {
+						MDPSIM.robot.lh.robotdir = RobotDirection.RIGHT;
+					}
+					if (rdir == "UP") {
+						MDPSIM.robot.lh.robotdir = RobotDirection.UP;
+					}
+					if (rdir == "LEFT") {
+						MDPSIM.robot.lh.robotdir = RobotDirection.LEFT;
+					}
+					if (rdir == "DOWN") {
+						MDPSIM.robot.lh.robotdir = RobotDirection.DOWN;
+					}
+					
+					
 				case "SE": // call the start exploration
-					System.out.println("Doing Stuff");
+					MDPSIM.mode = 1;
+					 TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"s\"}");
 					break;
 				case "SF":
 					MDPSIM.robot.startFastestPath();

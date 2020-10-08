@@ -70,7 +70,9 @@ public class MovementHandler {
 					System.out.println("STOP MOVING");
 					//Send MDF to android 
 					//TCP.sendMessage();
-					MDPSIM.robot.lh.getMapMemory();
+//					String mdf = MDPSIM.robot.lh.reverseMdf();
+//					System.out.println("MDF: "+ mdf);
+//					System.out.println(mdf.length());
 				}
 			}
 		} catch (Exception e) {}

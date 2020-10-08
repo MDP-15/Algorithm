@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import mdpsim.MDPSIM;
 import mdpsimEngine.Action2D;
 import mdpsimEngine.Action2D.Action;
+import mdpsimGUI.TCPsocket;
 
 public class MovementHandler {
 	public ArrayList<ArrayList<Double>> sensorhistory;
@@ -70,7 +71,8 @@ public class MovementHandler {
 					System.out.println("STOP MOVING");
 					//Send MDF to android 
 					//TCP.sendMessage();
-					MDPSIM.robot.lh.getMapMemory();
+					String mdf = MDPSIM.robot.lh.reverseMdf();
+					TCPsocket.sendMessage("{\"MDP15\":\"MDF\",\"MDF\":\""+mdf+"\"}");
 				}
 			}
 		} catch (Exception e) {}

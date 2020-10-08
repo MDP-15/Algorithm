@@ -57,40 +57,40 @@ public class LogicHandler {
 
 	}
 	
-	public boolean isCalibrate(Node n) {
+	public boolean canCalibrate(Node n) {
 		int x = n.x;
 		int y = n.y;
 		if (n.rd == RobotDirection.UP) {
-			if ((	mapmemory.get(x-1).get(y+2) == 1
-				&&	mapmemory.get(x).get(y+2) == 1
-				&& 	mapmemory.get(x+1).get(y+2) == 1) || 
+			if ((	(!isException(x-1,y+2) && mapmemory.get(x-1).get(y+2) == 1)
+				&&	(!isException(x,y+2) && mapmemory.get(x).get(y+2) == 1)
+				&& 	(!isException(x+1,y+2) && mapmemory.get(x+1).get(y+2) == 1)) || 
 				(	isException(x-1,y+2)
 				&&	isException(x,y+2)
 				&&	isException(x+1, y+2))) {
 				return true;
 			}
 		} else if (n.rd == RobotDirection.DOWN) {
-			if ((	mapmemory.get(x-1).get(y-2) == 1
-					&&	mapmemory.get(x).get(y-2) == 1
-					&& 	mapmemory.get(x+1).get(y-2) == 1) || 
+			if ((		(!isException(x-1,y-2) && mapmemory.get(x-1).get(y-2) == 1)
+					&&	(!isException(x,y-2) && mapmemory.get(x).get(y-2) == 1)
+					&& 	(!isException(x+1,y-2) && mapmemory.get(x+1).get(y-2) == 1)) || 
 					(	isException(x-1,y-2)
 					&&	isException(x,y-2)
 					&&	isException(x+1, y-2))) {
 					return true;
 				}
 		} else if (n.rd == RobotDirection.LEFT) {
-			if ((	mapmemory.get(x-2).get(y-1) == 1
-					&&	mapmemory.get(x-2).get(y) == 1
-					&& 	mapmemory.get(x-2).get(y+1) == 1) || 
+			if ((		(!isException(x-2,y-1) && mapmemory.get(x-2).get(y-1) == 1)
+					&&	(!isException(x-2,y) && mapmemory.get(x-2).get(y) == 1)
+					&& 	(!isException(x-2,y+1) && mapmemory.get(x-2).get(y+1) == 1)) || 
 					(	isException(x-2,y-1)
 					&&	isException(x-2,y)
 					&&	isException(x-2, y+1))) {
 					return true;
 				}
 		} else if (n.rd == RobotDirection.RIGHT) {
-			if ((	mapmemory.get(x+2).get(y-1) == 1
-					&&	mapmemory.get(x+2).get(y) == 1
-					&& 	mapmemory.get(x+2).get(y+1) == 1) || 
+			if ((		(!isException(x+2,y-1) && mapmemory.get(x+2).get(y-1) == 1)
+					&&	(!isException(x+2,y) && mapmemory.get(x+2).get(y) == 1)
+					&& 	(!isException(x+2,y+1) && mapmemory.get(x+2).get(y+1) == 1)) || 
 					(	isException(x+2,y-1)
 					&&	isException(x+2,y)
 					&&	isException(x+2, y+1))) {
@@ -102,7 +102,7 @@ public class LogicHandler {
 	
 	public boolean isException(int x, int y) {
 		try {
-			int a = mapmemory.get(x).get(y);
+			mapmemory.get(x).get(y);
 			return false;
 		} catch (Exception e) {
 			return true;
@@ -158,7 +158,9 @@ public class LogicHandler {
 				this.robotdir = RobotDirection.UP;
 			}
 		}
-		prevaction = null;
+		if (prevaction != RobotAction.RC ) {
+			prevaction = null;
+		}
 	}
 	
 	public Node returnToBase(){
@@ -200,7 +202,12 @@ public class LogicHandler {
 					MDPSIM.mode = 2;
 					return null;
 				}
-				n = findNext();
+				if (calibratecounter >= 10) {
+					calibratecounter = 0;
+					n = findNextCalibrateNode();
+				} else {
+					n = findNext();
+				}
 			}
 			if (MDPSIM.mode == 2 && !MDPSIM.real) {
 				n = returnToBase();
@@ -222,19 +229,13 @@ public class LogicHandler {
 			RobotAction ra = queue.remove(queue.size()-1);
 			if (ra != null) {
 				prevaction = ra;
+				calibratecounter += 1;
 			}
 			return ra;
 		}
 		return null;
 	}
-
-	/*
-	public boolean canCalibrate() {
-		if (robotdir = RobotDirection.UP) {
-			
-		}
-	}
-	*/
+	
 	public String updateMDFStringFromRobotMemory() {
 		ArrayList<ArrayList<Integer>> mem = mapmemory;
 		String mdf = "";
@@ -288,6 +289,32 @@ public class LogicHandler {
 			s = s.concat("0");
 		}
 		return s.concat(b);
+	}
+	
+	public Node findNextCalibrateNode() {
+		System.out.println("called");
+		ArrayList<Node> ar = dijkstraSearch(x_pos,y_pos,robotdir);
+		System.out.println("called1");
+		System.out.println(ar.size());
+		ArrayList<Node> filtered = new ArrayList<Node>(0);
+		System.out.println("called2");
+		for (int a = 0; a < ar.size(); a++) {
+			if (canCalibrate(ar.get(a))) {
+				filtered.add(ar.get(a));
+			}
+		}
+		System.out.println("called3");
+		System.out.println(filtered.size());
+		sort(filtered);
+		Node n = filtered.get(filtered.size()-1);
+		Node now = n;
+		System.out.println("called4");
+		while (now.prev != null) {
+			now = now.prev;
+		}
+		now.ra = RobotAction.RC;
+		n.printParents();
+		return n;
 	}
 	
 	public void setUnexploredMap(int start_x, int start_y, int x_siz, int y_siz, RobotDirection rd) {
@@ -1247,9 +1274,9 @@ public class LogicHandler {
 		String nMdf = "";
 		String row = "";
 		
-		for(int i = mapmemory.size(); i > 0; i++) {
-			for(int l = 0; i < mapmemory.get(0).size(); l++) {
-				row = row + mapmemory.get(i).get(l);
+		for(int i = mapmemory.size(); i > 0; i--) {
+			for(int k = 0; k < mapmemory.get(0).size(); k++) {
+				row = row + mapmemory.get(i-1).get(k);
 			}
 			nMdf = nMdf + row;
 		}

@@ -40,7 +40,7 @@ public class MDPSIM {
 		sensorflag = false;
 		realsensors = new ArrayList<Double>();	
 		mode = 0;
-		real = false;
+		real = true;
 		mdfString = parseFormatToMap(""); 
 		vw = new Viewer("MDP Simulator", 1024, 768); //First Panel
 		pause = false;
@@ -140,6 +140,9 @@ public class MDPSIM {
 						r.lh.updatePos();
 						r.lh.printPos();
 						r.lh.scan(realsensors);
+						String mdf = r.lh.reverseMdf();
+						/// I was here touching your code and guess what I change.
+						TCPsocket.sendMessage("{\"MDP15\":\"MDF\",\"MDF\":\""+mdf+"\"}");
 						updateRealRobot2DPanel(r, vw.map2);
 						r.sensorvalues = realsensors;
 						r.explore(0.0);

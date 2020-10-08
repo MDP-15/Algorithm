@@ -110,7 +110,7 @@ public class TCPsocket {
 	
 	// Get message from buffer
 	public static String receiveMessage() {
-		byte[] byteData = new byte[1024];
+		byte[] byteData = new byte[2048];
 		try {
 			int size = 0;
 			while (din.available() == 0) {

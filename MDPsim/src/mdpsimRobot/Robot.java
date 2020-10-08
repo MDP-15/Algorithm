@@ -208,8 +208,13 @@ public class Robot {
 		        actionqueue.add(RobotAction.TR);
 		        TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"Rs\"}");
 		        break;
+		      case "RC":
+		        actionqueue.add(RobotAction.RC);
+		        TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"Hs\"}");
+		        break;
 		      }
 		      actionstack.pop();
+		      
 		}
 	}
 }

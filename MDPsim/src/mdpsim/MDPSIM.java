@@ -40,7 +40,7 @@ public class MDPSIM {
 		sensorflag = false;
 		realsensors = new ArrayList<Double>();
 		mode = 0;
-		real = true;
+		real = false;
 		mdfString = parseFormatToMap(""); 
 		vw = new Viewer("MDP Simulator", 1024, 768); //First Panel
 		pause = false;
@@ -159,7 +159,7 @@ public class MDPSIM {
 			*/
 			TCPsocket.tcpSocket();
 			Robot r = initializeRobot();
-			r.lh.setRobotDirection(RobotDirection.UP);
+			r.lh.setRobotDirection(RobotDirection.RIGHT);
 			r.lh.updatePosition(18, 1);
 			r.lh.initPos(18, 1);
 			r.lh.timelimit = Double.POSITIVE_INFINITY;
@@ -169,8 +169,13 @@ public class MDPSIM {
 				System.out.print("");
 				if(sensorflag == true) {
 						r.lh.updatePos();
-						r.lh.printPos();
 						r.lh.scan(realsensors);
+<<<<<<< Updated upstream
+=======
+						String mdf = r.lh.reverseMdf();
+						/// I was here touching your code and guess what I change.
+						//TCPsocket.sendMessage("{\"MDP15\":\"MDF\",\"MDF\":\""+mdf+"\"}");
+>>>>>>> Stashed changes
 						updateRealRobot2DPanel(r, vw.map2);
 						r.sensorvalues = realsensors;
 						r.explore(0.0);
@@ -349,6 +354,7 @@ public class MDPSIM {
 		rpanel.circles = circles;
 		rpanel.repaint();
 	}
+	
 	
 	public static void updateRealEngine2DPanel(Robot r, Engine2DPanel rpanel) {
 		rpanel.lines = new ArrayList<Line>();

@@ -184,30 +184,45 @@ public class Robot {
 		while (!actionstack.isEmpty()) {
 		      switch (actionstack.peek()) {
 		      case "F1":
-		    	  lh.prevaction = RobotAction.F1;
-		        actionqueue.add(RobotAction.F1);
-		        TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"F1s\"}");
-		        break;
+		    	  	lh.prevaction = RobotAction.F1;
+		    	  	actionqueue.add(RobotAction.F1);
+		    	  	TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"F1s\"}");
+		    	  	break;
 		      case "F2":
-		    	  lh.prevaction = RobotAction.F2;
-		        actionqueue.add(RobotAction.F2);
-		        TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"F2s\"}");
-		        break;
+		    	  	lh.prevaction = RobotAction.F2;
+		    	  	actionqueue.add(RobotAction.F2);
+		    	  	TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"F2s\"}");
+		    	  	break;
 		      case "F3":
-		    	  lh.prevaction = RobotAction.F3;
-		        actionqueue.add(RobotAction.F3);
-		        TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"F3s\"}");
-		        break;
+		    	  	lh.prevaction = RobotAction.F3;
+		    	  	actionqueue.add(RobotAction.F3);
+		    	  	TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"F3s\"}");
+		    	  	break;
 		      case "TL":
-		    	  lh.prevaction = RobotAction.TL;
-		        actionqueue.add(RobotAction.TL);
-		        TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"Ls\"}");
-		        break;
+		    	  	lh.prevaction = RobotAction.TL;
+		    	  	actionqueue.add(RobotAction.TL);
+		    	  	TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"Ls\"}");
+		    	  	break;
 		      case "TR":
+<<<<<<< Updated upstream
 		    	  lh.prevaction = RobotAction.TR;
 		        actionqueue.add(RobotAction.TR);
 		        TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"Rs\"}");
 		        break;
+=======
+		    	  	lh.prevaction = RobotAction.TR;
+		    	  	actionqueue.add(RobotAction.TR);
+		    	  	TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"Rs\"}");
+		    	  	break;
+		      case "RCA":
+		    	  	actionqueue.add(RobotAction.RCA);
+		    	  	TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"As\"}");
+		    	  	break;
+		      case "RCH":
+		    	  	actionqueue.add(RobotAction.RCH);
+		    	  	TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"Hs\"}");
+		    	  	break;
+>>>>>>> Stashed changes
 		      }
 		      actionstack.pop();
 		}

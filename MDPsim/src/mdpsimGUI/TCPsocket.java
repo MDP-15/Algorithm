@@ -110,7 +110,11 @@ public class TCPsocket {
 	
 	// Get message from buffer
 	public static String receiveMessage() {
+<<<<<<< Updated upstream
 		byte[] byteData = new byte[1024];
+=======
+		byte[] byteData = new byte[4096];
+>>>>>>> Stashed changes
 		try {
 			int size = 0;
 			while (din.available() == 0) {
@@ -122,9 +126,8 @@ public class TCPsocket {
 			}
 			
 			din.read(byteData);
-
 			// This is to get rid of junk bytes
-			while (size < 1024) {
+			while (size < 4096) {
 				if (byteData[size] == 0) {
 					break;
 				}
@@ -181,7 +184,6 @@ public class TCPsocket {
 					ArrayList<Double> ar = new ArrayList<Double>();
 					for (int a = 0; a < ss1.length; a++) {
 						ar.add(Double.parseDouble(ss1[a]));
-						System.out.println(ss1[a]);
 					}
 					if (ar.size() > 0) {
 						MDPSIM.realsensors = ar;

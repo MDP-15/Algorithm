@@ -58,7 +58,7 @@ public class MovementHandler {
 				queuedactions.add(new QueuedAction(Action.ACCELERATE, 0, t+0.1, false));
 				queuedactions.add(new QueuedAction(Action.ACCELERATE, -1000, t+0.30, false));
 				queuedactions.add(new QueuedAction(Action.STOP, 0, t+0.40, true));
-			} else if (currentaction == RobotAction.RC) {
+			} else if (currentaction == RobotAction.RCA) {
 				queuedactions.add(new QueuedAction(Action.CALIBRATE,0,t,false));
 			}
 		}

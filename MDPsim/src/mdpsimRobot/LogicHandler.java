@@ -14,10 +14,31 @@ public class LogicHandler {
 	public ArrayList<ArrayList<Integer>> mapmemory;
 	public ArrayList<RobotAction> queue;
 	public RobotAction prevaction;
+	public RobotAction rwaction;
 	public int recal;
 	public double timelimit;
+<<<<<<< Updated upstream
 	
 	public LogicHandler(int x_size, int y_size, int x_pos, int y_pos) {
+=======
+	public int calibratecountera;
+	public int calibratecounterh;
+	public int hlimit;
+	public int alimit;
+	public int mode;
+	public boolean rwcycle;
+	public boolean infogain;
+	
+	public LogicHandler(int x_size, int y_size, int x_pos, int y_pos) {
+		this.rwcycle = false;
+		this.infogain = false;
+		this.rwaction = null;
+		this.mode = 0;
+		this.calibratecountera = 0;
+		this.calibratecounterh = 0;
+		this.hlimit = 5;
+		this.alimit = 2;
+>>>>>>> Stashed changes
 		this.x_size = x_size;
 		this.y_size = y_size;
 		this.x_pos = x_pos;
@@ -104,7 +125,13 @@ public class LogicHandler {
 				this.robotdir = RobotDirection.UP;
 			}
 		}
+<<<<<<< Updated upstream
 		prevaction = null;
+=======
+		if (prevaction != RobotAction.RCA && prevaction != RobotAction.RCH) {
+			prevaction = null;
+		}
+>>>>>>> Stashed changes
 	}
 	
 	public Node returnToBase(){
@@ -146,7 +173,19 @@ public class LogicHandler {
 					MDPSIM.mode = 2;
 					return null;
 				}
+<<<<<<< Updated upstream
 				n = findNext();
+=======
+				if (calibratecountera >= alimit || calibratecounterh >= hlimit) {
+					n = findNextCalibrateNode();
+					if (n == null) {
+						System.out.println("called");
+						n = findNext();
+					}
+				} else {
+					n = findNext();
+				}
+>>>>>>> Stashed changes
 			}
 			if (MDPSIM.mode == 2 && !MDPSIM.real) {
 				n = returnToBase();
@@ -168,6 +207,12 @@ public class LogicHandler {
 			RobotAction ra = queue.remove(queue.size()-1);
 			if (ra != null) {
 				prevaction = ra;
+<<<<<<< Updated upstream
+=======
+				if (ra != RobotAction.RCA) {
+					calibratecountera += 1;
+				}
+>>>>>>> Stashed changes
 			}
 			return ra;
 		}
@@ -236,6 +281,41 @@ public class LogicHandler {
 		return s.concat(b);
 	}
 	
+<<<<<<< Updated upstream
+=======
+	public Node findNextCalibrateNode() {
+		ArrayList<Node> ar = dijkstraSearch(x_pos,y_pos,robotdir);
+		ArrayList<Node> filtered = new ArrayList<Node>(0);
+		for (int a = 0; a < ar.size(); a++) {
+			if (canCalibrate(ar.get(a))) {
+				filtered.add(ar.get(a));
+			}
+		}
+		System.out.println(filtered.size());
+		sort(filtered);
+		Node n = filtered.get(filtered.size()-1);
+		Node now = n;
+		while (now.prev != null) {
+			now = now.prev;
+		}
+		if (n.score < 3) {
+			if (calibratecounterh >= hlimit) {
+				now.ra = RobotAction.RCH;
+				calibratecountera = 0;
+				calibratecounterh = 0;
+			} else if (calibratecountera >= alimit) {
+				now.ra = RobotAction.RCA;
+				calibratecountera = 0;
+			}
+		} else {
+			n = null;
+			calibratecountera -= 1;
+			calibratecounterh -= 1;
+		}
+		return n;
+	}
+	
+>>>>>>> Stashed changes
 	public void setUnexploredMap(int start_x, int start_y, int x_siz, int y_siz, RobotDirection rd) {
 		robotdir = rd;
 		x_pos = start_x;
@@ -295,28 +375,149 @@ public class LogicHandler {
 	//EXPLORATION
 	//CONSTRUCT BOUNDARY, THEN FIND TARGET NODE THAT WILL GIVE HIGHEST EXPLORATION REWARD PER SCORE;
 	public Node findNext() {
-		ArrayList<Node> pathable = dijkstraSearch(x_pos, y_pos, robotdir);
-		ArrayList<ExplorationNode> first = new ArrayList<ExplorationNode>(0);
-		for (int a = 0; a < pathable.size(); a++) {
-			if (pathable.get(a).score != 0) {
-				double info = informationGained(pathable.get(a).x, pathable.get(a).y,pathable.get(a).rd);
-				if (info == 0) {
-					continue;
+		Node end = new Node(1,13,null,null,null,0.0);
+		Node now = new Node(x_pos,y_pos,null,null,null,0.0);
+		Node start = new Node(18,1,null,null,null,0.0);
+		if (infogain) {
+			ArrayList<Node> pathable = dijkstraSearch(x_pos,y_pos,robotdir);
+			ArrayList<ExplorationNode> enodes = new ArrayList<ExplorationNode>(0);
+			for (int a = 0; a < pathable.size(); a++) {
+				if (pathable.get(a).score != 0) {
+					double info = informationGained(pathable.get(a).x,pathable.get(a).y,pathable.get(a).rd);
+					if (info == 0) {
+						continue;
+					}
+					ExplorationNode e = new ExplorationNode(pathable.get(a), Math.pow((double)info/pathable.get(a).score, 2));
+					enodes.add(e);
 				}
-				ExplorationNode ex = new ExplorationNode(pathable.get(a), Math.pow((double)info/pathable.get(a).score,2));
-				first.add(ex);
+			}
+			enodes = exSort(enodes);
+			if (enodes.size() == 0) {
+				MDPSIM.mode = 2;
+				return null;
+			} else {
+				System.out.println(enodes.get(0).informationgain);
+				return enodes.get(0);
 			}
 		}
-		first = exSort(first);
-		if (first.size() == 0) {
-			MDPSIM.mode = 2;
-			return null;
+		if (now.isCell(end)) {
+			rwcycle = true;
 		}
-		ExplorationNode e = first.get(0);
-		Node n = new Node(e.x,e.y,e.prev,e.ra,e.rd,e.score);
-		return n;
+		if (!(now.isCell(start) && rwcycle)) {
+			return rwHug();
+		}
+		if ((now.isCell(start) && rwcycle)) {
+			infogain = true;
+			return findNext();
+		}
+		return null;
 	}
 	
+	public Node rwHug() {
+		Node now = new Node(x_pos,y_pos,null,null,null,0.0);
+		if (robotdir == RobotDirection.RIGHT) {
+			if 	(((	(!isException(x_pos+2,y_pos+1) && mapmemory.get(x_pos+2).get(y_pos+1) != 0) 
+				|| 	(!isException(x_pos+2,y_pos) && mapmemory.get(x_pos+2).get(y_pos) != 0) 
+				|| 	(!isException(x_pos+2,y_pos-1) && mapmemory.get(x_pos+2).get(y_pos-1) != 0) )||
+				(	(isException(x_pos+2,y_pos+1))
+				|| 	(isException(x_pos+2,y_pos))
+				|| 	(isException(x_pos+2,y_pos-1))	))
+				&&(	(!isException(x_pos-1,y_pos+2) && mapmemory.get(x_pos-1).get(y_pos+2) == 0)
+				&&	(!isException(x_pos,y_pos+2) && mapmemory.get(x_pos).get(y_pos+2) == 0)
+				&& 	(!isException(x_pos+1,y_pos+2) && mapmemory.get(x_pos+1).get(y_pos+2) == 0)))	{
+				rwaction = RobotAction.F1;
+				return new Node(x_pos,y_pos+1,now,RobotAction.F1,RobotDirection.RIGHT,0.0);
+			} else if ((	(!isException(x_pos+2,y_pos+1) && mapmemory.get(x_pos+2).get(y_pos+1) == 0) 
+					&&	(!isException(x_pos+2,y_pos) && mapmemory.get(x_pos+2).get(y_pos) == 0) 
+					&& 	(!isException(x_pos+2,y_pos-1) && mapmemory.get(x_pos+2).get(y_pos-1) == 0) )){
+				if (rwaction == RobotAction.TR) {
+					rwaction = RobotAction.F1;
+					return new Node(x_pos,y_pos+1,now,RobotAction.F1,RobotDirection.RIGHT,0.0);
+				}
+				rwaction = RobotAction.TR;
+				return new Node(x_pos,y_pos,now,RobotAction.TR,RobotDirection.DOWN,0.0);
+			} else {
+				rwaction = RobotAction.TL;
+				return new Node(x_pos,y_pos,now,RobotAction.TL,RobotDirection.UP,0.0);
+			}
+		} else if (robotdir == RobotDirection.UP) {
+			if 	(((	(!isException(x_pos+1,y_pos+2) && mapmemory.get(x_pos+1).get(y_pos+2) != 0) 
+					|| 	(!isException(x_pos,y_pos+2) && mapmemory.get(x_pos).get(y_pos+2) != 0) 
+					|| 	(!isException(x_pos-1,y_pos+2) && mapmemory.get(x_pos-1).get(y_pos+2) != 0) )||
+					(	(isException(x_pos+1,y_pos+2))
+					|| 	(isException(x_pos,y_pos+2))
+					|| 	(isException(x_pos-1,y_pos+2))	))
+					&&(	(!isException(x_pos-2,y_pos-1) && mapmemory.get(x_pos-2).get(y_pos-1) == 0)
+					&&	(!isException(x_pos-2,y_pos) && mapmemory.get(x_pos-2).get(y_pos) == 0)
+					&& 	(!isException(x_pos-2,y_pos+1) && mapmemory.get(x_pos-2).get(y_pos+1) == 0)))	{	
+					rwaction = RobotAction.F1;
+					return new Node(x_pos-1,y_pos,now,RobotAction.F1,RobotDirection.UP,0.0);
+				} else if ((	(!isException(x_pos+1,y_pos+2) && mapmemory.get(x_pos+1).get(y_pos+2) == 0) 
+						&& 	(!isException(x_pos,y_pos+2) && mapmemory.get(x_pos).get(y_pos+2) == 0) 
+						&&	(!isException(x_pos-1,y_pos+2) && mapmemory.get(x_pos-1).get(y_pos+2) == 0) )){
+					if (rwaction == RobotAction.TR) {
+						rwaction = RobotAction.F1;
+						return new Node(x_pos-1,y_pos,now,RobotAction.F1,RobotDirection.UP,0.0);
+					}
+					rwaction = RobotAction.TR;
+					return new Node(x_pos,y_pos,now,RobotAction.TR,RobotDirection.RIGHT,0.0);
+				} else {
+					rwaction = RobotAction.TL;
+					return new Node(x_pos,y_pos,now,RobotAction.TL,RobotDirection.LEFT,0.0);
+				}
+		}  else if (robotdir == RobotDirection.LEFT) {
+			if 	(((	(!isException(x_pos-2,y_pos+1) && mapmemory.get(x_pos-2).get(y_pos+1) != 0) 
+					|| 	(!isException(x_pos-2,y_pos) && mapmemory.get(x_pos-2).get(y_pos) != 0) 
+					|| 	(!isException(x_pos-2,y_pos-1) && mapmemory.get(x_pos-2).get(y_pos-1) != 0) )||
+					(	(isException(x_pos-2,y_pos+1))
+					|| 	(isException(x_pos-2,y_pos))
+					|| 	(isException(x_pos-2,y_pos-1))	))
+					&&(	(!isException(x_pos-1,y_pos-2) && mapmemory.get(x_pos-1).get(y_pos-2) == 0)
+					&&	(!isException(x_pos,y_pos-2) && mapmemory.get(x_pos).get(y_pos-2) == 0)
+					&& 	(!isException(x_pos+1,y_pos-2) && mapmemory.get(x_pos+1).get(y_pos-2) == 0)))	{	
+					rwaction = RobotAction.F1;
+					return new Node(x_pos,y_pos-1,now,RobotAction.F1,RobotDirection.LEFT,0.0);
+				} else if ((	(!isException(x_pos-2,y_pos+1) && mapmemory.get(x_pos-2).get(y_pos+1) == 0) 
+						&& 	(!isException(x_pos-2,y_pos) && mapmemory.get(x_pos-2).get(y_pos) == 0) 
+						&& 	(!isException(x_pos-2,y_pos-1) && mapmemory.get(x_pos-2).get(y_pos-1) == 0) )){
+					if (rwaction == RobotAction.TR) {
+						rwaction = RobotAction.F1;
+						return new Node(x_pos,y_pos-1,now,RobotAction.F1,RobotDirection.LEFT,0.0);
+					}
+					rwaction = RobotAction.TR;
+					return new Node(x_pos,y_pos,now,RobotAction.TR,RobotDirection.UP,0.0);
+				} else {
+					rwaction = RobotAction.TL;
+					return new Node(x_pos,y_pos,now,RobotAction.TL,RobotDirection.DOWN,0.0);
+				}
+			} else if (robotdir == RobotDirection.DOWN) {
+				if 	(((	(!isException(x_pos+1,y_pos-2) && mapmemory.get(x_pos+1).get(y_pos-2) != 0) 
+						|| 	(!isException(x_pos,y_pos-2) && mapmemory.get(x_pos).get(y_pos-2) != 0) 
+						|| 	(!isException(x_pos-1,y_pos-2) && mapmemory.get(x_pos-1).get(y_pos-2) != 0) )||
+						(	(isException(x_pos+1,y_pos-2))
+						|| 	(isException(x_pos,y_pos-2))
+						|| 	(isException(x_pos-1,y_pos-2))	))
+						&&(	(!isException(x_pos+2,y_pos-1) && mapmemory.get(x_pos+2).get(y_pos-1) == 0)
+						&&	(!isException(x_pos+2,y_pos) && mapmemory.get(x_pos+2).get(y_pos) == 0)
+						&& 	(!isException(x_pos+2,y_pos+1) && mapmemory.get(x_pos+2).get(y_pos+1) == 0)))	{	
+						rwaction = RobotAction.F1;
+						return new Node(x_pos+1,y_pos,now,RobotAction.F1,RobotDirection.DOWN,0.0);
+					} else if ((	(!isException(x_pos+1,y_pos-2) && mapmemory.get(x_pos+1).get(y_pos-2) == 0) 
+							&& 	(!isException(x_pos,y_pos-2) && mapmemory.get(x_pos).get(y_pos-2) == 0) 
+							&& 	(!isException(x_pos-1,y_pos-2) && mapmemory.get(x_pos-1).get(y_pos-2) == 0) )){
+						if (rwaction == RobotAction.TR) {
+							rwaction = RobotAction.F1;
+							return new Node(x_pos+1,y_pos,now,RobotAction.F1,RobotDirection.DOWN,0.0);
+						}
+						rwaction = RobotAction.TR;
+						return new Node(x_pos,y_pos,now,RobotAction.TR,RobotDirection.LEFT,0.0);
+					} else {
+						rwaction = RobotAction.TL;
+						return new Node(x_pos,y_pos,now,RobotAction.TL,RobotDirection.RIGHT,0.0);
+					}
+			} 
+		return null;
+	}
 	//INSERT INTO SORTED LIST
 	public ArrayList<ExplorationNode> exInsert(ArrayList<ExplorationNode> ar, ExplorationNode en){
 		if (ar.size() == 0) {
@@ -377,6 +578,13 @@ public class LogicHandler {
 			}
 		}
 		return validnodes;
+	}
+	public boolean isInformationGained(int x, int y, RobotDirection rd){
+		if (informationGained(x,y,rd) != 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	//FIND AMOUNT OF INFORMATION GAINED IF SCAN AT GIVEN SQUARE;
 	//SQUARE MUST BE VALID ROBOT POSITION;
@@ -768,68 +976,108 @@ public class LogicHandler {
 	//CHECK SENSOR VALUES AND UPDATE MAP -> VALUES SHOULD BE UPDATED HERE
 	public void scanMap(double right_front, double right_back, double front_right, double front_middle, double front_left, double left_long) {
 		boolean verbose = true;
-		int fmbmax = 1;
-		int frbmax = 1;
-		int flbmax = 1;
-		int llbmax = 1;
-		int rfbmax = 1;
-		int rbbmax = 1;
-		int frontmidbox = 1;
-		int frontrightbox = 1;
-		int frontleftbox = 1;
-		int leftlongbox = 1;
-		int rightfrontbox = 1;
-		int rightbackbox = 1;
+		int fmbmax = 3;
+		int frbmax = 3;
+		int flbmax = 3;
+		int llbmax = 3;
+		int rfbmax = 2;
+		int rbbmax = 2;
+		int frontmidbox = 3;
+		int frontrightbox = 3;
+		int frontleftbox = 3;
+		int leftlongbox = 3;
+		int rightfrontbox = 2;
+		int rightbackbox = 2;
 		//FROM SENSOR VALUE DETERMINE RANGE OF NEXT BLOCK
 		//DEFINE INTEGERS AS LENGTH PROTRUDING FROM ROBOT 3X3 BODY
 		//HANDLE FRONT MIDDLE;
 		if (MDPSIM.real) {
 			if (front_middle <= 9.5) {
 				frontmidbox = 0;
+			} else if (front_middle <= 19.5){
+				frontmidbox = 1;
+			} else if (front_middle <= 29.5){
+				frontmidbox = 2;
 			}
 			//HANDLE FRONT RIGHT;
 			if (front_right <= 9.5) {
 				frontrightbox = 0;
+			} else if (front_right <= 19.5){
+				frontrightbox = 1;
+			} else if (front_right <= 29.5){
+				frontrightbox = 2;
 			}
 			//HANDLE FRONT LEFT;
 			if (front_left <= 9.5) {
 				frontleftbox = 0;
+			} else if (front_left <= 19.5){
+				frontleftbox = 2;
+			} else if (front_middle <= 29.5){
+				frontleftbox = 2;
 			}
 			//HANDLE LEFT LONG
 			if (left_long <= 9.5) {
 				leftlongbox = 0;
+			} else if (left_long <= 19.5) {
+				leftlongbox = 1;
+			}  else if (left_long <= 29.5) {
+				leftlongbox = 2;
 			}
 			//HANDLE RIGHT_FRONT
 			if (right_front <= 9.5) {
 				rightfrontbox = 0;
-			}
+			} else if (right_front <= 19.5) {
+				rightfrontbox = 1;
+			} 
 			//HANDLE RIGHT_BACK
 			if (right_back <= 9.5) {
 				rightbackbox = 0;
+			} else if (right_back <= 19.5) {
+				rightbackbox = 1;
 			}
 		} else {
 			if (front_middle <= 12.5) {
 				frontmidbox = 0;
-			}
+			} else if (front_middle <= 22.5) {
+				frontmidbox = 1;
+			} else if (front_middle <= 32.5) {
+				frontmidbox = 2;
+			} 
 			//HANDLE FRONT RIGHT;
 			if (front_right <= 12.5) {
 				frontrightbox = 0;
+			} else if (front_right <= 22.5) {
+				frontrightbox = 1;
+			} else if (front_right <= 32.5) {
+				frontrightbox = 2;
 			}
 			//HANDLE FRONT LEFT;
 			if (front_left <= 12.5) {
 				frontleftbox = 0;
+			} else if (front_left <= 22.5) {
+				frontleftbox = 1;
+			} else if (front_left <= 32.5) {
+				frontleftbox = 2;
 			}
 			//HANDLE LEFT LONG
 			if (left_long <= 22.5) {
 				leftlongbox = 0;
+			} else if (left_long <= 32.5) {
+				leftlongbox = 1;
+			} else if (left_long <= 42.5) {
+				leftlongbox = 2;
 			}
 			//HANDLE RIGHT_FRONT
 			if (right_front <= 22.5) {
 				rightfrontbox = 0;
+			} else if (right_front <= 32.5) {
+				rightfrontbox = 1;
 			}
 			//HANDLE RIGHT_BACK
 			if (right_back <= 22.5) {
 				rightbackbox = 0;
+			} else if (right_back <= 32.5) {
+				rightbackbox = 1;
 			}
 		}
 		if (verbose) {
@@ -1266,11 +1514,91 @@ public class LogicHandler {
 	public static String reverseMdf(String mdf) {
 		//get x get y
 		
+<<<<<<< Updated upstream
 		
 		
 		
 		return "";
+=======
+		for(int i = mapmemory.size(); i > 0; i--) {
+			row="";
+			for(int k = 0; k < mapmemory.get(0).size(); k++) {
+				row = row + mapmemory.get(i-1).get(k);
+			}
+			nMdf = nMdf + row;
+		}
+		return nMdf;
+>>>>>>> Stashed changes
 	}
 	
+	public double wallHugBonus(int x, int y) {
+		int xbonus = Math.min(Math.abs(x-0), Math.abs(x-x_size));
+		int ybonus = Math.min(Math.abs(y-0), Math.abs(y-y_size));
+		return Math.min((20-xbonus),(15-ybonus));
+	}
 	
+	public boolean isAvailRightObstacle(Node n) {
+		int x = n.x;
+		int y = n.y;
+		if (n.rd == RobotDirection.UP) {
+			if ((	(!isException(x-2,y+2) && mapmemory.get(x-2).get(y+2) == 1)
+				||	(!isException(x-1,y+2) && mapmemory.get(x-1).get(y+2) == 1)
+				||	(!isException(x,y+2) && mapmemory.get(x).get(y+2) == 1)
+				||	(!isException(x+1,y+2) && mapmemory.get(x+1).get(y+2) == 1)
+				|| 	(!isException(x+2,y+2) && mapmemory.get(x+2).get(y+2) == 1)) || 
+				(	isException(x-2,y+2)
+				||	isException(x-1,y+2)
+				||	isException(x,y+2)
+				||	isException(x+1, y+2)
+				||	isException(x+2, y+2))) {
+				return true;
+			}
+		} else if (n.rd == RobotDirection.DOWN) {
+			if ((		(!isException(x-2,y-2) && mapmemory.get(x-2).get(y-2) == 1)
+					||	(!isException(x-1,y-2) && mapmemory.get(x-1).get(y-2) == 1)
+					||	(!isException(x,y-2) && mapmemory.get(x).get(y-2) == 1)
+					|| 	(!isException(x+1,y-2) && mapmemory.get(x+1).get(y-2) == 1)
+					|| 	(!isException(x+2,y-2) && mapmemory.get(x+2).get(y-2) == 1)) || 
+					(	isException(x-2,y-2)
+					||	isException(x-1,y-2)
+					||	isException(x,y-2)
+					||	isException(x+1, y-2)
+					||	isException(x+2, y-2))) {
+					return true;
+				}
+		} else if (n.rd == RobotDirection.LEFT) {
+			if ((		(!isException(x-2,y-2) && mapmemory.get(x-2).get(y-2) == 1)
+					||	(!isException(x-2,y-1) && mapmemory.get(x-2).get(y-1) == 1)
+					||	(!isException(x-2,y) && mapmemory.get(x-2).get(y) == 1)
+					||	(!isException(x-2,y+1) && mapmemory.get(x-2).get(y+1) == 1)
+					|| 	(!isException(x-2,y+2) && mapmemory.get(x-2).get(y+2) == 1)) || 
+					(	isException(x-2,y-2)
+					||	isException(x-2,y-1)
+					||	isException(x-2,y)
+					||	isException(x-2, y+1)
+					||	isException(x-2, y+2))) {
+					return true;
+				}
+		} else if (n.rd == RobotDirection.RIGHT) {
+			if ((		(!isException(x+2,y-2) && mapmemory.get(x+2).get(y-2) == 1)
+					||	(!isException(x+2,y-1) && mapmemory.get(x+2).get(y-1) == 1)
+					||	(!isException(x+2,y) && mapmemory.get(x+2).get(y) == 1)
+					|| 	(!isException(x+2,y+1) && mapmemory.get(x+2).get(y+1) == 1)
+					|| 	(!isException(x+2,y+2) && mapmemory.get(x+2).get(y+2) == 1)) || 
+					(	isException(x+2,y-2)
+					||	isException(x+2,y-1)
+					||	isException(x+2,y)
+					||	isException(x+2, y+1)
+					||	isException(x+2, y+2))) {
+					return true;
+				}
+		}
+		return false;
+	}
+	
+	public int wallBonus(Node n) {
+		int nx = Math.min(Math.abs(20-n.x), Math.abs(0-n.x));
+		int ny = Math.min(Math.abs(15-n.y), Math.abs(0-n.y));
+		return Math.min(nx, ny);
+	}
 }

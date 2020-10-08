@@ -32,10 +32,11 @@ public class MapReader {
 			}
 			
 			reader.close();
-			System.out.println("Debugging "+out);
+			//System.out.println("Debugging "+out);
 			mapString = out.toString().replace("\n","");
 			String newMapString = out.toString();
 			String newMDF = convertMDF(newMapString);
+<<<<<<< HEAD
 			System.out.println("Debugging "+newMapString);
 			MDPSIM.mdfString = newMapString;
 			vw.flag = true;
@@ -43,6 +44,11 @@ public class MapReader {
 			MDPSIM.inputMDF(newMapString);
 			MDPSIM.mdfString = newMDF;
 			vw.flag = true;
+=======
+			//System.out.println("Debugging "+newMDF);
+			MDPSIM.mdfString = newMDF;
+			vw.engineresetflag = true;
+>>>>>>> 10/7/2020
 			
 			
 		}catch(Exception e) {
@@ -50,7 +56,10 @@ public class MapReader {
 		}
 	}
 	
+<<<<<<< HEAD
 	
+=======
+>>>>>>> 10/7/2020
 	public static String convertMDF(String mdfHex) {
 		String mapdesriptor = mdfHex;
         String curr;
@@ -66,10 +75,16 @@ public class MapReader {
                 mdfbin = "0" + mdfbin;
             mdf = mdf + mdfbin;
         }
+<<<<<<< HEAD
 		return mdf;
 	}
 	
 	
 	
 	
+=======
+        System.out.println(mdf);
+		return mdf;
+	}
+>>>>>>> 10/7/2020
 }

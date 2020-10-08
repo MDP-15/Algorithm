@@ -76,4 +76,12 @@ public class Vector2D {
 	public Vector2D flip() {
 		return new Vector2D(this.y, this.x);
 	}
+	
+	public Vector2D yflip() {
+		return new Vector2D(this.x, -this.y);
+	}
+	
+	public Vector2D xflip() {
+		return new Vector2D(-this.x, this.y);
+	}
 }

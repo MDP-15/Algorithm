@@ -2,12 +2,14 @@ package mdpsimRobot;
 import mdpsimEngine.Vector2D;
 
 public class Sensor {
+	public String name;
 	public double minrange;
 	public double maxrange;
 	public Vector2D position;
 	public Vector2D direction;
 	
-	public Sensor (Vector2D position, Vector2D direction, double minrange, double maxrange) {
+	public Sensor (String name, Vector2D position, Vector2D direction, double minrange, double maxrange) {
+		this.name = name;
 		this.minrange = minrange;
 		this.maxrange = maxrange;
 		this.position = position;

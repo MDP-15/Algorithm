@@ -3,7 +3,10 @@ package mdpsimEngine;
 public class Action2D {
 	public enum Action{
 		ACCELERATE,
-		TURN;
+		TURN,
+		STOP,
+		SCAN,
+		CALIBRATE;
 	}
 	
 	private Action action;

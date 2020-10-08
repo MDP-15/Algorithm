@@ -19,7 +19,7 @@ public class BoundingBoxList {
 		int right = bblist.size() - 1;
 		int middle = 0;
 		while (left <= right) {
-			middle = (left + right) / 2;
+			middle = Math.floorDiv((left + right),2);
 			int cmp = Double.compare(bbpointer.value(), bblist.get(middle).value());
 			if (cmp < 0) {
 				left = middle + 1;
@@ -48,5 +48,20 @@ public class BoundingBoxList {
 			System.out.print(" ");
 		}
 		System.out.println();
+	}
+	
+	public void sort() {
+		boolean sorted = false;
+		while(!sorted) {
+			sorted = true;
+			for (int a = 0; a < this.bblist.size()-1; a++) {
+				if (bblist.get(a).value()<bblist.get(a+1).value()) {
+					BoundingBoxPointer temp = bblist.get(a);
+					bblist.set(a, bblist.get(a+1));
+					bblist.set(a+1, temp);
+					sorted = false;
+				}
+			}
+		}
 	}
 }

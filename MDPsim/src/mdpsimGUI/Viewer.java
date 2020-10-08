@@ -18,6 +18,8 @@ import javax.swing.JPanel;
 
 import mdpMapReader.MapReader;
 import mdpsim.MDPSIM;
+import mdpsimRobot.LogicHandler;
+import mdpsimRobot.RobotDirection;
 
 import java.util.ArrayList;
 public class Viewer extends JFrame{
@@ -28,12 +30,24 @@ public class Viewer extends JFrame{
 	public ControlPanel cp;
 	public JMenuBar menu;
 	public String mapBits;
-	public boolean flag;
+	public boolean engineresetflag;
+	public boolean enginespeedflag;
+	public boolean custommdfresetflag;
+	public boolean fpflag;
+	public boolean coverageflag;
+	public boolean timeflag;
+	public String mdfstring;
+	public int enginespeed;
 	MapReader newMap = new MapReader();
 	
 	
+	
 	public Viewer (String title, int w, int h){
-		this.flag = false;
+		this.engineresetflag = false;
+		this.enginespeedflag = false;
+		this.fpflag = false;
+		this.coverageflag = false;
+		this.timeflag = false;
 		setTitle(title);
 		setSize(w, h);
 		setResizable(false);
@@ -45,7 +59,7 @@ public class Viewer extends JFrame{
 		map1 = constructVirtualMap(c);
 		map2 = constructRobotMap(c);
 		sensors = constructSensorScreen(c);
-		cp = constructControlPanel(c);
+		cp = constructControlPanel(c, this);
 		menuBar();
 	}
 	
@@ -103,8 +117,8 @@ public class Viewer extends JFrame{
 		return virtualmap;
 	}
 	
-	private ControlPanel constructControlPanel(GridBagConstraints c) {
-		ControlPanel controlpanel = new ControlPanel(null);
+	private ControlPanel constructControlPanel(GridBagConstraints c, Viewer vw) {
+		ControlPanel controlpanel = new ControlPanel(null, vw);
 		controlpanel.setSize(1000,250);
 		c.insets = new Insets(1,1,1,1);
 		c.gridx = 0;
@@ -133,52 +147,69 @@ public class Viewer extends JFrame{
 		JMenuItem sampleA2 = new JMenuItem("Sample Arena 2");
 		JMenuItem sampleA3 = new JMenuItem("Sample Arena 3");
 		JMenuItem sampleA4 = new JMenuItem("Sample Arena 4");
-		JMenuItem sampleA5 = new JMenuItem("Sample Arena 5");
 		
 		arenas.add(sampleA1);
 		arenas.add(sampleA2);
 		arenas.add(sampleA3);
 		arenas.add(sampleA4);
-		arenas.add(sampleA5);
 		
-		JMenuItem tcpSocket = new JMenuItem("Socket Connection");
-		file.add(tcpSocket);
+		JMenu instructions = new JMenu("Instructions");
+		menu.add(instructions);
 		
-		JMenuItem exit = new JMenuItem("Exit");
-		file.add(exit);
+		JMenuItem exStart = new JMenuItem("Explore Map");
+		instructions.add(exStart);
+		JMenuItem fpStart = new JMenuItem("Fastest Path");
+		instructions.add(fpStart);
 		
-		JMenu settings = new JMenu("Settings");
-		menu.add(settings);
-		JMenuItem view = new JMenuItem("View");
-		settings.add(view);
 		
-		class socketBtn implements ActionListener{
+		JMenuItem tcpSocketON = new JMenuItem("Socket Connection ON");
+		file.add(tcpSocketON);
+		
+		JMenuItem tcpSocketOFF = new JMenuItem("Socket Connection OFF");
+		file.add(tcpSocketOFF);
+		
+		//TCP ON
+		tcpSocketON.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				TCPsocket.tcpSocket();
+				// TODO Auto-generated method stub
+				MDPSIM.real = true;
+				
 			}
-		}
-			tcpSocket.addActionListener(new socketBtn());
+		});
+		
+		
+		//TCP OFF
+		tcpSocketOFF.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MDPSIM.real = false;
+				engineresetflag = true;
+				
+			}
+		});
+		
+		//EXPLORATION START
+		exStart.addActionListener(new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+				MDPSIM.mode = 1;
+				}
+			});
+		
+		//FASTEST PATH
+		fpStart.addActionListener(new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			System.out.println("Button Pressed");
+			MDPSIM.mode = 3;
+			MDPSIM.robot.startFastestPath();
+				}
+			});
 			
 			//SampleArenas
 			//Arena 1
 			sampleA1.addActionListener(new ActionListener() {
-				JFrame frame = new JFrame();
-				frame.setSize(300,300);
-				frame.setVisible(true);
-				//frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				
-				
-				JButton sample1 = new JButton("Arena 1");
-				samplePanel.add(sample1);
-				
-				JButton sample2 = new JButton("Arena 2");
-				samplePanel.add(sample2);
-				
-				JButton sample3 = new JButton("Arena 3");
-				samplePanel.add(sample3);
-				
-				JButton sample4 = new JButton("Arena 4");
-				samplePanel.add(sample4);
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -239,20 +270,7 @@ public class Viewer extends JFrame{
 					
 				}
 			});
-			
-			sampleA5.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					// TODO Auto-generated method stub
-//					String mapInput = "Arena_5";
-//					
-//					MapReader newMap = new MapReader();
-//					newMap.loadSampleArena(mapInput);
-//					System.out.println("Arena 5 clicked");
-					
-				}
-			});
+	
     }
 	
 	

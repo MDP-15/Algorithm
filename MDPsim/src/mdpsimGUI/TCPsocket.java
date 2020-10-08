@@ -110,11 +110,7 @@ public class TCPsocket {
 	
 	// Get message from buffer
 	public static String receiveMessage() {
-<<<<<<< Updated upstream
-		byte[] byteData = new byte[1024];
-=======
 		byte[] byteData = new byte[4096];
->>>>>>> Stashed changes
 		try {
 			int size = 0;
 			while (din.available() == 0) {

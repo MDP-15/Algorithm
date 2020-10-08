@@ -46,44 +46,13 @@ public class MDPSIM {
 		pause = false;
 		actionqueue = new ArrayList<Action2D>(0);
 		while (true) {
-<<<<<<< HEAD
-			//System.out.println("flag");
-			inputMDF(mdfString);
-=======
 			inputMDF(real);
->>>>>>> 10/7/2020
 		}
 	}
 	//Problem: Removing of panel and Updating of panel 
 	//Cannot see the map
 	
 	//Removed vw cause not initialized in MapReader
-<<<<<<< HEAD
-	public static void inputMDF(String mdfString) throws InterruptedException{
-		System.out.println("MDF STRING: "+mdfString);
-		//System.out.println("MDF STRING: "+mdfString);
-		String s = parseFormatToMap(mdfString);   
-		ArrayList<Object2D> objects = generateMap(s);
-		Engine2D phyeng = new Engine2D(objects, 0.008);
-		Robot r = initializeRobot();
-		vw.setVisible(true);
-		updateAll(r,phyeng, vw.map1);	
-		actionqueue.add(new Action2D(Action.ACCELERATE,20));
-		while(true) {
-				Thread.sleep(8);
-				if (actionqueue.size() == 0) {
-					phyeng.next(null);
-				} else {
-					phyeng.next(actionqueue.remove(0));
-				}
-				updateAll(r, phyeng, vw.map1);
-				sensorUpdate(phyeng, vw.sensors);
-				r.printSensor();
-				actionqueue.addAll(r.policyUpdate());
-				if (vw.flag = true) {
-					vw.flag = false;
-					break;
-=======
 	public static void inputMDF(boolean real) throws InterruptedException, IOException{
 		//System.out.println("MDF STRING: "+mdfString);
 		if (!real) {
@@ -170,19 +139,16 @@ public class MDPSIM {
 				if(sensorflag == true) {
 						r.lh.updatePos();
 						r.lh.scan(realsensors);
-<<<<<<< Updated upstream
-=======
 						String mdf = r.lh.reverseMdf();
 						/// I was here touching your code and guess what I change.
 						//TCPsocket.sendMessage("{\"MDP15\":\"MDF\",\"MDF\":\""+mdf+"\"}");
->>>>>>> Stashed changes
 						updateRealRobot2DPanel(r, vw.map2);
 						r.sensorvalues = realsensors;
 						r.explore(0.0);
 					updateRealRobot2DPanel(r, vw.map2);
 					sensorflag = false;
->>>>>>> 10/7/2020
 				}
+			}
 		}
 	}
 	

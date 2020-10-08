@@ -17,17 +17,13 @@ public class LogicHandler {
 	public RobotAction rwaction;
 	public int recal;
 	public double timelimit;
-<<<<<<< Updated upstream
-	
-	public LogicHandler(int x_size, int y_size, int x_pos, int y_pos) {
-=======
-	public int calibratecountera;
-	public int calibratecounterh;
-	public int hlimit;
-	public int alimit;
-	public int mode;
-	public boolean rwcycle;
-	public boolean infogain;
+	private boolean rwcycle;
+	private boolean infogain;
+	private int mode;
+	private int calibratecountera;
+	private int calibratecounterh;
+	private int hlimit;
+	private int alimit;
 	
 	public LogicHandler(int x_size, int y_size, int x_pos, int y_pos) {
 		this.rwcycle = false;
@@ -38,7 +34,6 @@ public class LogicHandler {
 		this.calibratecounterh = 0;
 		this.hlimit = 5;
 		this.alimit = 2;
->>>>>>> Stashed changes
 		this.x_size = x_size;
 		this.y_size = y_size;
 		this.x_pos = x_pos;
@@ -125,13 +120,9 @@ public class LogicHandler {
 				this.robotdir = RobotDirection.UP;
 			}
 		}
-<<<<<<< Updated upstream
-		prevaction = null;
-=======
 		if (prevaction != RobotAction.RCA && prevaction != RobotAction.RCH) {
 			prevaction = null;
 		}
->>>>>>> Stashed changes
 	}
 	
 	public Node returnToBase(){
@@ -173,9 +164,7 @@ public class LogicHandler {
 					MDPSIM.mode = 2;
 					return null;
 				}
-<<<<<<< Updated upstream
 				n = findNext();
-=======
 				if (calibratecountera >= alimit || calibratecounterh >= hlimit) {
 					n = findNextCalibrateNode();
 					if (n == null) {
@@ -185,7 +174,6 @@ public class LogicHandler {
 				} else {
 					n = findNext();
 				}
->>>>>>> Stashed changes
 			}
 			if (MDPSIM.mode == 2 && !MDPSIM.real) {
 				n = returnToBase();
@@ -207,25 +195,60 @@ public class LogicHandler {
 			RobotAction ra = queue.remove(queue.size()-1);
 			if (ra != null) {
 				prevaction = ra;
-<<<<<<< Updated upstream
-=======
 				if (ra != RobotAction.RCA) {
 					calibratecountera += 1;
 				}
->>>>>>> Stashed changes
 			}
 			return ra;
 		}
 		return null;
 	}
 
-	/*
-	public boolean canCalibrate() {
-		if (robotdir = RobotDirection.UP) {
-			
+	public boolean canCalibrate(Node n) {
+		if (n.rd == RobotDirection.UP) {
+			if (	((!isException(x_pos+1,y_pos+2) && mapmemory.get(x_pos+1).get(y_pos+2) == 1)
+				&&	(!isException(x_pos,y_pos+2) && mapmemory.get(x_pos).get(y_pos+2) == 1)
+				&& 	(!isException(x_pos-1,y_pos+2) && mapmemory.get(x_pos-1).get(y_pos+2) == 1)) || 
+					(isException(x_pos+1,y_pos+2)
+				&&	isException(x_pos+1,y_pos+2)
+				&& isException(x_pos+1,y_pos+2)))
+				{
+				return true;
+			}
+		} else if (n.rd == RobotDirection.DOWN){
+			if (	((!isException(x_pos+1,y_pos-2) && mapmemory.get(x_pos+1).get(y_pos-2) == 1)
+					&&	(!isException(x_pos,y_pos-2) && mapmemory.get(x_pos).get(y_pos-2) == 1)
+					&& 	(!isException(x_pos-1,y_pos-2) && mapmemory.get(x_pos-1).get(y_pos-2) == 1)) || 
+						(isException(x_pos+1,y_pos-2)
+					&&	isException(x_pos+1,y_pos-2)
+					&& isException(x_pos+1,y_pos-2)))
+					{
+					return true;
+				}
+		} else if (n.rd == RobotDirection.RIGHT){
+			if (	((!isException(x_pos+2,y_pos+1) && mapmemory.get(x_pos+2).get(y_pos+1) == 1)
+					&&	(!isException(x_pos+2,y_pos) && mapmemory.get(x_pos+2).get(y_pos) == 1)
+					&& 	(!isException(x_pos+2,y_pos-1) && mapmemory.get(x_pos+2).get(y_pos-1) == 1)) || 
+						(isException(x_pos+2,y_pos+1)
+					&&	isException(x_pos+2,y_pos)
+					&& isException(x_pos+2,y_pos-1)))
+					{
+					return true;
+				}
+		} else if (n.rd == RobotDirection.LEFT){
+			if (	((!isException(x_pos-2,y_pos+1) && mapmemory.get(x_pos-2).get(y_pos+1) == 1)
+					&&	(!isException(x_pos-2,y_pos) && mapmemory.get(x_pos-2).get(y_pos) == 1)
+					&& 	(!isException(x_pos-2,y_pos-1) && mapmemory.get(x_pos-2).get(y_pos-1) == 1)) || 
+						(isException(x_pos-2,y_pos+1)
+					&&	isException(x_pos-2,y_pos)
+					&& isException(x_pos-2,y_pos-1)))
+					{
+					return true;
+				}
 		}
+		return false;
 	}
-	*/
+	
 	public String updateMDFStringFromRobotMemory() {
 		ArrayList<ArrayList<Integer>> mem = mapmemory;
 		String mdf = "";
@@ -280,9 +303,7 @@ public class LogicHandler {
 		}
 		return s.concat(b);
 	}
-	
-<<<<<<< Updated upstream
-=======
+
 	public Node findNextCalibrateNode() {
 		ArrayList<Node> ar = dijkstraSearch(x_pos,y_pos,robotdir);
 		ArrayList<Node> filtered = new ArrayList<Node>(0);
@@ -315,7 +336,6 @@ public class LogicHandler {
 		return n;
 	}
 	
->>>>>>> Stashed changes
 	public void setUnexploredMap(int start_x, int start_y, int x_siz, int y_siz, RobotDirection rd) {
 		robotdir = rd;
 		x_pos = start_x;
@@ -1511,24 +1531,19 @@ public class LogicHandler {
         return mdfString;
     }
 	
-	public static String reverseMdf(String mdf) {
+	public String reverseMdf() {
 		//get x get y
+		String row = "";
+		String nMDF = "";
 		
-<<<<<<< Updated upstream
-		
-		
-		
-		return "";
-=======
-		for(int i = mapmemory.size(); i > 0; i--) {
-			row="";
+		for(int i = 0; i < mapmemory.size() ;i++) {
+			row = "";
 			for(int k = 0; k < mapmemory.get(0).size(); k++) {
-				row = row + mapmemory.get(i-1).get(k);
+				row = row + mapmemory.get(i).get(k);
 			}
-			nMdf = nMdf + row;
+			nMDF = nMDF + row;
 		}
-		return nMdf;
->>>>>>> Stashed changes
+		return nMDF;
 	}
 	
 	public double wallHugBonus(int x, int y) {
@@ -1596,6 +1611,14 @@ public class LogicHandler {
 		return false;
 	}
 	
+	public boolean isException(int x, int y) {
+		try {
+			mapmemory.get(x).get(y);
+			return false;
+		} catch (Exception e) {
+			return true;
+		}
+	}
 	public int wallBonus(Node n) {
 		int nx = Math.min(Math.abs(20-n.x), Math.abs(0-n.x));
 		int ny = Math.min(Math.abs(15-n.y), Math.abs(0-n.y));

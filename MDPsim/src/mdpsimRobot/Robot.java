@@ -204,12 +204,6 @@ public class Robot {
 		    	  	TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"Ls\"}");
 		    	  	break;
 		      case "TR":
-<<<<<<< Updated upstream
-		    	  lh.prevaction = RobotAction.TR;
-		        actionqueue.add(RobotAction.TR);
-		        TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"Rs\"}");
-		        break;
-=======
 		    	  	lh.prevaction = RobotAction.TR;
 		    	  	actionqueue.add(RobotAction.TR);
 		    	  	TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"Rs\"}");
@@ -222,7 +216,6 @@ public class Robot {
 		    	  	actionqueue.add(RobotAction.RCH);
 		    	  	TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"Hs\"}");
 		    	  	break;
->>>>>>> Stashed changes
 		      }
 		      actionstack.pop();
 		}

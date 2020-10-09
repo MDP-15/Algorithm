@@ -120,6 +120,7 @@ public class SensorScreen extends JPanel{
 	}
 	
 	public void updateMDF(String mdf) {
+		System.out.println(mdf);
 		this.MDF.setText(mdf);
 		return;
 	}

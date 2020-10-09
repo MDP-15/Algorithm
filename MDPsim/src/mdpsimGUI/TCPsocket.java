@@ -186,8 +186,10 @@ public class TCPsocket {
 					// Send instruction to RPI
 					break;
 				case "W":
+					int[] y = new int[]{19,18,17,16,15,14,13,12,10,9,8,7,6,5,4,3,2,1,0};
+					int gety = jobj.getInt("Y");
 					Robot.way_x = jobj.getInt("X");
-					Robot.way_y = jobj.getInt("Y");
+					Robot.way_y = y[gety];
 					System.out.println(Robot.way_x +" "+ Robot.way_y);
 					break;
 				case "SENSORS":

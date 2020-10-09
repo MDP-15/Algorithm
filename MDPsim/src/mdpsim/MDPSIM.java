@@ -80,7 +80,8 @@ public class MDPSIM {
 					updateEngine2DPanel(r, phyeng, vw.map1);
 					updateFakeRobot2DPanel(phyeng, r, vw.map2);
 					sensorUpdate(phyeng, vw.sensors, r);
-					vw.sensors.updateMDF(convertMDF(r.lh.updateMDFStringFromRobotMemory()));
+					//vw.sensors.updateMDF(convertMDF(r.lh.updateMDFStringFromRobotMemory()));
+					vw.sensors.updateMDF(convertMDFHex());
 					if (mode == 1 || mode == 2 || mode == 3) {
 						actionqueue.addAll(r.explore(phyeng.time()));
 					}
@@ -311,6 +312,55 @@ public class MDPSIM {
 		rpanel.circles = circles;
 		rpanel.repaint();
 	}
+	
+	private static String convertMDFHex() {
+		//String mdf = robot.lh.reverseMdf();
+		String mdf = robot.lh.getMdf();
+		mdf = convertMDF3(mdf);
+        int decimal;
+        String hexStr = "";
+        String mdffour = "";
+        String mdfString = "";
+
+        for(int i = 0; i < mdf.length(); i = i + 4){
+            mdffour = "";
+            hexStr = "";
+            for(int k = 0; k < 4 ; k++){
+                mdffour = mdffour + mdf.charAt(i+k);
+            }
+            decimal = Integer.parseInt(mdffour,2);
+            hexStr = Integer.toString(decimal,16);
+            mdfString = mdfString + hexStr;
+        }
+        return mdfString;
+    }
+	
+	private static String convertMDF1(String mdf) {
+        String MDF1 = mdf;
+        MDF1 = MDF1.replace("1", "1");
+        MDF1 = MDF1.replace("0", "1");
+        MDF1 = MDF1.replace("2", "0");
+        MDF1 = "11" + MDF1 + "11";
+        //MDF1 = convertMDFHex(MDF1);
+        return MDF1;
+    }
+	
+	private static String convertMDF2(String mdf) {
+        String MDF2 = mdf;
+        MDF2 = MDF2.replace("2","");
+        while(MDF2.length()%8 != 0) {
+            MDF2 = MDF2 +"0";
+        }
+        return MDF2;
+
+    }
+	
+    private static String convertMDF3(String mdf) {
+        String MDF3 = mdf;
+        MDF3 = MDF3.replace("2","0");
+        
+        return MDF3;
+    }
 	
 	public static String convertMDF(String s) {
 		String ret = "";

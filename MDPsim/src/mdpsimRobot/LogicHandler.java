@@ -161,9 +161,12 @@ public class LogicHandler {
 		if (queue.size() == 0) {
 			Node n = null;
 			if (MDPSIM.mode == 1) {
-				if (coverage() >= MDPSIM.coverage || time >= timelimit) {
+				if (coverage() >= MDPSIM.coverage) {
 					System.out.println("called");
 					MDPSIM.mode = 2;
+				}
+				if(time >= timelimit) {
+					MDPSIM.mode = 4;
 				}
 				if (calibratecountera >= alimit || calibratecounterh >= hlimit) {
 					n = findNextCalibrateNode();
@@ -1476,6 +1479,21 @@ public class LogicHandler {
 			row = "";
 			for(int k = 0; k < mapmemory.get(0).size(); k++) {
 				row = row + mapmemory.get(i).get(k);
+			}
+			nMDF = nMDF + row;
+		}
+		return nMDF;
+	}
+	
+	public String getMdf() {
+		//get x get y
+		String row = "";
+		String nMDF = "";
+		
+		for(int i = mapmemory.size(); i > 0 ;i--) {
+			row = "";
+			for(int k = 0; k < mapmemory.get(0).size(); k++) {
+				row = row + mapmemory.get(i-1).get(k);
 			}
 			nMDF = nMDF + row;
 		}

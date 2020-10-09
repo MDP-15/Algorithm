@@ -21,8 +21,8 @@ public class Robot {
 	private static DecimalFormat df2 = new DecimalFormat("#.##");
 	public ArrayList<RobotAction> actionqueue;
 	//WAYPOINT INITILIASATION
-	public static int way_x = 11;
-	public static int way_y = 10;
+	public static int way_x;
+	public static int way_y;
 	public LogicHandler lh;
 	private Stack<String> actionstack;
 	

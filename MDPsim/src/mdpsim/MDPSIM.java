@@ -80,7 +80,6 @@ public class MDPSIM {
 					updateEngine2DPanel(r, phyeng, vw.map1);
 					updateFakeRobot2DPanel(phyeng, r, vw.map2);
 					sensorUpdate(phyeng, vw.sensors, r);
-					//vw.sensors.updateMDF(convertMDF(r.lh.updateMDFStringFromRobotMemory()));
 					vw.sensors.updateMDF(convertMDFHex());
 					if (mode == 1 || mode == 2 || mode == 3) {
 						actionqueue.addAll(r.explore(phyeng.time()));

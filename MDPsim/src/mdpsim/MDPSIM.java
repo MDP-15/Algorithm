@@ -305,9 +305,13 @@ public class MDPSIM {
 	public static void updateRealRobot2DPanel(Robot r, Robot2DPanel rpanel) {
 		rpanel.setMap(r.lh.mapmemory);
 		ArrayList<Circle> circles = new ArrayList<Circle>();
-		double mult = (float) rpanel.getWidth()/ (float) 150;
-		VecInt vec = new VecInt((int)Math.round(r.lh.x_pos*10*mult),(int) Math.round(r.lh.y_pos*10*mult));
-		circles.add(new Circle(vec,20, Color.BLACK,true));
+		double mult = (float) rpanel.getWidth()/ (float) 10;
+		int x = r.lh.x_pos;
+		int y = r.lh.y_pos;
+		int dia = 20;
+		//int rad = (int) Math.floor(dia/2);
+		VecInt vec = new VecInt(((int)(x*mult)), ((int)(y*mult)));
+		circles.add(new Circle(vec, dia, Color.BLACK,true));
 		rpanel.circles = circles;
 		rpanel.repaint();
 	}

@@ -33,8 +33,8 @@ public class LogicHandler {
 		this.mode = 0;
 		this.calibratecountera = 0;
 		this.calibratecounterh = 0;
-		this.hlimit = 5;
-		this.alimit = 2;
+		this.hlimit = 10;
+		this.alimit = 4;
 		this.x_size = x_size;
 		this.y_size = y_size;
 		this.x_pos = x_pos;
@@ -323,8 +323,8 @@ public class LogicHandler {
 		}
 		Node now = n;
 		if (n == null) {
-			calibratecountera -= 1;
-			calibratecounterh -= 1;
+			calibratecountera -= 4;
+			calibratecounterh -= 4;
 			return n;
 		}
 		while (now.prev != null) {
@@ -341,8 +341,8 @@ public class LogicHandler {
 			}
 		} else {
 			n = null;
-			calibratecountera -= 1;
-			calibratecounterh -= 1;
+			calibratecountera -= 4;
+			calibratecounterh -= 4;
 		}
 		return n;
 	}
@@ -1026,47 +1026,47 @@ public class LogicHandler {
 		//DEFINE INTEGERS AS LENGTH PROTRUDING FROM ROBOT 3X3 BODY
 		//HANDLE FRONT MIDDLE;
 		if (MDPSIM.real) {
-			if (front_middle <= 9.5) {
+			if (front_middle <= 0) {
 				frontmidbox = 0;
-			} else if (front_middle <= 19.5){
+			} else if (front_middle <= 1){
 				frontmidbox = 1;
-			} else if (front_middle <= 29.5){
+			} else if (front_middle <= 2){
 				frontmidbox = 2;
 			}
 			//HANDLE FRONT RIGHT;
-			if (front_right <= 9.5) {
+			if (front_right <= 0) {
 				frontrightbox = 0;
-			} else if (front_right <= 19.5){
+			} else if (front_right <= 1){
 				frontrightbox = 1;
-			} else if (front_right <= 29.5){
+			} else if (front_right <= 2){
 				frontrightbox = 2;
 			}
 			//HANDLE FRONT LEFT;
-			if (front_left <= 9.5) {
+			if (front_left <= 0) {
 				frontleftbox = 0;
-			} else if (front_left <= 19.5){
+			} else if (front_left <= 1){
 				frontleftbox = 2;
-			} else if (front_middle <= 29.5){
+			} else if (front_middle <= 2){
 				frontleftbox = 2;
 			}
 			//HANDLE LEFT LONG
-			if (left_long <= 9.5) {
+			if (left_long <= 0) {
 				leftlongbox = 0;
-			} else if (left_long <= 19.5) {
+			} else if (left_long <= 1) {
 				leftlongbox = 1;
-			}  else if (left_long <= 29.5) {
+			}  else if (left_long <= 2) {
 				leftlongbox = 2;
 			}
 			//HANDLE RIGHT_FRONT
-			if (right_front <= 9.5) {
+			if (right_front <= 0) {
 				rightfrontbox = 0;
-			} else if (right_front <= 19.5) {
+			} else if (right_front <= 1) {
 				rightfrontbox = 1;
 			} 
 			//HANDLE RIGHT_BACK
-			if (right_back <= 9.5) {
+			if (right_back <= 0) {
 				rightbackbox = 0;
-			} else if (right_back <= 19.5) {
+			} else if (right_back <= 1) {
 				rightbackbox = 1;
 			}
 		} else {

@@ -330,7 +330,7 @@ public class LogicHandler {
 		while (now.prev != null) {
 			now = now.prev;
 		}
-		if (n.score < 3) {
+		if (n.score <= 2) {
 			if (calibratecounterh >= hlimit) {
 				now.ra = RobotAction.RCH;
 				calibratecountera = 0;

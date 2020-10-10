@@ -147,11 +147,14 @@ public class Viewer extends JFrame{
 		JMenuItem sampleA2 = new JMenuItem("Sample Arena 2");
 		JMenuItem sampleA3 = new JMenuItem("Sample Arena 3");
 		JMenuItem sampleA4 = new JMenuItem("Sample Arena 4");
+		JMenuItem sampleA5 = new JMenuItem("Leaderboard #1");
+		
 		
 		arenas.add(sampleA1);
 		arenas.add(sampleA2);
 		arenas.add(sampleA3);
 		arenas.add(sampleA4);
+		arenas.add(sampleA5);
 		
 		JMenu instructions = new JMenu("Instructions");
 		menu.add(instructions);
@@ -267,6 +270,21 @@ public class Viewer extends JFrame{
 					MapReader newMap = new MapReader();
 					newMap.loadSampleArena(mapInput, Viewer.this);
 					System.out.println("Arena 4 clicked");
+					
+				}
+			});
+			
+			//Arena 4
+			sampleA5.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					String mapInput = "Arena_5";
+					
+					MapReader newMap = new MapReader();
+					newMap.loadSampleArena(mapInput, Viewer.this);
+					System.out.println("Leaderboard#1 clicked");
 					
 				}
 			});

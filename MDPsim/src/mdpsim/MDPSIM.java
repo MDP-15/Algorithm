@@ -40,7 +40,7 @@ public class MDPSIM {
 		sensorflag = false;
 		realsensors = new ArrayList<Double>();
 		mode = 0;
-		real = false;
+		real = true;
 		mdfString = parseFormatToMap(""); 
 		vw = new Viewer("MDP Simulator", 1024, 768); //First Panel
 		pause = false;
@@ -80,7 +80,7 @@ public class MDPSIM {
 					updateEngine2DPanel(r, phyeng, vw.map1);
 					updateFakeRobot2DPanel(phyeng, r, vw.map2);
 					sensorUpdate(phyeng, vw.sensors, r);
-					vw.sensors.updateMDF(convertMDFHex());
+					//vw.sensors.updateMDF(convertMDFHex());
 					if (mode == 1 || mode == 2 || mode == 3) {
 						actionqueue.addAll(r.explore(phyeng.time()));
 					}

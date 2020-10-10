@@ -21,8 +21,8 @@ public class Robot {
 	private static DecimalFormat df2 = new DecimalFormat("#.##");
 	public ArrayList<RobotAction> actionqueue;
 	//WAYPOINT INITILIASATION
-	public static int way_x;
-	public static int way_y;
+	public static int way_x = 7;
+	public static int way_y = 17;
 	public LogicHandler lh;
 	private Stack<String> actionstack;
 	
@@ -213,7 +213,7 @@ public class Robot {
 		    	  	break;
 		      case "RCA":
 		    	  	actionqueue.add(RobotAction.RCA);
-		    	  	TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"As\"}");
+		    	  	TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"Hs\"}");
 		    	  	break;
 		      case "RCH":
 		    	  	actionqueue.add(RobotAction.RCH);

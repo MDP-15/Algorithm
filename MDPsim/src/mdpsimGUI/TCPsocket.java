@@ -172,10 +172,10 @@ public class TCPsocket {
 						MDPSIM.robot.lh.robotdir = RobotDirection.DOWN;
 					}
 					
-					
 				case "SE": // call the start exploration
 					MDPSIM.mode = 1;
-					 TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"s\"}");
+					 TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"hs\"}");
+					 System.out.println("Sent hs to RPI");
 					break;
 				case "SF":
 					MDPSIM.robot.startFastestPath();

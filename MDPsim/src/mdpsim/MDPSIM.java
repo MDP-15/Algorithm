@@ -128,14 +128,13 @@ public class MDPSIM {
 			} catch (Exception e) {}
 			*/
 			TCPsocket.tcpSocket();
-			ImageTCPsocket.tcpSocket();
 
 			// simulation send instruction
 			Runnable runnable = new Runnable() {
 				public void run() {
 					while (true) {
 						try {
-							TCPsocket.sendMessage("PIC");
+							TCPsocket.sendMessage("{\"x\": 3, \"y\": 10, \"dir\": \"l\"}");
 							System.out.println("Take picture");
 							TimeUnit.SECONDS.sleep(5);
 						} catch (InterruptedException e) {

@@ -1010,6 +1010,8 @@ public class LogicHandler {
 				frontmidbox = 1;
 			} else if (front_middle <= 2){
 				frontmidbox = 2;
+			}else if(front_middle < 0){
+				
 			}
 			//HANDLE FRONT RIGHT;
 			if (front_right <= 0) {
@@ -1023,7 +1025,7 @@ public class LogicHandler {
 			if (front_left <= 0) {
 				frontleftbox = 0;
 			} else if (front_left <= 1){
-				frontleftbox = 2;
+				frontleftbox = 1; //CHECK(changed from 2 -> 1)
 			} else if (front_middle <= 2){
 				frontleftbox = 2;
 			}

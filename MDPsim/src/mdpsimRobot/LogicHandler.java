@@ -410,6 +410,7 @@ public class LogicHandler {
 		Node now = new Node(x_pos,y_pos,null,null,null,0.0);
 		Node start = new Node(18,1,null,null,null,0.0);
 		if (infogain) {
+			System.out.println("called");
 			ArrayList<Node> pathable = dijkstraSearch(x_pos,y_pos,robotdir);
 			ArrayList<ExplorationNode> enodes = new ArrayList<ExplorationNode>(0);
 			for (int a = 0; a < pathable.size(); a++) {
@@ -624,21 +625,20 @@ public class LogicHandler {
 	//SQUARE MUST BE VALID ROBOT POSITION;
 	public int informationGained(int x, int y, RobotDirection rd) {
 		int information = 0;
-		int frontmidbox = 1;
-		int frontrightbox = 1;
-		int frontleftbox = 1;
-		int leftlongbox = 1;
-		int rightfrontbox = 1;
-		int rightbackbox = 1;
+		int frontmidbox = 3;
+		int frontrightbox = 3;
+		int frontleftbox = 3;
+		int leftlongbox = 3;
+		int rightfrontbox = 2;
+		int rightbackbox = 2;
 		//CALCULATE POTENTIALLY EXPLORED BLOCKS FROM VALUE;
-		if (robotdir == RobotDirection.RIGHT) {
+		if (rd == RobotDirection.RIGHT) {
 			for (int a = 1; a <= frontmidbox; a++) {
 				if (isValid(x, y+1+a)) {
 					int b = mapmemory.get(x).get(y+1+a);
 					if (b == 2) {
 						information += 1;
 					} else if (b == 0){
-						continue;
 					} else {
 						break;
 					}
@@ -652,7 +652,6 @@ public class LogicHandler {
 					if (b == 2) {
 						information += 1;
 					} else if (b == 0){
-						continue;
 					} else {
 						break;
 					}	
@@ -666,7 +665,6 @@ public class LogicHandler {
 					if (b == 2) {
 						information += 1;
 					} else if (b == 0){
-						continue;
 					} else {
 						break;
 					}
@@ -680,7 +678,6 @@ public class LogicHandler {
 					if (b == 2) {
 						information += 1;
 					} else if (b == 0){
-						continue;
 					} else {
 						break;
 					}
@@ -694,7 +691,6 @@ public class LogicHandler {
 					if (b == 2) {
 						information += 1;
 					} else if (b == 0){
-						continue;
 					} else {
 						break;
 					}
@@ -708,7 +704,6 @@ public class LogicHandler {
 					if (b == 2) {
 						information += 1;
 					} else if (b == 0){
-						continue;
 					} else {
 						break;
 					}
@@ -716,14 +711,13 @@ public class LogicHandler {
 					break;
 				}
 			}
-		} else if (robotdir == RobotDirection.LEFT) {
+		} else if (rd == RobotDirection.LEFT) {
 			for (int a = 1; a <= frontmidbox; a++) {
 				if (isValid(x, y-1-a) ){
 					int b = mapmemory.get(x).get(y-1-a);
 					if (b == 2) {
 						information += 1;
 					} else if (b == 0){
-						continue;
 					} else {
 						break;
 					}
@@ -737,7 +731,6 @@ public class LogicHandler {
 					if (b == 2) {
 						information += 1;
 					} else if (b == 0){
-						continue;
 					} else {
 						break;
 					}
@@ -751,7 +744,6 @@ public class LogicHandler {
 					if (b == 2) {
 						information += 1;
 					} else if (b == 0){
-						continue;
 					} else {
 						break;
 					}
@@ -765,7 +757,6 @@ public class LogicHandler {
 					if (b == 2) {
 						information += 1;
 					} else if (b == 0){
-						continue;
 					} else {
 						break;
 					}
@@ -779,7 +770,6 @@ public class LogicHandler {
 					if (b == 2) {
 						information += 1;
 					} else if (b == 0){
-						continue;
 					} else {
 						break;
 					}
@@ -793,7 +783,6 @@ public class LogicHandler {
 					if (b == 2) {
 						information += 1;
 					} else if (b == 0){
-						continue;
 					} else {
 						break;
 					}
@@ -801,14 +790,14 @@ public class LogicHandler {
 					break;
 				}
 			}
-		} else if (robotdir == RobotDirection.UP) {
+		} else if (rd == RobotDirection.UP) {
 			for (int a = 0; a <= frontmidbox; a++) {
 				if (isValid(x-1-a, y) ){
+					System.out.println("called");
 					int b = mapmemory.get(x-1-a).get(y);
 					if (b == 2) {
 						information += 1;
 					} else if (b == 0){
-						continue;
 					} else {
 						break;
 					}
@@ -822,7 +811,6 @@ public class LogicHandler {
 					if (b == 2) {
 						information += 1;
 					} else if (b == 0){
-						continue;
 					} else {
 						break;
 					}
@@ -836,7 +824,6 @@ public class LogicHandler {
 					if (b == 2) {
 						information += 1;
 					} else if (b == 0){
-						continue;
 					} else {
 						break;
 					}
@@ -850,7 +837,6 @@ public class LogicHandler {
 					if (b == 2) {
 						information += 1;
 					} else if (b == 0){
-						continue;
 					} else {
 						break;
 					}
@@ -864,7 +850,6 @@ public class LogicHandler {
 					if (b == 2) {
 						information += 1;
 					} else if (b == 0){
-						continue;
 					} else {
 						break;
 					}
@@ -878,7 +863,6 @@ public class LogicHandler {
 					if (b == 2) {
 						information += 1;
 					} else if (b == 0){
-						continue;
 					} else {
 						break;
 					}
@@ -886,14 +870,13 @@ public class LogicHandler {
 					break;
 				}
 			}
-		} else if (robotdir == RobotDirection.DOWN) {
+		} else if (rd == RobotDirection.DOWN) {
 			for (int a = 1; a <= frontmidbox; a++) {
 				if (isValid(x+1+a, y) ){
 					int b = mapmemory.get(x+1+a).get(y);
 					if (b == 2) {
 						information += 1;
 					} else if (b == 0){
-						continue;
 					} else {
 						break;
 					}
@@ -907,7 +890,6 @@ public class LogicHandler {
 					if (b == 2) {
 						information += 1;
 					} else if (b == 0){
-						continue;
 					} else {
 						break;
 					}
@@ -921,7 +903,6 @@ public class LogicHandler {
 					if (b == 2) {
 						information += 1;
 					} else if (b == 0){
-						continue;
 					} else {
 						break;
 					}
@@ -935,7 +916,6 @@ public class LogicHandler {
 					if (b == 2) {
 						information += 1;
 					} else if (b == 0){
-						continue;
 					} else {
 						break;
 					}
@@ -949,7 +929,6 @@ public class LogicHandler {
 					if (b == 2) {
 						information += 1;
 					} else if (b == 0){
-						continue;
 					} else {
 						break;
 					}
@@ -963,7 +942,6 @@ public class LogicHandler {
 					if (b == 2) {
 						information += 1;
 					} else if (b == 0){
-						continue;
 					} else {
 						break;
 					}

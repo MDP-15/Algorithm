@@ -126,7 +126,7 @@ public class MDPSIM {
 			r.lh.timelimit = Double.POSITIVE_INFINITY;
 			updateRealRobot2DPanel(r, vw.map2);
 			vw.setVisible(true);
-			while (real) {	
+			while (true) {	
 				System.out.print("");
 				if(sensorflag == true) {
 						r.lh.updatePos();
@@ -305,12 +305,12 @@ public class MDPSIM {
 	public static void updateRealRobot2DPanel(Robot r, Robot2DPanel rpanel) {
 		rpanel.setMap(r.lh.mapmemory);
 		ArrayList<Circle> circles = new ArrayList<Circle>();
-		double mult = (float) rpanel.getWidth()/ (float) 10;
+		double mult = 22;
 		int x = r.lh.x_pos;
 		int y = r.lh.y_pos;
-		int dia = 20;
+		int dia = 60;
 		//int rad = (int) Math.floor(dia/2);
-		VecInt vec = new VecInt(((int)(x*mult)), ((int)(y*mult)));
+		VecInt vec = new VecInt(((int)(y*mult))-18, ((int)(x*mult))-18);
 		circles.add(new Circle(vec, dia, Color.BLACK,true));
 		rpanel.circles = circles;
 		rpanel.repaint();

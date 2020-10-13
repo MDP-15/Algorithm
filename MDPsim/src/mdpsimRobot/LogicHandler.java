@@ -33,7 +33,7 @@ public class LogicHandler {
 		this.mode = 0;
 		this.calibratecountera = 0;
 		this.calibratecounterh = 0;
-		this.hlimit = 10;
+		this.hlimit = 8;
 		this.alimit = 4;
 		this.x_size = x_size;
 		this.y_size = y_size;
@@ -199,6 +199,7 @@ public class LogicHandler {
 				prevaction = ra;
 				if (ra != RobotAction.RCA || ra != RobotAction.RCH) {
 					calibratecountera += 1;
+					calibratecounterh += 1;
 				}
 			}
 			return ra;
@@ -323,14 +324,14 @@ public class LogicHandler {
 		}
 		Node now = n;
 		if (n == null) {
-			calibratecountera -= 4;
-			calibratecounterh -= 4;
+			calibratecountera -= 2;
+			calibratecounterh -= 2;
 			return n;
 		}
 		while (now.prev != null) {
 			now = now.prev;
 		}
-		if (n.score <= 2) {
+		if (n.score <= 1) {
 			if (calibratecounterh >= hlimit) {
 				now.ra = RobotAction.RCH;
 				calibratecountera = 0;
@@ -338,11 +339,12 @@ public class LogicHandler {
 			} else if (calibratecountera >= alimit) {
 				now.ra = RobotAction.RCA;
 				calibratecountera = 0;
+				calibratecounterh -= 1;
 			}
 		} else {
 			n = null;
-			calibratecountera -= 4;
-			calibratecounterh -= 4;
+			calibratecountera -= 2;
+			calibratecounterh -= 2;
 		}
 		return n;
 	}
@@ -625,9 +627,9 @@ public class LogicHandler {
 	//SQUARE MUST BE VALID ROBOT POSITION;
 	public int informationGained(int x, int y, RobotDirection rd) {
 		int information = 0;
-		int frontmidbox = 3;
-		int frontrightbox = 3;
-		int frontleftbox = 3;
+		int frontmidbox = 2;
+		int frontrightbox = 2;
+		int frontleftbox = 2;
 		int leftlongbox = 3;
 		int rightfrontbox = 2;
 		int rightbackbox = 2;
@@ -988,15 +990,15 @@ public class LogicHandler {
 	//CHECK SENSOR VALUES AND UPDATE MAP -> VALUES SHOULD BE UPDATED HERE
 	public void scanMap(double right_front, double right_back, double front_right, double front_middle, double front_left, double left_long) {
 		boolean verbose = true;
-		int fmbmax = 3;
-		int frbmax = 3;
-		int flbmax = 3;
+		int fmbmax = 2;
+		int frbmax = 2;
+		int flbmax = 2;
 		int llbmax = 3;
 		int rfbmax = 2;
 		int rbbmax = 2;
-		int frontmidbox = 3;
-		int frontrightbox = 3;
-		int frontleftbox = 3;
+		int frontmidbox = 2;
+		int frontrightbox = 2;
+		int frontleftbox = 2;
 		int leftlongbox = 3;
 		int rightfrontbox = 2;
 		int rightbackbox = 2;
@@ -1004,47 +1006,49 @@ public class LogicHandler {
 		//DEFINE INTEGERS AS LENGTH PROTRUDING FROM ROBOT 3X3 BODY
 		//HANDLE FRONT MIDDLE;
 		if (MDPSIM.real) {
-			if (front_middle <= 12) {
+			if (front_middle <= 11) {
 				frontmidbox = 0;
-			} else if (front_middle <= 22){
+			} else if (front_middle <= 21){
 				frontmidbox = 1;
-			} else if (front_middle <= 32){
-				frontmidbox = 2;
-			}
+			}// else if (front_middle <= 31){
+				//frontmidbox = 2;
+			//}
 			//HANDLE FRONT RIGHT;
 			if (front_right <= 12) {
 				frontrightbox = 0;
-			} else if (front_right <= 22){
+			} else if (front_right <= 20){
 				frontrightbox = 1;
-			} else if (front_right <= 32){
-				frontrightbox = 2;
-			}
+			} //else if (front_right <= 30){
+				//frontrightbox = 2;
+			//}
 			//HANDLE FRONT LEFT;
-			if (front_left <= 12) {
+			if (front_left <= 11) {
 				frontleftbox = 0;
-			} else if (front_left <= 22){
+			} else if (front_left <= 21){
 				frontleftbox = 1; //CHECK(changed from 2 -> 1)
-			} else if (front_middle <= 32){
-				frontleftbox = 2;
-			}
+			}// else if (front_left <= 31){
+				//frontleftbox = 2;
+			//}
 			//HANDLE LEFT LONG
-			if (left_long <= 20) {
+			if (left_long <= 0) {
+				leftlongbox = 3;
+			}else if (left_long <= 16) {
 				leftlongbox = 0;
-			} else if (left_long <= 30) {
+			} else if (left_long <= 26) {
 				leftlongbox = 1;
-			}  else if (left_long <= 40) {
+			}  else if (left_long <= 36) {
 				leftlongbox = 2;
 			}
 			//HANDLE RIGHT_FRONT
-			if (right_front <= 12) {
+			if (right_front <= 13) {
 				rightfrontbox = 0;
-			} else if (right_front <= 22) {
+			} else if (right_front <= 23) {
 				rightfrontbox = 1;
 			} 
 			//HANDLE RIGHT_BACK
-			if (right_back <= 12) {
+			if (right_back <= 13) {
 				rightbackbox = 0;
-			} else if (right_back <= 22) {
+			} else if (right_back <= 23) {
 				rightbackbox = 1;
 			}
 		} else {

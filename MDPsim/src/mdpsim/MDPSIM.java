@@ -19,7 +19,7 @@ public class MDPSIM {
 	public static boolean done = false;
 	public static Viewer vw;
 	public static String mdfString = null;
-	public static double timeres = 0.50;
+	public static double timeres = 1;
 	public static Vector2D north = new Vector2D(0,10);
 	public static int simspeed = 1;
 	public static double reftime;

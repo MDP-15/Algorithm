@@ -1004,49 +1004,47 @@ public class LogicHandler {
 		//DEFINE INTEGERS AS LENGTH PROTRUDING FROM ROBOT 3X3 BODY
 		//HANDLE FRONT MIDDLE;
 		if (MDPSIM.real) {
-			if (front_middle <= 0) {
+			if (front_middle <= 12) {
 				frontmidbox = 0;
-			} else if (front_middle <= 1){
+			} else if (front_middle <= 22){
 				frontmidbox = 1;
-			} else if (front_middle <= 2){
+			} else if (front_middle <= 32){
 				frontmidbox = 2;
-			}else if(front_middle < 0){
-				
 			}
 			//HANDLE FRONT RIGHT;
-			if (front_right <= 0) {
+			if (front_right <= 12) {
 				frontrightbox = 0;
-			} else if (front_right <= 1){
+			} else if (front_right <= 22){
 				frontrightbox = 1;
-			} else if (front_right <= 2){
+			} else if (front_right <= 32){
 				frontrightbox = 2;
 			}
 			//HANDLE FRONT LEFT;
-			if (front_left <= 0) {
+			if (front_left <= 12) {
 				frontleftbox = 0;
-			} else if (front_left <= 1){
+			} else if (front_left <= 22){
 				frontleftbox = 1; //CHECK(changed from 2 -> 1)
-			} else if (front_middle <= 2){
+			} else if (front_middle <= 32){
 				frontleftbox = 2;
 			}
 			//HANDLE LEFT LONG
-			if (left_long <= 0) {
+			if (left_long <= 20) {
 				leftlongbox = 0;
-			} else if (left_long <= 1) {
+			} else if (left_long <= 30) {
 				leftlongbox = 1;
-			}  else if (left_long <= 2) {
+			}  else if (left_long <= 40) {
 				leftlongbox = 2;
 			}
 			//HANDLE RIGHT_FRONT
-			if (right_front <= 0) {
+			if (right_front <= 12) {
 				rightfrontbox = 0;
-			} else if (right_front <= 1) {
+			} else if (right_front <= 22) {
 				rightfrontbox = 1;
 			} 
 			//HANDLE RIGHT_BACK
-			if (right_back <= 0) {
+			if (right_back <= 12) {
 				rightbackbox = 0;
-			} else if (right_back <= 1) {
+			} else if (right_back <= 22) {
 				rightbackbox = 1;
 			}
 		} else {

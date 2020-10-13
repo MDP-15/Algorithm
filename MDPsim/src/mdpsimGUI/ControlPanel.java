@@ -110,7 +110,7 @@ public class ControlPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				MDPSIM.mode = 1;
-			       TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"s\"}");
+			       TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"Hs\"}");
 			}
 		});
 		this.add(flag);

@@ -213,7 +213,7 @@ public class Robot {
 		    	  	break;
 		      case "RCA":
 		    	  	actionqueue.add(RobotAction.RCA);
-		    	  	TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"Hs\"}");
+		    	  	TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"As\"}");
 		    	  	break;
 		      case "RCH":
 		    	  	actionqueue.add(RobotAction.RCH);

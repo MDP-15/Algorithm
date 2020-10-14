@@ -34,7 +34,6 @@ public class LogicHandler {
 		this.calibratecountera = 0;
 		this.calibratecounterh = 0;
 		this.hlimit = 8;
-		this.alimit = 4;
 		this.x_size = x_size;
 		this.y_size = y_size;
 		this.x_pos = x_pos;
@@ -168,7 +167,7 @@ public class LogicHandler {
 				if(time >= timelimit) {
 					MDPSIM.mode = 4;
 				}
-				if (calibratecountera >= alimit || calibratecounterh >= hlimit) {
+				if (calibratecounterh >= hlimit) {
 					n = findNextCalibrateNode();
 					if (n == null) {
 						n = findNext();
@@ -324,7 +323,6 @@ public class LogicHandler {
 		}
 		Node now = n;
 		if (n == null) {
-			calibratecountera -= 2;
 			calibratecounterh -= 2;
 			return n;
 		}
@@ -334,16 +332,10 @@ public class LogicHandler {
 		if (n.score <= 1) {
 			if (calibratecounterh >= hlimit) {
 				now.ra = RobotAction.RCH;
-				calibratecountera = 0;
 				calibratecounterh = 0;
-			} else if (calibratecountera >= alimit) {
-				now.ra = RobotAction.RCA;
-				calibratecountera = 0;
-				calibratecounterh -= 1;
 			}
 		} else {
 			n = null;
-			calibratecountera -= 2;
 			calibratecounterh -= 2;
 		}
 		return n;

@@ -33,7 +33,7 @@ public class LogicHandler {
 		this.mode = 0;
 		this.calibratecountera = 0;
 		this.calibratecounterh = 0;
-		this.hlimit = 8;
+		this.hlimit = 4;
 		this.x_size = x_size;
 		this.y_size = y_size;
 		this.x_pos = x_pos;

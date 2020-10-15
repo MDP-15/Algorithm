@@ -211,9 +211,9 @@ public class LogicHandler {
 			if (	((!isException(x_pos+1,y_pos+2) && mapmemory.get(x_pos+1).get(y_pos+2) == 1)
 				&&	(!isException(x_pos,y_pos+2) && mapmemory.get(x_pos).get(y_pos+2) == 1)
 				&& 	(!isException(x_pos-1,y_pos+2) && mapmemory.get(x_pos-1).get(y_pos+2) == 1)) || 
-					(isException(x_pos+1,y_pos+2)
-				&&	isException(x_pos+1,y_pos+2)
-				&& isException(x_pos+1,y_pos+2)))
+					((isException(x_pos+1,y_pos+2)
+				&&	isException(x_pos,y_pos+2)
+				&& isException(x_pos-1,y_pos+2))))
 				{
 				return true;
 			}
@@ -221,9 +221,9 @@ public class LogicHandler {
 			if (	((!isException(x_pos+1,y_pos-2) && mapmemory.get(x_pos+1).get(y_pos-2) == 1)
 					&&	(!isException(x_pos,y_pos-2) && mapmemory.get(x_pos).get(y_pos-2) == 1)
 					&& 	(!isException(x_pos-1,y_pos-2) && mapmemory.get(x_pos-1).get(y_pos-2) == 1)) || 
-						(isException(x_pos+1,y_pos-2)
-					&&	isException(x_pos+1,y_pos-2)
-					&& isException(x_pos+1,y_pos-2)))
+						((isException(x_pos+1,y_pos-2)
+					&&	isException(x_pos,y_pos-2)
+					&& isException(x_pos-1,y_pos-2))))
 					{
 					return true;
 				}
@@ -231,9 +231,9 @@ public class LogicHandler {
 			if (	((!isException(x_pos+2,y_pos+1) && mapmemory.get(x_pos+2).get(y_pos+1) == 1)
 					&&	(!isException(x_pos+2,y_pos) && mapmemory.get(x_pos+2).get(y_pos) == 1)
 					&& 	(!isException(x_pos+2,y_pos-1) && mapmemory.get(x_pos+2).get(y_pos-1) == 1)) || 
-						(isException(x_pos+2,y_pos+1)
+						((isException(x_pos+2,y_pos+1)
 					&&	isException(x_pos+2,y_pos)
-					&& isException(x_pos+2,y_pos-1)))
+					&& isException(x_pos+2,y_pos-1))))
 					{
 					return true;
 				}
@@ -241,9 +241,9 @@ public class LogicHandler {
 			if (	((!isException(x_pos-2,y_pos+1) && mapmemory.get(x_pos-2).get(y_pos+1) == 1)
 					&&	(!isException(x_pos-2,y_pos) && mapmemory.get(x_pos-2).get(y_pos) == 1)
 					&& 	(!isException(x_pos-2,y_pos-1) && mapmemory.get(x_pos-2).get(y_pos-1) == 1)) || 
-						(isException(x_pos-2,y_pos+1)
+						((isException(x_pos-2,y_pos+1)
 					&&	isException(x_pos-2,y_pos)
-					&& isException(x_pos-2,y_pos-1)))
+					&& isException(x_pos-2,y_pos-1))))
 					{
 					return true;
 				}
@@ -307,6 +307,7 @@ public class LogicHandler {
 	}
 
 	public Node findNextCalibrateNode() {
+		/*
 		ArrayList<Node> ar = dijkstraSearch(x_pos,y_pos,robotdir);
 		ArrayList<Node> filtered = new ArrayList<Node>(0);
 		for (int a = 0; a < ar.size(); a++) {
@@ -315,12 +316,18 @@ public class LogicHandler {
 			}
 		}
 		filtered = sort(filtered);
-		Node n = null;
+		*/
+		Node n = new Node(x_pos,y_pos,null,null,robotdir,0.0);
+		if (!canCalibrate(n)) {
+			n = null;
+		}
+		/*
 		try {
 			n = filtered.get(filtered.size()-1);
 		} catch (Exception e) {
 			n = null;
 		}
+		*/
 		Node now = n;
 		if (n == null) {
 			calibratecounterh -= 2;
@@ -1024,23 +1031,27 @@ public class LogicHandler {
 			//HANDLE LEFT LONG
 			if (left_long <= 0) {
 				leftlongbox = 3;
-			}else if (left_long <= 16) {
+			}else if (left_long <= 20) {
+				
 				leftlongbox = 0;
-			} else if (left_long <= 26) {
+			} else if (left_long <= 24) {
 				leftlongbox = 1;
-			}  else if (left_long <= 36) {
+			}  else if (left_long <= 32) {
 				leftlongbox = 2;
 			}
+//			} else if(left_long <= 41) {
+//				leftlongbox = 3;
+//			} 
 			//HANDLE RIGHT_FRONT
-			if (right_front <= 13) {
+			if (right_front <= 18) {
 				rightfrontbox = 0;
-			} else if (right_front <= 23) {
+			} else if (right_front <= 28) {
 				rightfrontbox = 1;
 			} 
 			//HANDLE RIGHT_BACK
-			if (right_back <= 13) {
+			if (right_back <= 18) {
 				rightbackbox = 0;
-			} else if (right_back <= 23) {
+			} else if (right_back <= 28) {
 				rightbackbox = 1;
 			}
 		} else {

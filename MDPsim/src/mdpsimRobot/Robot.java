@@ -100,8 +100,10 @@ public class Robot {
 		System.out.println(way_x +" "+ way_y);
 		//lh.parseMDF(MDPSIM.mdfString);
 	    System.out.println("Doing fastestPath");
-	    Node n = lh.computeFastestPath(lh.x_pos, lh.y_pos, way_x, way_y, lh.robotdir);
-	    Node c = lh.computeFastestPath(way_x, way_y, 1, 13, n.rd);//Need to pass waypoint coordinates thru here
+	    Node n = lh.computeFastestPath(lh.x_pos, lh.y_pos, way_y, way_x, lh.robotdir);
+	    System.out.println("n");
+	    Node c = lh.computeFastestPath(n.x, n.y, 1, 13, n.rd);//Need to pass waypoint coordinates thru here
+	    System.out.println("c");
 	    actionstack = new Stack<String>();
 	    stackactions(c);
 	    stackactions(n);
@@ -150,6 +152,7 @@ public class Robot {
 	}
 	
 	public void moveFP2(Stack<String> actionstack) {
+		System.out.println("IN FP");
 		while (!actionstack.isEmpty()) {
 		      switch (actionstack.peek()) {
 		      case "F1":
@@ -178,8 +181,10 @@ public class Robot {
 		        fP = fP + "R";
 		        break;
 		      }
+		      System.out.println("IN FP2");
 		      actionstack.pop();
 		    }
+		System.out.println("IN FP3");
 		TCPsocket.sendMessage("{\"MDP15\":\"FP\",\"FP\":\""+fP+"\"}");
 	}
 	

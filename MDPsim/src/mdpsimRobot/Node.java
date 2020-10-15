@@ -28,9 +28,9 @@ public class Node {
 		boolean en = true;
 		double trscore = 1;
 		double tlscore = 1;
-		double f1score = 1.1;
-		double f2score = 1.5;
-		double f3score = 2.1;;
+		double f1score = 2;
+		double f2score = 3;
+		double f3score = 4;;
 		ArrayList<Node> n = new ArrayList<Node>();
 		if (rd == RobotDirection.UP) {
 			//TR

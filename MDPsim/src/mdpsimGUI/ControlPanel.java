@@ -23,7 +23,8 @@ public class ControlPanel extends JPanel {
 	JTextArea mdfinput;
 	public JTextArea userTime;
 	JButton resetbutton;
-	JButton flag;
+	JButton calibrate;
+	JButton exploration;
 	JButton setTime;
 	JButton setPercent;
 	
@@ -103,17 +104,29 @@ public class ControlPanel extends JPanel {
 			}
 		});
 
-		// FLAG BUTTON
-		flag = new JButton("Scan");
-		flag.setBounds(5, 140, 100, 30);
-		flag.addActionListener(new ActionListener() {
+		// CALLIBRATE BUTTON
+		calibrate = new JButton("Calibrate");
+		calibrate.setBounds(5, 140, 100, 30);
+		calibrate.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				MDPSIM.mode = 1;
-			       TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"HLHs\"}");
+			       TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"HLH\"}");
 			}
 		});
-		this.add(flag);
+		this.add(calibrate);
+		
+		// EXPLORE BUTTON
+		exploration = new JButton("Explore");
+		exploration.setBounds(120, 140, 100, 30);
+		exploration.addActionListener(new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			MDPSIM.mode = 1;
+		    TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"s\"}");
+			}
+		});
+		this.add(exploration);
 	}
 
 	@Override

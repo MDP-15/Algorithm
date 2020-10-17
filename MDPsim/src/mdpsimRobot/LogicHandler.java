@@ -33,7 +33,7 @@ public class LogicHandler {
 		this.mode = 0;
 		this.calibratecountera = 0;
 		this.calibratecounterh = 0;
-		this.hlimit = 4;
+		this.hlimit = 6;
 		this.x_size = x_size;
 		this.y_size = y_size;
 		this.x_pos = x_pos;
@@ -1036,7 +1036,7 @@ public class LogicHandler {
 				leftlongbox = 0;
 			} else if (left_long <= 27) { //24
 				leftlongbox = 1;
-			}  else if (left_long < 35) { //32 // reduce this range
+			}  else if (left_long < 33) { //32 // reduce this range
 				leftlongbox = 2;
 			}
 //			} else if(left_long <= 41) {

@@ -1,4 +1,7 @@
 package mdpsimRobot;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 //0 for nothing, 1 for something;
 
@@ -152,14 +155,13 @@ public class LogicHandler {
 		return (double)covered/maxsize;
 	}
 	
-	public RobotAction getNextAction(double time) {
+	public RobotAction getNextAction(double time) throws IOException {
 		//EXPLORATION
 		//FIND NEXT NODEs
 		if (queue.size() == 0) {
 			Node n = null;
 			if (MDPSIM.mode == 1) {
 				if (coverage() >= MDPSIM.coverage) {
-					System.out.println("called");
 					MDPSIM.mode = 2;
 				}
 				if(time >= timelimit) {
@@ -176,6 +178,7 @@ public class LogicHandler {
 			}
 			if (MDPSIM.mode == 2) {
 				n = returnToBase();
+				generateImageCoords();
 				//printMapMemory();
 			}
 			if (n != null) {
@@ -391,7 +394,6 @@ public class LogicHandler {
 		Node now = new Node(x_pos,y_pos,null,null,null,0.0);
 		Node start = new Node(18,1,null,null,null,0.0);
 		if (infogain) {
-			System.out.println("called");
 			ArrayList<Node> pathable = dijkstraSearch(x_pos,y_pos,robotdir);
 			ArrayList<ExplorationNode> enodes = new ArrayList<ExplorationNode>(0);
 			for (int a = 0; a < pathable.size(); a++) {
@@ -406,7 +408,6 @@ public class LogicHandler {
 			}
 			enodes = exSort(enodes);
 			if (enodes.size() == 0) {
-				System.out.println("called exit exploration");
 				MDPSIM.mode = 2;
 				return null;
 			} else {
@@ -774,7 +775,6 @@ public class LogicHandler {
 		} else if (rd == RobotDirection.UP) {
 			for (int a = 0; a <= frontmidbox; a++) {
 				if (isValid(x-1-a, y) ){
-					System.out.println("called");
 					int b = mapmemory.get(x-1-a).get(y);
 					if (b == 2) {
 						information += 1;
@@ -1402,7 +1402,6 @@ public class LogicHandler {
 				if (zero >= one && zero >= two) {
 					directSetMapMemory(a,b,0);
 				} else if (one >= zero && one >= two) {
-					System.out.println("called");
 					directSetMapMemory(a,b,1);
 				}else if (two >= zero && two >= one) {
 					directSetMapMemory(a,b,2);
@@ -1685,9 +1684,26 @@ public class LogicHandler {
 			return true;
 		}
 	}
+	
 	public int wallBonus(Node n) {
 		int nx = Math.min(Math.abs(20-n.x), Math.abs(0-n.x));
 		int ny = Math.min(Math.abs(15-n.y), Math.abs(0-n.y));
 		return Math.min(nx, ny);
+	}
+	
+	
+	public void generateImageCoords() throws IOException {
+		BufferedReader csvReader = new BufferedReader(new FileReader("C:/Users/liger/OneDrive/Documents/GitHub/Image-Recognition/predictions.csv"));
+		String row;
+		ArrayList<String> ar = new ArrayList<String>(0);
+		row = csvReader.readLine();
+		while(row != null) {
+			ar.add(row);
+			row = csvReader.readLine();
+		}
+		csvReader.close();
+		for (int a = 0; a < ar.size(); a++) {
+			System.out.println(ar.get(a));
+		}
 	}
 }

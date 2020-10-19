@@ -1,15 +1,20 @@
 package mdpsimRobot;
 import mdpsimEngine.Action2D;
+import java.time.Clock;
 import mdpsimEngine.Action2D.Action;
 import mdpsimEngine.Object2D;
 import mdpsimEngine.Vector2D;
 import mdpsimGUI.TCPsocket;
+import mdpsimGUI.TCPsocketIMG;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Stack;
-
 import mdpsim.MDPSIM;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class Robot {
 	public ArrayList<Sensor> sensors;
@@ -78,7 +83,7 @@ public class Robot {
 		System.out.println();
 	}
 	
-	public ArrayList<Action2D> explore(double time){
+	public ArrayList<Action2D> explore(double time) throws InterruptedException, IOException{
 		ArrayList<Action2D> actions = new ArrayList<Action2D>(0);
 		if (mh.currentaction == null && mh.actionqueue.size() == 0 && (MDPSIM.mode == 1 || MDPSIM.mode == 2) && !MDPSIM.real) {
 			lh.updatePos();
@@ -196,7 +201,7 @@ public class Robot {
 		TCPsocket.sendMessage("{\"MDP15\":\"FP\",\"FP\":\""+fP+"\"}");
 	}
 	
-	public void moveExplore(Stack<String> actionstack) {
+	public void moveExplore(Stack<String> actionstack) throws InterruptedException {
 		while (!actionstack.isEmpty()) {
 		      switch (actionstack.peek()) {
 		      case "F1":
@@ -204,6 +209,7 @@ public class Robot {
 		    	  	actionqueue.add(RobotAction.F1);
 		    	  	System.out.println("F1 "+lh.robotdir);
 		    	  	TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"F1s\"}");
+		    	  	Thread.sleep(100);
 		    	  	TCPsocket.sendMessage("{\"MDP15\": \"RP\", \"X\": "+lh.x_pos+", \"Y\": "+lh.y_pos+", \"O\": \""+lh.robotdir+"\"}");		    	  	
 		    	  	break;
 		      case "F2":

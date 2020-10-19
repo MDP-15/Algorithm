@@ -24,7 +24,7 @@ public class TCPsocketIMG {
 	
 	public static void tcpSocket() {
 		try {
-			socket = new Socket("192.168.1.1", 8008);
+			socket = new Socket("192.168.15.1", 8008);
 			//socket = new Socket("127.0.0.1", 9000);
 			System.out.println("Connected to " + socket.getInetAddress() + ":" + Integer.toString(socket.getPort()));
 			din = socket.getInputStream();
@@ -130,8 +130,10 @@ public class TCPsocketIMG {
 				size++;
 			}
 			String message = new String(byteData, 0, size, "UTF-8");
-			if (message.charAt(0) != '{') {
-				message = "{" + message;
+			if (message.length() > 0) {
+				if (message.charAt(0) != '{') {
+					message = "{" + message;
+				}
 			}
 			System.out.println(message);
 			JSONObject jobj;
@@ -174,7 +176,7 @@ public class TCPsocketIMG {
 					
 				case "SE": // call the start exploration
 					MDPSIM.mode = 1;
-					 TCPsocketIMG.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"hs\"}");
+					TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"s\"}");
 					 System.out.println("Sent hs to RPI");
 					break;
 				case "SF":
@@ -186,8 +188,8 @@ public class TCPsocketIMG {
 					// Send instruction to RPI
 					break;
 				case "W":
-					int[] y = new int[]{19,18,17,16,15,14,13,12,10,9,8,7,6,5,4,3,2,1,0};
-					int gety = jobj.getInt("Y");
+					int[] y = new int[]{19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0};
+					int gety = jobj.getInt("Y"); 
 					Robot.way_x = jobj.getInt("X");
 					Robot.way_y = y[gety];
 					System.out.println(Robot.way_x +" "+ Robot.way_y);

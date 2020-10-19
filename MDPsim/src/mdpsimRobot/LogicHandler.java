@@ -13,6 +13,7 @@ public class LogicHandler {
 	public int y_pos;
 	public RobotDirection robotdir;
 	public ArrayList<ArrayList<Integer>> mapmemory;
+	public ArrayList<ArrayList<ArrayList<Double>>> confidencematrix;
 	public ArrayList<RobotAction> queue;
 	public RobotAction prevaction;
 	public RobotAction rwaction;
@@ -20,18 +21,13 @@ public class LogicHandler {
 	public double timelimit;
 	private boolean rwcycle;
 	private boolean infogain;
-	private int mode;
-	private int calibratecountera;
 	private int calibratecounterh;
 	private int hlimit;
-	private int alimit;
 	
 	public LogicHandler(int x_size, int y_size, int x_pos, int y_pos) {
 		this.rwcycle = false;
 		this.infogain = false;
 		this.rwaction = null;
-		this.mode = 0;
-		this.calibratecountera = 0;
 		this.calibratecounterh = 0;
 		this.hlimit = 4;
 		this.x_size = x_size;
@@ -44,6 +40,7 @@ public class LogicHandler {
 		this.prevaction = null;
 		this.queue = new ArrayList<RobotAction>();
 		this.mapmemory = new ArrayList<ArrayList<Integer>>();
+		this.confidencematrix = new ArrayList<ArrayList<ArrayList<Double>>>();
 		for(int a = 0; a < x_size; a++) {
 			mapmemory.add(new ArrayList<Integer>(y_size));
 		}
@@ -59,17 +56,18 @@ public class LogicHandler {
 	}
 	
 	public void initPos(int x, int y) {
-		setMapMemory(x+1,y+1,0);
-		setMapMemory(x,y+1,0);
-		setMapMemory(x-1,y+1,0);
-		setMapMemory(x+1,y,0);
-		setMapMemory(x,y,0);
-		setMapMemory(x-1,y,0);
-		setMapMemory(x+1,y-1,0);
-		setMapMemory(x,y-1,0);
-		setMapMemory(x-1,y-1,0);
-
+		directSetMapMemory(x+1,y+1,0);
+		directSetMapMemory(x,y+1,0);
+		directSetMapMemory(x-1,y+1,0);
+		directSetMapMemory(x+1,y,0);
+		directSetMapMemory(x,y,0);
+		directSetMapMemory(x-1,y,0);
+		directSetMapMemory(x+1,y-1,0);
+		directSetMapMemory(x,y-1,0);
+		directSetMapMemory(x-1,y-1,0);
+		initCFMatrixFromMapMemory();
 	}
+	
 	public void updatePos(){
 		if (robotdir == RobotDirection.UP) {
 			if (prevaction == RobotAction.F1) {
@@ -197,7 +195,6 @@ public class LogicHandler {
 			if (ra != null) {
 				prevaction = ra;
 				if (ra != RobotAction.RCA || ra != RobotAction.RCH) {
-					calibratecountera += 1;
 					calibratecounterh += 1;
 				}
 			}
@@ -307,27 +304,10 @@ public class LogicHandler {
 	}
 
 	public Node findNextCalibrateNode() {
-		/*
-		ArrayList<Node> ar = dijkstraSearch(x_pos,y_pos,robotdir);
-		ArrayList<Node> filtered = new ArrayList<Node>(0);
-		for (int a = 0; a < ar.size(); a++) {
-			if (canCalibrate(ar.get(a))) {
-				filtered.add(ar.get(a));
-			}
-		}
-		filtered = sort(filtered);
-		*/
 		Node n = new Node(x_pos,y_pos,null,null,robotdir,0.0);
 		if (!canCalibrate(n)) {
 			n = null;
 		}
-		/*
-		try {
-			n = filtered.get(filtered.size()-1);
-		} catch (Exception e) {
-			n = null;
-		}
-		*/
 		Node now = n;
 		if (n == null) {
 			calibratecounterh -= 2;
@@ -1105,164 +1085,164 @@ public class LogicHandler {
 		//FROM KNOWN BLOCK RANGES AND ROBOT DIRECTION UPDATE MAP
 		if (robotdir == RobotDirection.RIGHT) {
 			for (int a = 0; a <= frontmidbox; a++) {
-				setMapMemory(x_pos, y_pos+1+a, 0);
+				directSetMapMemory(x_pos, y_pos+1+a, 0);
 			}
 			for (int a = 0; a <= frontrightbox; a++) {
-				setMapMemory(x_pos+1, y_pos+1+a,0);
+				directSetMapMemory(x_pos+1, y_pos+1+a,0);
 			}
 			for (int a = 0; a <= frontleftbox; a++) {
-				setMapMemory(x_pos-1, y_pos+1+a,0);
+				directSetMapMemory(x_pos-1, y_pos+1+a,0);
 			}
 			for (int a = 0; a <= rightfrontbox; a++) {
-				setMapMemory(x_pos+1+a, y_pos+1,0);
+				directSetMapMemory(x_pos+1+a, y_pos+1,0);
 			}
 			for (int a = 0; a <= rightbackbox; a++) {
-				setMapMemory(x_pos+1+a, y_pos-1,0);
+				directSetMapMemory(x_pos+1+a, y_pos-1,0);
 			}
 			for (int a = 0; a <= leftlongbox; a++) {
-				setMapMemory(x_pos-1-a, y_pos+1,0);
+				directSetMapMemory(x_pos-1-a, y_pos+1,0);
 			}
 			
 			if (frontmidbox < fmbmax) {
 				if (isValid(x_pos,y_pos+1+frontmidbox+1)) {
-					setMapMemory(x_pos,y_pos+1+frontmidbox+1,1);
+					directSetMapMemory(x_pos,y_pos+1+frontmidbox+1,1);
 				}
 			}
 			if (frontrightbox < frbmax) {
 				if (isValid(x_pos+1,y_pos+1+frontrightbox+1)) {
-					setMapMemory(x_pos+1,y_pos+1+frontrightbox+1,1);
+					directSetMapMemory(x_pos+1,y_pos+1+frontrightbox+1,1);
 				}
 			}
 			if (frontleftbox < flbmax) {
 				if (isValid(x_pos-1,y_pos+1+frontleftbox+1)) {
-					setMapMemory(x_pos-1,y_pos+1+frontleftbox+1,1);
+					directSetMapMemory(x_pos-1,y_pos+1+frontleftbox+1,1);
 				}
 			}
 			if (rightfrontbox < rfbmax) {
 				if (isValid(x_pos+1+rightfrontbox+1, y_pos+1)) {
-					setMapMemory(x_pos+1+rightfrontbox+1, y_pos+1,1);
+					directSetMapMemory(x_pos+1+rightfrontbox+1, y_pos+1,1);
 				}
 			}
 			if (rightbackbox < rbbmax) {
 				if (isValid(x_pos+1+rightbackbox+1, y_pos-1)) {
-					setMapMemory(x_pos+1+rightbackbox+1, y_pos-1,1);
+					directSetMapMemory(x_pos+1+rightbackbox+1, y_pos-1,1);
 				}
 			}
 			if (leftlongbox < llbmax) {
 				if (isValid(x_pos-1-leftlongbox-1, y_pos+1)) {
-					setMapMemory(x_pos-1-leftlongbox-1, y_pos+1,1);
+					directSetMapMemory(x_pos-1-leftlongbox-1, y_pos+1,1);
 				}
 			}
 		} else if (robotdir == RobotDirection.LEFT) {
 			for (int a = 0; a <= frontmidbox; a++) {
-				setMapMemory(x_pos, y_pos-1-a, 0);
+				directSetMapMemory(x_pos, y_pos-1-a, 0);
 			}
 			for (int a = 0; a <= frontrightbox; a++) {
-				setMapMemory(x_pos-1, y_pos-1-a,0);
+				directSetMapMemory(x_pos-1, y_pos-1-a,0);
 			}
 			for (int a = 0; a <= frontleftbox; a++) {
-				setMapMemory(x_pos+1, y_pos-1-a,0);
+				directSetMapMemory(x_pos+1, y_pos-1-a,0);
 			}
 			for (int a = 0; a <= rightfrontbox; a++) {
-				setMapMemory(x_pos-1-a, y_pos-1,0);
+				directSetMapMemory(x_pos-1-a, y_pos-1,0);
 			}
 			for (int a = 0; a <= rightbackbox; a++) {
-				setMapMemory(x_pos-1-a, y_pos+1,0);
+				directSetMapMemory(x_pos-1-a, y_pos+1,0);
 			}
 			for (int a = 0; a <= leftlongbox; a++) {
-				setMapMemory(x_pos+1+a, y_pos-1,0);
+				directSetMapMemory(x_pos+1+a, y_pos-1,0);
 			}
 			if (frontmidbox < fmbmax) {
-				setMapMemory(x_pos,y_pos-1-frontmidbox-1,1);
+				directSetMapMemory(x_pos,y_pos-1-frontmidbox-1,1);
 			}
 			if (frontrightbox < frbmax) {
-				setMapMemory(x_pos-1,y_pos-1-frontrightbox-1,1);
+				directSetMapMemory(x_pos-1,y_pos-1-frontrightbox-1,1);
 			}
 			if (frontleftbox < flbmax) {
-				setMapMemory(x_pos+1,y_pos-1-frontleftbox-1,1);
+				directSetMapMemory(x_pos+1,y_pos-1-frontleftbox-1,1);
 			}
 			if (rightfrontbox < rfbmax) {
-				setMapMemory(x_pos-1-rightfrontbox-1, y_pos-1,1);
+				directSetMapMemory(x_pos-1-rightfrontbox-1, y_pos-1,1);
 			}
 			if (rightbackbox < rbbmax) {
-				setMapMemory(x_pos-1-rightbackbox-1, y_pos+1,1);
+				directSetMapMemory(x_pos-1-rightbackbox-1, y_pos+1,1);
 			}
 			if (leftlongbox < llbmax) {
-				setMapMemory(x_pos+1+leftlongbox+1, y_pos-1,1);
+				directSetMapMemory(x_pos+1+leftlongbox+1, y_pos-1,1);
 			}
 		} else if (robotdir == RobotDirection.UP) {
 			for (int a = 0; a <= frontmidbox; a++) {
-				setMapMemory(x_pos-1-a, y_pos, 0);
+				directSetMapMemory(x_pos-1-a, y_pos, 0);
 			}
 			for (int a = 0; a <= frontrightbox; a++) {
-				setMapMemory(x_pos-1-a, y_pos+1,0);
+				directSetMapMemory(x_pos-1-a, y_pos+1,0);
 			}
 			for (int a = 0; a <= frontleftbox; a++) {
-				setMapMemory(x_pos-1-a, y_pos-1,0);
+				directSetMapMemory(x_pos-1-a, y_pos-1,0);
 			}
 			for (int a = 0; a <= rightfrontbox; a++) {
-				setMapMemory(x_pos-1, y_pos+1+a,0);
+				directSetMapMemory(x_pos-1, y_pos+1+a,0);
 			}
 			for (int a = 0; a <= rightbackbox; a++) {
-				setMapMemory(x_pos+1, y_pos+1+a,0);
+				directSetMapMemory(x_pos+1, y_pos+1+a,0);
 			}
 			for (int a = 0; a <= leftlongbox; a++) {
-				setMapMemory(x_pos-1, y_pos-1-a,0);
+				directSetMapMemory(x_pos-1, y_pos-1-a,0);
 			}
 			if (frontmidbox < fmbmax) {
-				setMapMemory(x_pos-1-frontmidbox-1,y_pos,1);
+				directSetMapMemory(x_pos-1-frontmidbox-1,y_pos,1);
 			}
 			if (frontrightbox < frbmax) {
-				setMapMemory(x_pos-1-frontrightbox-1,y_pos+1,1);
+				directSetMapMemory(x_pos-1-frontrightbox-1,y_pos+1,1);
 			}
 			if (frontleftbox < flbmax) {
-				setMapMemory(x_pos-1-frontleftbox-1,y_pos-1,1);
+				directSetMapMemory(x_pos-1-frontleftbox-1,y_pos-1,1);
 			}
 			if (rightfrontbox < rfbmax) {
-				setMapMemory(x_pos-1, y_pos+1+rightfrontbox+1,1);
+				directSetMapMemory(x_pos-1, y_pos+1+rightfrontbox+1,1);
 			}
 			if (rightbackbox < rbbmax) {
-				setMapMemory(x_pos+1, y_pos+1+rightbackbox+1,1);
+				directSetMapMemory(x_pos+1, y_pos+1+rightbackbox+1,1);
 			}
 			if (leftlongbox < llbmax) {
-				setMapMemory(x_pos-1, y_pos-1-leftlongbox-1,1);
+				directSetMapMemory(x_pos-1, y_pos-1-leftlongbox-1,1);
 			}
 		} else if (robotdir == RobotDirection.DOWN) {
 			for (int a = 0; a <= frontmidbox; a++) {
-				setMapMemory(x_pos+1+a, y_pos, 0);
+				directSetMapMemory(x_pos+1+a, y_pos, 0);
 			}
 			for (int a = 0; a <= frontrightbox; a++) {
-				setMapMemory(x_pos+1+a, y_pos-1,0);
+				directSetMapMemory(x_pos+1+a, y_pos-1,0);
 			}
 			for (int a = 0; a <= frontleftbox; a++) {
-				setMapMemory(x_pos+1+a, y_pos+1,0);
+				directSetMapMemory(x_pos+1+a, y_pos+1,0);
 			}
 			for (int a = 0; a <= rightfrontbox; a++) {
-				setMapMemory(x_pos+1, y_pos-1-a,0);
+				directSetMapMemory(x_pos+1, y_pos-1-a,0);
 			}
 			for (int a = 0; a <= rightbackbox; a++) {
-				setMapMemory(x_pos-1, y_pos-1-a,0);
+				directSetMapMemory(x_pos-1, y_pos-1-a,0);
 			}
 			for (int a = 0; a <= leftlongbox; a++) {
-				setMapMemory(x_pos+1, y_pos+1+a,0);
+				directSetMapMemory(x_pos+1, y_pos+1+a,0);
 			}
 			if (frontmidbox < fmbmax) {
-				setMapMemory(x_pos+1+frontmidbox+1,y_pos,1);
+				directSetMapMemory(x_pos+1+frontmidbox+1,y_pos,1);
 			}
 			if (frontrightbox < frbmax) {
-				setMapMemory(x_pos+1+frontrightbox+1,y_pos-1,1);
+				directSetMapMemory(x_pos+1+frontrightbox+1,y_pos-1,1);
 			}
 			if (frontleftbox < flbmax) {
-				setMapMemory(x_pos+1+frontleftbox+1,y_pos+1,1);
+				directSetMapMemory(x_pos+1+frontleftbox+1,y_pos+1,1);
 			}
 			if (rightfrontbox < rfbmax) {
-				setMapMemory(x_pos+1, y_pos-1-rightfrontbox-1,1);
+				directSetMapMemory(x_pos+1, y_pos-1-rightfrontbox-1,1);
 			}
 			if (rightbackbox < rbbmax) {
-				setMapMemory(x_pos-1, y_pos-1-rightbackbox-1,1);
+				directSetMapMemory(x_pos-1, y_pos-1-rightbackbox-1,1);
 			}
 			if (leftlongbox < llbmax) {
-				setMapMemory(x_pos+1, y_pos+1+leftlongbox+1,1);
+				directSetMapMemory(x_pos+1, y_pos+1+leftlongbox+1,1);
 			}
 		}
 	}
@@ -1392,7 +1372,7 @@ public class LogicHandler {
 		}
 	}
 	
-	public void setMapMemory(int x, int y, int value) {
+	public void directSetMapMemory(int x, int y, int value) {
 		ArrayList<ArrayList<Integer>> mem = this.mapmemory;
 		int x_size = mem.size();
 		int y_size = 0;
@@ -1410,6 +1390,100 @@ public class LogicHandler {
 			this.mapmemory = mem;
 			return;
 		}
+	}
+	
+	public void initCFMatrixFromMapMemory() {
+		ArrayList<ArrayList<ArrayList<Double>>> ar = new ArrayList<ArrayList<ArrayList<Double>>>();
+		for (int a = 0; a < 3; a++) {
+			ArrayList<ArrayList<Double>> art = new ArrayList<ArrayList<Double>>();
+			for (int b = 0; b < y_size; b++) {
+				ArrayList<Double> arv = new ArrayList<Double>();
+				for (int c = 0; c < x_size; c++) {
+					arv.add(0.0);
+				}
+				art.add(arv);
+			}
+			ar.add(art);
+		}
+		this.confidencematrix = ar;
+		for (int a = 0; a < mapmemory.size(); a++) {
+			for (int b = 0; b < mapmemory.get(0).size(); b++) {
+				int memvalue = mapmemory.get(a).get(b);
+				switch(memvalue) {
+				case 0:
+					setHardCFMatrix(0,a,b);
+					break;
+				case 1:
+					setHardCFMatrix(1,a,b);
+					break;
+				case 2:
+					setHardCFMatrix(2,a,b);
+					break;
+				}
+			}
+		}
+	}
+	
+	public void setHardCFMatrix(int value, int x, int y) {
+		switch(value) {
+			case 0:
+				confidencematrix.get(0).get(x).set(y, 1.0);
+				confidencematrix.get(1).get(x).set(y, 0.0);
+				confidencematrix.get(2).get(x).set(y, 0.0);
+				break;
+			case 1:
+				confidencematrix.get(0).get(x).set(y, 0.0);
+				confidencematrix.get(1).get(x).set(y, 1.0);
+				confidencematrix.get(2).get(x).set(y, 0.0);
+				break;
+			case 2:
+				confidencematrix.get(0).get(x).set(y, 0.0);
+				confidencematrix.get(1).get(x).set(y, 0.0);
+				confidencematrix.get(2).get(x).set(y, 1.0);
+				break;
+		}
+	}
+	
+	public void printCFMatrix() {
+		for (int a = 0; a < 3; a++) {
+			System.out.println(a+"-confidence matrix");
+			for (int b = 0; b < y_size; b++) {
+				for (int c = 0;c < x_size; c++) {
+					System.out.print(confidencematrix.get(a).get(b).get(c));
+				}
+				System.out.println();
+			}
+		}
+	}
+	
+	public void computeMapMemoryFromConfidence(int x, int y, int value, int distance) {
+		ArrayList<ArrayList<ArrayList<Double>>> cm = this.confidencematrix;
+		
+	}
+	
+	public ArrayList<Double> normalize(ArrayList<Double> ar) { //normalizes array to (0,1);
+		double min = Double.POSITIVE_INFINITY;
+		double max = Double.NEGATIVE_INFINITY;
+		for (int a = 0; a < ar.size(); a++) {
+			if (ar.get(a) < min) {
+				min = ar.get(a);
+			}
+			if (ar.get(a) > max) {
+				max = ar.get(a);
+			}
+		}
+		double difference = max - min;
+		for (int a = 0; a < ar.size(); a++) {
+			ar.set(a, (double)(ar.get(a)-min)/difference);
+		}
+		double total = 0;
+		for (int a = 0; a < ar.size(); a++) {
+			total += ar.get(a);
+		}
+		for (int a = 0; a < ar.size(); a++) {
+			ar.set(a, (double)(ar.get(a)/total));
+		}
+		return ar;
 	}
 	
 	public ArrayList<Node> sort(ArrayList<Node> ar) {
@@ -1452,6 +1526,7 @@ public class LogicHandler {
 			System.out.println();
 		}
 		System.out.println();
+		printCFMatrix();
 	}
 	
 	

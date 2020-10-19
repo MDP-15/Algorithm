@@ -130,8 +130,10 @@ public class TCPsocket {
 				size++;
 			}
 			String message = new String(byteData, 0, size, "UTF-8");
-			if (message.charAt(0) != '{') {
-				message = "{" + message;
+			if (message.length() > 0) {
+				if (message.charAt(0) != '{') {
+					message = "{" + message;
+				}
 			}
 			System.out.println(message);
 			JSONObject jobj;

@@ -37,8 +37,8 @@ public class Engine2DPanel extends JPanel{
 		super.paintComponent(g);
 		
 		//PAINT WAYPOINT
-		g.setColor(Color.orange);
-		g.fillRect((Robot.way_x*22), (Robot.way_y*22), 22, 22);
+//		g.setColor(Color.orange);
+//		g.fillRect((Robot.way_x*22), (Robot.way_y*22), 22, 22);
 		
 		//PAINT GRID CIRCLES
 		Graphics2D g2 = (Graphics2D) g;

@@ -21,10 +21,11 @@ public class Robot {
 	private static DecimalFormat df2 = new DecimalFormat("#.##");
 	public ArrayList<RobotAction> actionqueue;
 	//WAYPOINT INITILIASATION
-	public static int way_x = 7;
-	public static int way_y = 17;
+	public static int way_x = 5;
+	public static int way_y = 5;
 	public LogicHandler lh;
 	private Stack<String> actionstack;
+	
 	
 	public Robot(ArrayList<Sensor> sensors, double radius) {
 		this.sensors = sensors;
@@ -102,11 +103,17 @@ public class Robot {
 	    System.out.println("Doing fastestPath");
 	    Node n = lh.computeFastestPath(lh.x_pos, lh.y_pos, way_y, way_x, lh.robotdir);
 	    System.out.println("n");
+	    System.out.println(n.x);
+	    System.out.println(n.y);
+	    System.out.println(n.rd.toString());
 	    Node c = lh.computeFastestPath(n.x, n.y, 1, 13, n.rd);//Need to pass waypoint coordinates thru here
 	    System.out.println("c");
 	    actionstack = new Stack<String>();
+	    System.out.println("action stack");
 	    stackactions(c);
+	    System.out.println("stack c");
 	    stackactions(n);
+	    System.out.println("stack n");
 	    moveFP2(actionstack);	    
 	  }
 	
@@ -127,6 +134,7 @@ public class Robot {
 	      }
 	    }
 	}
+	
 	
 	public void moveFP(Stack<String> actionstack) {
 		while (!actionstack.isEmpty()) {

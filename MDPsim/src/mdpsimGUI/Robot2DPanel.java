@@ -69,11 +69,17 @@ public class Robot2DPanel extends JPanel{
 		for (int a = 0; a < x_size; a++) {
 			for (int b = 0; b < y_size; b++){
 				if(map.get(a).get(b) == 0) {
-					g.setColor(Color.gray);
+					//g.setColor(Color.gray);
+					System.setProperty("explored", "#d7e0dc");
+					g.setColor(Color.getColor("explored"));
 				} else if (map.get(a).get(b) == 1){
-					g.setColor(Color.green);
+					//g.setColor(Color.green);
+					System.setProperty("obstacle", "#63cfcb");
+					g.setColor(Color.getColor("obstacle"));
 				} else if (map.get(a).get(b) == 2){
-					g.setColor(Color.blue);
+					//g.setColor(Color.blue);
+					System.setProperty("unexplored", "#779e8b");
+					g.setColor(Color.getColor("unexplored"));
 				} else if (map.get(a).get(b) == 3){
 					g.setColor(Color.yellow);
 				}
@@ -84,7 +90,9 @@ public class Robot2DPanel extends JPanel{
 		//START ZONE
 		for(int a=20;a>16;a--) {
 			for(int b=0;b<3;b++) {
-				g.setColor(Color.pink);
+				//g.setColor(Color.pink);
+				System.setProperty("start", "#266161");
+				g.setColor(Color.getColor("start"));
 				g.fillRect(b*cellSize,  a*cellSize, cellSize, cellSize);
 			}
 			
@@ -93,7 +101,9 @@ public class Robot2DPanel extends JPanel{
 		//END ZONE
 		for(int a=0;a<3;a++) {
 			for(int b=15;b>11;b--) {
-				g.setColor(Color.pink);
+				//g.setColor(Color.pink);
+				System.setProperty("end", "#266161");
+				g.setColor(Color.getColor("end"));
 				g.fillRect(b*cellSize,  a*cellSize, cellSize, cellSize);
 			}
 			
@@ -110,8 +120,8 @@ public class Robot2DPanel extends JPanel{
 		}
 		
 		//PAINT WAYPOINT
-		g.setColor(Color.orange);
-		g.fillRect((Robot.way_x*cellSize), (Robot.way_y*cellSize), cellSize, cellSize);
+//		g.setColor(Color.orange);
+//		g.fillRect((Robot.way_x*cellSize), (Robot.way_y*cellSize), cellSize, cellSize);
 				
 		
 		

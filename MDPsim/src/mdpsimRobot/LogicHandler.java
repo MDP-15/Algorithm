@@ -1085,166 +1085,167 @@ public class LogicHandler {
 		//FROM KNOWN BLOCK RANGES AND ROBOT DIRECTION UPDATE MAP
 		if (robotdir == RobotDirection.RIGHT) {
 			for (int a = 0; a <= frontmidbox; a++) {
-				directSetMapMemory(x_pos, y_pos+1+a, 0);
+				readConfidenceMatrix(x_pos, y_pos+1+a, 0,a);
 			}
 			for (int a = 0; a <= frontrightbox; a++) {
-				directSetMapMemory(x_pos+1, y_pos+1+a,0);
+				readConfidenceMatrix(x_pos+1, y_pos+1+a,0,a);
 			}
 			for (int a = 0; a <= frontleftbox; a++) {
-				directSetMapMemory(x_pos-1, y_pos+1+a,0);
+				readConfidenceMatrix(x_pos-1, y_pos+1+a,0,a);
 			}
 			for (int a = 0; a <= rightfrontbox; a++) {
-				directSetMapMemory(x_pos+1+a, y_pos+1,0);
+				readConfidenceMatrix(x_pos+1+a, y_pos+1,0,a);
 			}
 			for (int a = 0; a <= rightbackbox; a++) {
-				directSetMapMemory(x_pos+1+a, y_pos-1,0);
+				readConfidenceMatrix(x_pos+1+a, y_pos-1,0,a);
 			}
 			for (int a = 0; a <= leftlongbox; a++) {
-				directSetMapMemory(x_pos-1-a, y_pos+1,0);
+				readConfidenceMatrix(x_pos-1-a, y_pos+1,0,a);
 			}
 			
 			if (frontmidbox < fmbmax) {
 				if (isValid(x_pos,y_pos+1+frontmidbox+1)) {
-					directSetMapMemory(x_pos,y_pos+1+frontmidbox+1,1);
+					readConfidenceMatrix(x_pos,y_pos+1+frontmidbox+1,1,frontmidbox);
 				}
 			}
 			if (frontrightbox < frbmax) {
 				if (isValid(x_pos+1,y_pos+1+frontrightbox+1)) {
-					directSetMapMemory(x_pos+1,y_pos+1+frontrightbox+1,1);
+					readConfidenceMatrix(x_pos+1,y_pos+1+frontrightbox+1,1,frontrightbox);
 				}
 			}
 			if (frontleftbox < flbmax) {
 				if (isValid(x_pos-1,y_pos+1+frontleftbox+1)) {
-					directSetMapMemory(x_pos-1,y_pos+1+frontleftbox+1,1);
+					readConfidenceMatrix(x_pos-1,y_pos+1+frontleftbox+1,1,frontleftbox);
 				}
 			}
 			if (rightfrontbox < rfbmax) {
 				if (isValid(x_pos+1+rightfrontbox+1, y_pos+1)) {
-					directSetMapMemory(x_pos+1+rightfrontbox+1, y_pos+1,1);
+					readConfidenceMatrix(x_pos+1+rightfrontbox+1, y_pos+1,1,rightfrontbox);
 				}
 			}
 			if (rightbackbox < rbbmax) {
 				if (isValid(x_pos+1+rightbackbox+1, y_pos-1)) {
-					directSetMapMemory(x_pos+1+rightbackbox+1, y_pos-1,1);
+					readConfidenceMatrix(x_pos+1+rightbackbox+1, y_pos-1,1,rightbackbox);
 				}
 			}
 			if (leftlongbox < llbmax) {
 				if (isValid(x_pos-1-leftlongbox-1, y_pos+1)) {
-					directSetMapMemory(x_pos-1-leftlongbox-1, y_pos+1,1);
+					readConfidenceMatrix(x_pos-1-leftlongbox-1, y_pos+1,1,leftlongbox);
 				}
 			}
 		} else if (robotdir == RobotDirection.LEFT) {
 			for (int a = 0; a <= frontmidbox; a++) {
-				directSetMapMemory(x_pos, y_pos-1-a, 0);
+				readConfidenceMatrix(x_pos, y_pos-1-a, 0,a);
 			}
 			for (int a = 0; a <= frontrightbox; a++) {
-				directSetMapMemory(x_pos-1, y_pos-1-a,0);
+				readConfidenceMatrix(x_pos-1, y_pos-1-a,0,a);
 			}
 			for (int a = 0; a <= frontleftbox; a++) {
-				directSetMapMemory(x_pos+1, y_pos-1-a,0);
+				readConfidenceMatrix(x_pos+1, y_pos-1-a,0,a);
 			}
 			for (int a = 0; a <= rightfrontbox; a++) {
-				directSetMapMemory(x_pos-1-a, y_pos-1,0);
+				readConfidenceMatrix(x_pos-1-a, y_pos-1,0,a);
 			}
 			for (int a = 0; a <= rightbackbox; a++) {
-				directSetMapMemory(x_pos-1-a, y_pos+1,0);
+				readConfidenceMatrix(x_pos-1-a, y_pos+1,0,a);
 			}
 			for (int a = 0; a <= leftlongbox; a++) {
-				directSetMapMemory(x_pos+1+a, y_pos-1,0);
+				readConfidenceMatrix(x_pos+1+a, y_pos-1,0,a);
 			}
 			if (frontmidbox < fmbmax) {
-				directSetMapMemory(x_pos,y_pos-1-frontmidbox-1,1);
+				readConfidenceMatrix(x_pos,y_pos-1-frontmidbox-1,1,frontmidbox);
 			}
 			if (frontrightbox < frbmax) {
-				directSetMapMemory(x_pos-1,y_pos-1-frontrightbox-1,1);
+				readConfidenceMatrix(x_pos-1,y_pos-1-frontrightbox-1,1,frontrightbox);
 			}
 			if (frontleftbox < flbmax) {
-				directSetMapMemory(x_pos+1,y_pos-1-frontleftbox-1,1);
+				readConfidenceMatrix(x_pos+1,y_pos-1-frontleftbox-1,1,frontleftbox);
 			}
 			if (rightfrontbox < rfbmax) {
-				directSetMapMemory(x_pos-1-rightfrontbox-1, y_pos-1,1);
+				readConfidenceMatrix(x_pos-1-rightfrontbox-1, y_pos-1,1,rightfrontbox);
 			}
 			if (rightbackbox < rbbmax) {
-				directSetMapMemory(x_pos-1-rightbackbox-1, y_pos+1,1);
+				readConfidenceMatrix(x_pos-1-rightbackbox-1, y_pos+1,1,rightbackbox);
 			}
 			if (leftlongbox < llbmax) {
-				directSetMapMemory(x_pos+1+leftlongbox+1, y_pos-1,1);
+				readConfidenceMatrix(x_pos+1+leftlongbox+1, y_pos-1,1,leftlongbox);
 			}
 		} else if (robotdir == RobotDirection.UP) {
 			for (int a = 0; a <= frontmidbox; a++) {
-				directSetMapMemory(x_pos-1-a, y_pos, 0);
+				readConfidenceMatrix(x_pos-1-a, y_pos,0, a);
 			}
 			for (int a = 0; a <= frontrightbox; a++) {
-				directSetMapMemory(x_pos-1-a, y_pos+1,0);
+				readConfidenceMatrix(x_pos-1-a, y_pos+1,0,a);
 			}
 			for (int a = 0; a <= frontleftbox; a++) {
-				directSetMapMemory(x_pos-1-a, y_pos-1,0);
+				readConfidenceMatrix(x_pos-1-a, y_pos-1, 0,a);
 			}
 			for (int a = 0; a <= rightfrontbox; a++) {
-				directSetMapMemory(x_pos-1, y_pos+1+a,0);
+				readConfidenceMatrix(x_pos-1, y_pos+1+a, 0,a);
 			}
 			for (int a = 0; a <= rightbackbox; a++) {
-				directSetMapMemory(x_pos+1, y_pos+1+a,0);
+				readConfidenceMatrix(x_pos+1, y_pos+1+a,0,a);
 			}
 			for (int a = 0; a <= leftlongbox; a++) {
-				directSetMapMemory(x_pos-1, y_pos-1-a,0);
+				readConfidenceMatrix(x_pos-1, y_pos-1-a,0,a);
 			}
 			if (frontmidbox < fmbmax) {
-				directSetMapMemory(x_pos-1-frontmidbox-1,y_pos,1);
+				readConfidenceMatrix(x_pos-1-frontmidbox-1,y_pos,1,frontmidbox);
 			}
 			if (frontrightbox < frbmax) {
-				directSetMapMemory(x_pos-1-frontrightbox-1,y_pos+1,1);
+				readConfidenceMatrix(x_pos-1-frontrightbox-1,y_pos+1,1,frontrightbox);
 			}
 			if (frontleftbox < flbmax) {
-				directSetMapMemory(x_pos-1-frontleftbox-1,y_pos-1,1);
+				readConfidenceMatrix(x_pos-1-frontleftbox-1,y_pos-1,1,frontleftbox);
 			}
 			if (rightfrontbox < rfbmax) {
-				directSetMapMemory(x_pos-1, y_pos+1+rightfrontbox+1,1);
+				readConfidenceMatrix(x_pos-1, y_pos+1+rightfrontbox+1,1,rightfrontbox);
 			}
 			if (rightbackbox < rbbmax) {
-				directSetMapMemory(x_pos+1, y_pos+1+rightbackbox+1,1);
+				readConfidenceMatrix(x_pos+1, y_pos+1+rightbackbox+1,1,rightbackbox);
 			}
 			if (leftlongbox < llbmax) {
-				directSetMapMemory(x_pos-1, y_pos-1-leftlongbox-1,1);
+				readConfidenceMatrix(x_pos-1, y_pos-1-leftlongbox-1,1,leftlongbox);
 			}
 		} else if (robotdir == RobotDirection.DOWN) {
 			for (int a = 0; a <= frontmidbox; a++) {
-				directSetMapMemory(x_pos+1+a, y_pos, 0);
+				readConfidenceMatrix(x_pos+1+a, y_pos, 0,a);
 			}
 			for (int a = 0; a <= frontrightbox; a++) {
-				directSetMapMemory(x_pos+1+a, y_pos-1,0);
+				readConfidenceMatrix(x_pos+1+a, y_pos-1, 0,a);
 			}
 			for (int a = 0; a <= frontleftbox; a++) {
-				directSetMapMemory(x_pos+1+a, y_pos+1,0);
+				readConfidenceMatrix(x_pos+1+a, y_pos+1, 0,a);
 			}
 			for (int a = 0; a <= rightfrontbox; a++) {
-				directSetMapMemory(x_pos+1, y_pos-1-a,0);
+				readConfidenceMatrix(x_pos+1, y_pos-1-a, 0,a);
 			}
 			for (int a = 0; a <= rightbackbox; a++) {
-				directSetMapMemory(x_pos-1, y_pos-1-a,0);
+				readConfidenceMatrix(x_pos-1, y_pos-1-a,0, a);
 			}
 			for (int a = 0; a <= leftlongbox; a++) {
-				directSetMapMemory(x_pos+1, y_pos+1+a,0);
+				readConfidenceMatrix(x_pos+1, y_pos+1+a,0,a);
 			}
 			if (frontmidbox < fmbmax) {
-				directSetMapMemory(x_pos+1+frontmidbox+1,y_pos,1);
+				readConfidenceMatrix(x_pos+1+frontmidbox+1,y_pos,1,frontmidbox);
 			}
 			if (frontrightbox < frbmax) {
-				directSetMapMemory(x_pos+1+frontrightbox+1,y_pos-1,1);
+				readConfidenceMatrix(x_pos+1+frontrightbox+1,y_pos-1,1,frontrightbox);
 			}
 			if (frontleftbox < flbmax) {
-				directSetMapMemory(x_pos+1+frontleftbox+1,y_pos+1,1);
+				readConfidenceMatrix(x_pos+1+frontleftbox+1,y_pos+1,1,frontleftbox);
 			}
 			if (rightfrontbox < rfbmax) {
-				directSetMapMemory(x_pos+1, y_pos-1-rightfrontbox-1,1);
+				readConfidenceMatrix(x_pos+1, y_pos-1-rightfrontbox-1,1,rightfrontbox);
 			}
 			if (rightbackbox < rbbmax) {
-				directSetMapMemory(x_pos-1, y_pos-1-rightbackbox-1,1);
+				readConfidenceMatrix(x_pos-1, y_pos-1-rightbackbox-1,1,rightbackbox);
 			}
 			if (leftlongbox < llbmax) {
-				directSetMapMemory(x_pos+1, y_pos+1+leftlongbox+1,1);
+				readConfidenceMatrix(x_pos+1, y_pos+1+leftlongbox+1,1,leftlongbox);
 			}
 		}
+		setMapMemoryFromCFMatrix();
 	}
 	
 	// MODIFIED COMPUTEFASTESTPATH USING RD FOR INFORMATION GAIN PATHING;
@@ -1392,6 +1393,24 @@ public class LogicHandler {
 		}
 	}
 	
+	public void setMapMemoryFromCFMatrix() {
+		for (int a = 0; a < y_size; a++) {
+			for (int b = 0; b < x_size; b++) {
+				double zero = confidencematrix.get(0).get(a).get(b);
+				double one = confidencematrix.get(1).get(a).get(b);
+				double two = confidencematrix.get(2).get(a).get(b);
+				if (zero >= one && zero >= two) {
+					directSetMapMemory(a,b,0);
+				} else if (one >= zero && one >= two) {
+					System.out.println("called");
+					directSetMapMemory(a,b,1);
+				}else if (two >= zero && two >= one) {
+					directSetMapMemory(a,b,2);
+				}
+			}
+		}
+	}
+	
 	public void initCFMatrixFromMapMemory() {
 		ArrayList<ArrayList<ArrayList<Double>>> ar = new ArrayList<ArrayList<ArrayList<Double>>>();
 		for (int a = 0; a < 3; a++) {
@@ -1444,21 +1463,54 @@ public class LogicHandler {
 		}
 	}
 	
+	public void addCFMatrix(int value, int x, int y, double add) {
+		switch(value) {
+			case 0:
+				confidencematrix.get(0).get(x).set(y, confidencematrix.get(0).get(x).get(y)+ add);
+				break;
+			case 1:
+				confidencematrix.get(1).get(x).set(y, confidencematrix.get(1).get(x).get(y)+ add);
+				break;
+			case 2:
+				confidencematrix.get(2).get(x).set(y, confidencematrix.get(2).get(x).get(y)+ add);
+				break;
+		}
+	}
+	
 	public void printCFMatrix() {
 		for (int a = 0; a < 3; a++) {
 			System.out.println(a+"-confidence matrix");
 			for (int b = 0; b < y_size; b++) {
 				for (int c = 0;c < x_size; c++) {
-					System.out.print(confidencematrix.get(a).get(b).get(c));
+					System.out.print(confidencematrix.get(a).get(b).get(c)+ " ");
 				}
 				System.out.println();
 			}
 		}
 	}
 	
-	public void computeMapMemoryFromConfidence(int x, int y, int value, int distance) {
-		ArrayList<ArrayList<ArrayList<Double>>> cm = this.confidencematrix;
-		
+	public void readConfidenceMatrix(int x, int y, int value, int distance) {
+		double val;
+		switch(distance) {
+			case 0:
+				val = 10;
+				break;
+			case 1:
+				val = 5;
+				break;
+			case 2:
+				val = 3;
+				break;
+			case 3:
+				val = 3;
+				break;
+			default:
+				val = 0;
+				break;
+		}
+		if (isValid(x,y)) {
+			addCFMatrix(value,x,y,val);
+		}
 	}
 	
 	public ArrayList<Double> normalize(ArrayList<Double> ar) { //normalizes array to (0,1);

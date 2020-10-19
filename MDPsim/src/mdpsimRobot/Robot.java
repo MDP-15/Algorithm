@@ -200,10 +200,11 @@ public class Robot {
 		while (!actionstack.isEmpty()) {
 		      switch (actionstack.peek()) {
 		      case "F1":
-		    	  	lh.prevaction = RobotAction.F1;
+		    	  	lh.prevaction = RobotAction.F1;	
 		    	  	actionqueue.add(RobotAction.F1);
 		    	  	System.out.println("F1 "+lh.robotdir);
 		    	  	TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"F1s\"}");
+		    	  	TCPsocket.sendMessage("{\"MDP15\": \"RP\", \"X\": "+lh.x_pos+", \"Y\": "+lh.y_pos+", \"O\": \""+lh.robotdir+"\"}");		    	  	
 		    	  	break;
 		      case "F2":
 		    	  	lh.prevaction = RobotAction.F2;

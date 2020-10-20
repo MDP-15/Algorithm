@@ -179,7 +179,7 @@ public class LogicHandler {
 			}
 			if (MDPSIM.mode == 2) {
 				n = returnToBase();
-				generateImageCoords();
+				System.out.println(generateImageCoords());
 				//printMapMemory();
 			}
 			if (n != null) {
@@ -1694,7 +1694,8 @@ public class LogicHandler {
 	
 	//{"MDP15":"IR","Images":"..."}
 	//{"ID":1,"X":1,"Y":1},{"ID":1,"X":1,"Y":1},{"ID":1,"X":1,"Y":1}
-	public void generateImageCoords() throws IOException {
+	//{"MDP15":"IR","Images":"{ID:12,X:3,Y:10"}{"ID":13,"X":3,"Y":10"}{ID:8,X:3,Y:10"}{"ID":14,"X":3,"Y":10"}{ID:10,X:3,Y:10"}{"ID":11,"X":3,"Y":10"}{ID:4,X:3,Y:10"}"\"}"
+	public String generateImageCoords() throws IOException {
 		BufferedReader csvReader = new BufferedReader(new FileReader("C:/Users/liger/OneDrive/Documents/GitHub/Image-Recognition/predictions.csv"));
 		String row;
 		ArrayList<String> ar = new ArrayList<String>(0);
@@ -1709,9 +1710,14 @@ public class LogicHandler {
 		}
 		String s_start = "{\"MDP15\":\"IR\",\"Images\":\"";
 		String s_end = "\"}";
-		ArrayList<String> concat = new ArrayList<>();
-		for (int a = 0 ; a < ar.size(); a++) {
-			concat.add(ar.get(a));
+		for (int a = 1 ; a < ar.size(); a++) {
+			String[] array = ar.get(a).split(",");
+			s_start = s_start.concat("{ID:"+array[3]+",X:"+array[0]+",Y:"+array[1]+"}");
+			if (a < (ar.size()-1)) {
+				s_start = s_start.concat(";");
+			}
 		}
+		String s = s_start.concat(s_end);
+		return s;
 	}
 }

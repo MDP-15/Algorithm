@@ -196,7 +196,7 @@ public class Robot {
 		      }
 		      System.out.println("IN FP2");
 		      actionstack.pop();
-		    }
+		    }	
 		System.out.println("IN FP3");
 		TCPsocket.sendMessage("{\"MDP15\":\"FP\",\"FP\":\""+fP+"\"}");
 	}
@@ -209,7 +209,6 @@ public class Robot {
 		    	  	actionqueue.add(RobotAction.F1);
 		    	  	System.out.println("F1 "+lh.robotdir);
 		    	  	TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"F1s\"}");
-		    	  	Thread.sleep(100);
 		    	  	TCPsocket.sendMessage("{\"MDP15\": \"RP\", \"X\": "+lh.x_pos+", \"Y\": "+lh.y_pos+", \"O\": \""+lh.robotdir+"\"}");		    	  	
 		    	  	break;
 		      case "F2":

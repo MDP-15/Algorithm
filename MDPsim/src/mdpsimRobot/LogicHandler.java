@@ -56,6 +56,7 @@ public class LogicHandler {
 	public void updatePosition(int x, int y) {
 		this.x_pos = x;
 		this.y_pos = y;
+		updateRobotPosCF(x,y);
 		return;
 	}
 	
@@ -122,6 +123,7 @@ public class LogicHandler {
 				this.robotdir = RobotDirection.UP;
 			}
 		}
+		updateRobotPosCF(x_pos,y_pos);
 		if (prevaction != RobotAction.RCA && prevaction != RobotAction.RCH) {
 			prevaction = null;
 		}
@@ -179,7 +181,7 @@ public class LogicHandler {
 			}
 			if (MDPSIM.mode == 2) {
 				n = returnToBase();
-				System.out.println(generateImageCoords());
+				TCPsocket.sendMessage(generateImageCoords());
 				//printMapMemory();
 			}
 			if (n != null) {
@@ -1489,17 +1491,47 @@ public class LogicHandler {
 		}
 	}
 	
+	public void updateRobotPosCF(int x, int y) {
+		if (isValid(x,y)) {
+			addCFMatrix(0,x,y,1000);
+		}
+		if (isValid(x+1,y)) {
+			addCFMatrix(0,x+1,y,1000);
+		}
+		if (isValid(x-1,y)) {
+			addCFMatrix(0,x-1,y,1000);
+		}
+		if (isValid(x,y+1)) {
+			addCFMatrix(0,x,y+1,1000);
+		}
+		if (isValid(x+1,y+1)) {
+			addCFMatrix(0,x+1,y+1,1000);
+		}
+		if (isValid(x-1,y+1)) {
+			addCFMatrix(0,x-1,y+1,1000);
+		}
+		if (isValid(x,y-1)) {
+			addCFMatrix(0,x,y-1,1000);
+		}
+		if (isValid(x+1,y-1)) {
+			addCFMatrix(0,x+1,y-1,1000);
+		}
+		if (isValid(x-1,y-1)) {
+			addCFMatrix(0,x-1,y-1,1000);
+		}
+	}
+	
 	public void readConfidenceMatrix(int x, int y, int value, int distance) {
 		double val;
 		switch(distance) {
 			case 0:
-				val = 10;
+				val = 20;
 				break;
 			case 1:
-				val = 5;
+				val = 10;
 				break;
 			case 2:
-				val = 3;
+				val = 5;
 				break;
 			case 3:
 				val = 3;

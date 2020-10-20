@@ -40,7 +40,7 @@ public class MDPSIM {
 		sensorflag = false;
 		realsensors = new ArrayList<Double>();
 		mode = 0;
-		real = false;
+		real = true;
 		mdfString = parseFormatToMap(""); 
 		vw = new Viewer("MDP Simulator", 1024, 768); //First Panel
 		pause = false;

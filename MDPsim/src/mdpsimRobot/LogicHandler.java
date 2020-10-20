@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import mdpsim.MDPSIM;
 import mdpsimEngine.Action2D;
+import mdpsimEngine.Engine2D;
 import mdpsimGUI.TCPsocket;
 
 public class LogicHandler {
@@ -1691,7 +1692,8 @@ public class LogicHandler {
 		return Math.min(nx, ny);
 	}
 	
-	
+	//{"MDP15":"IR","Images":"..."}
+	//{"ID":1,"X":1,"Y":1},{"ID":1,"X":1,"Y":1},{"ID":1,"X":1,"Y":1}
 	public void generateImageCoords() throws IOException {
 		BufferedReader csvReader = new BufferedReader(new FileReader("C:/Users/liger/OneDrive/Documents/GitHub/Image-Recognition/predictions.csv"));
 		String row;
@@ -1704,6 +1706,12 @@ public class LogicHandler {
 		csvReader.close();
 		for (int a = 0; a < ar.size(); a++) {
 			System.out.println(ar.get(a));
+		}
+		String s_start = "{\"MDP15\":\"IR\",\"Images\":\"";
+		String s_end = "\"}";
+		ArrayList<String> concat = new ArrayList<>();
+		for (int a = 0 ; a < ar.size(); a++) {
+			concat.add(ar.get(a));
 		}
 	}
 }

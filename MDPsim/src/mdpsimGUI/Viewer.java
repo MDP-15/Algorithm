@@ -209,6 +209,7 @@ public class Viewer extends JFrame{
 			System.out.println("Button Pressed");
 			MDPSIM.mode = 3;
 			MDPSIM.robot.startFastestPath();
+			//TCPsocket.sendMessage("{\"MDP15\":\"IR\",\"Images\":\"(ID:1,X:13,Y:11);(ID:1,X:13,Y:12);(ID:1,X:13,Y:13);(ID:1,X:13,Y:14);(ID:1,X:13,Y:15)\"}");
 				}
 			});
 			

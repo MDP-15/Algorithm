@@ -1745,7 +1745,7 @@ public class LogicHandler {
 		String s_end = "\"}";
 		for (int a = 1 ; a < ar.size(); a++) {
 			String[] array = ar.get(a).split(",");
-			s_start = s_start.concat("(ID:"+array[3]+",X:"+array[0]+",Y:"+array[1]+")");
+			s_start = s_start.concat("(ID:"+array[3]+",X:"+array[1]+",Y:"+array[0]+")"); //Changed array pos to account for wrong dimensions
 			if (a < (ar.size()-1)) {
 				s_start = s_start.concat(";");
 			}

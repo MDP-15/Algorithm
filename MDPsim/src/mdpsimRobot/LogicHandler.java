@@ -194,7 +194,7 @@ public class LogicHandler {
 			if (MDPSIM.mode == 2) {
 				n = returnToBase();
 				System.out.println(generateImageCoords());
-				//TCPsocket.sendMessage(generateImageCoords());
+				TCPsocket.sendMessage(generateImageCoords());
 				//printMapMemory();
 			}
 			if (n != null) {
@@ -1970,8 +1970,8 @@ public class LogicHandler {
 	//{"ID":1,"X":1,"Y":1},{"ID":1,"X":1,"Y":1},{"ID":1,"X":1,"Y":1}
 	//{"MDP15":"IR","Images":"{ID:12,X:3,Y:10"}{"ID":13,"X":3,"Y":10"}{ID:8,X:3,Y:10"}{"ID":14,"X":3,"Y":10"}{ID:10,X:3,Y:10"}{"ID":11,"X":3,"Y":10"}{ID:4,X:3,Y:10"}"\"}"
 	public String generateImageCoords() throws IOException {
-		//BufferedReader csvReader = new BufferedReader(new FileReader("C:/Users/Ether/Desktop/Y3S1/MDP Image/Image-Recognition/predictions.csv"));
-		BufferedReader csvReader = new BufferedReader(new FileReader("C:/Users/liger/OneDrive/Documents/GitHub/Image-Recognition/predictions.csv"));
+		BufferedReader csvReader = new BufferedReader(new FileReader("C:/Users/Ether/Desktop/Y3S1/MDP Image/Image-Recognition/predictions.csv"));
+		//BufferedReader csvReader = new BufferedReader(new FileReader("C:/Users/liger/OneDrive/Documents/GitHub/Image-Recognition/predictions.csv"));
 		String row;
 		ArrayList<String> ar = new ArrayList<String>(0);
 		row = csvReader.readLine();

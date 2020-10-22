@@ -692,14 +692,18 @@ public class LogicHandler {
 	
 	public Node FPtoWall() {
 		System.out.println("IN LOOP BREAKING FP TO WALL");
+		System.out.println("TRAVELHISTORY SIZE : " + travelhistory.size());
 		Node n = travelhistory.get(travelhistory.size()-1);
 		Node nprev = travelhistory.get(travelhistory.size()-2);
 		travelhistory.remove(travelhistory.size()-1);
 		while (!(travelhistory.get(travelhistory.size()-1).is(n)&&travelhistory.get(travelhistory.size()-2).is(nprev))) {
 			travelhistory.remove(travelhistory.size()-1);
 		}
-		System.out.println(travelhistory.size());
 		travelhistory.remove(travelhistory.size()-1);
+		System.out.println("AFTER RETRACKING :"+travelhistory.size());
+		for (int a = 0; a < travelhistory.size(); a++) {
+			travelhistory.get(a).print();
+		}
 		int a = 0;
 		Node dest = travelhistory.get(a);
 		while (intRWHug(dest.x,dest.y,dest.rd).is(travelhistory.get(a+1))) {

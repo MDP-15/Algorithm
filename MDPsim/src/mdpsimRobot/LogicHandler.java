@@ -27,6 +27,7 @@ public class LogicHandler {
 	private boolean infogain;
 	private int calibratecounterh;
 	private int hlimit;
+	private ArrayList<Node> travelhistory;
 	
 	public LogicHandler(int x_size, int y_size, int x_pos, int y_pos) {
 		this.rwcycle = false;
@@ -44,6 +45,7 @@ public class LogicHandler {
 		this.prevaction = null;
 		this.queue = new ArrayList<RobotAction>();
 		this.mapmemory = new ArrayList<ArrayList<Integer>>();
+		this.travelhistory = new ArrayList<Node>();
 		this.confidencematrix = new ArrayList<ArrayList<ArrayList<Double>>>();
 		for(int a = 0; a < x_size; a++) {
 			mapmemory.add(new ArrayList<Integer>(y_size));
@@ -432,6 +434,7 @@ public class LogicHandler {
 	
 	public Node rwHug() {
 		Node now = new Node(x_pos,y_pos,null,null,null,0.0);
+		Node n = null;
 		if (robotdir == RobotDirection.RIGHT) {
 			if 	(((	(!isException(x_pos+2,y_pos+1) && mapmemory.get(x_pos+2).get(y_pos+1) != 0) 
 				|| 	(!isException(x_pos+2,y_pos) && mapmemory.get(x_pos+2).get(y_pos) != 0) 
@@ -443,19 +446,19 @@ public class LogicHandler {
 				&&	(!isException(x_pos,y_pos+2) && mapmemory.get(x_pos).get(y_pos+2) == 0)
 				&& 	(!isException(x_pos+1,y_pos+2) && mapmemory.get(x_pos+1).get(y_pos+2) == 0)))	{
 				rwaction = RobotAction.F1;
-				return new Node(x_pos,y_pos+1,now,RobotAction.F1,RobotDirection.RIGHT,0.0);
+				n = new Node(x_pos,y_pos+1,now,RobotAction.F1,RobotDirection.RIGHT,0.0);
 			} else if (((!isException(x_pos+2,y_pos+1) && mapmemory.get(x_pos+2).get(y_pos+1) == 0) 
 					&&	(!isException(x_pos+2,y_pos) && mapmemory.get(x_pos+2).get(y_pos) == 0) 
 					&& 	(!isException(x_pos+2,y_pos-1) && mapmemory.get(x_pos+2).get(y_pos-1) == 0) )){
 				if (rwaction == RobotAction.TR) {
 					rwaction = RobotAction.F1;
-					return new Node(x_pos,y_pos+1,now,RobotAction.F1,RobotDirection.RIGHT,0.0);
+					n =  new Node(x_pos,y_pos+1,now,RobotAction.F1,RobotDirection.RIGHT,0.0);
 				}
 				rwaction = RobotAction.TR;
-				return new Node(x_pos,y_pos,now,RobotAction.TR,RobotDirection.DOWN,0.0);
+				n = new Node(x_pos,y_pos,now,RobotAction.TR,RobotDirection.DOWN,0.0);
 			} else {
 				rwaction = RobotAction.TL;
-				return new Node(x_pos,y_pos,now,RobotAction.TL,RobotDirection.UP,0.0);
+				n = new Node(x_pos,y_pos,now,RobotAction.TL,RobotDirection.UP,0.0);
 			}
 		} else if (robotdir == RobotDirection.UP) {
 			if 	(((	(!isException(x_pos+1,y_pos+2) && mapmemory.get(x_pos+1).get(y_pos+2) != 0) 
@@ -468,19 +471,19 @@ public class LogicHandler {
 					&&	(!isException(x_pos-2,y_pos) && mapmemory.get(x_pos-2).get(y_pos) == 0)
 					&& 	(!isException(x_pos-2,y_pos+1) && mapmemory.get(x_pos-2).get(y_pos+1) == 0)))	{	
 					rwaction = RobotAction.F1;
-					return new Node(x_pos-1,y_pos,now,RobotAction.F1,RobotDirection.UP,0.0);
+					n = new Node(x_pos-1,y_pos,now,RobotAction.F1,RobotDirection.UP,0.0);
 				} else if ((	(!isException(x_pos+1,y_pos+2) && mapmemory.get(x_pos+1).get(y_pos+2) == 0) 
 						&& 	(!isException(x_pos,y_pos+2) && mapmemory.get(x_pos).get(y_pos+2) == 0) 
 						&&	(!isException(x_pos-1,y_pos+2) && mapmemory.get(x_pos-1).get(y_pos+2) == 0) )){
 					if (rwaction == RobotAction.TR) {
 						rwaction = RobotAction.F1;
-						return new Node(x_pos-1,y_pos,now,RobotAction.F1,RobotDirection.UP,0.0);
+						n = new Node(x_pos-1,y_pos,now,RobotAction.F1,RobotDirection.UP,0.0);
 					}
 					rwaction = RobotAction.TR;
-					return new Node(x_pos,y_pos,now,RobotAction.TR,RobotDirection.RIGHT,0.0);
+					n = new Node(x_pos,y_pos,now,RobotAction.TR,RobotDirection.RIGHT,0.0);
 				} else {
 					rwaction = RobotAction.TL;
-					return new Node(x_pos,y_pos,now,RobotAction.TL,RobotDirection.LEFT,0.0);
+					n = new Node(x_pos,y_pos,now,RobotAction.TL,RobotDirection.LEFT,0.0);
 				}
 		}  else if (robotdir == RobotDirection.LEFT) {
 			if 	(((	(!isException(x_pos-2,y_pos+1) && mapmemory.get(x_pos-2).get(y_pos+1) != 0) 
@@ -493,19 +496,19 @@ public class LogicHandler {
 					&&	(!isException(x_pos,y_pos-2) && mapmemory.get(x_pos).get(y_pos-2) == 0)
 					&& 	(!isException(x_pos+1,y_pos-2) && mapmemory.get(x_pos+1).get(y_pos-2) == 0)))	{	
 					rwaction = RobotAction.F1;
-					return new Node(x_pos,y_pos-1,now,RobotAction.F1,RobotDirection.LEFT,0.0);
+					n = new Node(x_pos,y_pos-1,now,RobotAction.F1,RobotDirection.LEFT,0.0);
 				} else if ((	(!isException(x_pos-2,y_pos+1) && mapmemory.get(x_pos-2).get(y_pos+1) == 0) 
 						&& 	(!isException(x_pos-2,y_pos) && mapmemory.get(x_pos-2).get(y_pos) == 0) 
 						&& 	(!isException(x_pos-2,y_pos-1) && mapmemory.get(x_pos-2).get(y_pos-1) == 0) )){
 					if (rwaction == RobotAction.TR) {
 						rwaction = RobotAction.F1;
-						return new Node(x_pos,y_pos-1,now,RobotAction.F1,RobotDirection.LEFT,0.0);
+						n = new Node(x_pos,y_pos-1,now,RobotAction.F1,RobotDirection.LEFT,0.0);
 					}
 					rwaction = RobotAction.TR;
-					return new Node(x_pos,y_pos,now,RobotAction.TR,RobotDirection.UP,0.0);
+					n = new Node(x_pos,y_pos,now,RobotAction.TR,RobotDirection.UP,0.0);
 				} else {
 					rwaction = RobotAction.TL;
-					return new Node(x_pos,y_pos,now,RobotAction.TL,RobotDirection.DOWN,0.0);
+					n = new Node(x_pos,y_pos,now,RobotAction.TL,RobotDirection.DOWN,0.0);
 				}
 			} else if (robotdir == RobotDirection.DOWN) {
 				if 	(((	(!isException(x_pos+1,y_pos-2) && mapmemory.get(x_pos+1).get(y_pos-2) != 0) 
@@ -518,23 +521,97 @@ public class LogicHandler {
 						&&	(!isException(x_pos+2,y_pos) && mapmemory.get(x_pos+2).get(y_pos) == 0)
 						&& 	(!isException(x_pos+2,y_pos+1) && mapmemory.get(x_pos+2).get(y_pos+1) == 0)))	{	
 						rwaction = RobotAction.F1;
-						return new Node(x_pos+1,y_pos,now,RobotAction.F1,RobotDirection.DOWN,0.0);
+						n = new Node(x_pos+1,y_pos,now,RobotAction.F1,RobotDirection.DOWN,0.0);
 					} else if ((	(!isException(x_pos+1,y_pos-2) && mapmemory.get(x_pos+1).get(y_pos-2) == 0) 
 							&& 	(!isException(x_pos,y_pos-2) && mapmemory.get(x_pos).get(y_pos-2) == 0) 
 							&& 	(!isException(x_pos-1,y_pos-2) && mapmemory.get(x_pos-1).get(y_pos-2) == 0) )){
 						if (rwaction == RobotAction.TR) {
 							rwaction = RobotAction.F1;
-							return new Node(x_pos+1,y_pos,now,RobotAction.F1,RobotDirection.DOWN,0.0);
+							n = new Node(x_pos+1,y_pos,now,RobotAction.F1,RobotDirection.DOWN,0.0);
 						}
 						rwaction = RobotAction.TR;
-						return new Node(x_pos,y_pos,now,RobotAction.TR,RobotDirection.LEFT,0.0);
+						n = new Node(x_pos,y_pos,now,RobotAction.TR,RobotDirection.LEFT,0.0);
 					} else {
 						rwaction = RobotAction.TL;
-						return new Node(x_pos,y_pos,now,RobotAction.TL,RobotDirection.RIGHT,0.0);
+						n = new Node(x_pos,y_pos,now,RobotAction.TL,RobotDirection.RIGHT,0.0);
 					}
 			} 
-		return null;
+		this.travelhistory.add(n);
+		if (isCycle()) {
+			return FPtoWall();
+		}
+		return n;
 	}
+	
+	public boolean isCycle() {
+		Node n = travelhistory.get(travelhistory.size()-1);
+		for (int a = travelhistory.size()-2; a >= 0; a--) {
+			try {
+				if (n.is(travelhistory.get(a))) {
+					return true;
+				}
+			} catch (Exception e) {
+				return false;
+			}
+		}
+		return false;
+	}
+	
+	public Node FPtoWall() {
+		Node n = travelhistory.get(travelhistory.size()-1);
+		travelhistory.remove(travelhistory.size()-1);
+		while (travelhistory.get(travelhistory.size()-1) != n) {
+			travelhistory.remove(travelhistory.size()-1);
+		}
+		travelhistory.remove(travelhistory.size()-1);
+		while (!isRightWall(travelhistory.get(travelhistory.size()-1))) {
+			travelhistory.remove(travelhistory.size()-1);
+		}
+		Node dest = travelhistory.get(travelhistory.size()-1);
+		return computeFastestPath(x_pos, y_pos, dest.x,dest.y,robotdir,dest.rd);
+	}
+	
+	public boolean isRightWall(Node n) {
+		if (n.rd == RobotDirection.UP) {
+			if (	(isValid(n.x+1,n.y+2) && mapmemory.get(n.x+1).get(n.y+2) == 1) 	||
+					(isValid(n.x,n.y+2) && mapmemory.get(n.x).get(n.y+2) == 1) 	||
+					(isValid(n.x-1,n.y+2) && mapmemory.get(n.x-1).get(n.y+2) == 1) 	||
+					!isValid(n.x-1,n.y+2) 	||
+					!isValid(n.x-1,n.y+2)	||
+					!isValid(n.x-1,n.y+2)) {
+				return true;
+			}
+		} else if (n.rd == RobotDirection.DOWN) {
+			if (	(isValid(n.x+1,n.y-2) && mapmemory.get(n.x+1).get(n.y-2) == 1) 	||
+					(isValid(n.x,n.y-2) && mapmemory.get(n.x).get(n.y-2) == 1) 	||
+					(isValid(n.x-1,n.y-2) && mapmemory.get(n.x-1).get(n.y-2) == 1) 	||
+					!isValid(n.x-1,n.y-2) 	||
+					!isValid(n.x-1,n.y-2)	||
+					!isValid(n.x-1,n.y-2)) {
+				return true;
+			}
+		} else if (n.rd == RobotDirection.LEFT) {
+			if (	(isValid(n.x-2,n.y+1) && mapmemory.get(n.x-2).get(n.y+1) == 1) 	||
+					(isValid(n.x-2,n.y) && mapmemory.get(n.x-2).get(n.y) == 1) 	||
+					(isValid(n.x-2,n.y-1) && mapmemory.get(n.x-2).get(n.y-1) == 1) 	||
+					!isValid(n.x-2,n.y+1) 	||
+					!isValid(n.x-2,n.y)	||
+					!isValid(n.x-2,n.y-1)) {
+				return true;
+			}
+		} else if (n.rd == RobotDirection.RIGHT) {
+			if (	(isValid(n.x+2,n.y+1) && mapmemory.get(n.x+2).get(n.y+1) == 1) 	||
+					(isValid(n.x+2,n.y) && mapmemory.get(n.x+2).get(n.y) == 1) 	||
+					(isValid(n.x+2,n.y-1) && mapmemory.get(n.x+2).get(n.y-1) == 1) 	||
+					!isValid(n.x+2,n.y+1) 	||
+					!isValid(n.x+2,n.y)	||
+					!isValid(n.x+2,n.y-1)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	//INSERT INTO SORTED LIST
 	public ArrayList<ExplorationNode> exInsert(ArrayList<ExplorationNode> ar, ExplorationNode en){
 		if (ar.size() == 0) {
@@ -1284,6 +1361,30 @@ public class LogicHandler {
 			Node n = search.remove(0);
 			done.add(n);
 			if (n.isCell(end)) {
+				return n;
+			}
+			ArrayList<Node> neighbours = n.neighbours(dest_x,dest_y,mapmemory);
+			for (Node nb : neighbours) {
+				if (!in(done, nb)) {
+					search = insert(search, nb);
+				}
+			}
+		}
+		return null;
+	}
+	
+	public Node computeFastestPath(int start_x, int start_y, int dest_x, int dest_y, RobotDirection rd, RobotDirection erd) {
+		Node start = new Node(start_x, start_y, null, null, rd, 0.0);
+		Node end = new Node(dest_x, dest_y,null,null,erd,Double.POSITIVE_INFINITY);
+		//construct searched list;
+		ArrayList<Node> done = new ArrayList<Node>();
+		//construct list of neighbours to search
+		ArrayList<Node>search = new ArrayList<Node>();
+		search.add(start);
+		while(search.size() > 0) {
+			Node n = search.remove(0);
+			done.add(n);
+			if (n.is(end)) {
 				return n;
 			}
 			ArrayList<Node> neighbours = n.neighbours(dest_x,dest_y,mapmemory);

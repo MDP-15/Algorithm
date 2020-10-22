@@ -30,10 +30,17 @@ public class BoundingBox2D {
 	
 	public BoundingBox2D(Object2D obj) {
 		if (obj.type() == Line2D.class || obj.type() == ExtendLine.class) {
-			Line2D line = ((Line2D) obj.object());
-			this.p1 = line.start();
-			this.p2 = line.end();
-			this.object = obj;
+			if (obj.type() == Line2D.class) {
+				Line2D line = ((Line2D) obj.object());
+				this.p1 = line.start();
+				this.p2 = line.end();
+				this.object = obj;
+			} else {
+				ExtendLine line = ((ExtendLine) obj.object());
+				this.p1 = line.start();
+				this.p2 = line.end();
+				this.object = obj;
+			}
 			}
 		else {
 			Circle2D circle = ((Circle2D) obj.object());

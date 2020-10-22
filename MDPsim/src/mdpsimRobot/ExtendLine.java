@@ -13,4 +13,23 @@ public class ExtendLine extends Line2D {
 		this.y = y;
 	}
 
+	public Vector2D start() {
+		return super.start;
+	}
+	
+	public void start(Vector2D start) {
+		super.start = start;
+	}
+	
+	public Vector2D midpoint() {
+		return super.start.add(super.end).multiply(0.5);
+	}
+	
+	public Vector2D end() {
+		return super.end;
+	}
+	
+	public void end(Vector2D end) {
+		super.end = end;
+	}
 }

@@ -6,12 +6,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 //0 for nothing, 1 for something;
 
+import javax.swing.JFrame;
+
 import mdpsim.MDPSIM;
 import mdpsimEngine.Action2D;
 import mdpsimEngine.Engine2D;
 import mdpsimEngine.Line2D;
 import mdpsimEngine.Object2D;
 import mdpsimEngine.Vector2D;
+import mdpsimGUI.Engine2DPanel;
 import mdpsimGUI.Line;
 import mdpsimGUI.TCPsocket;
 import mdpsimGUI.VecInt;
@@ -190,7 +193,8 @@ public class LogicHandler {
 			}
 			if (MDPSIM.mode == 2) {
 				n = returnToBase();
-				TCPsocket.sendMessage(generateImageCoords());
+				System.out.println(generateImageCoords());
+				//TCPsocket.sendMessage(generateImageCoords());
 				//printMapMemory();
 			}
 			if (n != null) {
@@ -1971,14 +1975,14 @@ public class LogicHandler {
 		for (int a = 0; a < 20; a++) {
 			Vector2D linestart = new Vector2D(0,(a)*10);
 			Vector2D lineend = new Vector2D(0,(a+1)*10);
-			ExtendLine ex = new ExtendLine(linestart,lineend,a,0);
+			ExtendLine ex = new ExtendLine(linestart,lineend,19-a,0);
 			lines.add(ex);
 		}
 		//Construct right border
 		for (int a = 0; a < 20; a++) {
 			Vector2D linestart = new Vector2D(150,(a)*10);
 			Vector2D lineend = new Vector2D(150,(a+1)*10);
-			ExtendLine ex = new ExtendLine(linestart,lineend,a,14);
+			ExtendLine ex = new ExtendLine(linestart,lineend,19-a,14);
 			lines.add(ex);
 		}
 		//Construct top border
@@ -2003,10 +2007,10 @@ public class LogicHandler {
 					Vector2D tr = new Vector2D(a*10,(b+1)*10);
 					Vector2D bl = new Vector2D((a+1)*10,b*10);
 					Vector2D br = new Vector2D((a+1)*10,(b+1)*10);
-					ExtendLine topline = new ExtendLine(tl,tr,a-1,b);
-					ExtendLine botline = new ExtendLine(bl,br,a+1,b);
-					ExtendLine leftline = new ExtendLine(tl,bl,a,b-1);
-					ExtendLine rightline = new ExtendLine(tr,br,a-1,b+1);
+					ExtendLine topline = new ExtendLine(tl,tr,19-(a-1),b);
+					ExtendLine botline = new ExtendLine(bl,br,19-(a+1),b);
+					ExtendLine leftline = new ExtendLine(tl,bl,19-a,b-1);
+					ExtendLine rightline = new ExtendLine(tr,br,19-a,b+1);
 					lines.add(topline);
 					lines.add(botline);
 					lines.add(leftline);
@@ -2016,7 +2020,7 @@ public class LogicHandler {
 		}
 		ArrayList<Object2D> objlist = new ArrayList<Object2D>();
 		for (int a = 0; a < lines.size(); a++) {
-			ExtendLine ln = lines.get(a);
+			Line2D ln = (Line2D)lines.get(a);
 			objlist.add(new Object2D(ln, ln.midpoint(), new Vector2D(0,0),new Vector2D(0,0),true));
 		}
 		//Find rays of lines determined by image recognition
@@ -2025,10 +2029,11 @@ public class LogicHandler {
 		String s_start = "{\"MDP15\":\"IR\",\"Images\":\"";
 		String s_end = "\"}";
 		String[] y = new String[]{"19","18","17","16","15","14","13","12","11","10","9","8","7","6","5","4","3","2","1","0"};
+		ArrayList<Line> drawlines = new ArrayList<Line>();
 		for (int a = 1 ; a < ar.size(); a++) {
 			String[] array = ar.get(a).split(",");
-			int robotypos = Integer.parseInt(array[1]);
-			int robotxpos = Integer.parseInt(array[0]);
+			int robotxpos = 19-Integer.parseInt(array[1]);
+			int robotypos = Integer.parseInt(array[0]);
 			double xaxis = Double.parseDouble(array[4]);
 			xaxis -= 0.5;
 			xaxis /= 0.5;
@@ -2038,37 +2043,34 @@ public class LogicHandler {
 			Vector2D raydir = null;
 			if (direction.equals("UP")) {
 				raystart = new Vector2D((robotxpos*10) + 13, (robotypos*10) + 5);
-				raydir = new Vector2D(0,-10).rotate(xaxis* 0.96 *Math.PI);
+				raydir = new Vector2D(0,-10).rotate(xaxis* 0.152 *Math.PI);
 			} else if (direction.equals("DOWN")) {
 				raystart = new Vector2D((robotxpos*10) - 3, (robotypos*10) + 5);
-				raydir = new Vector2D(0,10).rotate(xaxis* 0.96 *Math.PI);
+				raydir = new Vector2D(0,10).rotate(xaxis*0.152*Math.PI);
 			} else if (direction.equals("LEFT")) { 
 				raystart = new Vector2D((robotxpos*10) + 5, (robotypos*10) - 3);
-				raydir = new Vector2D(-10,0).rotate(xaxis* 0.96 *Math.PI);
+				raydir = new Vector2D(-10,0).rotate(xaxis* 0.152 *Math.PI);
 			} else if (direction.equals("RIGHT")) {
 				raystart = new Vector2D((robotxpos*10) + 5, (robotypos*10) + 13);
-				raydir = new Vector2D(10,0).rotate(xaxis* 0.96 *Math.PI);
+				raydir = new Vector2D(10,0).rotate(xaxis*0.152*Math.PI);
 			}
-			raystart.print();
-			raydir.print();
+			double mult = (double)Viewer.map1.getWidth()/150;
 			Vector2D coll = phyeng.rayTraceVec(raystart, raydir);
 			if (coll != null) {
 				Object2D collide = phyeng.rayTraceObj(raystart,raydir);
-				//ExtendLine exl = (ExtendLine)collide.object();	
-				double mult = (double)Viewer.map1.getWidth()/150;
-				VecInt start = new VecInt((int)Math.round(raystart.x()),(int)Math.round(raystart.y()));
-				start.multiply(mult);
+				ExtendLine exl = (ExtendLine)collide.object();	
+				VecInt start = new VecInt((int)Math.round(raystart.y()),(int)Math.round(raystart.x()));
+				start = start.multiply(mult);
+				System.out.println(start.x()+" "+start.y());
 				VecInt end = new VecInt((int)Math.round(coll.x()),(int)Math.round(coll.y()));
-				end.multiply(mult);
-				Viewer.map1.lines.add(new Line(start,end,Color.red,2));
-				//s_start = s_start.concat("(ID:"+array[3]+",X:"+exl.x+",Y:"+ y[exl.y]+")"); //Changed array pos to account for wrong dimensions
+				end = end.multiply(mult);
+				drawlines.add(new Line(start,end,Color.red,2));
+				s_start = s_start.concat("(ID:"+array[3]+",X:"+exl.y+",Y:"+ y[exl.x]+")"); //Changed array pos to account for wrong dimensions
 				if (a < (ar.size()-1)) {
 					s_start = s_start.concat(";");
 				}
 			}
 		}
-		Robot r = new Robot(null, Double.POSITIVE_INFINITY);
-		MDPSIM.updateEngine2DPanel(r,phyeng,Viewer.map1);
 		String s = s_start.concat(s_end);
 		return s;
 	}

@@ -31,8 +31,9 @@ public class VecInt {
 		this.y = y;
 	}
 	
-	public void multiply(double mult) {
+	public VecInt multiply(double mult) {
 		this.x = (int)Math.round(x*mult);
 		this.y = (int)Math.round(y*mult);
+		return this;
 	}
 }

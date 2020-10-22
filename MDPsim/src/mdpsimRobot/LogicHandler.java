@@ -673,6 +673,7 @@ public class LogicHandler {
 		for (int a = travelhistory.size()-3; a > 0; a--) {
 			try {
 				if (n.isExact(travelhistory.get(a))) {
+					System.out.println("LOOP DETECTED");
 					return true;
 				}
 			} catch (Exception e) {

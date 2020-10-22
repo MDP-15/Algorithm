@@ -707,7 +707,7 @@ public class LogicHandler {
 		int a = 0;
 		Node dest = travelhistory.get(a);
 		while (intRWHug(dest.x,dest.y,dest.rd).is(travelhistory.get(a+1))) {
-			dest = travelhistory.get(a+1	s);
+			dest = travelhistory.get(a+1);
 			a += 1;
 		}
 		System.out.println(a);

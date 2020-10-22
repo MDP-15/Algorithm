@@ -698,6 +698,9 @@ public class LogicHandler {
 			dest = intRWHug(dest.x,dest.y,dest.rd);
 			a += 1;
 		}
+		while (intRWHug(dest.x,dest.y,dest.rd).isValid(mapmemory)) {
+			dest = intRWHug(dest.x,dest.y,dest.rd);
+		}
 		return computeFastestPath(x_pos, y_pos, dest.x,dest.y,robotdir,dest.rd);
 	}
 	

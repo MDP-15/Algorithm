@@ -712,13 +712,30 @@ public class LogicHandler {
 		}
 		System.out.println(a);
 		Node k = new Node(18,1,null,null,RobotDirection.RIGHT,0.0);
-		while (intRWHug(k.x,k.y,k.rd).isValid(mapmemory)) {
+		while (isUnexplored(intRWHug(k.x,k.y,k.rd))) {
 			k = intRWHug(k.x,k.y,k.rd);
 		}
 		k.print();
 		return computeFastestPath(x_pos, y_pos, k.x,k.y,robotdir,k.rd);
 	}
 	
+	public boolean isUnexplored(Node n) {
+		if ((mapmemory.get(n.x+2).get(n.y+1) == 2) ||
+			(mapmemory.get(n.x+2).get(n.y) == 2) ||
+			(mapmemory.get(n.x+2).get(n.y-1) == 2) ||
+			(mapmemory.get(n.x-2).get(n.y+1) == 2) ||
+			(mapmemory.get(n.x-2).get(n.y) == 2) ||
+			(mapmemory.get(n.x-2).get(n.y-1) == 2) ||
+			(mapmemory.get(n.x+1).get(n.y+2) == 2) ||
+			(mapmemory.get(n.x).get(n.y+2) == 2) ||
+			(mapmemory.get(n.x-1).get(n.y+2) == 2) ||
+			(mapmemory.get(n.x+1).get(n.y-2) == 2) ||
+			(mapmemory.get(n.x).get(n.y-2) == 2) ||
+			(mapmemory.get(n.x-1).get(n.y-2) == 2)) {
+			return true;
+		}
+		return false;
+	}
 	public boolean isRightWall(Node n) {
 		if (n.rd == RobotDirection.UP) {
 			if (	(isValid(n.x+1,n.y+2) && mapmemory.get(n.x+1).get(n.y+2) == 1) 	||

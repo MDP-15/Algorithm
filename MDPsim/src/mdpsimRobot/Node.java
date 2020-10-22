@@ -210,6 +210,13 @@ public class Node {
 		return false;
 	}
 	
+	public boolean isExact (Node n) {
+		if (x == n.x && y == n.y && rd == n.rd && ra == n.ra) {
+			return true;
+		}
+		return false;
+	}
+	
 	public boolean isCell(Node n) {
 		if (x == n.x && y == n.y) {
 			return true;

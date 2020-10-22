@@ -672,7 +672,7 @@ public class LogicHandler {
 	public boolean isCycle(Node n) {
 		for (int a = travelhistory.size()-2; a > 0; a--) {
 			try {
-				if (n.is(travelhistory.get(a))) {
+				if (n.isExact(travelhistory.get(a))) {
 					return true;
 				}
 			} catch (Exception e) {

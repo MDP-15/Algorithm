@@ -670,8 +670,14 @@ public class LogicHandler {
 	}
 	
 	public boolean isCycle() {
-		Node n = travelhistory.get(travelhistory.size()-1);
-		Node nprev = travelhistory.get(travelhistory.size()-2);
+		Node n = null;
+		Node nprev = null;
+		try {
+			n = travelhistory.get(travelhistory.size()-1);
+			nprev = travelhistory.get(travelhistory.size()-2);
+		} catch (Exception e) {
+			return false;
+		}
 		for (int a = travelhistory.size()-3; a > 0; a--) {
 			try {
 				if (n.isExact(travelhistory.get(a)) && nprev.isExact(travelhistory.get(a-1))) {

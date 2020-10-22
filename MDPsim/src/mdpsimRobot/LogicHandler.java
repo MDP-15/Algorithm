@@ -691,24 +691,28 @@ public class LogicHandler {
 	}
 	
 	public Node FPtoWall() {
+		System.out.println("IN LOOP BREAKING FP TO WALL");
 		Node n = travelhistory.get(travelhistory.size()-1);
 		travelhistory.remove(travelhistory.size()-1);
 		while (!travelhistory.get(travelhistory.size()-1).is(n)) {
 			travelhistory.remove(travelhistory.size()-1);
 		}
+		System.out.println(travelhistory.size());
 		travelhistory.remove(travelhistory.size()-1);
 		while (!isRightWall(travelhistory.get(travelhistory.size()-1))) {
 			travelhistory.remove(travelhistory.size()-1);
 		}
 		int a = 0;
 		Node dest = travelhistory.get(a);
-		while (intRWHug(dest.x,dest.y,dest.rd).isExact(travelhistory.get(a+1))) {
-			dest = intRWHug(dest.x,dest.y,dest.rd);
+		while (intRWHug(dest.x,dest.y,dest.rd).is(travelhistory.get(a+1))) {
+			dest = travelhistory.get(a+1);
 			a += 1;
 		}
+		System.out.println(a);
 		while (intRWHug(dest.x,dest.y,dest.rd).isValid(mapmemory)) {
 			dest = intRWHug(dest.x,dest.y,dest.rd);
 		}
+		dest.print();
 		return computeFastestPath(x_pos, y_pos, dest.x,dest.y,robotdir,dest.rd);
 	}
 	

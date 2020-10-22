@@ -706,9 +706,20 @@ public class LogicHandler {
 		}
 		int a = 0;
 		Node dest = travelhistory.get(a);
-		while (intRWHug(dest.x,dest.y,dest.rd).is(travelhistory.get(a+1))) {
+		Node nod = null;
+		try {
+			nod = travelhistory.get(a+1);
+		} catch (Exception e) {
+			return intRWHug();
+		}
+		while (intRWHug(dest.x,dest.y,dest.rd).is(nod)) {
 			dest = travelhistory.get(a+1);
 			a += 1;
+			try {
+				nod = travelhistory.get(a+1);
+			} catch (Exception e) {
+				return intRWHug();
+			}
 		}
 		System.out.println(a);
 		Node k = new Node(18,1,null,null,RobotDirection.RIGHT,0.0);

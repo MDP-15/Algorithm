@@ -450,7 +450,7 @@ public class LogicHandler {
 			n.print();
 			this.travelhistory.add(n);
 		}
-		if (isCycle(n)) {
+		if (isCycle()) {
 			System.out.print("called");
 			return FPtoWall();
 		}
@@ -669,11 +669,12 @@ public class LogicHandler {
 		return null; 
 	}
 	
-	public boolean isCycle(Node n) {
+	public boolean isCycle() {
+		Node n = travelhistory.get(travelhistory.size()-1);
+		Node nprev = travelhistory.get(travelhistory.size()-1);
 		for (int a = travelhistory.size()-3; a > 0; a--) {
 			try {
-				if (n.isExact(travelhistory.get(a))) {
-					System.out.println("LOOP DETECTED");
+				if (n.isExact(travelhistory.get(a)) && nprev.isExact(travelhistory.get(a-1))) {
 					return true;
 				}
 			} catch (Exception e) {

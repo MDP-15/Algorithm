@@ -1963,9 +1963,11 @@ public class LogicHandler {
 		}
 		String s_start = "{\"MDP15\":\"IR\",\"Images\":\"";
 		String s_end = "\"}";
+		String[] y = new String[]{"19","18","17","16","15","14","13","12","11","10","9","8","7","6","5","4","3","2","1","0"};
 		for (int a = 1 ; a < ar.size(); a++) {
 			String[] array = ar.get(a).split(",");
-			s_start = s_start.concat("(ID:"+array[3]+",X:"+array[1]+",Y:"+array[0]+")"); //Changed array pos to account for wrong dimensions
+			int y_cor = Integer.parseInt(array[0]);
+			s_start = s_start.concat("(ID:"+array[3]+",X:"+array[1]+",Y:"+ y[y_cor]+")"); //Changed array pos to account for wrong dimensions
 			if (a < (ar.size()-1)) {
 				s_start = s_start.concat(";");
 			}

@@ -40,7 +40,7 @@ public class MDPSIM {
 		sensorflag = false;
 		realsensors = new ArrayList<Double>();
 		mode = 0;
-		real = false;
+		real = true;
 		mdfString = parseFormatToMap(""); 
 		vw = new Viewer("MDP Simulator", 1024, 768); //First Panel
 		pause = false;
@@ -163,22 +163,26 @@ public class MDPSIM {
 		double mult = (float) panel.getWidth()/(float) 150;
 		ArrayList<Line> lines = new ArrayList<Line>(0);
 		ArrayList<Double> sensoroutput = new ArrayList<Double>();
-		Vector2D origin = phyeng.movingObjects().get(0).position();
-		double angle = phyeng.movingObjects().get(0).direction().angle(north);
-		if (phyeng.movingObjects().get(0).getClass() == Vehicle2D.class) {
-				for (Sensor s: r.sensors) {
-					Vector2D sensororigin = origin.add(s.position().rotate(angle));
-					Vector2D sensordirection = s.direction().rotate(angle);
-					Vector2D vec = phyeng.rayTraceVec(sensororigin, sensordirection);
-					if (vec != null) {
-						sensoroutput.add(sensororigin.length(vec));
-						lines.add(new Line(new VecInt(sensororigin.multiply(mult), true), new VecInt(vec.multiply(mult),true), Color.red,2));
-					} else {
-						sensoroutput.add(Double.POSITIVE_INFINITY);
+		try {
+			Vector2D origin = phyeng.movingObjects().get(0).position();
+			double angle = phyeng.movingObjects().get(0).direction().angle(north);
+			if (phyeng.movingObjects().get(0).getClass() == Vehicle2D.class) {
+					for (Sensor s: r.sensors) {
+						Vector2D sensororigin = origin.add(s.position().rotate(angle));
+						Vector2D sensordirection = s.direction().rotate(angle);
+						Vector2D vec = phyeng.rayTraceVec(sensororigin, sensordirection);
+						if (vec != null) {
+							sensoroutput.add(sensororigin.length(vec));
+							lines.add(new Line(new VecInt(sensororigin.multiply(mult), true), new VecInt(vec.multiply(mult),true), Color.red,2));
+						} else {
+							sensoroutput.add(Double.POSITIVE_INFINITY);
+						}
 					}
-				}
+			}
+			r.updateSensors(sensoroutput);
+		} catch (Exception e) {
+			return lines;
 		}
-		r.updateSensors(sensoroutput);
 		return lines;
 	}
 		
@@ -250,7 +254,7 @@ public class MDPSIM {
 		return objectmap;
 	}
 	
-	private static void updateEngine2DPanel(Robot r, Engine2D phyeng, Engine2DPanel panel) {
+	public static void updateEngine2DPanel(Robot r, Engine2D phyeng, Engine2DPanel panel) {
 		ArrayList<Line> lines = new ArrayList<Line>();
 		double mult = (float) panel.getWidth()/ (float) 150;
 		ArrayList<Circle> circles = new ArrayList<Circle>();

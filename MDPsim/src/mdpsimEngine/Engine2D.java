@@ -172,6 +172,26 @@ public class Engine2D{
 			return vec;
 		}
 	}
+	
+	public Object2D rayTraceObj(Vector2D origin, Vector2D direction) {
+		if (direction.x() == 0 && direction.y() == 0) {
+			return null;
+		} else {
+			Vector2D svec = direction.multiply((double)600/direction.length(new Vector2D(0,0)));
+			Line2D line = new Line2D(origin, origin.add(svec));
+			Object2D lineobj = new Object2D(line, line.start(), new Vector2D(0,0), new Vector2D(0,0), true);
+			ArrayList<Object2D> broadcollide = isBroadCollide(lineobj);
+			double s = Double.POSITIVE_INFINITY;
+			for (Object2D collide : broadcollide) {
+				double test_s = lineIntersectDistance(line.start(), line.end(),((Line2D)collide.object()).start(), (((Line2D) collide.object()).end()));
+				if (test_s > 0 && test_s < 1 && test_s < s) {
+					s = test_s;
+					return collide;
+				}
+			}
+			return null;
+		}
+	}
 		
 	public double lineIntersectDistance(Vector2D line1_start, Vector2D line1_end, Vector2D line2_start, Vector2D line2_end) {
 		double s1_x = line1_end.x() - line1_start.x();

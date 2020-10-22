@@ -1,4 +1,5 @@
 package mdpsimRobot;
+import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -8,7 +9,13 @@ import java.util.ArrayList;
 import mdpsim.MDPSIM;
 import mdpsimEngine.Action2D;
 import mdpsimEngine.Engine2D;
+import mdpsimEngine.Line2D;
+import mdpsimEngine.Object2D;
+import mdpsimEngine.Vector2D;
+import mdpsimGUI.Line;
 import mdpsimGUI.TCPsocket;
+import mdpsimGUI.VecInt;
+import mdpsimGUI.Viewer;
 
 public class LogicHandler {
 	public int x_size;
@@ -183,9 +190,7 @@ public class LogicHandler {
 			}
 			if (MDPSIM.mode == 2) {
 				n = returnToBase();
-				if (MDPSIM.real) {
-					//TCPsocket.sendMessage(generateImageCoords());
-				}
+				TCPsocket.sendMessage(generateImageCoords());
 				//printMapMemory();
 			}
 			if (n != null) {
@@ -684,7 +689,7 @@ public class LogicHandler {
 			travelhistory.remove(travelhistory.size()-1);
 		}
 		Node dest = travelhistory.get(travelhistory.size()-1);
-		while (isAvailRightObstacle(dest)) {
+		while (isRightWall(dest)) {
 			dest = intRWHug(dest.x,dest.y,dest.rd);
 		}
 		return computeFastestPath(x_pos, y_pos, dest.x,dest.y,robotdir,dest.rd);
@@ -1948,8 +1953,8 @@ public class LogicHandler {
 	//{"ID":1,"X":1,"Y":1},{"ID":1,"X":1,"Y":1},{"ID":1,"X":1,"Y":1}
 	//{"MDP15":"IR","Images":"{ID:12,X:3,Y:10"}{"ID":13,"X":3,"Y":10"}{ID:8,X:3,Y:10"}{"ID":14,"X":3,"Y":10"}{ID:10,X:3,Y:10"}{"ID":11,"X":3,"Y":10"}{ID:4,X:3,Y:10"}"\"}"
 	public String generateImageCoords() throws IOException {
-		BufferedReader csvReader = new BufferedReader(new FileReader("C:/Users/Ether/Desktop/Y3S1/MDP Image/Image-Recognition/predictions.csv"));
-		//BufferedReader csvReader = new BufferedReader(new FileReader("C:/Users/liger/OneDrive/Documents/GitHub/Image-Recognition/predictions.csv"));
+		//BufferedReader csvReader = new BufferedReader(new FileReader("C:/Users/Ether/Desktop/Y3S1/MDP Image/Image-Recognition/predictions.csv"));
+		BufferedReader csvReader = new BufferedReader(new FileReader("C:/Users/liger/OneDrive/Documents/GitHub/Image-Recognition/predictions.csv"));
 		String row;
 		ArrayList<String> ar = new ArrayList<String>(0);
 		row = csvReader.readLine();
@@ -1961,17 +1966,109 @@ public class LogicHandler {
 		for (int a = 0; a < ar.size(); a++) {
 			System.out.println(ar.get(a));
 		}
+		ArrayList<ExtendLine> lines = new ArrayList<ExtendLine>();
+		//Construct left border
+		for (int a = 0; a < 20; a++) {
+			Vector2D linestart = new Vector2D(0,(a)*10);
+			Vector2D lineend = new Vector2D(0,(a+1)*10);
+			ExtendLine ex = new ExtendLine(linestart,lineend,a,0);
+			lines.add(ex);
+		}
+		//Construct right border
+		for (int a = 0; a < 20; a++) {
+			Vector2D linestart = new Vector2D(150,(a)*10);
+			Vector2D lineend = new Vector2D(150,(a+1)*10);
+			ExtendLine ex = new ExtendLine(linestart,lineend,a,14);
+			lines.add(ex);
+		}
+		//Construct top border
+		for (int a = 0; a < 15; a++) {
+			Vector2D linestart = new Vector2D((a)*10,0);
+			Vector2D lineend = new Vector2D((a+1)*10,0);
+			ExtendLine ex = new ExtendLine(linestart,lineend,0,a);
+			lines.add(ex);
+		}
+		//Construct bottom border
+		for (int a = 0; a < 15; a++) {
+			Vector2D linestart = new Vector2D((a)*10,0);
+			Vector2D lineend = new Vector2D((a+1)*10,0);
+			ExtendLine ex = new ExtendLine(linestart,lineend,19,a);
+			lines.add(ex);
+		}
+		//Construct borders from mapmemory
+		for (int a = 0; a < x_size; a++) {
+			for (int b = 0; b < y_size; b++) {
+				if (mapmemory.get(b).get(a) == 1) {
+					Vector2D tl = new Vector2D(a*10,b*10);
+					Vector2D tr = new Vector2D(a*10,(b+1)*10);
+					Vector2D bl = new Vector2D((a+1)*10,b*10);
+					Vector2D br = new Vector2D((a+1)*10,(b+1)*10);
+					ExtendLine topline = new ExtendLine(tl,tr,a-1,b);
+					ExtendLine botline = new ExtendLine(bl,br,a+1,b);
+					ExtendLine leftline = new ExtendLine(tl,bl,a,b-1);
+					ExtendLine rightline = new ExtendLine(tr,br,a-1,b+1);
+					lines.add(topline);
+					lines.add(botline);
+					lines.add(leftline);
+					lines.add(rightline);
+				}
+			}
+		}
+		ArrayList<Object2D> objlist = new ArrayList<Object2D>();
+		for (int a = 0; a < lines.size(); a++) {
+			ExtendLine ln = lines.get(a);
+			objlist.add(new Object2D(ln, ln.midpoint(), new Vector2D(0,0),new Vector2D(0,0),true));
+		}
+		//Find rays of lines determined by image recognition
+		Engine2D phyeng = new Engine2D(objlist,0.5);
+		//Do math and generate string
 		String s_start = "{\"MDP15\":\"IR\",\"Images\":\"";
 		String s_end = "\"}";
 		String[] y = new String[]{"19","18","17","16","15","14","13","12","11","10","9","8","7","6","5","4","3","2","1","0"};
 		for (int a = 1 ; a < ar.size(); a++) {
 			String[] array = ar.get(a).split(",");
-			int y_cor = Integer.parseInt(array[0]);
-			s_start = s_start.concat("(ID:"+array[3]+",X:"+array[1]+",Y:"+ y[y_cor]+")"); //Changed array pos to account for wrong dimensions
-			if (a < (ar.size()-1)) {
-				s_start = s_start.concat(";");
+			int robotypos = Integer.parseInt(array[1]);
+			int robotxpos = Integer.parseInt(array[0]);
+			double xaxis = Double.parseDouble(array[4]);
+			xaxis -= 0.5;
+			xaxis /= 0.5;
+			String direction = array[2];
+			System.out.println(direction+" "+xaxis);
+			Vector2D raystart = null;
+			Vector2D raydir = null;
+			if (direction.equals("UP")) {
+				raystart = new Vector2D((robotxpos*10) + 13, (robotypos*10) + 5);
+				raydir = new Vector2D(0,-10).rotate(xaxis* 0.96 *Math.PI);
+			} else if (direction.equals("DOWN")) {
+				raystart = new Vector2D((robotxpos*10) - 3, (robotypos*10) + 5);
+				raydir = new Vector2D(0,10).rotate(xaxis* 0.96 *Math.PI);
+			} else if (direction.equals("LEFT")) { 
+				raystart = new Vector2D((robotxpos*10) + 5, (robotypos*10) - 3);
+				raydir = new Vector2D(-10,0).rotate(xaxis* 0.96 *Math.PI);
+			} else if (direction.equals("RIGHT")) {
+				raystart = new Vector2D((robotxpos*10) + 5, (robotypos*10) + 13);
+				raydir = new Vector2D(10,0).rotate(xaxis* 0.96 *Math.PI);
+			}
+			raystart.print();
+			raydir.print();
+			Vector2D coll = phyeng.rayTraceVec(raystart, raydir);
+			if (coll != null) {
+				Object2D collide = phyeng.rayTraceObj(raystart,raydir);
+				//ExtendLine exl = (ExtendLine)collide.object();	
+				double mult = (double)Viewer.map1.getWidth()/150;
+				VecInt start = new VecInt((int)Math.round(raystart.x()),(int)Math.round(raystart.y()));
+				start.multiply(mult);
+				VecInt end = new VecInt((int)Math.round(coll.x()),(int)Math.round(coll.y()));
+				end.multiply(mult);
+				Viewer.map1.lines.add(new Line(start,end,Color.red,2));
+				//s_start = s_start.concat("(ID:"+array[3]+",X:"+exl.x+",Y:"+ y[exl.y]+")"); //Changed array pos to account for wrong dimensions
+				if (a < (ar.size()-1)) {
+					s_start = s_start.concat(";");
+				}
 			}
 		}
+		Robot r = new Robot(null, Double.POSITIVE_INFINITY);
+		MDPSIM.updateEngine2DPanel(r,phyeng,Viewer.map1);
 		String s = s_start.concat(s_end);
 		return s;
 	}

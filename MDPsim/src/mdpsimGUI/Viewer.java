@@ -23,7 +23,11 @@ import mdpsimRobot.RobotDirection;
 
 import java.util.ArrayList;
 public class Viewer extends JFrame{
-	public Engine2DPanel map1;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	public static Engine2DPanel map1;
 	public Robot2DPanel map2;
 	public SensorScreen sensors;
 	public Graphics g;

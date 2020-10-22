@@ -1,6 +1,8 @@
 package mdpsimEngine;
 import java.util.ArrayList;
 
+import mdpsimRobot.ExtendLine;
+
 public class BoundingBox2D {
 	private Vector2D p1;
 	private Vector2D p2;
@@ -27,7 +29,7 @@ public class BoundingBox2D {
 	}
 	
 	public BoundingBox2D(Object2D obj) {
-		if (obj.type() == Line2D.class) {
+		if (obj.type() == Line2D.class || obj.type() == ExtendLine.class) {
 			Line2D line = ((Line2D) obj.object());
 			this.p1 = line.start();
 			this.p2 = line.end();

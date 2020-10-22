@@ -1,6 +1,7 @@
 package mdpsimEngine;
 
 import mdpsimEngine.Action2D.Action;
+import mdpsimRobot.ExtendLine;
 
 public class Object2D {
 	private Object object;
@@ -32,6 +33,16 @@ public class Object2D {
 	}
 	
 	public Object2D (Line2D line, Vector2D position, Vector2D velocity, Vector2D acceleration, boolean isstatic) {
+		this.object = line;
+		this.position = position;
+		this.prevpos = position;
+		this.velocity = velocity;
+		this.acceleration = acceleration;
+		this.isstatic = isstatic;
+		this.direction = velocity;
+	}
+	
+	public Object2D (ExtendLine line, Vector2D position, Vector2D velocity, Vector2D acceleration, boolean isstatic) {
 		this.object = line;
 		this.position = position;
 		this.prevpos = position;

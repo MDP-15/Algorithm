@@ -183,7 +183,9 @@ public class LogicHandler {
 			}
 			if (MDPSIM.mode == 2) {
 				n = returnToBase();
-				TCPsocket.sendMessage(generateImageCoords());
+				if (MDPSIM.real) {
+					//TCPsocket.sendMessage(generateImageCoords());
+				}
 				//printMapMemory();
 			}
 			if (n != null) {
@@ -432,9 +434,21 @@ public class LogicHandler {
 		return null;
 	}
 	
+	
 	public Node rwHug() {
+		Node n = intRWHug();
+		if (!(n == null)) {
+			n.print();
+			this.travelhistory.add(n);
+		}
+		if (isCycle(n)) {
+			return FPtoWall();
+		}
+		return n;
+	}
+	
+	public Node intRWHug() {
 		Node now = new Node(x_pos,y_pos,null,null,null,0.0);
-		Node n = null;
 		if (robotdir == RobotDirection.RIGHT) {
 			if 	(((	(!isException(x_pos+2,y_pos+1) && mapmemory.get(x_pos+2).get(y_pos+1) != 0) 
 				|| 	(!isException(x_pos+2,y_pos) && mapmemory.get(x_pos+2).get(y_pos) != 0) 
@@ -446,19 +460,19 @@ public class LogicHandler {
 				&&	(!isException(x_pos,y_pos+2) && mapmemory.get(x_pos).get(y_pos+2) == 0)
 				&& 	(!isException(x_pos+1,y_pos+2) && mapmemory.get(x_pos+1).get(y_pos+2) == 0)))	{
 				rwaction = RobotAction.F1;
-				n = new Node(x_pos,y_pos+1,now,RobotAction.F1,RobotDirection.RIGHT,0.0);
+				return new Node(x_pos,y_pos+1,now,RobotAction.F1,RobotDirection.RIGHT,0.0);
 			} else if (((!isException(x_pos+2,y_pos+1) && mapmemory.get(x_pos+2).get(y_pos+1) == 0) 
 					&&	(!isException(x_pos+2,y_pos) && mapmemory.get(x_pos+2).get(y_pos) == 0) 
 					&& 	(!isException(x_pos+2,y_pos-1) && mapmemory.get(x_pos+2).get(y_pos-1) == 0) )){
 				if (rwaction == RobotAction.TR) {
 					rwaction = RobotAction.F1;
-					n =  new Node(x_pos,y_pos+1,now,RobotAction.F1,RobotDirection.RIGHT,0.0);
+					return new Node(x_pos,y_pos+1,now,RobotAction.F1,RobotDirection.RIGHT,0.0);
 				}
 				rwaction = RobotAction.TR;
-				n = new Node(x_pos,y_pos,now,RobotAction.TR,RobotDirection.DOWN,0.0);
+				return new Node(x_pos,y_pos,now,RobotAction.TR,RobotDirection.DOWN,0.0);
 			} else {
 				rwaction = RobotAction.TL;
-				n = new Node(x_pos,y_pos,now,RobotAction.TL,RobotDirection.UP,0.0);
+				return new Node(x_pos,y_pos,now,RobotAction.TL,RobotDirection.UP,0.0);
 			}
 		} else if (robotdir == RobotDirection.UP) {
 			if 	(((	(!isException(x_pos+1,y_pos+2) && mapmemory.get(x_pos+1).get(y_pos+2) != 0) 
@@ -471,19 +485,19 @@ public class LogicHandler {
 					&&	(!isException(x_pos-2,y_pos) && mapmemory.get(x_pos-2).get(y_pos) == 0)
 					&& 	(!isException(x_pos-2,y_pos+1) && mapmemory.get(x_pos-2).get(y_pos+1) == 0)))	{	
 					rwaction = RobotAction.F1;
-					n = new Node(x_pos-1,y_pos,now,RobotAction.F1,RobotDirection.UP,0.0);
+					return new Node(x_pos-1,y_pos,now,RobotAction.F1,RobotDirection.UP,0.0);
 				} else if ((	(!isException(x_pos+1,y_pos+2) && mapmemory.get(x_pos+1).get(y_pos+2) == 0) 
 						&& 	(!isException(x_pos,y_pos+2) && mapmemory.get(x_pos).get(y_pos+2) == 0) 
 						&&	(!isException(x_pos-1,y_pos+2) && mapmemory.get(x_pos-1).get(y_pos+2) == 0) )){
 					if (rwaction == RobotAction.TR) {
 						rwaction = RobotAction.F1;
-						n = new Node(x_pos-1,y_pos,now,RobotAction.F1,RobotDirection.UP,0.0);
+						return new Node(x_pos-1,y_pos,now,RobotAction.F1,RobotDirection.UP,0.0);
 					}
 					rwaction = RobotAction.TR;
-					n = new Node(x_pos,y_pos,now,RobotAction.TR,RobotDirection.RIGHT,0.0);
+					return new Node(x_pos,y_pos,now,RobotAction.TR,RobotDirection.RIGHT,0.0);
 				} else {
 					rwaction = RobotAction.TL;
-					n = new Node(x_pos,y_pos,now,RobotAction.TL,RobotDirection.LEFT,0.0);
+					return new Node(x_pos,y_pos,now,RobotAction.TL,RobotDirection.LEFT,0.0);
 				}
 		}  else if (robotdir == RobotDirection.LEFT) {
 			if 	(((	(!isException(x_pos-2,y_pos+1) && mapmemory.get(x_pos-2).get(y_pos+1) != 0) 
@@ -496,19 +510,19 @@ public class LogicHandler {
 					&&	(!isException(x_pos,y_pos-2) && mapmemory.get(x_pos).get(y_pos-2) == 0)
 					&& 	(!isException(x_pos+1,y_pos-2) && mapmemory.get(x_pos+1).get(y_pos-2) == 0)))	{	
 					rwaction = RobotAction.F1;
-					n = new Node(x_pos,y_pos-1,now,RobotAction.F1,RobotDirection.LEFT,0.0);
+					return new Node(x_pos,y_pos-1,now,RobotAction.F1,RobotDirection.LEFT,0.0);
 				} else if ((	(!isException(x_pos-2,y_pos+1) && mapmemory.get(x_pos-2).get(y_pos+1) == 0) 
 						&& 	(!isException(x_pos-2,y_pos) && mapmemory.get(x_pos-2).get(y_pos) == 0) 
 						&& 	(!isException(x_pos-2,y_pos-1) && mapmemory.get(x_pos-2).get(y_pos-1) == 0) )){
 					if (rwaction == RobotAction.TR) {
 						rwaction = RobotAction.F1;
-						n = new Node(x_pos,y_pos-1,now,RobotAction.F1,RobotDirection.LEFT,0.0);
+						return new Node(x_pos,y_pos-1,now,RobotAction.F1,RobotDirection.LEFT,0.0);
 					}
 					rwaction = RobotAction.TR;
-					n = new Node(x_pos,y_pos,now,RobotAction.TR,RobotDirection.UP,0.0);
+					return new Node(x_pos,y_pos,now,RobotAction.TR,RobotDirection.UP,0.0);
 				} else {
 					rwaction = RobotAction.TL;
-					n = new Node(x_pos,y_pos,now,RobotAction.TL,RobotDirection.DOWN,0.0);
+					return new Node(x_pos,y_pos,now,RobotAction.TL,RobotDirection.DOWN,0.0);
 				}
 			} else if (robotdir == RobotDirection.DOWN) {
 				if 	(((	(!isException(x_pos+1,y_pos-2) && mapmemory.get(x_pos+1).get(y_pos-2) != 0) 
@@ -521,31 +535,26 @@ public class LogicHandler {
 						&&	(!isException(x_pos+2,y_pos) && mapmemory.get(x_pos+2).get(y_pos) == 0)
 						&& 	(!isException(x_pos+2,y_pos+1) && mapmemory.get(x_pos+2).get(y_pos+1) == 0)))	{	
 						rwaction = RobotAction.F1;
-						n = new Node(x_pos+1,y_pos,now,RobotAction.F1,RobotDirection.DOWN,0.0);
+						return new Node(x_pos+1,y_pos,now,RobotAction.F1,RobotDirection.DOWN,0.0);
 					} else if ((	(!isException(x_pos+1,y_pos-2) && mapmemory.get(x_pos+1).get(y_pos-2) == 0) 
 							&& 	(!isException(x_pos,y_pos-2) && mapmemory.get(x_pos).get(y_pos-2) == 0) 
 							&& 	(!isException(x_pos-1,y_pos-2) && mapmemory.get(x_pos-1).get(y_pos-2) == 0) )){
 						if (rwaction == RobotAction.TR) {
 							rwaction = RobotAction.F1;
-							n = new Node(x_pos+1,y_pos,now,RobotAction.F1,RobotDirection.DOWN,0.0);
+							return new Node(x_pos+1,y_pos,now,RobotAction.F1,RobotDirection.DOWN,0.0);
 						}
 						rwaction = RobotAction.TR;
-						n = new Node(x_pos,y_pos,now,RobotAction.TR,RobotDirection.LEFT,0.0);
+						return new Node(x_pos,y_pos,now,RobotAction.TR,RobotDirection.LEFT,0.0);
 					} else {
 						rwaction = RobotAction.TL;
-						n = new Node(x_pos,y_pos,now,RobotAction.TL,RobotDirection.RIGHT,0.0);
+						return new Node(x_pos,y_pos,now,RobotAction.TL,RobotDirection.RIGHT,0.0);
 					}
-			} 
-		this.travelhistory.add(n);
-		if (isCycle()) {
-			return FPtoWall();
-		}
-		return n;
+			}
+		return null; 
 	}
 	
-	public boolean isCycle() {
-		Node n = travelhistory.get(travelhistory.size()-1);
-		for (int a = travelhistory.size()-2; a >= 0; a--) {
+	public boolean isCycle(Node n) {
+		for (int a = travelhistory.size()-3; a > 0; a--) {
 			try {
 				if (n.is(travelhistory.get(a))) {
 					return true;
@@ -560,7 +569,7 @@ public class LogicHandler {
 	public Node FPtoWall() {
 		Node n = travelhistory.get(travelhistory.size()-1);
 		travelhistory.remove(travelhistory.size()-1);
-		while (travelhistory.get(travelhistory.size()-1) != n) {
+		while (!travelhistory.get(travelhistory.size()-1).is(n)) {
 			travelhistory.remove(travelhistory.size()-1);
 		}
 		travelhistory.remove(travelhistory.size()-1);

@@ -207,42 +207,42 @@ public class Robot {
 		      case "F1":
 		    	  	lh.prevaction = RobotAction.F1;	
 		    	  	actionqueue.add(RobotAction.F1);
-		    	  	System.out.println("F1 "+lh.robotdir);
+		    	  	//System.out.println("F1 "+lh.robotdir);
 		    	  	TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"F1s\"}");
 		    	  	TCPsocket.sendMessage("{\"MDP15\": \"RP\", \"X\": "+lh.x_pos+", \"Y\": "+lh.y_pos+", \"O\": \""+lh.robotdir+"\"}");		    	  	
 		    	  	break;
 		      case "F2":
 		    	  	lh.prevaction = RobotAction.F2;
 		    	  	actionqueue.add(RobotAction.F2);
-		    	  	System.out.println("F2 "+lh.robotdir);
+		    	  	//System.out.println("F2 "+lh.robotdir);
 		    	  	TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"F2s\"}");
 		    	  	break;
 		      case "F3":
 		    	  	lh.prevaction = RobotAction.F3;
 		    	  	actionqueue.add(RobotAction.F3);
-		    	  	System.out.println("F3 "+lh.robotdir);
+		    	  	//System.out.println("F3 "+lh.robotdir);
 		    	  	TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"F3s\"}");
 		    	  	break;
 		      case "TL":
 		    	  	lh.prevaction = RobotAction.TL;
 		    	  	actionqueue.add(RobotAction.TL);
-		    	  	System.out.println("TL "+lh.robotdir);
+		    	  	//System.out.println("TL "+lh.robotdir);
 		    	  	TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"Ls\"}");
 		    	  	break;
 		      case "TR":
 		    	  	lh.prevaction = RobotAction.TR;
 		    	  	actionqueue.add(RobotAction.TR);
-		    	  	System.out.println("TR");
+		    	  	//System.out.println("TR");
 		    	  	TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"Rs\"}");
 		    	  	break;
 		      case "RCA":
 		    	  	actionqueue.add(RobotAction.RCA);
-		    	  	System.out.println("RCA "+lh.robotdir);
+		    	  	//System.out.println("RCA "+lh.robotdir);
 		    	  	TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"As\"}");
 		    	  	break;
 		      case "RCH":
 		    	  	actionqueue.add(RobotAction.RCH);
-		    	  	System.out.println("RCH "+lh.robotdir);
+		    	  	//System.out.println("RCH "+lh.robotdir);
 		    	  	TCPsocket.sendMessage("{\"MDP15\":\"RI\",\"RI\":\"Hs\"}");
 		    	  	break;
 		      }

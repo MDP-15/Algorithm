@@ -442,6 +442,7 @@ public class LogicHandler {
 			this.travelhistory.add(n);
 		}
 		if (isCycle(n)) {
+			System.out.print("called");
 			return FPtoWall();
 		}
 		return n;
@@ -553,8 +554,114 @@ public class LogicHandler {
 		return null; 
 	}
 	
+	public Node intRWHug(int x, int y, RobotDirection rd) {
+		Node now = new Node(x,y,null,null,rd,0.0);
+		if (rd == RobotDirection.RIGHT) {
+			if 	(((	(!isException(x+2,y+1) && mapmemory.get(x+2).get(y+1) != 0) 
+				|| 	(!isException(x+2,y) && mapmemory.get(x+2).get(y) != 0) 
+				|| 	(!isException(x+2,y-1) && mapmemory.get(x+2).get(y-1) != 0) )||
+				(	(isException(x+2,y+1))
+				|| 	(isException(x+2,y))
+				|| 	(isException(x+2,y-1))	))
+				&&(	(!isException(x-1,y+2) && mapmemory.get(x-1).get(y+2) == 0)
+				&&	(!isException(x,y+2) && mapmemory.get(x).get(y+2) == 0)
+				&& 	(!isException(x+1,y+2) && mapmemory.get(x+1).get(y+2) == 0)))	{
+				rwaction = RobotAction.F1;
+				return new Node(x,y+1,now,RobotAction.F1,RobotDirection.RIGHT,0.0);
+			} else if (((!isException(x+2,y+1) && mapmemory.get(x+2).get(y+1) == 0) 
+					&&	(!isException(x+2,y) && mapmemory.get(x+2).get(y) == 0) 
+					&& 	(!isException(x+2,y-1) && mapmemory.get(x+2).get(y-1) == 0) )){
+				if (rwaction == RobotAction.TR) {
+					rwaction = RobotAction.F1;
+					return new Node(x,y+1,now,RobotAction.F1,RobotDirection.RIGHT,0.0);
+				}
+				rwaction = RobotAction.TR;
+				return new Node(x,y,now,RobotAction.TR,RobotDirection.DOWN,0.0);
+			} else {
+				rwaction = RobotAction.TL;
+				return new Node(x,y,now,RobotAction.TL,RobotDirection.UP,0.0);
+			}
+		} else if (rd == RobotDirection.UP) {
+			if 	(((	(!isException(x+1,y+2) && mapmemory.get(x+1).get(y+2) != 0) 
+					|| 	(!isException(x,y+2) && mapmemory.get(x).get(y+2) != 0) 
+					|| 	(!isException(x-1,y+2) && mapmemory.get(x-1).get(y+2) != 0) )||
+					(	(isException(x+1,y+2))
+					|| 	(isException(x,y+2))
+					|| 	(isException(x-1,y+2))	))
+					&&(	(!isException(x-2,y-1) && mapmemory.get(x-2).get(y-1) == 0)
+					&&	(!isException(x-2,y) && mapmemory.get(x-2).get(y) == 0)
+					&& 	(!isException(x-2,y+1) && mapmemory.get(x-2).get(y+1) == 0)))	{	
+					rwaction = RobotAction.F1;
+					return new Node(x-1,y,now,RobotAction.F1,RobotDirection.UP,0.0);
+				} else if ((	(!isException(x+1,y+2) && mapmemory.get(x+1).get(y+2) == 0) 
+						&& 	(!isException(x,y+2) && mapmemory.get(x).get(y+2) == 0) 
+						&&	(!isException(x-1,y+2) && mapmemory.get(x-1).get(y+2) == 0) )){
+					if (rwaction == RobotAction.TR) {
+						rwaction = RobotAction.F1;
+						return new Node(x-1,y,now,RobotAction.F1,RobotDirection.UP,0.0);
+					}
+					rwaction = RobotAction.TR;
+					return new Node(x,y,now,RobotAction.TR,RobotDirection.RIGHT,0.0);
+				} else {
+					rwaction = RobotAction.TL;
+					return new Node(x,y,now,RobotAction.TL,RobotDirection.LEFT,0.0);
+				}
+		}  else if (rd == RobotDirection.LEFT) {
+			if 	(((	(!isException(x-2,y+1) && mapmemory.get(x-2).get(y+1) != 0) 
+					|| 	(!isException(x-2,y) && mapmemory.get(x-2).get(y) != 0) 
+					|| 	(!isException(x-2,y-1) && mapmemory.get(x-2).get(y-1) != 0) )||
+					(	(isException(x-2,y+1))
+					|| 	(isException(x-2,y))
+					|| 	(isException(x-2,y-1))	))
+					&&(	(!isException(x-1,y-2) && mapmemory.get(x-1).get(y-2) == 0)
+					&&	(!isException(x,y-2) && mapmemory.get(x).get(y-2) == 0)
+					&& 	(!isException(x+1,y-2) && mapmemory.get(x+1).get(y-2) == 0)))	{	
+					rwaction = RobotAction.F1;
+					return new Node(x,y-1,now,RobotAction.F1,RobotDirection.LEFT,0.0);
+				} else if ((	(!isException(x-2,y+1) && mapmemory.get(x-2).get(y+1) == 0) 
+						&& 	(!isException(x-2,y) && mapmemory.get(x-2).get(y) == 0) 
+						&& 	(!isException(x-2,y-1) && mapmemory.get(x-2).get(y-1) == 0) )){
+					if (rwaction == RobotAction.TR) {
+						rwaction = RobotAction.F1;
+						return new Node(x,y-1,now,RobotAction.F1,RobotDirection.LEFT,0.0);
+					}
+					rwaction = RobotAction.TR;
+					return new Node(x,y,now,RobotAction.TR,RobotDirection.UP,0.0);
+				} else {
+					rwaction = RobotAction.TL;
+					return new Node(x,y,now,RobotAction.TL,RobotDirection.DOWN,0.0);
+				}
+			} else if (rd == RobotDirection.DOWN) {
+				if 	(((	(!isException(x+1,y-2) && mapmemory.get(x+1).get(y-2) != 0) 
+						|| 	(!isException(x,y-2) && mapmemory.get(x).get(y-2) != 0) 
+						|| 	(!isException(x-1,y-2) && mapmemory.get(x-1).get(y-2) != 0) )||
+						(	(isException(x+1,y-2))
+						|| 	(isException(x,y-2))
+						|| 	(isException(x-1,y-2))	))
+						&&(	(!isException(x+2,y-1) && mapmemory.get(x+2).get(y-1) == 0)
+						&&	(!isException(x+2,y) && mapmemory.get(x+2).get(y) == 0)
+						&& 	(!isException(x+2,y+1) && mapmemory.get(x_pos+2).get(y+1) == 0)))	{	
+						rwaction = RobotAction.F1;
+						return new Node(x+1,y,now,RobotAction.F1,RobotDirection.DOWN,0.0);
+					} else if ((	(!isException(x+1,y-2) && mapmemory.get(x+1).get(y-2) == 0) 
+							&& 	(!isException(x,y-2) && mapmemory.get(x).get(y-2) == 0) 
+							&& 	(!isException(x-1,y-2) && mapmemory.get(x-1).get(y-2) == 0) )){
+						if (rwaction == RobotAction.TR) {
+							rwaction = RobotAction.F1;
+							return new Node(x+1,y,now,RobotAction.F1,RobotDirection.DOWN,0.0);
+						}
+						rwaction = RobotAction.TR;
+						return new Node(x,y,now,RobotAction.TR,RobotDirection.LEFT,0.0);
+					} else {
+						rwaction = RobotAction.TL;
+						return new Node(x,y,now,RobotAction.TL,RobotDirection.RIGHT,0.0);
+					}
+			}
+		return null; 
+	}
+	
 	public boolean isCycle(Node n) {
-		for (int a = travelhistory.size()-3; a > 0; a--) {
+		for (int a = travelhistory.size()-2; a > 0; a--) {
 			try {
 				if (n.is(travelhistory.get(a))) {
 					return true;
@@ -577,6 +684,9 @@ public class LogicHandler {
 			travelhistory.remove(travelhistory.size()-1);
 		}
 		Node dest = travelhistory.get(travelhistory.size()-1);
+		while (isAvailRightObstacle(dest)) {
+			dest = intRWHug(dest.x,dest.y,dest.rd);
+		}
 		return computeFastestPath(x_pos, y_pos, dest.x,dest.y,robotdir,dest.rd);
 	}
 	

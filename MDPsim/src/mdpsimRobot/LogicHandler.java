@@ -670,7 +670,7 @@ public class LogicHandler {
 	}
 	
 	public boolean isCycle(Node n) {
-		for (int a = travelhistory.size()-2; a > 0; a--) {
+		for (int a = travelhistory.size()-3; a > 0; a--) {
 			try {
 				if (n.isExact(travelhistory.get(a))) {
 					return true;
@@ -692,9 +692,11 @@ public class LogicHandler {
 		while (!isRightWall(travelhistory.get(travelhistory.size()-1))) {
 			travelhistory.remove(travelhistory.size()-1);
 		}
-		Node dest = travelhistory.get(travelhistory.size()-1);
-		while (isRightWall(dest)) {
+		int a = 0;
+		Node dest = travelhistory.get(a);
+		while (intRWHug(dest.x,dest.y,dest.rd).isExact(travelhistory.get(a+1))) {
 			dest = intRWHug(dest.x,dest.y,dest.rd);
+			a += 1;
 		}
 		return computeFastestPath(x_pos, y_pos, dest.x,dest.y,robotdir,dest.rd);
 	}

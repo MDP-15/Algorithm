@@ -707,7 +707,7 @@ public class LogicHandler {
 		int a = 0;
 		Node dest = travelhistory.get(a);
 		while (intRWHug(dest.x,dest.y,dest.rd).is(travelhistory.get(a+1))) {
-			dest = travelhistory.get(a+1);
+			dest = travelhistory.get(a+1	s);
 			a += 1;
 		}
 		System.out.println(a);
@@ -720,21 +720,21 @@ public class LogicHandler {
 	}
 	
 	public boolean isUnexplored(Node n) {
-		if ((mapmemory.get(n.x+2).get(n.y+1) == 2) ||
-			(mapmemory.get(n.x+2).get(n.y) == 2) ||
-			(mapmemory.get(n.x+2).get(n.y-1) == 2) ||
-			(mapmemory.get(n.x-2).get(n.y+1) == 2) ||
-			(mapmemory.get(n.x-2).get(n.y) == 2) ||
-			(mapmemory.get(n.x-2).get(n.y-1) == 2) ||
-			(mapmemory.get(n.x+1).get(n.y+2) == 2) ||
-			(mapmemory.get(n.x).get(n.y+2) == 2) ||
-			(mapmemory.get(n.x-1).get(n.y+2) == 2) ||
-			(mapmemory.get(n.x+1).get(n.y-2) == 2) ||
-			(mapmemory.get(n.x).get(n.y-2) == 2) ||
-			(mapmemory.get(n.x-1).get(n.y-2) == 2)) {
-			return true;
-		}
-		return false;
+			if ((isValid(n.x+2,n.y+1) && (mapmemory.get(n.x+2).get(n.y+1) == 2)) ||
+					(isValid(n.x+2,n.y) && (mapmemory.get(n.x+2).get(n.y) == 2)) ||
+					(isValid(n.x+2,n.y-1) && (mapmemory.get(n.x+2).get(n.y-1) == 2)) ||
+					(isValid(n.x-2,n.y+1) && (mapmemory.get(n.x-2).get(n.y+1) == 2)) ||
+					(isValid(n.x-2,n.y) && (mapmemory.get(n.x-2).get(n.y) == 2)) ||
+					(isValid(n.x-2,n.y-1) && (mapmemory.get(n.x-2).get(n.y-1) == 2)) ||
+					(isValid(n.x+1,n.y+2) && (mapmemory.get(n.x+1).get(n.y+2) == 2)) ||
+					(isValid(n.x,n.y+2) && (mapmemory.get(n.x).get(n.y+2) == 2)) ||
+					(isValid(n.x-1,n.y+2) && (mapmemory.get(n.x-1).get(n.y+2) == 2)) ||
+					(isValid(n.x+1,n.y-2) && (mapmemory.get(n.x+1).get(n.y-2) == 2)) ||
+					(isValid(n.x,n.y-2) && (mapmemory.get(n.x).get(n.y-2) == 2)) ||
+					(isValid(n.x-1,n.y-2) && (mapmemory.get(n.x-1).get(n.y-2) == 2))) {
+				return true;
+			}
+			return false;
 	}
 	public boolean isRightWall(Node n) {
 		if (n.rd == RobotDirection.UP) {

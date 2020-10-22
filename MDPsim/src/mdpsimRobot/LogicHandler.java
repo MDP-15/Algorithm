@@ -722,9 +722,11 @@ public class LogicHandler {
 			}
 		}
 		System.out.println(a);
+		int b = 2;
 		Node k = new Node(18,1,null,null,RobotDirection.RIGHT,0.0);
-		while (isUnexplored(intRWHug(k.x,k.y,k.rd))) {
+		while (isUnexplored(intRWHug(k.x,k.y,k.rd)) || b >= 0) {
 			k = intRWHug(k.x,k.y,k.rd);
+			b -= 1;
 		}
 		k.print();
 		return computeFastestPath(x_pos, y_pos, k.x,k.y,robotdir,k.rd);

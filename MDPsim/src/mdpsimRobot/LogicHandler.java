@@ -711,11 +711,12 @@ public class LogicHandler {
 			a += 1;
 		}
 		System.out.println(a);
-		while (intRWHug(dest.x,dest.y,dest.rd).isValid(mapmemory)) {
-			dest = intRWHug(dest.x,dest.y,dest.rd);
+		Node k = new Node(18,1,null,null,RobotDirection.RIGHT,0.0);
+		while (intRWHug(k.x,k.y,k.rd).isValid(mapmemory)) {
+			k = intRWHug(k.x,k.y,k.rd);
 		}
-		dest.print();
-		return computeFastestPath(x_pos, y_pos, dest.x,dest.y,robotdir,dest.rd);
+		k.print();
+		return computeFastestPath(x_pos, y_pos, k.x,k.y,robotdir,k.rd);
 	}
 	
 	public boolean isRightWall(Node n) {
